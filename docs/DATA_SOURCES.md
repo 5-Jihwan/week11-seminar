@@ -10,7 +10,7 @@
 | 사회통합실태조사 | 한국행정연구원(KIPA) | https://www.kipa.re.kr (자동 접근 403, **브라우저로 직접**) · KOSSDA 2023 조사지침서 PDF: kossda.snu.ac.kr/bitstream/20.500.12236/28189/5/kor_interviewer_instruction_20230040.pdf · 2021년판 handle/20.500.12236/25722 | KIPA 또는 KOSSDA 회원 | 대인신뢰 q28, 기관신뢰, 공정성, 참여, 사회보장 영역. 2023 조사표·sav 위치는 Ji가 직접 확인 |
 | 사회조사 | 국가데이터처(옛 통계청) | **MDIS https://mdis.mods.go.kr** (옛 mdis.kostat.go.kr은 301 이전) · 제공자료 /ofrData/selectOrgOfrData.do?curMenuNo=UI_POR_P9220 | ONE-ID(KOSIS 계정) 가입. 공공용은 다운로드, 인가용은 승인·유료·연구계획서 심사(2026-10-15 공지) | 2023년 복지·사회참여·여가·소득소비·노동 부문. 단체활동·자원봉사·기부·사회 신뢰. 시도. 공공용/인가용 구분은 확인 필요 |
 | 한국종합사회조사(KGSS) | 성균관대 서베이리서치센터 | https://kgss.skku.edu · 데이터 /kgss/data.do · 코드북 /_res/kgss/etc/2003-2025_KGSS_Codebook_v5.pdf · 설문지 /_res/kgss/etc/부록1_한국종합사회조사_설문지.pdf | 2003~2025 누적 zip(SPSS·STATA). 로그인 조건 미확인 | GSS식 일반신뢰·단체 가입. 국제 비교(ISSP) 가능. **조사표·코드북이 바로 열리는 유일한 조사** |
-| 지역사회건강조사 | 질병관리청 | https://chs.kdca.go.kr · 조사표 /chs/qt/qtMain.do · 지침서 /chs/mnl/mnlBoardMain.do · 절차 /chs/rdr/rdrInfoProcessMain.do | 절차 확인 → 서약 → 신청 → 다운로드(예규 124호) | 이웃 신뢰·상부상조·시군구 식별. 시군구 집계 결합용. 승인에 시간이 걸리니 일찍 |
+| 지역사회건강조사 | 질병관리청 | https://chs.kdca.go.kr · 조사표 /chs/qt/qtMain.do · 지침서 /chs/mnl/mnlBoardMain.do · 절차 /chs/rdr/rdrInfoProcessMain.do | 서약서·활용계획서 제출(2025 지침서는 "승인 없이", 부록은 14일 심의. 누리집 확인) | **이웃 신뢰(ena_01a1)·단체 참여(enb_04~07)·기초수급(fma_04z1)·시군구 코드(signgu_code)가 한 사람에게**. 2011·13·15·17·19·23년. 복지패널에 이은 두 번째 개인 단위 후보. 조사표 2009~2025 전부 로그인 없이 받음 |
 
 ## 2. 2순위 — 통제·지역 집계·제도 변수
 

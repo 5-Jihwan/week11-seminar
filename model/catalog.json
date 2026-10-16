@@ -10,11 +10,13 @@
     "kipa": {"name": "사회통합실태조사", "org": "한국행정연구원", "unit": "개인", "region": "표지 주소란, 공개 변수 미확인", "best_wave": "2023", "why": "대인·기관 신뢰 + 공정성 + 참여가 한 조사표에. 수급 경험 문항은 없음"},
     "kgss": {"name": "한국종합사회조사(KGSS)", "org": "성균관대 서베이리서치센터", "unit": "개인", "region": "7개 권역 + 도시/농촌", "best_wave": "2012 (N=1,396), 2023 (N=1,230)", "why": "사회자본 문항이 가장 풍부(GSS·ISSP·EASS 모듈). 수급 문항은 없음"},
     "kostat_social": {"name": "사회조사", "org": "국가데이터처", "unit": "개인(만 13세 이상)", "region": "시도(공표), 변수 미확인", "best_wave": "2023", "why": "단체 참여·기부·봉사 상세. 제도별 수급 없음, 대인신뢰 없음(사회 신뢰만)"},
-    "kostat_hfls": {"name": "가계금융복지조사", "org": "국가데이터처", "unit": "가구(가구원별 소득)", "region": "표지 주소란", "best_wave": "2023 (2022 소득)", "why": "공적이전 9항목 가구원별 유무·금액. 신뢰·참여 문항 없음"}
+    "kostat_hfls": {"name": "가계금융복지조사", "org": "국가데이터처", "unit": "가구(가구원별 소득)", "region": "표지 주소란", "best_wave": "2023 (2022 소득)", "why": "공적이전 9항목 가구원별 유무·금액. 신뢰·참여 문항 없음"},
+    "chs": {"name": "지역사회건강조사", "org": "질병관리청", "unit": "개인(가구 문항 포함)", "region": "시군구 코드 signgu_code, 보건소 pbhlth_code", "best_wave": "2023 (이웃 신뢰·단체 참여·기초수급 동시, 그 외 2011·13·15·17·19)", "why": "이웃 신뢰 + 기초수급 + 시군구가 한 사람에게. 표본 20만 명대. 단, 신뢰가 '동네 사람' 대상이고 예/아니오"}
   },
   "concepts": [
     {"id": "trust_general", "label": "대인신뢰(일반신뢰)", "role": "dv", "lineage": "kr", "paper_measure": "K&R: '사람들은 대체로 믿을 만한가' 0~10"},
     {"id": "trust_social", "label": "사회 신뢰", "role": "dv", "lineage": "kr", "paper_measure": "변형. 사람이 아니라 '우리 사회'"},
+    {"id": "trust_neighbor", "label": "이웃 신뢰", "role": "dv", "lineage": "krishna", "paper_measure": "Krishna 마을 단위 신뢰 문항에 가장 가까움. K&R의 일반신뢰와는 대상이 다름"},
     {"id": "trust_institution", "label": "기관신뢰", "role": "dv", "lineage": "kr", "paper_measure": "Krishna의 정부 신뢰(독립변수), K&R 논의의 정치 신뢰"},
     {"id": "participation", "label": "단체 참여·결사체", "role": "dv", "lineage": "freitag", "paper_measure": "Freitag: 동호회 참여·명예직·봉사 시간·활동 회원 수 / Mettler: 단체 가입 수"},
     {"id": "volunteer_donate", "label": "자원봉사·기부", "role": "dv", "lineage": "mettler", "paper_measure": "Mettler 시민참여의 일부"},
@@ -74,6 +76,13 @@
     {"concept": "institution_participation", "survey": "kgss", "wave": "2012", "var": "LOCPAR1-4", "question": "지역사회 이슈(환경·교육·안전·소비자) 관련 집단토론에 지난 1년간 얼마나 자주 참여했나", "scale": "4점 빈도", "unit": "개인", "note": "L&W 숙의형 참여"},
     {"concept": "region", "survey": "kgss", "wave": "전 조사", "var": "REGION / URBAN", "question": "거주 권역(서울·경기·강원·충청·경상·전라·제주) / 도시·농촌", "scale": "7 / 2범주", "unit": "개인", "note": "시군구 없음"},
     {"concept": "region", "survey": "koweps", "wave": "—", "var": "미확인", "question": "지침서·변수이력표에 시도 변수 없음. 코드북 확인 필요", "scale": "", "unit": "", "note": "조사지역 17개 시도 244개 시군구"},
-    {"concept": "region", "survey": "kipa", "wave": "2023", "var": "Q5", "question": "시·도 / 시·군·구 / 읍·면·동에 대한 소속감", "scale": "4점", "unit": "개인", "note": "행정구역 변수 공개 여부 미확인"}
+    {"concept": "region", "survey": "kipa", "wave": "2023", "var": "Q5", "question": "시·도 / 시·군·구 / 읍·면·동에 대한 소속감", "scale": "4점", "unit": "개인", "note": "행정구역 변수 공개 여부 미확인"},
+    {"concept": "trust_neighbor", "survey": "chs", "wave": "2011·13·15·17·19·21·23·25", "var": "ena_01a1", "question": "우리 동네 사람들은 서로 믿고 신뢰할 수 있다", "scale": "예/아니오", "unit": "개인", "note": "짝수 연도 없음. 2014·2016은 일부 시도만"},
+    {"concept": "network_reciprocity", "survey": "chs", "wave": "2011~2025 홀수 연도", "var": "ena_01b1", "question": "우리 동네 사람들은 경조사가 있을 때 서로 도움을 주고받는다", "scale": "예/아니오", "unit": "개인", "note": "2017 이전 문구: '전통이 있다'"},
+    {"concept": "network_reciprocity", "survey": "chs", "wave": "2011·13·15·17·19·23·25", "var": "enb_01z1 / enb_02z1 / enb_03z1", "question": "가장 많이 접촉하는 친척 / 이웃 / 친구와 얼마나 자주 보거나 연락합니까", "scale": "6점: 월 1회 미만 ~ 주 4회 이상", "unit": "개인", "note": "2021 없음"},
+    {"concept": "participation", "survey": "chs", "wave": "2011·13·15·17·19·23", "var": "enb_04z1~07z1", "question": "한 달에 한 번 이상 정기적으로 참여합니까: 종교활동 / 친목활동(계모임·동창회·향우회 등) / 여가·레저 / 자선단체", "scale": "항목별 예/아니오", "unit": "개인", "note": "2021·2025 삭제"},
+    {"concept": "welfare_selective", "survey": "chs", "wave": "2009~2025 매년", "var": "fma_04z1", "question": "귀 가구는 현재 기초생활 수급자입니까?", "scale": "3범주: 그렇다 / 지금은 아니지만 과거에 수급자였다 / 아니다", "unit": "가구(개인 응답)", "note": "'과거 수급' 범주 = 심사·탈락 경험의 대용. 이웃 신뢰와 같은 사람"},
+    {"concept": "public_service_experience", "survey": "chs", "wave": "2011~2025 홀수 연도", "var": "ena_01c1~g1", "question": "동네의 안전 / 자연환경 / 생활환경 / 대중교통 / 의료서비스 여건에 만족한다", "scale": "항목별 예/아니오", "unit": "개인", "note": "L&W 반응성의 결과 측 대용"},
+    {"concept": "region", "survey": "chs", "wave": "2021~ 지침서 확인", "var": "signgu_code / pbhlth_code", "question": "시도+시군구 5자리 행정코드 / 보건소 8자리 코드", "scale": "코드", "unit": "개인", "note": "시군구 단위 분석 가능. Freitag 칸톤 자리에 시군구. 2021 이전 공개 여부 미확인"}
   ]
 }
