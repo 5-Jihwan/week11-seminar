@@ -1,0 +1,2785 @@
+<script> alert('제공중인 정보가 없습니다.');</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="author" content="국가통계 마이크로데이타 국가서비스" />
+<meta name="copyright" content="[35208] 대전광역시 서구 청사로 189 (둔산동, 정부대전청사 3동)" />
+<meta name="description" content="MDIS, 국가데이터처 운영, 마이크로데이터 통합서비스, 원격접근서비스, 이용센터서비스, 주문형서비스, RDC, 마이크로데이터 이용센터, research data center 등 안내." />
+<title>국가통계 마이크로데이터 서비스 시스템</title>
+<script type="text/JavaScript">
+var COMMON_MSG = {
+		infMsg_comn_00001 : "test00001",  
+		infMsg_comn_00002 : "test00002", 
+		infMsg_comn_00003 : "test00003",
+        comnMsgTable : {
+			 ko : {
+				infMsg_comn_00001 : "test00001",
+				infMsg_comn_00002 : "test00002",	
+				infMsg_comn_00003 : "test00003",	 
+			},
+			en : {
+				infMsg_comn_00001 : "test00001", //locale="en" property 삭제, 3.2.4대응
+				infMsg_comn_00002 : "test00002",	 
+				infMsg_comn_00003 : "test00003",	
+			} 
+			
+		}
+     };
+</script><!-- move from comn.fw.layout.jsp -->
+<link rel="apple-touch-icon" href="/images/favicon_ios.png"/>
+<link rel="icon" href="/images/n_favicon.png"/>
+<link rel="shortcut icon" href="/images/favicon_android.ico"/>  
+
+
+<link href="/css/import.css;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" rel="stylesheet" />
+<link href="/css/dlService.css;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" rel="stylesheet" />
+<link href="/css/requestStep.css;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" rel="stylesheet" />
+<link href="/css/guideTable.css;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" rel="stylesheet" />
+<link href="/css/guideDefault.css;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" rel="stylesheet" />
+
+<script type="text/JavaScript">
+	var contextRoot = '';
+	var contextPath = contextRoot;
+</script>
+
+<script src="/js/modernizr.min.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+
+<script src="/js/jquery-1.11.2.min.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script src="/js/jquery-ui.min.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+
+<script src="/js/jquery.placeholder.min.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script src="/js/ui.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script src="/js/swiper.min.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script src="/js/common/jquery.form.min.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script src="/js/common/jquery.blockUI.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script src="/js/common/common.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script> 
+
+<script type="text/javascript" src="/css/dext/js/prettify/prettify.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script type="text/javascript" src="/css/dext/js/common.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script src="/js/dext/dx5/dextuploadx5-configuration.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?version=3.2.1"></script>
+<script src="/js/dext/dx5/dextuploadx5.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?version=3.2.1"></script>
+
+<script type="text/javascript" src="/js/comn/fw/comn.fw.fn.common.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script type="text/javascript" src="/js/comn/fw/comn.fw.js.common.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script type="text/javascript" src="/js/comn/fw/comn.fw.ajax.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script type="text/javascript" src="/js/comn/fw/comn.fw.dext.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script type="text/javascript" src="/js/comn/fw/comn.fw.dx.common.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?version=2018.04.03"></script>
+
+<script type="text/javascript" src="/plugin/jquery.easing.1.3.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script type="text/javascript" src="/plugin/jquery.scrollfollow.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script type="text/javascript" src="/js/common.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+
+
+<!-- 챗봇 TO-BE --> 
+<link href="/css/wsearch/default.css;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" rel="stylesheet" />
+<link href="/css/wsearch/wsearch2020/chatbot.css;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" rel="stylesheet" />
+<link href="/css/wsearch/atcmp.css;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"   rel="stylesheet" type="text/css" />
+<link href="/css/wsearch/font-awesome/css/all.css;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" rel="stylesheet" /> 
+<script src="/js/wsearch/placeholders.min.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script src="/js/wsearch/ichat2.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+<script src="/js/wsearch/wsearch.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10"></script>
+
+
+
+<script type="text/JavaScript">
+	//단위서버 접속정보
+	var UTSYS_URL = {
+        mdisUrl : 'http://127.0.0.1:9080'
+     };
+	
+	var PDF_VWER_URL_1 = '';	//
+	var corsUserName = '';
+	var domainGubun = '';
+	
+	$(document).ajaxStart(function() {
+		$.blockUI({message:'<img src="/images/common/loading.gif;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" width="294" height="90" alt="처리중입니다."/>', css:{border:'1px solid #fff'}});
+	});
+
+	$(document).ajaxStop(function() {
+		$.unblockUI();
+	});
+
+	/*$(document).ready(function() {
+		var quickObj = $(".quick");
+		$(window).scroll(function() {
+			quickObj.stop();
+			quickObj.animate({"top":$(document).scrollTop() + 50 + "px"}, 1000); 
+		});
+	});*/
+	$(function() {
+		try{
+		}catch(e){}
+	});
+</script>
+
+
+<script type="text/JavaScript">
+$(document).ready(function() {
+	/* message from spring el (commonMessage.jsp, comn.fw.properties)*/
+	//var retValTest = 'test msg 3';
+	//alert('3.commonJs:'+'valTest:'+retValTest+':COMMON_MSG:'+ COMMON_MSG.infMsg_comn_00001);
+});
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+
+<!-- 2020-07-01 추가 심재진  (resizable 관련만 추후 반영 예정)-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-160164830-1"></script>
+<script src="/plugin/slick/slick.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" type="text/javascript"></script>
+<script src="/js/UserScriptConf.js;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" type="text/javascript"></script>
+<link href="/css/plugin/slick/slick.css;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" rel="stylesheet">
+<link href="/css/plugin/slick/slick-theme.css;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" rel="stylesheet">
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-160164830-1');
+  
+  //2020-07-01 심재진 추가
+    
+    
+    function wichatClear()
+    {
+		$('#wichat').css('left','-524px');	
+		$('#wichat').css('top','-419px');
+		
+		$('#wichat').css('width','500px');	
+		$('#wichat').css('height','695px');
+    	
+		var wichat_left = $('#wichat').css('left');
+		var wichat_top = $('#wichat').css('top');
+		
+		var wichat_width = $('#wichat').css('width');
+		var wichat_height = $('#wichat').css('height');
+		
+		wiseSetCookie('wichat_left', wichat_left,30); 
+	 	wiseSetCookie('wichat_top', wichat_top,30);
+	 	
+	 	wiseSetCookie('wichat_width', wichat_width,30); 
+		wiseSetCookie('wichat_height', wichat_height,30);
+    }
+    
+    
+	$(function(){
+		$('#wichat').draggable({
+			
+			handle : "#chat_top",
+			drag_offscreen:false,
+			containment:"body",
+			scroll:false,
+			drag:function(event, ui){
+			
+		    var wichat_top = $('#wichat').css('top').replace('px','');
+		    	
+		    	//alert(wichat_top);
+		    	
+		    if(wichat_top <-400){
+		    	//alert("위치 오바");
+		    	$('#wichat').css('top','-400px');
+		    }
+				
+			var wichat_left = $('#wichat').css('left');
+			var wichat_top = $('#wichat').css('top');
+		 
+		 	wiseSetCookie('wichat_left', wichat_left,30); 
+		 	wiseSetCookie('wichat_top', wichat_top,30);
+		 	
+			}
+		}).resizable({
+
+			handles: "n,s",  
+			minHeight : 695,
+			
+			resize:function(event, ui){
+				var wichat_width = $('#wichat').css('width');
+				var wichat_height = $('#wichat').css('height');
+	 
+	 			wiseSetCookie('wichat_width', wichat_width,30); 
+	 			wiseSetCookie('wichat_height', wichat_height,30);
+	 	
+			}
+		});
+	});
+	
+	$(document).ready(function() {
+		
+		//alert(getCookie("wichat_left"));
+		if(wiseGetCookie('wichat_left') != null) $('#wichat').css('left',wiseGetCookie('wichat_left'));	
+		if(wiseGetCookie('wichat_top') != null) $('#wichat').css('top',wiseGetCookie('wichat_top'));
+		
+		if(wiseGetCookie('wichat_width') != null) $('#wichat').css('width',wiseGetCookie('wichat_width'));	
+		if(wiseGetCookie('wichat_height') != null) $('#wichat').css('height',wiseGetCookie('wichat_height'));
+		
+		var toggle_status = wiseGetCookie('toggle_status'); //챗봇창 on/off 상태 
+		
+		 
+		if(toggle_status>0){ 
+			onViewIchat();
+		}
+		
+        $('.help_link').on('click', function () {
+            if ($(this).hasClass('is_selected')) {
+                slideUp();
+            } else {
+                slideUp();
+                $(this).addClass('is_selected').next().slideDown();
+            }
+            function slideUp() {
+                $('.help_link').removeClass('is_selected').next().slideUp();
+            };
+            $('.slide_area').slick('setPosition');
+        });
+    
+        $('.slide_area').slick({
+            slidesToShow: 1,
+            dots: true, // 하단 paging버튼 노출 여부
+            infinite: false, // 양방향 무한 모션
+            speed: 500, // 모션 스피드
+            fade: false, //페이드모션 실행 여부
+            cssEase: 'linear', //css easing 모션 함수
+            arrows: true
+ 
+        });
+        
+        var chatbot = "chatbot";
+        
+		// 챗봇 오늘하루 그만 보기
+		if(getChatbotCookie(chatbot)=="no"){
+			$("#float-menu-area").hide();
+			$("#float-menu-area2").hide();
+			$("#float-menu-area3").remove();
+			
+			var html="";
+			
+			html += '<div id="float-menu-area3">';
+			html += 	'<p id="toggle-quick-menu2"><a href="javascript:openChatbot();" class="openChatbot" ><span>열<br/>기</span></a></p>';
+			html +=	'</div>';
+			
+			$('#footer').after(html);
+		}
+		
+		MDbotHelpCount(); // 도와줘 md봇 건수 가져오기
+	});
+	
+	
+	function MDbotHelpCount(){
+		
+		$.ajax({
+			// url: "chat.do",
+			url : mdbotHelpCountURL,
+			type : "post",
+			dataType: "json",
+			global : false,
+			data : {},
+			timeout: 20000, 
+			beforeSend : function(xhr,opts){
+				//console.log('thisis before send');
+			},
+			success: function(data){
+				   
+
+				
+				$("#josaCount").html(numberWithCommas(data.josaCount));
+				
+				$("#hangmokCount").html(numberWithCommas(data.hangmokCount));
+				
+				$("#termCount").html(numberWithCommas(data.termCount));
+				
+				$("#researchCount").html(numberWithCommas(data.researchCount));
+				
+				 
+			},
+			error: function(jqXHR, exception){
+				console.log(jqXHR.status);
+				console.log(exception);
+				 
+				var tag = errorMsg();
+				$('#talk_wrap').append(tag); 
+				scrollToBottom($('#talk_wrap'));
+				
+			}
+		});		
+		
+	}		
+</script>
+
+</head> 
+<body>
+
+<dl id="accessibility">
+	<dt>바로가기 및 건너띄기 링크</dt>
+	<dd><a href="#header">주 메뉴 바로가기</a></dd>
+	<dd><a href="#container">본문 바로가기</a></dd>
+	<dd><a href="#footer">하단 바로가기</a></dd>
+</dl>
+
+<div id="wrapper">
+
+	<!-- header -->
+	<header id="header" class="sub">
+		<!-- gnb -->
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+<script>
+$(document).ready(function()
+{
+	$('form[name=fm_header] .btn_search').bind('click',function(){
+		 $headerForm = $("form[name='fm_header']");
+	        if ($headerForm.find("input[name='kwd']").val() == "") {
+	            alert("검색어를 입력하세요.");
+	            return;
+	        }
+	        var categoryNM = $('.searchSL option:selected').val();
+	        $headerForm.find("input[name='category']").val(categoryNM);
+	        $headerForm.submit();
+	}); 
+	
+	//message from commonMessage.jsp
+	//alert(COMMON_MSG.infMsg_comn_00001);
+}); 
+</script>
+
+
+
+
+
+
+
+
+		
+			<div style="padding-left:185px;padding-top: 1px;vertical-align: middle;font-weight: 400;font-size: 13px;">
+				<img src="/images/main/nurizip.png" style="width:40px;"/>
+				<span><font>이 누리집은 대한민국 공식 전자정부 누리집입니다.</font></span>
+			</div>
+		<nav id="gnb">
+			<h1 id="logo"><a href="#" onclick="javascript:hmBnClk();return false;">MDIS</a></h1>
+			<div id="nav">
+				<ul class="nav_top">
+					<li><a href="#"><span>MDIS 소개</span></a></li>
+					<li><a href="#"><span>제공 자료</span></a></li>
+					<li><a href="#"><span>자료 이용</span></a></li>
+					<li><a href="#"><span>이용자 지원</span></a></li>
+					
+					
+				</ul>
+				<div class="nav_toggle">
+					<div class="inner">
+						<dl>
+							<dt>
+								<a href="/pageLink.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?link=content/SISMN091001&curMenuNo=UI_POR_P9001"><span>MDIS 소개</span></a>
+							</dt>
+							<dd>
+								<ul id="topMenu_9100000001"></ul>
+							</dd>
+						</dl>
+						<dl>
+							<dt>
+								<a href="/ofrData/selectOrgOfrData.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?&curMenuNo=UI_POR_P9220"><span>제공 자료</span></a>
+							</dt>
+							<dd>
+								<ul id="topMenu_9100000002"></ul>
+							</dd>
+						</dl>
+						
+							
+							
+								<dl>
+									<dt>
+										
+										<a href="/dwnlSvc/ofrSurvSearch.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?&curMenuNo=UI_POR_P9240"><span>자료 이용</span></a>
+									</dt>
+									<dd>
+										<ul id="topMenu_9100000003"></ul>
+									</dd>
+								</dl>
+							
+						
+						<dl>
+							<dt>
+								<a href="/bbs/boardList.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?boardId=BBSMSTR_000000000001&curMenuNo=UI_POR_P9019"><span>이용자 지원</span></a>
+							</dt>
+							<dd>
+								<ul id="topMenu_9100000004"></ul>
+							</dd>
+						</dl>
+						
+						
+					</div>
+				</div>
+				<div id="unb">
+					
+					
+						
+							
+								<a href="#" id="login" class="login" title="로그인"><span class="hidden">로그인</span></a>
+							
+							
+						
+					
+					<a href="/eng/index.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" class="language"><span class="hidden">ENG</span></a>
+					<a href="/menu/siteMap.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9035" class="allmenu anb"><span class="hidden">전체메뉴</span></a>
+				</div>
+				
+					<!-- 로그인전 -->
+					<div id="login-wrap" >
+						<div class="login-top">
+							<p class="login-txt">ONE-ID 로그인 해주세요.</p>
+						</div>
+						<div class="login-btn">
+						 <!--운영-->	 
+ 					 	 <button type="submit" class="btn-login" onclick="fnOneidLogin();"><span>ONE-ID 로그인</span></button>
+ 					 	 
+						 <!--개발	 
+						 <button type="submit" class="btn-login" onclick="$('#loginDiv').show();"><span>ONE-ID 로그인</span></button>
+						  -->
+						</div>
+						<ul class="login-link">
+							<li><a href="javascript:void(0);" id="joinMember"><span>회원가입</span></a></li>
+							<li><a href="javascript:void(0);" id="IDSearch"><span>ID 찾기</span></a></li>
+							<li><a href="javascript:void(0);" id="PWSearch"><span>PW 찾기</span></a></li>
+						</ul>
+					</div>
+					<!-- //로그인전 -->
+					
+					
+			</div>
+		</nav>
+		
+<form name="topMain" id="topMain" action="/index.do" method="post">
+<input type="hidden" name="hmBn" id="hmBn"/>
+</form>
+
+<form name="fmItgrAuth" id="fmItgrAuth" method="post">
+	<input type="hidden" name="SYS_CD" value="M" />
+	<input type="hidden" name="SID_IP_ADDR" value="" />
+	<input type="hidden" name="SSN_INFO" value="" />	
+	<input type="hidden" name="LOGIN_YN" value="" />
+	<input type="hidden" name="SYS_URL" />
+	<input type="hidden" name="CUR_URL" />
+	<input type="hidden" name="curMenuNo" value="UI_POR_P9220" />
+</form>
+<form name="fmItgrAuthInfo" id="fmItgrAuthInfo" method="post">
+	<input type="hidden" name="SYS_CD" value="M" />
+	<input type="hidden" name="SID_IP_ADDR" value="" />
+	<input type="hidden" name="SSN_INFO" value="" />	
+	<input type="hidden" name="LOGIN_YN" value="" />
+	<input type="hidden" name="USR_SN" value="" />
+	<input type="hidden" name="USR_ID" value="" />
+	<input type="hidden" name="SYS_URL" />
+	<input type="hidden" name="CUR_URL" />
+	<input type="hidden" name="curMenuNo" value="UI_POR_P9220" />
+</form>
+
+<form name="frnBranchLogin" id="frnBranchLogin" method="post">
+	<input type="hidden" name="SYS_CD" value="M" />
+
+	<input type="hidden" name="SID_IP_ADDR" value="" />
+	<input type="hidden" name="SSN_INFO" value="" />
+	<!-- 
+	<input type="hidden" name="SYS_URL" value="https://mdis.mods.go.kr/usr/actionSSOLogin.do" />
+	-->
+	<input type="hidden" name="SYS_URL" value="https://mdis.mods.go.kr/oneidsso/actionKSSOLogin.do" />
+	
+	<input type="hidden" name="CUR_URL"  /> 
+
+	<input type="hidden" name="curMenuNo" value="UI_POR_P9220" />
+	<input type="hidden" name="login_error" value=""/>
+	<input type="hidden" name="login_tpl" value=""/>
+	<input type="hidden" name="loginAfterUrl" value=""/>
+	<input type="hidden" name="beforeLogin" />
+</form>
+<!-- 회원가입 -->
+<form name="fmJoinMembership" id="fmJoinMembership" action="https://kosis.kr/oneid/cmmn/login/MemberType.do" method="post" target="blank">
+	<input type="hidden" name="SYS_CD" value="M" />
+</form>
+
+<!-- 로그아웃 팝업 -->
+<div id="logOutPopup" class="_layerWrap _dimlayer" style="display:none !important;">
+	<div class="_layerPopup w500">
+		<div class="_layerHeader">
+			<h2>마이크로데이터 통합서비스 시스템 (MDIS)</h2>
+		</div>
+		<div class="_layerBody">
+			<div class="_layerContens">
+				<div class="logout-area">
+					<p class="log-msg">1시간동안 시스템 사용이 없어 로그아웃되었습니다.</p>
+				</div>
+			</div>
+		</div>
+		<div class="_layerFooter">
+			<div class="btn_area">
+				<div class="btn_center">
+					<button type="button" class="normal-btn blue btn-md" onclick="javascript:mainIndex();"><span>확인</span></button>
+				</div>
+			</div>
+		</div>
+		<button type="button" class="_layerClose" onclick="mainIndex();">팝업 닫기</button>
+	</div>
+</div>
+<!-- 로그아웃 팝업 끝 -->
+
+
+<script>
+
+$(document).ready(function() {
+	
+	// 로그인 레이어
+	$("#login-wrap").hide();
+	$("#login").click(function() {
+		if ($(this).hasClass('active')) {
+			$(this).removeClass("active");
+			$("#login-wrap").hide();
+		} else {
+			$(this).addClass("active");
+			$("#login-wrap").show();
+		}
+	});
+	
+	$("#IDSearch").click(function() {
+		var url = "https://kosis.kr/oneid/cmmn/login/UserIDSearchView.do";
+		fnPopup(url, "IDSearch", "500", "800", false, true);
+	});
+	
+	$("#PWSearch").click(function() {
+		var url = "https://kosis.kr/oneid/cmmn/login/UserPWResissued.do";
+		fnPopup(url, "IDSearch", "500", "800", false, true);
+	
+	});
+	
+	// 회원가입시 SYS_CD값 form에 담아서 전송
+	$("#joinMember").click(function() {
+		$("#fmJoinMembership").submit();
+	});
+	
+});
+
+var checkPopopen = false;
+
+$(function() {
+	
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9001",
+				"menuNm" : "MDIS 서비스 개요",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000001",
+				"chkUrl" : contextPath +  "/pageLink.do?link=content/SISMN091001",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9002",
+				"menuNm" : "서비스 유형 및 이용 방법",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000001",
+				"chkUrl" : contextPath +  "/pageLink.do?link=content/SISMN091002",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9003",
+				"menuNm" : "이용자 준수사항",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000001",
+				"chkUrl" : contextPath +  "/doi/doiInfo.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9004",
+				"menuNm" : "서비스 수수료",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000001",
+				"chkUrl" : contextPath +  "/costMgmt/chargeInfo.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9027",
+				"menuNm" : "관련 법규",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000001",
+				"chkUrl" : contextPath +  "/bbs/boardList.do?boardId=BBSMSTR_000000009004",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9210",
+				"menuNm" : "주제별 제공 자료",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000002",
+				"chkUrl" : contextPath +  "/ofrData/selectClsOfrData.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9220",
+				"menuNm" : "기관별 제공 자료",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000002",
+				"chkUrl" : contextPath +  "/ofrData/selectOrgOfrData.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9230",
+				"menuNm" : "서비스 유형별 제공 항목",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000002",
+				"chkUrl" : contextPath +  "/ofrData/selectSvcBytOfrItmList.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9011",
+				"menuNm" : "자료 제공 일정",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000002",
+				"chkUrl" : contextPath +  "/schedul/ofrScheduleMainList.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P1070",
+				"menuNm" : "인가용 연계 활용 정보",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000002",
+				"chkUrl" : contextPath +  "/time/timeSeriesList.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9240",
+				"menuNm" : "다운로드 서비스",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000003",
+				"chkUrl" : contextPath +  "/dwnlSvc/ofrSurvSearch.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9013",
+				"menuNm" : "온라인 분석 서비스",
+				"menuDivCd" : "U",
+				"upperMenuNo" : "9100000003",
+				"chkUrl" : contextPath +  "/ola/olaMain.do?curMenuNo=UI_POR_P9013",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_blank"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9014_1",
+				"menuNm" : "원격 접근 서비스(RAS)",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000003",
+				"chkUrl" : contextPath +  "/remote/remoteRasRequestList.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9014_4",
+				"menuNm" : "센터 서비스(SDC)",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000003",
+				"chkUrl" : contextPath +  "/remote/remoteSdcRequestList.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9017",
+				"menuNm" : "주문형 서비스",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000003",
+				"chkUrl" : contextPath +  "/consign/consignDthRequestList.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9026",
+				"menuNm" : "공지사항",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000004",
+				"chkUrl" : contextPath +  "/bbs/boardList.do?boardId=BBSMSTR_000000000003",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9019",
+				"menuNm" : "자주 묻는 질문",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000004",
+				"chkUrl" : contextPath +  "/bbs/boardList.do?boardId=BBSMSTR_000000000001",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9047",
+				"menuNm" : "묻고 답하기",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000004",
+				"chkUrl" : contextPath +  "/bbs/boardList.do?boardId=BBSMSTR_000000000002",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9070",
+				"menuNm" : "자료실",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000004",
+				"chkUrl" : contextPath +  "/bbs/boardList.do?boardId=BBSMSTR_000000003001",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "9110000006",
+				"menuNm" : "이용자 교육 신청",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000004",
+				"chkUrl" : contextPath +  "dir",
+				"leaf" : "0",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9025",
+				"menuNm" : "이용자 교육 신청",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9110000006",
+				"chkUrl" : contextPath +  "/pageLink.do?link=content/mdisEducation",
+				"leaf" : "1",
+				"menuLv" : "3",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9028",
+				"menuNm" : "영상 튜토리얼",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000004",
+				"chkUrl" : contextPath +  "/pageLink.do?link=content/SISMN091009",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "9100000009",
+				"menuNm" : "해외 통계자료 사이트 안내",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000004",
+				"chkUrl" : contextPath +  "dir",
+				"leaf" : "0",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9042",
+				"menuNm" : "해외 통계자료 사이트 안내",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000009",
+				"chkUrl" : contextPath +  "/pageLink.do?link=content/SISMN091005",
+				"leaf" : "1",
+				"menuLv" : "3",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9060",
+				"menuNm" : "룩셈부르크소득연구 (LIS) 소개",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000009",
+				"chkUrl" : contextPath +  "/pageLink.do?link=content/srikor",
+				"leaf" : "1",
+				"menuLv" : "3",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9022",
+				"menuNm" : "연구결과 공유",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000004",
+				"chkUrl" : contextPath +  "/researchResult/researchResultList.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9080",
+				"menuNm" : "디지털 객체 식별자(DOI) 안내",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000004",
+				"chkUrl" : contextPath +  "/doi/areaDoiPopInfo.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9100",
+				"menuNm" : "데이터서비스 사이트 안내",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000004",
+				"chkUrl" : contextPath +  "/instLinkk/instLinkkList.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9030",
+				"menuNm" : "데이터 다운로드 및 이용 현황",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000005",
+				"chkUrl" : contextPath +  "/mypage/extract/viewMyExtractListNew.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "9110000008",
+				"menuNm" : "정액제 신청",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000005",
+				"chkUrl" : contextPath +  "dir",
+				"leaf" : "0",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9015",
+				"menuNm" : "정액제 신청",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9110000008",
+				"chkUrl" : contextPath +  "/fsmtm/fixedChargeRequest.do",
+				"leaf" : "1",
+				"menuLv" : "3",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9035",
+				"menuNm" : "사이트맵",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000006",
+				"chkUrl" : contextPath +  "/menu/siteMap.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9037",
+				"menuNm" : "개인정보처리방침",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000006",
+				"chkUrl" : contextPath +  "/privacy_policy.do",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9038",
+				"menuNm" : "이메일 무단수집거부",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000006",
+				"chkUrl" : contextPath +  "/pageLink.do?link=content/SISMN0604_emailgather",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9039",
+				"menuNm" : "뷰어프로그램",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000006",
+				"chkUrl" : contextPath +  "/pageLink.do?link=content/SISMN0605_viewer",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9040",
+				"menuNm" : "이용약관",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000006",
+				"chkUrl" : contextPath +  "/pageLink.do?link=content/SISMN060600",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+		
+			fnSetSubTopMenu({
+				"menuNo" : "UI_POR_P9046",
+				"menuNm" : "다운로드정책",
+				"menuDivCd" : "P",
+				"upperMenuNo" : "9100000006",
+				"chkUrl" : contextPath +  "/pageLink.do?link=content/SISMN060700",
+				"leaf" : "1",
+				"menuLv" : "2",
+				"menuTarget" : "_top"
+			});
+		
+	
+	
+	fn_parentMenuPath();	//부모메뉴 url설정
+	//activeGnb();
+	
+	// 테마존, 신규이용자를 위한 팁 : 상단메뉴에서 숨김
+	//$("#topMenu_9110000007").hide();
+	//$("#topMenu_UI_POR_P9045").hide();
+	
+});
+
+var topMenuPath = {};
+
+function fnSetSubTopMenu(menu) {
+	
+	var upper = menu.upperMenuNo;
+	var upperObj = $("#topMenu_"+upper);
+	if( upperObj.size() <= 0 ) return;
+	
+	if(upperObj.size() <= 0) {
+		upperObj.append("<ul style='display: none'></ul>");
+	}
+	
+	var html = [];
+	html.push('<li id="topMenu_');
+	html.push(menu.menuNo);
+	html.push('" name="topMenu_');
+	html.push(menu.menuNo);
+	html.push('" leaf="'+menu.leaf+'" ');
+	if(menu.menuLv > '2') {
+		html.push('" style="display:none" ');	
+	}
+	html.push('">');
+	
+	if( menu.chkUrl != "dir" ) {
+		if(menu.menuNo=="UI_POR_P9053") {	//명부요도출력
+			
+			html.push('<a href="');
+			
+		} 
+		else if(menu.menuNo=="UI_POR_P9055"){	//사망원인집계표 출력 신청
+			
+			html.push('<a href="');
+			
+		} 
+		else {
+
+			html.push('<a href="');
+			
+		    if (menu.chkUrl.indexOf("mberSelfDeleteView.do") > -1) {
+		    	html.push("javascript:fnMemberDrop();");
+		    } else if (menu.chkUrl.indexOf("mberSelfUpdtView.do") > -1){
+		        html.push("javascript:fnMemberUpdate();");
+		    } else {
+				
+					html.push(menu.chkUrl);
+		        
+					// 메뉴구분이 URL이면 메뉴번호를 파라메터로 넣지 않는다.
+					if(menu.menuDivCd != "U"){
+						if( /\.do$/.test(menu.chkUrl) ) {
+							html.push("?");
+						}
+						else {
+							html.push("&");
+						}
+						html.push("curMenuNo=");
+						html.push(menu.menuNo);
+					}
+				
+		        
+		    }
+		    html.push('" ')
+		    if (menu.menuTarget == ("_blank")) {
+	        	html.push(' target="_blank" '); 
+		    }
+		    
+		    html.push(' title="');
+		    switch(menu.menuNo){
+		    	case "UI_POR_P9240":	//다운로드 서비스 
+		    		html.push(' 공공용 자료를 다운로드">');
+		    		break;
+		    	case "UI_POR_P9013":	//온라인분석시스템 
+		    		html.push(' 공공용 자료를 분석">');
+		    		break;
+		    	case "UI_POR_P9014_1":	//원격접근서비스(RAS) 
+		    		html.push(' 집, 회사 등에서 원격접속하여 인가용 자료를 분석">');
+		    		break;
+		    	case "UI_POR_P9014_4":	//마이크로데이터 이용센터(RDC)
+			        html.push('통계데이터센터에서 인가용 자료를 분석">');
+			        break;
+		    	case "UI_POR_P9017":	//주문형 서비스
+			        html.push('통계작석용 명부제공, 사망원인 자료 연계, 통계자료 분석 서비스">');
+			        break;
+			    default:
+			    	html.push(menu.menuNm);
+       				html.push(' 바로가기">');
+			    	
+	       			break;
+		    }
+		    html.push(menu.menuNm);
+			html.push('</a>');		
+		}
+		html.push('</li>');
+	}
+	else {
+		html.push('<a href="#" >'); 
+		html.push(menu.menuNm);
+		html.push('</a>');		
+		html.push('</li>');
+	}
+	
+	if(menu.menuNo=="9110000007"){
+	// 지능형검색은 슬라이드 부분이 상단 nav_toggle div에 가려짐... --> function으로 생성
+	//	html.push('<li id="topMenu_search" name="topMenu_search" leaf="1"><a href="#" onClick="$(&#39;#search-btn&#39;).click();" title="지능형검색">지능형검색</a></li>');
+ 	//	html.push('<li id="topMenu_chat" name="topMenu_chat" leaf="1"><a href="javascript:onViewIchat();" title="챗봇">챗봇</a></li>');
+ 	//	html.push('<li id="topMenu_search" name="topMenu_search" leaf="1"><a href="javascript:fn_tobMenu_search();" title="지능형 검색">지능형 검색</a></li>');
+	}
+	
+ 	upperObj.append(html.join(""));
+	
+ 	
+}
+
+function fn_tobMenu_search(){
+	var $gnb = $('#gnb'),
+		$nav = $('#nav'),
+		$navToggle = $nav.find('.nav_toggle');
+	
+	$('#search-btn').click();
+	$navToggle.stop().slideUp(400);
+	$gnb.removeClass('hold');
+}
+
+/************************************************************************
+함수명 : fn_frgrAlert
+설 명 : 외국인 사용자 임시팝업 추가
+인 자 : 
+작성일 : 2020-06-05
+작성자 : 시스템유지관리	김세준
+수정일   수정자    	수정내용
+------ ------ -------------------
+2020.06.05 김세준 주석추가
+************************************************************************/
+function fn_frgrAlert(){
+	alert("현재 외국인 자료제공 서비스는 시스템 보완중입니다.\n불편을 드려 죄송하오며 빠른 시일내에 서비스 될 수 있도록 하겠습니다.");
+}
+
+/************************************************************************
+함수명 : fn_parentMenuPath
+설 명 : 부모메뉴 url 설정
+인 자 : 
+작성일 : 2016-08-31
+작성자 : 시스템고도화 황기연
+수정일   수정자    수정내용
+------ ------ -------------------
+2016.08.31 황기연 주석추가
+************************************************************************/
+function fn_parentMenuPath() {
+	$('#topMenu_9100000001').find('li').each(function(){
+		var leaf = $(this).attr('leaf');
+		if(leaf == '0'){
+			$(this).find('a').prop('href',$(this).find('li:first').find('a').attr('href'));
+		}
+	});
+	$('#topMenu_9100000002').find('li').each(function(){
+		var leaf = $(this).attr('leaf');
+		if(leaf == '0'){
+			$(this).find('a').prop('href',$(this).find('li:first').find('a').attr('href'));
+		}
+	});
+	$('#topMenu_9100000003').find('li').each(function(){
+		var leaf = $(this).attr('leaf');
+		if(leaf == '0'){
+			$(this).find('a').prop('href',$(this).find('li:first').find('a').attr('href'));
+		}
+	});
+	$('#topMenu_9100000004').find('li').each(function(){
+		var leaf = $(this).attr('leaf');
+		if(leaf == '0'){
+			$(this).find('a').prop('href',$(this).find('li:first').find('a').attr('href'));
+		}
+	});
+	$('#topMenu_9100000005').find('li').each(function(){
+		var leaf = $(this).attr('leaf');
+		if(leaf == '0'){
+			$(this).find('a').prop('href',$(this).find('li:first').find('a').attr('href'));
+		}
+	});	
+}
+
+function fnGetTopMenu(upper) {
+	if( topMenuPath[upper] && topMenuPath[upper] != "0" ) {
+		fnGetTopMenu(topMenuPath[upper]);
+	}
+	else {
+		return upper;
+	}
+}
+
+function hmBnClk() {
+	$("#topMain").find("input[name=hmBn]").val("hmBn"); 
+	$("#topMain").submit();
+}
+/* 
+function fnLogout() {
+	if (false) {
+		$("#fmItgrAuth").find("input[name=SYS_URL]").val("https://mdis.mods.go.kr/index.do");
+		$("#fmItgrAuth").attr("action", "https://kosis.kr/oneid/cmmn/login/ActionLogout.do");
+		$("#fmItgrAuth").submit();
+	} else {
+		location.href = "/usr/actionLogout.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10";
+	}
+}
+*/
+
+function fnLogout() {
+	fnMdisLogout();
+}
+
+function fnMdisLogout() {
+    try {
+        $.ajax({
+            url : "/usr/actionLogout.do",
+            dataType : "json",
+            type : "post",
+            data : null,
+            async: false,
+            success : function( result ) {
+				//alert("로그아웃 성공");
+				//fnSSOLogout();
+				document.location.href="/index.do";
+            },
+            error : function( request, status, error ) {
+				//alert("로그아웃 에러 : " + error);
+				//fnSSOLogout();
+				document.location.href="/index.do";
+            }
+        });
+
+    } catch( e ) {
+    	if(console) {
+    		if(console.log) {
+    			console.log("SSO 로그아웃에 실패했습니다." + e);    			
+    		}
+    	}
+    } finally {  }
+}
+
+
+/** 로그인 **/
+function fnOneidLogin() {
+	
+	var now = new Date();
+	var start = new Date("2022-03-25T21:00:00");
+	var end = new Date("2022-03-27T18:00:00");
+	
+	if (start < now && now < end) {
+	
+		alert("로그인 서버 성능 개선 작업으로 인해 로그인이 불가합니다.");
+	} else {
+		var $form = $("#frnBranchLogin");
+		//var moveUrl = "https://kosis.kr/oneid/cmmn/login/LoginView.do";
+		var moveUrl = "https://kosis.kr/oneid/cmmn/login/LoginView.do";
+		$form.attr("action", moveUrl);
+		
+		// 추가 2018.04.05 : 로그인전 페이지	
+		 //var cur_url = $(location).attr("href").replace($(location).attr("origin"), "");
+		// 추출다운로드 로그인 화면 전환시 cur_url 변경 하도록 수정 2020.11.06 김세준
+		var cur_url = '';
+		var menuId = document.referrer; 
+		if (menuId.indexOf("ofrSurvSearch.do") > -1) {
+			cur_url = document.referrer;
+	    } else {
+	    	cur_url = $(location).attr("href");
+	    } 
+		$form.find("input[name=CUR_URL]").val(cur_url);
+		
+		$form.submit();
+	}
+	
+}
+
+function fnSSOLogout() {
+	$("#fmItgrAuth").find("input[name=SYS_URL]").val("https://mdis.mods.go.kr:443/index.do");
+	$("#fmItgrAuth").attr("action", "https://kosis.kr/oneid/cmmn/login/ActionLogout.do");
+	$("#fmItgrAuth").submit();
+}
+
+function fnJoin() {
+	top.location.href = "/usr/joinBranch.do?curMenuNo=UI_POR_P9034";
+// 메뉴수정
+//	top.location.href = "/usr/joinBranch.do?curMenuNo=UI_POR_P9050";
+}
+
+// 회원탈퇴
+function fnMemberDrop() {
+	// 메뉴수정, 2019	
+	if (false) {
+		$("#fmItgrAuthInfo").find("input[name=SYS_URL]").val("https://mdis.mods.go.kr/member/itgrMberDrop.do?curMenuNo=UI_POR_P9049");
+		$("#fmItgrAuthInfo").find("input[name=CUR_URL]").val("https://mdis.mods.go.kr/member/itgrMberSbscrbView.do?curMenuNo=UI_POR_P9048");
+		$("#fmItgrAuthInfo").attr("action", "https://kosis.kr/oneid/cmmn/login/GoToMemberDrop.do");
+		$("#fmItgrAuthInfo").submit();
+	} else {
+		$("#fmItgrAuthInfo").find("input[name=SYS_URL]").val("https://mdis.mods.go.kr/member/itgrMberDrop.do?curMenuNo=UI_POR_P9049");
+		$("#fmItgrAuthInfo").find("input[name=CUR_URL]").val("https://mdis.mods.go.kr/member/itgrMberSbscrbView.do?curMenuNo=UI_POR_P9048");
+		$("#fmItgrAuthInfo").attr("action", "https://kosis.kr/oneid/cmmn/login/GoToMemberDrop.do");
+		$("#fmItgrAuthInfo").submit();
+//		top.location.href = "/member/mberSelfDeleteView.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9049";
+	}	
+	
+/*	
+	if (false) {
+		$("#fmItgrAuthInfo").find("input[name=SYS_URL]").val("https://mdis.mods.go.kr/member/itgrMberDrop.do?curMenuNo=UI_POR_P9049");
+		$("#fmItgrAuthInfo").find("input[name=CUR_URL]").val("https://mdis.mods.go.kr/mypage.do?curMenuNo=UI_POR_P1067");
+		$("#fmItgrAuthInfo").attr("action", "https://kosis.kr/oneid/cmmn/login/GoToMemberDrop.do");
+		$("#fmItgrAuthInfo").submit();
+	} else {
+		top.location.href = "/member/mberSelfDeleteView.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9049";
+	}
+*/	
+}
+
+// 회원정보수정
+function fnMemberUpdate() {
+	if (false) {
+		$("#fmItgrAuthInfo").find("input[name=SYS_URL]").val("https://mdis.mods.go.kr/member/itgrMberSbscrbView.do?curMenuNo=UI_POR_P1109");
+		$("#fmItgrAuthInfo").attr("action", "https://kosis.kr/oneid/cmmn/member/GoToMemberInfoMod.do");
+		$("#fmItgrAuthInfo").submit();
+	} else {
+		top.location.href = "/member/mberSelfUpdtView.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9048";
+	}
+}
+
+// 강제로그아웃
+var LogOutTimer = function(){
+	var S= {
+			timer:null, 
+			limit: 1000 ,
+			fnc	: function(){},
+			start : function(){
+				S.timer = window.setInterval(S.fnc, S.limit);
+
+				var logOutTime = new Date();		
+				logOutTime.setTime(logOutTime.getTime() + ((3600 * 1) * 1000)); // 로그아웃시간 2시간
+//  			logOutTime.setTime(logOutTime.getTime() + (10 * 1000)); // 로그아웃시간    10초 테스트용
+				
+				var cookieDelTime = new Date();		
+				cookieDelTime.setTime(cookieDelTime.getTime() + (((3600 * 1) + 1) * 1000)); // 쿠키삭제시간 2시간
+// 				cookieDelTime.setTime(cookieDelTime.getTime() + ((10 + 1) * 1000)); // 쿠키삭제시간   10초 테스트용
+				
+				setTimeOutCookie("timeout", logOutTime.toGMTString(), cookieDelTime.toGMTString());
+				
+			}, 
+			reset : function(){
+				window.clearTimeout(S.timer);
+			}
+	};
+	
+	return S; 
+}();
+
+LogOutTimer.limit = 1000;
+
+LogOutTimer.fnc=function(){
+	
+	var time = getTimeOutCookie("timeout");
+	var nowTime = new Date();		
+	nowTime.setTime(nowTime.getTime()); // 현제시간
+	
+	//alert(time +" = "+expdate2.toGMTString());
+	if(false && !checkPopopen){
+		if(nowTime.toGMTString() == time){
+			LogOutTimer.reset();
+//			$("#logOutPopup").show();
+//			$("#logOutPopupBack").css('display','block');
+//			$(".container.main").css('z-index','-1');
+			$("#logOutPopup").attr("style","display:block!important;");
+			
+			checkPopopen = true;
+		}
+	}else if(true){
+		checkPopopen = false;
+		return false;
+	}
+}
+
+// 사용자 사용시간 제한 시작
+LogOutTimer.start();
+
+// 로그아웃
+function mainIndex(){		
+	location.href=  "/usr/actionLogout.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10";
+}
+
+//first. 쿠키 설정 
+function setTimeOutCookie( name, value, expireTime ) {
+//	alert(name + "=" +  value  + "; path=/; expires=" + expireTime + ";");
+	document.cookie = name + "=" + escape( value ) + "; path=/; expires=" + expireTime + ";"
+}
+// second. 설정된 쿠기 가져오기
+function getTimeOutCookie( name ) {
+  var nameOfCookie = name + "=";
+  var x = 0;
+  while ( x <= document.cookie.length )
+  {
+    var y = (x+nameOfCookie.length); 
+    if ( document.cookie.substring( x, y ) == nameOfCookie ) {
+      if ( (endOfCookie=document.cookie.indexOf( ";", y )) == -1 )
+        endOfCookie = document.cookie.length;
+      return unescape( document.cookie.substring( y, endOfCookie ) );
+    }
+    x = document.cookie.indexOf( " ", x ) + 1;
+    if ( x == 0 ) 
+      break;
+  }
+  return "";
+} 
+
+$(document).ready(function(){
+$(document).mousedown(function(e){
+	LogOutTimer.reset();
+	LogOutTimer.start();
+})	;
+});
+
+</script>
+
+
+
+
+<script type="text/javascript">
+    $(function() {
+        $headerForm = $("form[name='fm_header']");
+
+        $headerForm.find("div.srch_opt label").on('click', function() {
+            $headerForm.find("div.srch_opt_box").removeClass("off");
+        });
+
+        $headerForm.find("input[name='searchKeyword']").on('keypress', function(event) {
+            if (event.which == 13) {
+                integratedSearch();
+            }
+        });
+        
+		//통합인증접속
+		if("PORTAL_OUTER" == 'PORTAL_OUTER' ) {
+			
+			//fnItgrAuthConnCall();  //기존 파라미터 방식
+			fnSsoItgrAuthConnCall();   //토큰 방식
+				
+		}
+    });
+    
+  //통합인증접속
+	function fnItgrAuthConnCall() {
+		//if (false) return;
+		$("#fmItgrAuthConn").submit();
+	}
+
+	function fnSsoItgrAuthConnCall() {
+		$("#fmSsoItgrAuthConn").submit();
+	}
+	
+	//통합인증접속 후 콜백
+	function fnItgrAuthConnCallback(reloadYn) {
+		if (reloadYn != 'Y' || false) return;
+		top.document.location.href = top.document.location.href;
+	}
+
+    /**
+     * 검색
+     */  
+    var integratedSearch = function() {
+        $headerForm = $("form[name='fm_header']");
+        if ($headerForm.find("input[name='searchKeyword']").val() == "") {
+            alert("검색어를 입력하세요.");
+            return;
+        }
+
+        $headerForm.submit();
+    }
+</script>
+
+
+	<form id="fmItgrAuthConn" action="https://kosis.kr/oneid/cmmn/login/ConnectStatItgrSvr.do" method="post" target="ifrmItgrAuthConnRet">
+	    <input type="hidden" name="SYS_CD" value="M" />
+	    <input type="hidden" name="SYS_URL" value="https://mdis.mods.go.kr/usr/itgrAuthRet.do" />
+	</form>
+	<form id="fmSsoItgrAuthConn" action="https://mdis.mods.go.kr/oneidsso/ssoItgrAuthRet.do" method="post" target="ifrmItgrAuthConnRet">
+	    <input type="hidden" name="SYS_CD" value="M" />
+	    <input type="hidden" name="CUR_URL" value="https://mdis.mods.go.kr/index.do" />
+	</form>
+	<iframe name="ifrmItgrAuthConnRet" id="ifrmItgrAuthConnRet" width="0" height="0" style="display:none;" title="ifrmItgrAuthConnRet"></iframe>
+
+		<!-- //gnb -->
+	</header>
+	<!-- //header -->
+	
+	<hr>
+	
+	<!-- container -->
+	<div id="container">
+	 	<!-- submenu시작-->
+		
+
+
+
+
+
+
+<script>
+
+// 현재메뉴 정보
+
+
+
+
+
+
+
+
+
+
+	
+	
+		
+		
+		
+	
+
+
+
+
+
+
+
+
+
+
+
+
+	$(document).ready(function() {
+		var curMenuNm = '기관별 제공 자료';
+		document.title = curMenuNm;
+		//RAS,RDC 구분을 짓기위한 제외
+		if(curMenuNm != "인가용 서비스"){
+			
+				$('#content .sub-title').parent().html('<h3 class="sub-title">'+curMenuNm+'</h3>');
+						
+		}
+		//getPopkeyword(); // 인기검색어 호출 
+	});
+
+	var curMenuNo = 'UI_POR_P9220';
+	$(function(){
+		//처음 화면로딩시 메뉴 펼치기
+		$('#leftMenuBox li').each(function(){
+			if($(this).attr('id') == curMenuNo){
+				$(this).parent().show();
+			}
+		});
+	});
+	
+	/************************************************************************
+	함수명 : fn_display
+	설 명 : 선택된 메뉴의 하위메뉴만 펼치기
+	인 자 : id
+	작성일 : 2016-08-31
+	작성자 : 시스템고도화 황기연
+	수정일   수정자    수정내용
+	------ ------ -------------------
+	2016.08.31 황기연 주석추가
+	************************************************************************/
+	function fn_display(id){
+		$('#leftMenuBox li').each(function(){
+			var $ul = $(this).find('ul');
+			var display = $ul.css('display');
+			if($(this).attr('id') == id){
+				if(display == 'none'){
+					$ul.show();
+				}
+			}else{
+				$ul.hide();
+			}
+		});
+	}
+
+	// 2depth메뉴에서 dir 선택한경우 3depth의 첫번째 메뉴로 이동
+	function fn_dir(menuNo){
+		var firstUrl = $("#topMenu_"+menuNo+" a").attr('href');
+		top.location.href = ""+firstUrl;
+	}
+</script>
+
+
+ 
+	
+	
+		
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+<div id="sub-visual" class="c-eq03">
+	<div class="sub-copyright">
+		<h2 class="txt01">제공 자료</h2>
+		<span class="txt02">Data in Service</span>
+	</div>
+
+	<!-- sub navigation bar -->
+	<div id="navigation-Bar" >
+		<div class="navbar-inner clear">
+			<div id="home-path"><a href="#" onclick="javascript:hmBnClk();return false;">홈</a></div>
+			<div id="first-path" class="nav-act">
+				<a href="javascript:void(0);" onclick="return false;" id="pagetitle1">제공 자료</a>
+				<ul class="navbar-dropdown dropdown1 on" id="list_1level" style="display:none;">
+				<li ><a href="/pageLink.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?link=content/SISMN091001&curMenuNo=UI_POR_P9001"><span>MDIS 소개</span></a></li>
+				<li class="on"><a href="/ofrData/selectOrgOfrData.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9220"><span>제공 자료</span></a></li>
+				
+				<li ><a href="/dwnlSvc/ofrSurvSearch.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9240"><span>자료 이용</span></a></li>
+				<li ><a href="/bbs/boardList.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?boardId=BBSMSTR_000000000001&curMenuNo=UI_POR_P9019"><span>이용자 지원</span></a></li>
+				
+				<li ><a href="/mypage/extract/viewMyExtractListNew.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9030"><span>마이페이지</span></a></li>
+				</ul>
+			</div>
+			<div id="second-path" class="nav-act">
+				<a href="javascript:void(0);" onclick="return false;" id="pagetitle2">기관별 제공 자료</a>
+				<ul class="navbar-dropdown dropdown2" id="list_2level" style="display:none;">
+					
+					
+						 
+							
+							
+							
+								
+									
+									
+									
+										
+										 
+											
+										
+											
+											<li ><a href="/ofrData/selectClsOfrData.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9210" target="_top" >주제별 제공 자료</a></li>
+											
+										
+										
+									
+								
+								
+								
+							
+						
+					
+					
+					
+						 
+							
+							
+							
+								
+									
+									
+									
+										
+										 
+											
+										
+											
+											<li class="gray-bg"><a href="/ofrData/selectOrgOfrData.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9220" target="_top" >기관별 제공 자료</a></li>
+											
+										
+										
+									
+								
+								
+								
+							
+						
+					
+					
+					
+						 
+							
+							
+							
+								
+									
+									
+									
+										
+										 
+											
+										
+											
+											<li ><a href="/ofrData/selectSvcBytOfrItmList.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9230" target="_top" >서비스 유형별 제공 항목</a></li>
+											
+										
+										
+									
+								
+								
+								
+							
+						
+					
+					
+					
+						 
+							
+							
+							
+								
+									
+									
+									
+										
+										 
+											
+										
+											
+											<li ><a href="/schedul/ofrScheduleMainList.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9011" target="_top" >자료 제공 일정</a></li>
+											
+										
+										
+									
+								
+								
+								
+							
+						
+					
+					
+					
+						 
+							
+							
+							
+								
+									
+									
+									
+										
+										 
+											
+										
+											
+											<li ><a href="/time/timeSeriesList.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P1070" target="_top" >인가용 연계 활용 정보</a></li>
+											
+										
+										
+									
+								
+								
+								
+							
+						
+					
+					
+					
+				</ul>
+			</div>
+			
+			
+			
+		</div>
+	</div>
+</div>
+<!-- //sub navigation bar -->
+	
+<section id="subModal">
+	<div class="intligt-srch">
+		<div class="inner">
+			<h3 style="margin-right : 46px;">지능형 검색</h3>
+			<div class="form-box" style="width: 300px;" >
+				<form id="wsearch" name="wsearch" method="post" action="/wsearch/wsearch.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10">
+					<fieldset>
+						<legend>검색</legend>
+						<input type="hidden" id="debug" name="debug" value="Y">
+						<input type="hidden" id="query" name="query"  value="">
+						<input type="hidden" id="collection" name="collection"  value="">
+						<input type="hidden" id="startCount" name="startCount" value="">
+						<input type="hidden" id="viewCount" name="viewCount" value="">
+						<input type="hidden" id="curMenuNo" name="curMenuNo"  value="UI_POR_P9044">
+						<!--  
+						<input type="hidden" id="curMenuNo" name="curMenuNo"  value="">
+						 -->
+						<input type="hidden" id="searchField" name="searchField"  value="">
+						<input type="hidden" id="sortField" name="sortField"  value="">
+						<input type="hidden" id="sortOrder" name="sortOrder"  value="">
+						<input type="hidden" id="startDate" name="startDate"  value="">
+						<input type="hidden" id="endDate" name="endDate"  value="">
+						<input type="hidden" id="reQuery" name="reQuery"  value="">
+						<input type="hidden" id="eduDivCd" name="eduDivCd"  value="">
+						<input type="hidden" id="confmNo" name="confmNo"  value="">
+						<input type="hidden" id="survClsId" name="survClsId"  value="">
+						<input type="hidden" id="survId" name="survId"  value="">
+						
+						
+						<input type="hidden" id="rschTearCntsStart" name="rschTearCntsStart"  value="">
+						<input type="hidden" id="rschTearCntsEnd" name="rschTearCntsEnd"  value="">
+						<!--  
+						<input type="text" id="searchtext" name="searchtext" title="검색어 입력" placeholder="사망원인,인구,거주,소득,출생" onKeypress="javascript:searchPressCheck((event),this);" value="">
+						-->
+						
+						
+						<input type="text" id="searchtext" name="searchtext" title="검색어 입력" placeholder="1인가구, 생산성, 고용, 소비" onKeypress="javascript:searchPressCheck((event),this);" value="">
+						<input type="hidden" id="oldQuery" name="oldQuery"  value="">
+						
+						
+						
+						<a href="javascript:goWSearch();" class="ico-sch">검색</a>
+					</fieldset>
+				</form>
+				<div class="reatcmp" style="display: none" id="mdisArkDiv">
+					<div class="atcmp_wrap _keywords">
+						<div class="my_words">
+							<div class="words _recent">
+								<ul id ="mdisArkLUl" >
+									<li >
+										<a href="#" class="keyword">사망통계조사</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="recommend" id="popkeyword" style="padding-left: 25px;">
+				
+			</div>
+			<a href="#" class="search_close">검색창 닫기</a>
+		</div>
+	</div>
+</section>
+<script>
+$(document).ready(function() {
+	$("#subModal").hide();
+	$("#float-menu #search-btn").click(function() {
+		if ($(this).hasClass('active')) {
+			$(this).removeClass("active");
+			$("#subModal").slideUp();
+		} else {
+			$(this).addClass("active");
+			$("#subModal").slideDown();
+		}
+		return;
+	});
+	$('#subModal .search_close').click(function() {
+		$("#float-menu #search-btn").removeClass("active");
+		$("#subModal").slideUp();
+	});
+});
+</script>
+<!--  반영확인 -->
+
+<!-- contents 시작 -->
+    
+    <!-- leftmenu시작-->
+    <!-- 
+	<div id="contentsLeft">
+		<div class="lmWrap">
+			
+		</div>
+		<div class="btm_img"></div>
+	</div>
+     -->
+    <!-- leftmenu끝-->
+		<!-- submenu끝-->
+		<!--상세내용 시작-->
+		
+
+
+
+<link href="/css/jquery-ui.css;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10" rel="stylesheet">
+
+
+
+
+
+
+
+
+<!-- 2021-09 : 작업 -->
+<link href="/css/content.css" rel="stylesheet" />
+<script src="/js/content.js"></script>
+<script type="text/javascript">
+var serverMsg = "";
+if (serverMsg){
+	alert(serverMsg);
+	location.href = "/index.do";
+}
+	$(document).ready(function() {    	
+        
+        if ($("#itemId").val()=="") {
+            
+            $("#item li").attr("class", "");
+            
+            $("#item_2001").attr("class", "active");
+            $("#itemList_2001").fadeIn();
+            
+            fnChJung("인구","2001");
+            
+        } else {
+
+            var itemId = $("#itemId").val();
+            var itemNm = returnItemNm(itemId);
+            
+            $("#item li").attr("class", "");
+            $("#item_"+itemId).attr("class", "active");
+            $("#itemList_"+itemId).fadeIn();
+            
+            fnChJung(itemNm,itemId);
+
+        }
+        
+         /* $('html, body').animate({
+            scrollTop:
+            $(".content").offset().top-70   
+        },  'slow'); */
+        
+        // 조사영역 클릭
+        $("#item li").click(function(){
+
+            var itemValue = ($(this).attr('id')).split('_') ;
+            var itemId = itemValue[1];
+            var itemNm = returnItemNm(itemId);
+
+            fnChJung(itemNm,itemId);
+            
+            $("#item li").attr("class", "");
+            $("#item_"+itemId).attr("class", "active");
+
+            fnSetList();
+        });
+
+        // 조사명 클릭
+        $("a[name='detail']").click(function(){
+
+            var survValue = ($(this).attr('id')).split('_') ;
+            var survClsId = survValue[0];
+            var survId = survValue[1];
+
+            // 상세보기
+            fnShowDataDetail(survClsId, survId, '3');
+        });
+    });
+
+    function returnItemNm(itemId) {
+
+        if (itemId=="2001") {
+            return "인구";
+        }
+
+        if (itemId=="2002") {
+            return "사회일반";
+        }
+        
+        if (itemId=="2003") {
+            return "범죄·안전";
+        }
+
+        if (itemId=="2004") {
+            return "노동";
+        }
+
+        if (itemId=="2005") {
+            return "소득·소비·자산";
+        }
+
+        if (itemId=="2006") {
+            return "보건";
+        }
+
+        if (itemId=="6") {
+            return "복지";
+        }
+
+        if (itemId=="7") {
+            return "교육·훈련/문화·여가";
+        }
+
+        if (itemId=="8") {
+            return "주거/국토이용";
+        }
+
+        if (itemId=="9") {
+            return "경제 일반·경기/기업경영";
+        }
+
+        if (itemId=="10") {
+            return "농림/수산";
+        }
+
+        if (itemId=="11") {
+            return "광업·제조업";
+        }
+
+        if (itemId=="12") {
+            return "건설/교통·물류";
+        }
+
+        if (itemId=="13") {
+            return "정보통신/과학·기술";
+        }
+
+        if (itemId=="14") {
+            return "도소매·서비스";
+        }
+
+        if (itemId=="15") {
+            return "국민계정";
+        }
+
+        if (itemId=="16") {
+            return "환경";
+        }
+
+        if (itemId=="17") {
+            return "임금/물가";
+        }
+
+        if (itemId=="18") {
+            return "에너지";
+        }
+
+    }
+
+    function fnShowDataDetail(survClsId, survId, nPage) {
+        var itemId = $("#itemId").val();
+        var itemNm = $("#itemNm").val();
+        
+        if(survClsId == 'STAT') {
+            window.location.href="/ofrData/selectOfrDataDetail.do?survId="+survId+"&itmDiv=1&nPage="+nPage+"&itemId="+itemId+"&itemNm="+itemNm + "&curMenuNo=UI_POR_P9210";       
+        } else {
+            window.location.href="/ofrData/selectOfrDataDetail.do?survId="+survId+"&itmDiv=2&nPage="+nPage+"&itemId="+itemId+"&itemNm="+itemNm + "&curMenuNo=UI_POR_P9210";   
+        }
+    }
+
+    function fnShowMetaDetail(id) {
+        fnPopup("https://www.k-stat.go.kr/metasvc/msba100/statsdcdta?statsConfmNo=" + id, "metasvc", 900, 1100, "yes", "yes");
+    }
+
+    function fnChJung(itemNm,itemId) {
+        $("#itemId").val(itemId);
+        $("#itemNm").val(itemNm);
+    }
+    
+    function fnSetList() {
+        $("#ofrDataVO").attr("action", "/ofrData/selectClsOfrData.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10");
+        $("#ofrDataVO").submit();
+    }
+</script>
+
+<!-- //2021-09 : 작업 -->
+<!-- contents 시작 -->
+<!--상세내용 시작-->
+<div class="content" id="content">
+    <div class="content-header">
+        <div class="pagetitle"><h3 class="sub-title">주제별 자료</h3></div>
+    </div>
+
+	<div class="content-body">
+		<!-- 2021-09 : 작업 -->
+		<div class="base-tab grid7 menu_icon">
+			<ul id="item" class="menu clear">
+				
+					<li id="item_2001" class="active"><a href="javascript:void(0);fnChJung('인구','2001');" title="인구" class="ico_m1"><i>인구<br />(5)</i></a></li>
+				
+					<li id="item_2002" class="active"><a href="javascript:void(0);fnChJung('사회일반','2002');" title="사회일반" class="ico_m2"><i>사회일반<br />(21)</i></a></li>
+				
+					<li id="item_2003" class="active"><a href="javascript:void(0);fnChJung('범죄·안전','2003');" title="범죄·안전" class="ico_m3"><i>범죄·안전<br />(12)</i></a></li>
+				
+					<li id="item_2004" class="active"><a href="javascript:void(0);fnChJung('노동','2004');" title="노동" class="ico_m4"><i>노동<br />(21)</i></a></li>
+				
+					<li id="item_2005" class="active"><a href="javascript:void(0);fnChJung('소득·소비·자산','2005');" title="소득·소비·자산" class="ico_m5"><i>소득·소비·자산<br />(17)</i></a></li>
+				
+					<li id="item_2006" class="active"><a href="javascript:void(0);fnChJung('보건','2006');" title="보건" class="ico_m6"><i>보건<br />(11)</i></a></li>
+				
+					<li id="item_2007" class="active"><a href="javascript:void(0);fnChJung('복지','2007');" title="복지" class="ico_m7"><i>복지<br />(9)</i></a></li>
+				
+					<li id="item_2008" class="active"><a href="javascript:void(0);fnChJung('교육·훈련/문화·여가','2008');" title="교육·훈련/문화·여가" class="ico_m8"><i>교육·훈련/문화·여가<br />(23)</i></a></li>
+				
+					<li id="item_2009" class="active"><a href="javascript:void(0);fnChJung('주거/국토이용','2009');" title="주거/국토이용" class="ico_m9"><i>주거/국토이용<br />(5)</i></a></li>
+				
+					<li id="item_2010" class="active"><a href="javascript:void(0);fnChJung('경제일반·경기/기업경영','2010');" title="경제일반·경기/기업경영" class="ico_m10"><i>경제일반·경기/기업경영<br />(26)</i></a></li>
+				
+					<li id="item_2011" class="active"><a href="javascript:void(0);fnChJung('농림/수산','2011');" title="농림/수산" class="ico_m11"><i>농림/수산<br />(29)</i></a></li>
+				
+					<li id="item_2012" class="active"><a href="javascript:void(0);fnChJung('광업·제조업','2012');" title="광업·제조업" class="ico_m12"><i>광업·제조업<br />(7)</i></a></li>
+				
+					<li id="item_2013" class="active"><a href="javascript:void(0);fnChJung('건설/교통·물류','2013');" title="건설/교통·물류" class="ico_m13"><i>건설/교통·물류<br />(6)</i></a></li>
+				
+					<li id="item_2014" class="active"><a href="javascript:void(0);fnChJung('정보통신/과학·기술','2014');" title="정보통신/과학·기술" class="ico_m14"><i>정보통신/과학·기술<br />(34)</i></a></li>
+				
+					<li id="item_2015" class="active"><a href="javascript:void(0);fnChJung('도소매·서비스','2015');" title="도소매·서비스" class="ico_m15"><i>도소매·서비스<br />(17)</i></a></li>
+				
+					<li id="item_2016" class="active"><a href="javascript:void(0);fnChJung('임금/물가','2016');" title="임금/물가" class="ico_m16"><i>임금/물가<br />(2)</i></a></li>
+				
+					<li id="item_2018" class="active"><a href="javascript:void(0);fnChJung('정부·재정','2018');" title="정부·재정" class="ico_m17"><i>정부·재정<br />(1)</i></a></li>
+				
+					<li id="item_2019" class="active"><a href="javascript:void(0);fnChJung('금융/무역·국제수지','2019');" title="금융/무역·국제수지" class="ico_m18"><i>금융/무역·국제수지<br />(1)</i></a></li>
+				
+					<li id="item_2020" class="active"><a href="javascript:void(0);fnChJung('환경','2020');" title="환경" class="ico_m19"><i>환경<br />(5)</i></a></li>
+				
+					<li id="item_2021" class="active"><a href="javascript:void(0);fnChJung('에너지','2021');" title="에너지" class="ico_m20"><i>에너지<br />(2)</i></a></li>
+				
+					<li id="item_2022" class="active"><a href="javascript:void(0);fnChJung('지역통계','2022');" title="지역통계" class="ico_m21"><i>지역통계<br />(180)</i></a></li>
+				
+			</ul>
+		</div>
+
+        <div class="content-box">
+        
+            
+                                            
+                <div name="itemList" id="itemList_2001" class="detail-infocont" style="display: none;">
+                    <h4 class="con_tit_type1">인구</h4>
+                    <div class="board_list ">
+                     <table>
+                         <caption>인구목록으로 분류, 작성기관, 조사명, 시계열, 비고관련 정보가 확인됩니다.</caption>
+                         <col style="width:130px" />
+                         <col style="width:175px" />
+                         <col style="width:280px" />
+                         <col style="width:180px" />
+                         <col />
+                         <col style="width:235px" />
+                         <thead>
+                             <tr>
+                                 <th scope="col">분류</th>
+                                 <th scope="col">작성기관</th>
+                                 <th scope="col">조사명</th>
+                                 <th scope="col">시계열</th>
+                                 <th scope="col">작성목적</th>                                               
+                                 <th scope="col">비고(특이사항)</th>
+                             </tr>
+                         </thead>
+                         <tbody>
+                                         
+                            <tr class="notice">
+                                
+                                <th scope="row" rowspan="5" class="th-bgcolor t_center">인구</th>
+                                
+                                <td class="t_center">국가데이터처</td>
+                                
+                                <td><a href="javascript:void(0);" class="underline" name="detail" id="STAT_23" title="국내인구이동통계">국내인구이동통계</a></td>
+                                
+                                                                         
+                                <td>1995~2025(1년, 계속)</td>
+                                <td>국민의 지역별 인구 이동량 및 이동방향 등을 파악하여 주택공급, 교통망 구축, 교육수요 예측, 노동시장 등의 정책수립이나 지역 간의 균형적인 국토개발이나 지역별 인구추계 등에 필요한 기초자료를 제공</td>
+                                <td class="notice">
+                                    
+                                    <!-- 2022.07.19 대표항목 추가 -->
+                                    
+	                                    
+	                                    <em style="width: 60px; text-align: center;">대표항목</em>
+	                                    <br/>
+	                                    전입행정기관,전입일자,전출행정기관,전입사유
+                                    
+                                </td>
+                            </tr>
+                 
+            
+                                         
+                            <tr class="notice">
+                                
+                                <td class="t_center">국가데이터처</td>
+                                
+                                <td><a href="javascript:void(0);" class="underline" name="detail" id="STAT_38" title="인구동향조사">인구동향조사</a></td>
+                                
+                                                                         
+                                <td>1991~2025(1년, 계속), (혼인)1991~2025, (이혼)1991~2025, (출생)1997~2024, (사망)1997~2024</td>
+                                <td>대한민국의 인구 규모 및 인구 구조를 변동시키는 기본적 요인인 출생·사망·혼인·이혼에 대한 현황을 파악하고, 국가의 인구·주택·보건·의료·사회복지·교육·교통 등에 관한 정책수립 및 민간기업의 경영계획 등에<br/> 필요한 기초자료로 활용</td>
+                                <td class="notice">
+                                    
+                                    <!-- 2022.07.19 대표항목 추가 -->
+                                    
+	                                    
+	                                    <em style="width: 60px; text-align: center;">대표항목</em>
+	                                    <br/>
+	                                    (혼인) 신고날짜, 혼인연령, 직업, 교육정도 <br/>
+(이혼) 신고날짜, 이혼연령, 직업, 교육정도 <br/>
+(출생) 출생일자, 성별, 부모직업, 교육정도, 출생아체중  <br/>
+(사망) 신고날짜, 직업, 교육정도, 성별, 사망연령
+                                    
+                                </td>
+                            </tr>
+                 
+            
+                                         
+                            <tr class="notice">
+                                
+                                <td class="t_center">국가데이터처</td>
+                                
+                                <td><a href="javascript:void(0);" class="underline" name="detail" id="STAT_48" title="인구주택총조사">인구주택총조사</a></td>
+                                
+                                                                         
+                                <td>1960, 1966, 1970~2025(전수 1년·표본 5년, 계속)</td>
+                                <td>인구규모, 분포 및 구조와 주택에 관한 제 특성을 파악하여 각종 정책입안의 기초자료로 활용하고, 각종 가구 관련 경상조사 표본틀로 활용</td>
+                                <td class="notice">
+                                    
+                                    <!-- 2022.07.19 대표항목 추가 -->
+                                    
+	                                    
+	                                    <em style="width: 60px; text-align: center;">대표항목</em>
+	                                    <br/>
+	                                    가구형태, 거처종류, 가구구분, 건축연도
+                                    
+                                </td>
+                            </tr>
+                 
+            
+                                         
+                            <tr class="notice">
+                                
+                                <td class="t_center">국가데이터처</td>
+                                
+                                <td><a href="javascript:void(0);" class="underline" name="detail" id="STAT_1003692" title="인구주택총조사_패널데이터">인구주택총조사_패널데이터</a></td>
+                                
+                                                                         
+                                <td>2017~2024(1년, 계속)</td>
+                                <td>인구규모, 분포 및 구조와 주택에 관한 제 특성을 파악하여 각종 정책입안의 기초자료로 활용하고, 각종 가구 관련 경상조사 표본틀로 활용하기 위함</td>
+                                <td class="notice">
+                                    
+                                    <!-- 2022.07.19 대표항목 추가 -->
+                                    
+	                                    
+	                                    <em style="width: 60px; text-align: center;">대표항목</em>
+	                                    <br/>
+	                                    거처종류, 가구형태, 가구구분, 세대가구유형
+                                    
+                                </td>
+                            </tr>
+                 
+            
+                                         
+                            <tr class="notice">
+                                
+                                <td class="t_center">국가데이터처</td>
+                                
+                                <td><a href="javascript:void(0);" class="underline" name="detail" id="STAT_1000017" title="5세 미만 영유아 출생-사망 연계">5세 미만 영유아 출생-사망 연계</a></td>
+                                
+                                                                         
+                                <td>2010~2019(1년, 계속)</td>
+                                <td>대한민국의 인구 규모 및 인구 구조를 변동시키는 기본적 요인인 출생·사망·혼인·이혼에 대한 현황을 파악하고, 국가의 인구·주택·보건·의료·사회복지·교육·교통 등에 관한 정책수립 및 민간기업의 경영계획 등에 필요한 기초자료로 활용하기 위함</td>
+                                <td class="notice">
+                                    
+                                    <!-- 2022.07.19 대표항목 추가 -->
+                                    
+	                                    
+	                                    <em style="width: 60px; text-align: center;">대표항목</em>
+	                                    <br/>
+	                                    출생일자,부모연령,출생아체중,사망년도
+                                    
+                                </td>
+                            </tr>
+                 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>          
+                 
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+        
+            
+                                    
+        </div>
+        <!-- //2021-09 : 작업 -->
+        <form id="ofrDataVO" name="ofrDataVO" method="get">
+            <input type="hidden" id="itemId" name="itemId" value="">
+            <input type="hidden" id="itemNm" name="itemNm" value="">
+        </form>
+    <!-- //content-body -->
+    </div>
+</div>
+<!-- //.content -->
+		<!--상세내용 끝-->
+	</div>
+	<!-- //container -->
+	
+	<hr>
+	
+	
+<!-- 	<div id="float-menu-area2">
+		<div id="float-menu2">
+			<ul id="float-menu-ul">
+				<li class="folder"><a href="javascript:onViewIchat();" class="chatbotThink" ><span>궁금한것을  물어보세요!</span></a></li>
+			</ul>
+		</div>
+	</div> -->
+	<div id="float-menu-area">
+		<p id="toggle-quick-menu"><span>접<br/>기</span></p>
+			<div id="float-menu">
+				<ul id="float-menu-ul">
+					<li><a href="#" id="search-btn" class="float-circle icon float-location1" ><span>지능형검색</span></a></li>
+					<li class="folder"><a href="javascript:onViewIchat();" class="float-circle icon float-location2" ><span>챗봇</span></a></li>
+				</ul>
+			 
+						<div class="chatbot" id="wichat">	
+							<div class="chat_inner" >		
+								<!-- chat_top -->
+								<div class="chat_header"  id="chat_top">
+						            <h1 class="h_tit"><span class="ico_comm ico_bot_logo_header"></span>국가데이터처 MD봇</h1>
+						            <div class="menu_group">
+						                <button type="button" class="menu_btn btn_reset" onclick="javascript:clearChat();"><span class="ico_comm ico_reset">처음으로</span></button>
+						                <button type="button" class="menu_btn btn_guide" onClick="javascript:sendMessage('이용안내')"><span class="ico_comm ico_guide">이용안내</span></button>
+						            </div>
+						            <div class="menu_group menu_group_right">
+						                <!-- <button type="button" class="menu_btn btn_control"><span class="ico_comm ico_control">대화창 크기 조절</span></button> -->
+						                <button type="button" class="menu_btn btn_close" onclick="javascript:onViewIchat();"><span class="ico_comm ico_close">챗봇 종료</span></button>
+						            </div>
+						        </div>
+								<!--  //chat_top -->
+							
+								<!-- talk_wrap -->
+								<!-- 컨텐츠 -->
+						        <div class="chat_container" id="chat_container">
+						            <div class="chat_content" > 
+						                <div class="bubble_wrap" id="talk_wrap">
+						                
+						                </div>
+						                
+						         <!--  도와줘MD봇 영역 -->						                
+
+						                <div class="chat_help_box" id="chat_help_box" style="display:none">
+						                    <a href="#none" onclick="javascript:clickMdbotHelp()" class="chat_help_link">
+						                        <span class="ico_comm ico_bot_logo"></span>도와줘 MD봇
+						                        <span class="ico_comm ico_arrow" >접기/펼치기</span>
+						                    </a>
+						                    <div class="chat_help_cont">
+						                        <div class="chat_help_txt">
+						                            <span class="ico_comm ico_help"></span>
+						                            <h2 class="help_tit"><em class="point_txt">MD봇</em>에게,<br> 이렇게 물어보세요!</h2>
+						                        </div>
+						                        <div class="help_list_area">
+						                            <ul class="help_list">
+						                                <li class="help_item">
+						                                    <a href="#none" id="help_link01" class="help_link is_selected">마이크로데이터 이렇게 찾아보세요 <span class="ico_comm ico_open">펼치기</span></a>
+						                                    <div class="answer_box">
+						                                        <div class="slide_area" id="slide_area_01">
+						                                            <div class="img_cont">
+						                                            	<img src="/images/wsearch/help_slide01.jpg" alt="" class="slide_img">
+						                                            	<div class="screen_out">
+                                                    						쉽고 빠르게 통계조사를 빠르게 찾는 방법을 알려드립니다. 1. 챗봇창 상단 처음으로 선택 또는 검색입력창 통계 검색
+                                                						</div>
+						                                            </div>
+						                                            <div class="img_cont">
+						                                           	 	<img src="/images/wsearch/help_slide02.jpg" alt="" class="slide_img">
+						                                          		<div class="screen_out">
+                                                    						쉽고 빠르게 통계조사를 빠르게 찾는 방법을 알려드립니다. 2. 제공자료 선택
+                                                						</div>
+						                                            </div>
+						                                            <div class="img_cont">
+						                                            	<img src="/images/wsearch/help_slide03.jpg" alt="" class="slide_img">
+						                                            	<div class="screen_out">
+                                                    						쉽고 빠르게 통계조사를 빠르게 찾는 방법을 알려드립니다. 2. 제공자료 선택
+                                                						</div>
+						                                            </div>
+						                                            <div class="img_cont">
+						                                            	<img src="/images/wsearch/help_slide04.jpg" alt="" class="slide_img">
+						                                            	<div class="screen_out">
+                                                    						쉽고 빠르게 통계조사를 빠르게 찾는 방법을 알려드립니다. 2. 제공자료 선택
+                                                						</div>
+						                                            </div>
+						                                            <div class="img_cont">
+						                                            	<img src="/images/wsearch/help_slide05.jpg" alt="" class="slide_img">
+						                                            	<div class="screen_out">
+                                                    						쉽고 빠르게 통계조사를 빠르게 찾는 방법을 알려드립니다. 2. 제공자료 선택
+                                                						</div>
+						                                            </div>
+						                                        </div>
+						                                    </div>
+						                                </li>
+						                                <li class="help_item">
+						                                    <a href="#none" id="help_link02" class="help_link" onclick="clickHelpLink(this)">채팅창에 직접 입력 해보세요 <span class="ico_comm ico_open">펼치기</span></a>
+						                                    <div class="answer_box">
+						                                        <div class="slide_area slide_area2" id="slide_area_02">
+						                                            <div class="img_cont"><img src="/images/wsearch/help_slide06.jpg" alt="" class="slide_img"></div>
+						                                            <div class="img_cont"><img src="/images/wsearch/help_slide07.jpg" alt="" class="slide_img"></div>
+						                                            <div class="img_cont"><img src="/images/wsearch/help_slide08.jpg" alt="" class="slide_img"></div>
+						                                        </div>
+						                                    </div>
+						                                </li>
+						                                <li class="help_item">
+						                                    <a href="#none" id="help_link03" class="help_link" onclick="clickHelpLink(this)">MD봇은 이런 자료를 제공해요 <span class="ico_comm ico_open">펼치기</span></a>
+						                                    <div class="answer_box">
+						                                        <div class="slide_area slide_area2">
+						                                            <div class="img_cont">
+						                                                <img src="/images/wsearch/help_slide10.jpg" alt="알면 도움이 되는 MDIS에서 제공하는 자료 범위를 알려드립니다." class="slide_img">
+						                                                <ul class="result_list">
+						                                                    <li class="result_item">
+						                                                        <span class="screen_out">통계 종수</span>
+						                                                        <div class="total_num"><em class="txt_num" id="josaCount"></em>건</div>
+						                                                    </li>
+						                                                    <li class="result_item">
+						                                                        <span class="screen_out">통계 항목 수</span>
+						                                                        <div class="total_num"><em class="txt_num" id="hangmokCount"></em>건</div>
+						                                                    </li>
+						                                                    <li class="result_item">
+						                                                        <span class="screen_out">MD 활용 연구결과물</span>
+						                                                        <div class="total_num"><em class="txt_num" id="researchCount"></em>건</div>
+						                                                    </li> 
+						                                                </ul>
+						                                            </div>
+						                                        </div>
+						                                    </div>
+						                                </li>
+						                                <li class="help_item">
+						                                    <a href="#none" id="help_link04" class="help_link" onclick="clickHelpLink(this)">이런 정보는 MD봇이 도와줄 수 없어요 <span class="ico_comm ico_open">펼치기</span></a>
+						                                    <div class="answer_box">
+						                                        <div class="slide_area slide_area2">
+						                                            <div class="img_cont">
+						                                                <img src="/images/wsearch/help_slide12.jpg" alt="MD봇은 통계정보 챗봇 MDIS에서 제공되지 않는 정보를 알려드립니다." class="slide_img">
+						                                                <div class="screen_out">
+						                                                    <dl>
+						                                                        <dt>개인정보</dt>
+						                                                        <dd>ID/PW</dd>
+						                                                        <dd>전화번호</dd>
+						                                                        <dd>주민등록번호</dd>
+						                                                    </dl>
+						                                                    <dl>
+						                                                        <dt>낮은 연관성</dt>
+						                                                        <dd>통계조사와 연관성 없는 정보 및 검색어</dd>
+						                                                    </dl>
+						                                                    <dl>
+						                                                        <dt>복잡한 검색어</dt>
+						                                                        <dd>복잡한 문장</dd>
+						                                                        <dd>불분명한 문장</dd>
+						                                                        <dd>복합의도 문장</dd>
+						                                                    </dl>
+						                                                </div>
+						                                            </div>
+						                                        </div>
+						                                    </div>
+						                                </li>
+						                            </ul>
+						                        </div>
+						                    </div>
+						                </div>
+						            </div>
+            						                
+						                
+						         <!--  도와줘MD봇영역 끝 -->       
+						                
+						            </div>
+						        </div>
+								<!--// talk_wrap -->
+								
+			        <!-- // 컨텐츠 -->
+			        <!-- 하단 검색어 입력 영역 -->
+			        <div class="chat_bottom">
+			            <div class="chat_bottom_inner"> 
+			                    <button type="button" class="btn_help" onclick="javascript:clickMdbotHelp();">
+			                        <span class="ico_comm ico_bot_logo"></span>
+			                        <span class="txt_help">도와줘 MD봇</span>
+			                    </button>
+			                    <div class="inp_box">
+			                        <span class="inp_txt">
+			                            <input type="text" class="inp" id="input_txt" placeholder="궁금하신 내용을 입력해주세요." title="문의내용" onkeypress="if(event.keyCode == 13){sendMessage();}">
+			                           <!--  <button type="button" class="btn_del"><span class="ico_comm ico_del">입력한 내용 지우기</span></button> --><!-- [D] 텍스트 입력 시 is_active 클래스 추가 -->
+			                        </span>
+			                    </div>
+			                    <!-- 자동완성 -->
+			                   <!--  <div class="relate_search" id="ichatArk" style="display:none"> -->
+			                    <div class="relate_search" id="ichatArk" >
+			<!--                         <div class="search_inner">
+			                            <ul class="search_list">
+			                                <li class="search_item"><a href="#none" class="search_link"><mark class="keyword_txt">경</mark>기도사회조사</a></li>
+			                                <li class="search_item"><a href="#none" class="search_link"><mark class="keyword_txt">경</mark>기순환</a></li>
+			                                <li class="search_item"><a href="#none" class="search_link"><mark class="keyword_txt">경</mark>기종합지수</a></li>
+			                                <li class="search_item"><a href="#none" class="search_link"><mark class="keyword_txt">경</mark>력단절여성등의<mark class="keyword_txt">경</mark>제활동실태조사를위한통계조사를위한제활동실태조사를위한통계조사를위한제활동실태조사를위한통계조사를위한제활동실태조사를위한통계조사를위한</a></li>
+			                                <li class="search_item"><a href="#none" class="search_link"><mark class="keyword_txt">경</mark>력연수</a></li>
+			                                <li class="search_item"><a href="#none" class="search_link"><mark class="keyword_txt">경</mark>기도사회조사</a></li>
+			                                <li class="search_item"><a href="#none" class="search_link"><mark class="keyword_txt">경</mark>기순환</a></li>
+			                                <li class="search_item"><a href="#none" class="search_link"><mark class="keyword_txt">경</mark>기종합지수</a></li>
+			                                <li class="search_item"><a href="#none" class="search_link"><mark class="keyword_txt">경</mark>력단절여성등의<mark class="keyword_txt">경</mark>제활동실태조사를위한통계조사를위한</a></li>
+			                                <li class="search_item"><a href="#none" class="search_link"><mark class="keyword_txt">경</mark>력연수</a></li>
+			                            </ul>
+			                        </div> -->
+			                    </div>
+<!-- 			                    <div class="relate_search relate_search_no" style="display:none">
+			                        <div class="search_inner">
+			                        <p class="alert_txt">(* 자동완성 키워드 정보가 없을 경우, 검색결과가 없을 수 있습니다.)</p>
+			                        </div>
+			                    </div> -->
+			                    <!-- // 자동완성 -->
+			                    <button type="button" class="btn_send" onClick="javascript:sendMessage()"><span class="ico_comm ico_send">문의 내용 전송</span></button>
+			            </div>
+			        </div>
+			        <!-- // 하단 검색어 입력 영역 -->
+			        
+			        <div id="ch_input_list_area"> 
+<!-- 					<div id="ch_input_list">	
+							<span>입력 가능한 목록입니다.</span>
+							<ul class="input_list">
+								<li><a href="#" title="">가계금융복지조사</a></li>
+								<li><a href="#" title="">가계금융복지조사</a></li>
+								<li><a href="#" title="">가계금융복지조사</a></li>
+								<li><a href="#" title="">가계금융복지조사</a></li>
+								<li><a href="#" title="">가계금융복지조사</a></li>
+								<li><a href="#" title="">가계금융복지조사</a></li>
+							</ul>
+						</div>  -->
+					</div>  
+			    </div>
+			   </div> 		
+			
+			<!--// 챗봇 -->
+		</div>
+	</div>
+	<!-- 챗봇 안내부분  -->
+	<a href="#header" id="gotop" class="scrolltop" style="bottom:  10px;"><span>상단으로 이동</span></a>
+	
+<!-- footer 시작 -->
+<footer id="footer">
+	
+
+		<div class="footer-outro">
+			<div class="outro-btn"><a href="/" title="메뉴닫기"><span class="hidden">메뉴닫기</span></a></div>
+				<div class="wrap" style="display: block;">
+					<div class="guid-item">
+						<div class="guid-left">
+							<h3>신규 이용자 안내</h3>
+							<p>바로가기 서비스</p>
+						</div>
+						<div class="guid-right">
+							<ul class="banners">
+								<li><a href="https://kosis.kr/oneid/cmmn/login/MemberType.do?SYS_CD=M" target="blank" title="회원가입"><i class="icon icon-location1"></i><span>회원가입</span></a></li>
+								<li><a href="/pageLink.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?link=content/SISMN091007&curMenuNo=UI_POR_P9045" title="신규 이용자를 위한팁"><i class="icon icon-location2"></i><span>신규 이용자를<br /> 위한 팁</span></a></li>
+								<li><a href="/pageLink.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?link=content/SISMN091002&curMenuNo=UI_POR_P9002" title="서비스 이용방법"><i class="icon icon-location4"></i><span>서비스<br /> 이용방법</span></a></li>
+								<li><a href="/bbs/boardList.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?boardId=BBSMSTR_000000000001&curMenuNo=UI_POR_P9019" title="자주묻는질문 FAQ"><i class="icon icon-location3"></i><span>자주 묻는 질문<br /> FAQ</span></a></li>
+							</ul>
+						</div>
+					</div>
+			</div>
+		</div>
+		<div class="footer-inner">
+			<div class="wrap">
+				<div class="direct-wrap">
+					<div class="fnb">
+						<ul class="direct-list">
+							
+							<li><a href="/privacy_policy.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9037"><b style="color:#FFD400;">개인정보처리방침</b></a></li>
+							<li><a href="/pageLink.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?link=content/SISMN0604_emailgather&curMenuNo=UI_POR_P9038">이메일무단수집거부 </a></li>
+							<li><a href="/pageLink.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?link=content/SISMN060600&curMenuNo=UI_POR_P9040">이용약관 </a></li>
+							<li><a href="/pageLink.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?link=content/SISMN0605_viewer&curMenuNo=UI_POR_P9039">뷰어프로그램 </a></li>
+							<li><a href="/menu/siteMap.do;jsessionid=hRp9Vejxhh-u-gsvTD5pGVR8op_K5CdIKVON2gXK.exthome10?curMenuNo=UI_POR_P9035">사이트맵 </a></li>
+							
+						</ul>
+					</div>
+					<div class="direct-sns">
+						<!-- <h2 class="hidden">SNS바로가기</h2>
+						<ul>
+							<li><a href="javascript:alert('준비중입니다.');" target="_blank" class="img_sns1" title="페이스북">facebook</a></li>
+							<li><a href="javascript:alert('준비중입니다.');" target="_blank" class="img_sns2" title="유투브">youtube</a></li>
+						</ul>-->
+					</div>
+				</div>
+				<div class="info-wrap">
+					<div class="siteinfo">
+						<address>[35208] 대전광역시 서구 청사로 189 (둔산동, 정부대전청사 3동)</address>
+						<ul class="tel">
+							<li><b>국가데이터처 콜센터</b> 02-2012-9114 국번 없이 110</li><br>
+							<li><b>서비스운영</b> : [06925] 서울 강남구 선릉로 612, 6층, (재)한국통계진흥원(대표자 : 최연옥), 101-82-05115</li><br>
+							<li><b>전화문의</b> : 02-3457-9771(가구, 농림어업), 02-3457-9773(사업체, 행정통계), 02-3457-9775(인구, 인총, 사망원인연계), 02-3457-9776(사업체 및 가구명부), 042-481-2431(시스템 장애 문의)</li>
+						</ul>
+						<p class="requestMail"><b>이메일문의</b> : mdis.kspi@gmail.com</p>
+						<p class="copyright">Copyright© Ministry of Data and Statistics. All rights reserved.</p>
+					</div>
+					<div class="select-link dropdown-wrapper">
+						<!-- div class="select">
+							<span class="link-contents  down-icon">관련사이트 바로가기</span>
+						</div>
+						<ul class="dropdown-list hide">
+							<li class='selected'><a href="http://kostat.go.kr" title="통계청">통계청</a></li>
+							<li><a href="http://kosis.kr" title="국가통계포털">국가통계포털</a></li>
+							<li><a href="http://www.index.go.kr" title="e-나라지표">e-나라지표</a></li>
+							<li><a href="http://sgis.kostat.go.kr" title="통계지리정보서비스">통계지리정보서비스</a></li>
+							<li><a href="http://kssc.kostat.go.kr" title="통계분류포털">통계분류포털</a></li>
+							<li><a href="http://meta.narastat.kr" title="통계설명자료">통계설명자료</a></li>
+						</ul>
+					</div-->
+					<script>
+						function openRelatedSite(){
+							var link = $("#relatedSites option:selected").val();
+							console.log(link);
+							if (link != "") {
+								window.open(link,"_blank");
+								$("#relatedSites").val("");
+							}
+						}
+					</script>
+					<select id="relatedSites" onchange="javascript:openRelatedSite();">
+						<option value="">관련사이트 바로가기</option>
+						<option value="http://kostat.go.kr">국가데이터처</option>
+						<option value="http://kosis.kr">국가통계포털(KOSIS)</option>
+						<!-- <option value="http://www.index.go.kr">e-나라지표</option> -->
+						<option value="http://www.index.go.kr">지표누리</option>
+						<option value="http://sgis.kostat.go.kr">통계지리정보서비스(SGIS)</option>
+						<option value="http://kssc.kostat.go.kr">통계분류포털</option>
+						<option value="https://www.k-stat.go.kr/metasvc">통계설명자료</option>
+						<option value="http://data.kostat.go.kr">통계데이터센터(SDC)</option>
+					</select>
+					</div>
+				</div>
+			</div>
+		</div>
+
+</footer>
+<script>
+
+function getChatbotCookie(name){
+	var nameOfCookie = name + "=";
+	var x =0;
+ 	while(x <=document.cookie.length){
+ 		var y=(x+nameOfCookie.length);
+ 		if(document.cookie.substring(x,y) == nameOfCookie){
+ 			
+ 			if((endOfCookie=document.cookie.indexOf(";",y)) == -1)
+ 				endOfCookie = document.cookie.length;
+ 			return unescape(document.cookie.substring(y,endOfCookie));
+ 		}
+ 		x=document.cookie.indexOf("",x)+1;
+ 		if(x==0)
+ 			break;
+ 	}
+ 	return "";
+}
+
+function openChatbot(){ 
+	
+	$("#float-menu-area3").remove();
+	
+	$("#float-menu-area").show();
+	$("#float-menu-area2").show();
+	$("#float-menu").show();
+	$("#float-menu2").show();
+}
+</script>
+</body>
+</html>

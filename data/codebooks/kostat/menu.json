@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>오류500</title>
+<link rel="stylesheet" href="/static/common/css/sub.css">
+<link rel="stylesheet" href="/static/common/css/error.css">
+</head>
+<body class="jui">
+	<div id="container">
+		<div class="error-wrap">
+			<div class="inner">
+				<dl>
+					<dt>
+						<strong>시스템 오류가 발생했습니다.</strong>
+					</dt>
+					<dd>
+						지속적인 오류가 발생할 경우 관리자에게 연락하시기 바랍니다.
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

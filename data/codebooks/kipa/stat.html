@@ -1,0 +1,2647 @@
+<!DOCTYPE html>
+<html lang="ko" data-bs-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta property="og:image" content="@{/img/cmn/link_thumb.jpg}">
+
+<title>
+	
+	통계DB | 한국행정연구원
+</title>
+
+
+
+
+
+<meta name="_csrf" content="csrf">
+<meta name="_csrf_header" content="csrf_header">
+
+
+<link rel="stylesheet" type="text/css" href="/vendor/slick-1.8.1/slick/slick.css">
+<link rel="stylesheet" type="text/css" href="/vendor/slick-1.8.1/slick/slick-theme.css">
+
+<link rel="stylesheet" type="text/css" href="/vendor/datepicker/css/bootstrap-datepicker3.min.css">
+
+<link rel="stylesheet" type="text/css" href="/vendor/pdfjs/pdf_viewer.css">
+
+<link rel="stylesheet" type="text/css" href="/css/swiper-bundle.min.css">
+
+<link rel="stylesheet" type="text/css" href="/css/common.css">
+<link rel="stylesheet" type="text/css" href="/css/layout.css">
+<link rel="stylesheet" type="text/css" href="/css/sub.css">
+<link rel="stylesheet" type="text/css" href="/css/mobile.css">
+
+
+
+<script src="/vendor/jquery-3.4.1.min.js"></script>
+                                                                                      
+
+<script src="/vendor/axios.min.js"></script>
+
+<script src="/vendor/slick-1.8.1/slick/slick.js"></script>
+
+<script src="/vendor/imagesloaded.pkgd.min.js"></script>
+<script src="/vendor/masonry.pkgd.min.js"></script>
+
+<script src="/vendor/sweetalert2/sweetalert2.all.min.js"></script>
+
+<script src="/vendor/datepicker/js/bootstrap-datepicker.min.js"></script>
+<script src="/vendor/datepicker/js/bootstrap-datepicker.ko.min.js"></script>
+
+<script src="/vendor/big-6.1.1/big.js"></script>
+
+<script src="/vendor/lodash-4.17.21/lodash.min.js"></script>
+
+<script src="/vendor/html2canvas/html2canvas.js"></script>
+
+<script src="/js/swiper-bundle.min.js"></script>
+
+
+<script src="/js/layout.js"></script>
+<script src="/js/sub.js"></script>
+
+
+<script src="/vendor/pdfjs/pdf.min.js"></script>
+
+
+
+<script>
+	             
+		var CONTEXTPATH = "\/";
+		var menuInfo = null;
+		if (_.isArray(menuInfo)) {
+			menuInfo = _.filter(menuInfo, function(item) {
+				return item.level === 1 || item.level === 2;
+			});
+		}
+
+		window.srvcMenuNm = "\uD1B5\uACC4DB";		//메뉴명
+		window.srvcBtnNm = 'default';		// 서비스기능명
+		window.srvcSiteCd = "kipa";		// 사이트구분(서버 확정값, ajax 헤더 X-srvcSiteCd)
+		window.srvcMenuCode = "13101000000002025031011";	// 메뉴코드(서버 확정값, ajax 헤더 X-srvcMenuCode)
+
+		//history.replaceState({}, null, location.pathname);
+	       
+</script>
+<script>
+	window._lang = document.documentElement.lang;
+	window.MyApp = window.MyApp || {};
+	window.LoginInfo = window.LoginInfo || {};
+	var isKo = window._lang == 'ko'; //ko
+</script>
+
+<script src="/modules/utilModule.js"></script>
+<script src="/modules/messageModule.js"></script>
+<script src="/modules/axiosModule.js"></script>
+<script src="/modules/baseModule.js"></script>
+<script src="/modules/layerModule.js"></script>
+<script src="/modules/atchFileModule.js"></script>
+<script src="/modules/validatorModule.js"></script>
+<script src="/modules/eventModule.js"></script>
+<script src="/modules/bbsModule.js"></script>
+
+                                                                 
+<script type="text/javascript" src="//wcs.pstatic.net/wcslog.js"></script>
+<script type="text/javascript">
+	if(!wcs_add) var wcs_add = {};
+	wcs_add["wa"] = "2a25ba1508579c";
+	if(window.wcs) {
+	  wcs_do();
+	}
+</script>
+                                                       
+
+
+
+
+
+
+
+	<script>
+	MyApp.statDbTabModule = (function(axiosInstance) {
+		                                                                                                                                                      
+		const pTabIndex = baseModule.gfnNvl("3", 0);
+
+		                                                                                                                                                       
+		const privateFnc = {
+			                                        
+			pfnTabClick: (tabIndex) => {
+				if(!utilModule.gfnIsNotEmpty(tabIndex)) tabIndex = 0;
+				if(isNaN(tabIndex)) tabIndex = parseInt(tabIndex);
+
+				layerModule.gfnMovePostPage2('/html/kor/stt/stat/statDbTab.do', {pTabIndex : tabIndex});
+			}
+		}
+
+		                                                                                                                                                      
+		return {
+			                                             
+			fnInit: async () => {
+				// 탭선택
+				$('.tab-list .tab-button').each(function() {
+					var tabIndex = $(this).data('tab-index');
+					if (tabIndex == pTabIndex) {
+						$(this).addClass('on');
+					}
+				});
+			},
+			                                       
+			fnTabClick: (tabIndex) => {
+				if(tabIndex != '5') {
+					privateFnc.pfnTabClick(tabIndex);
+				} else {
+					layerModule.gfnMovePostPage2('/html/kor/cmn/bbs/cmnBbsGenList.do/324', {pTabIndex : tabIndex});
+				}
+			}
+		};
+	})(window.axiosModule.instance);
+
+	$(function() {
+		// 초기화 하기
+		MyApp.statDbTabModule.fnInit();
+	});
+	</script>
+
+
+
+</head>
+<script type="text/javascript">
+	MyApp.subLayoutModule = (function(axiosInstance) {
+		let param = {};
+		const MENU_CODE = "13101000000002025031011";
+
+		const privateFnc = {
+			                                                    
+			pfnPrdocIssuPopup: function(aplcntInfo) {
+				layerModule.gfnLoadPagePopup({
+					action: "/html/kor/main/prdocIssuPopup.do",
+					target: 'prdocIssuPopup',
+					param: {
+						popupContNm: 'prdocIssuPopup',
+						popMenuNm: '증명서발급',
+						popupTitle: '증명서발급 신청서 작성',
+						popupSubTitle: '',
+						popupType: "basic",
+						contSe: "popup",
+						// 부모 정보
+						parentNm: 'subLayoutModule',
+						callbackFuncNm: '',
+						focusId: '',
+						// 파라미터
+						cbIdx: '330',
+						aplcntInfo: aplcntInfo,
+						notCopyUrlYn: 'Y'
+					}
+				}, () => {});
+			},
+			                                                    
+			pfnSrvySave: function() {
+				const srvyFormData = baseModule.gfnGetFormData(srvyForm);
+
+				if(!utilModule.gfnIsNotEmpty(srvyFormData['recommendScore'])) {
+					layerModule.gfnShowCmnAlertModal("만족도 점수를 선택하세요", "알림");
+					return false;
+				}
+
+				layerModule.gfnShowCmnConfirmModal('알림', '만족도를 등록하시겠습니까?', async () => {
+					const res = await window.axiosModule.instance.post('/service/cmn/srvy/saveCmnSrvy', $.extend({}, srvyFormData, {menuCode: MENU_CODE}));
+
+					if(res.data.status == 200) {
+						layerModule.gfnShowCmnAlertModal("만족도 등록이 완료되었습니다. 감사합니다.!", "알림");
+						baseModule.gfnSetFormInit(srvyForm);
+					} else {
+						layerModule.gfnShowCmnAlertModal("만족도 등록이 실패하였습니다.", "알림");
+						return false;
+					}
+				});
+			},
+			                                                    
+			pfnMoveSubMenu : function(menu, val1, val2, val3, val4, val5) {
+				let newParam = $.extend({}, {cbIdx:val1, bcIdx:val2, flag:'main'});
+				let url = "/html/kor/cmn/bbs/cmnBbsGenList.do";
+				
+               layerModule.gfnMovePostPage2(url, newParam);
+			},
+		}
+		return {
+			fnInit: async function() {
+			},
+
+			                                          
+			fnSimpleAuth: async function() {
+				await baseModule.gfnIntgCertPage('subLayoutModule', 'fnSimpleAuthBak');
+			},
+			                                                       
+			fnSimpleAuthBak: function(rsltInfo) {
+				privateFnc.pfnPrdocIssuPopup(rsltInfo);
+			},
+			                                                    
+			fnSrvySave: function() {
+				privateFnc.pfnSrvySave();
+			},
+			                                                    
+			fnMoveSubMenu: function(menu, val1, val2, val3, val4, val5) {
+				privateFnc.pfnMoveSubMenu(menu, val1, val2, val3, val4, val5);
+			},
+		}
+
+	})(window.axiosModule.instance);
+
+	$(function() {
+		// 초기화 하기
+		MyApp.subLayoutModule.fnInit();
+
+		let wid = localStorage.getItem('kowid');
+
+		if(!utilModule.gfnIsNotEmpty(wid)) {
+			wid = window.Veluga.getWid();
+			localStorage.setItem('kowid', wid);
+		}
+
+		window.Veluga.config({
+			serverUrl: 'https://api.kipa.re.kr',
+			wid: wid
+		});
+
+		            
+		$(".chatbot").click((event) => {
+			window.Veluga.open();
+		});
+
+		                               
+		$(".infoRls-btn").click(function(e){
+			e.preventDefault(); //a링크로 이동 X
+			$(".siteMapInfoRls-menu .gnb").addClass('open');
+			$(".siteMapInfoRls-menu .mo_background").addClass('open');
+			$(".siteMapInfoRls-menu .mo-top .close").addClass('open');
+			$(".siteMapInfoRls-menu .mo-top").addClass('open');
+		});
+		$(".siteMapInfoRls-menu .close").click(function(){
+			if($(".siteMapInfoRls-menu .gnb").hasClass('open') == true){
+				$(".siteMapInfoRls-menu .gnb").removeClass('open');
+				$(".siteMapInfoRls-menu .mo_background").removeClass('open');
+				$(".siteMapInfoRls-menu .mo-top").removeClass('open');
+			}else {
+				$(this).addClass('open');
+				$(this).parents(".siteMapInfoRls-menu .gnb").addClass('open');
+				$(this).parents(".siteMapInfoRls-menu .close").addClass('open');
+			}
+		});
+
+		$("#recommendText").keyup((key) => {
+			if(key.keyCode == 13) {
+				MyApp.subLayoutModule.fnSrvySave();
+			}
+		});
+	});
+</script>
+<body>
+	<script src="https://ai.kipa.re.kr/js/vg-plugin.js?channelId=6887223b0a704de2af872f23&amp;showNewTapBtn=false"></script>
+	<div class="wrap sub">
+		<div id="skipContent" tabindex="-1" aria-hidden="true">
+			<h2>바로가기 모음</h2>
+			<a href="javascript:" id="contentFocus">본문 바로가기</a>
+			<a href="#gnb">메인메뉴 바로가기</a>
+		</div>
+
+		
+		
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+
+	<header id="header">
+		<div class="header-in">
+			<div class="header-body">
+				<div class="inner">
+					<div class="hade-in">
+						<h1 class="logo">
+							<a href="/html/kor/main/main.do" target="_self" title="메인페이지 이동">
+								<img src="/img/common/logo.png" alt="한국행정연구원 로고">
+							</a>
+						</h1>
+						               
+						<nav class="head-gnb" id="gnb">
+							<div class="inner">
+								<ul class="gnb">
+									
+									
+									<li class="depth-1">
+										<a href="javascript:;" class="link"><span class="text">연구성과</span></a>
+										<div class="depth-2">
+											<div class="depth-2-wrap">
+												<ul class="depth-2-ul">
+													
+													
+													
+													<li>
+														<a href="/html/kor/rsch/rsd/rschData.do" class="link"><span class="text small">연구보고서</span></a>
+													</li>
+													<li>
+														<a href="/html/kor/rsch/pblc/pblcDataTab.do" class="link"><span class="text small">정기간행물</span></a>
+													</li>
+													<li>
+														<a href="/html/kor/rsch/smnr/smnrData.do" class="link"><span class="text small">세미나자료</span></a>
+													</li>
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+												</ul>
+											</div>
+										</div>
+									</li>
+									
+									
+									
+									<li class="depth-1 selected">
+										<a href="javascript:;" class="link"><span class="text">통계·DB</span></a>
+										<div class="depth-2">
+											<div class="depth-2-wrap">
+												<ul class="depth-2-ul">
+													
+													
+													
+													
+													
+													
+													
+													<li>
+														<a href="/html/kor/stt/stat/statDbTab.do" class="link"><span class="text small">통계DB</span></a>
+													</li>
+													
+													<li>
+														<a href="/html/kor/stt/cnfl/cnflCaseDb.do" class="link"><span class="text small">갈등DB</span></a>
+													</li>
+													
+													
+													
+													<li>
+														<a href="/html/kor/stt/dsst/dsstCaseDbInfo.do" class="link"><span class="text small">재난사례 DB</span></a>
+													</li>
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+												</ul>
+											</div>
+										</div>
+									</li>
+									
+									
+									
+									
+									
+									
+									
+									<li class="depth-1">
+										<a href="javascript:;" class="link"><span class="text">연구원소식</span></a>
+										<div class="depth-2">
+											<div class="depth-2-wrap">
+												<ul class="depth-2-ul">
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													<li>
+														<a href="/html/kor/cmn/bbs/cmnBbsGenList.do" class="link"><span class="text small">공지사항</span></a>
+													</li>
+													<li>
+														<a href="/html/kor/cmn/bbs/cmnBbsGenList.do/319" class="link"><span class="text small">채용정보</span></a>
+													</li>
+													<li>
+														<a href="/html/kor/rscns/smnr/rsrcNewsSmnr.do" class="link"><span class="text small">세미나</span></a>
+													</li>
+													<li>
+														<a href="/html/kor/rscns/cnfl/cnflEduTab.do" class="link"><span class="text small">갈등교육</span></a>
+													</li>
+													
+													
+													
+													<li>
+														<a href="/html/kor/cmn/bbs/cmnBbsGenList.do/235" class="link"><span class="text small">연구원동정</span></a>
+													</li>
+													<li>
+														<a href="/html/kor/cmn/bbs/cmnBbsGenList.do/237" class="link"><span class="text small">보도자료</span></a>
+													</li>
+													<li>
+														<a href="/html/kor/cmn/bbs/cmnBbsGenList.do/236" class="link"><span class="text small">언론 속 KIPA</span></a>
+													</li>
+													
+													
+													
+													<li>
+														<a href="/html/kor/rscns/pbrl/rsrcNewsPbrlNele.do" class="link"><span class="text small">KIPA 홍보</span></a>
+													</li>
+													
+													<li>
+														<a href="/html/kor/cmn/bbs/cmnBbsGenList.do/278" class="link"><span class="text small">소통마당</span></a>
+													</li>
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+												</ul>
+											</div>
+										</div>
+									</li>
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									<li class="depth-1">
+										<a href="javascript:;" class="link"><span class="text">연구원소개</span></a>
+										<div class="depth-2">
+											<div class="depth-2-wrap">
+												<ul class="depth-2-ul">
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													<li>
+														<a href="/html/kor/rscid/gnlgr/rsrcItdtGnlgrTab.do" class="link"><span class="text small">원장</span></a>
+													</li>
+													<li>
+														<a href="/html/kor/rscid/curStt/curSttTab.do" class="link"><span class="text small">일반현황</span></a>
+													</li>
+													<li>
+														<a href="/html/kor/rscid/org/orgTab.do" class="link"><span class="text small">조직도</span></a>
+													</li>
+													<li>
+														<a href="/html/kor/rscid/ptns/partners.do" class="link"><span class="text small">교류협력현황</span></a>
+													</li>
+													<li>
+														<a href="/html/kor/rscid/lctDrc/locationDrc.do" class="link"><span class="text small">찾아오시는길</span></a>
+													</li>
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+													
+												</ul>
+											</div>
+										</div>
+									</li>
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+									
+								</ul>
+							</div>
+						</nav>
+
+						                
+						<div class="head-util">
+							<div class="font-controls"> <span class="sr-only">화면크기</span>
+								<button id="increase-font" class="increase"><span class="sr-only">확대</span></button>
+								<button id="decrease-font" class="decrease"><span class="sr-only">축소</span></button>
+								<button id="reset-font" class="reset"><span class="sr-only">초기화</span></button>
+							</div>
+							<a href="/html/eng/main/main" class="link-btn language" target="_blank"><span>ENG</span></a>
+							<a href="https://sky.kipa.re.kr/library" class="link-btn lib" target="_blank"><span>아카이브</span></a>
+							<a href="#" target="_blank" class="info infoRls-btn"><span>정보공개</span></a>
+							<a href="javascript:;" class="search-btn hide"><span class="sr-only">검색</span></a> 
+							<a href="javascript:;" class="siteMap-btn"><span class="sr-only">전체메뉴</span></a>
+						</div>
+
+						                    
+						<div class="siteMap-menu pc">
+							<div class="siteMap-in">
+								<div class="pc-top">
+									<ul class="sns-box">
+										<li><a href="https://www.youtube.com/channel/UCavD95DUpkV_x70VdHia-2Q?app" target="_blank" class="y_sns"><span class="sr-only">유튜브</span></a></li>
+										<li><a href="https://www.instagram.com/kipasince1991" target="_blank" class="i_sns"><span class="sr-only">인스타그램</span></a></li>
+										<li><a href="http://www.facebook.com/kipasince1991" target="_blank" class="f_sns"><span class="sr-only">페이스북</span></a></li>
+										<li><a href="/html/kor/rscid/lctDrc/locationDrc.do" class="i_location"><span class="sr-only">찾아오시는길</span></a></li>
+										<li><a href="javascript:void(0);" class="ch" data-action="subLayoutModule.fnMoveSubMenu|게시판,277,10161"><span class="sr-only">대관신청 바로가기</span></a></li>
+										<li><a href="javascript:void(0);" class="qna" data-action="subLayoutModule.fnSimpleAuth"><span class="sr-only">증명서발급</span></a></li>
+									</ul>  
+									<div class="util-box">
+										<a href="/html/eng/main/main" class="link-btn language" target="_blank"><span>ENG</span></a>
+										<a href="https://sky.kipa.re.kr/library" class="link-btn lib" target="_blank"><span>아카이브</span></a>
+										<a href="#" target="_blank" class="info infoRls-btn"><span>정보공개</span></a>
+									</div>   
+									<a href="#" class="close"><span class="sr-only">닫기</span></a>
+								</div>
+								<div class="inner">
+									<ul class="gnb">
+										
+										
+										<li class="depth-1">
+											<a href="javascript:;" class="link"><span class="text">연구성과</span></a>
+											<div class="depth-2">
+												<div class="depth-2-wrap">
+													<ul class="depth-2-ul">
+														
+														
+														
+														<li>
+															<a href="/html/kor/rsch/rsd/rschData.do" class="link">
+																<span class="text small">연구보고서</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/rsch/pblc/pblcDataTab.do" class="link">
+																<span class="text small">정기간행물</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/rsch/smnr/smnrData.do" class="link">
+																<span class="text small">세미나자료</span>
+															</a>
+														</li>
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+													</ul>
+												</div>
+											</div>
+										</li>
+										
+										
+										
+										<li class="depth-1 selected">
+											<a href="javascript:;" class="link"><span class="text">통계·DB</span></a>
+											<div class="depth-2">
+												<div class="depth-2-wrap">
+													<ul class="depth-2-ul">
+														
+														
+														
+														
+														
+														
+														
+														<li>
+															<a href="/html/kor/stt/stat/statDbTab.do" class="link">
+																<span class="text small">통계DB</span>
+															</a>
+														</li>
+														
+														<li>
+															<a href="/html/kor/stt/cnfl/cnflCaseDb.do" class="link">
+																<span class="text small">갈등DB</span>
+															</a>
+														</li>
+														
+														
+														
+														<li>
+															<a href="/html/kor/stt/dsst/dsstCaseDbInfo.do" class="link">
+																<span class="text small">재난사례 DB</span>
+															</a>
+														</li>
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+													</ul>
+												</div>
+											</div>
+										</li>
+										
+										
+										
+										
+										
+										
+										
+										<li class="depth-1">
+											<a href="javascript:;" class="link"><span class="text">연구원소식</span></a>
+											<div class="depth-2">
+												<div class="depth-2-wrap">
+													<ul class="depth-2-ul">
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														<li>
+															<a href="/html/kor/cmn/bbs/cmnBbsGenList.do" class="link">
+																<span class="text small">공지사항</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/cmn/bbs/cmnBbsGenList.do/319" class="link">
+																<span class="text small">채용정보</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/rscns/smnr/rsrcNewsSmnr.do" class="link">
+																<span class="text small">세미나</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/rscns/cnfl/cnflEduTab.do" class="link">
+																<span class="text small">갈등교육</span>
+															</a>
+														</li>
+														
+														
+														
+														<li>
+															<a href="/html/kor/cmn/bbs/cmnBbsGenList.do/235" class="link">
+																<span class="text small">연구원동정</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/cmn/bbs/cmnBbsGenList.do/237" class="link">
+																<span class="text small">보도자료</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/cmn/bbs/cmnBbsGenList.do/236" class="link">
+																<span class="text small">언론 속 KIPA</span>
+															</a>
+														</li>
+														
+														
+														
+														<li>
+															<a href="/html/kor/rscns/pbrl/rsrcNewsPbrlNele.do" class="link">
+																<span class="text small">KIPA 홍보</span>
+															</a>
+														</li>
+														
+														<li>
+															<a href="/html/kor/cmn/bbs/cmnBbsGenList.do/278" class="link">
+																<span class="text small">소통마당</span>
+															</a>
+														</li>
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+													</ul>
+												</div>
+											</div>
+										</li>
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										<li class="depth-1">
+											<a href="javascript:;" class="link"><span class="text">연구원소개</span></a>
+											<div class="depth-2">
+												<div class="depth-2-wrap">
+													<ul class="depth-2-ul">
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														<li>
+															<a href="/html/kor/rscid/gnlgr/rsrcItdtGnlgrTab.do" class="link">
+																<span class="text small">원장</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/rscid/curStt/curSttTab.do" class="link">
+																<span class="text small">일반현황</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/rscid/org/orgTab.do" class="link">
+																<span class="text small">조직도</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/rscid/ptns/partners.do" class="link">
+																<span class="text small">교류협력현황</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/rscid/lctDrc/locationDrc.do" class="link">
+																<span class="text small">찾아오시는길</span>
+															</a>
+														</li>
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+													</ul>
+												</div>
+											</div>
+										</li>
+										
+										
+										
+										
+										
+										<li class="depth-1">
+											<a href="javascript:;" class="link"><span class="text">정보공개</span></a>
+											<div class="depth-2">
+												<div class="depth-2-wrap">
+													<ul class="depth-2-ul">
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														<li>
+															<a href="/html/kor/infrls/infrls/infoRlsPreInfoRls.do" class="link">
+																<span class="text small">정보공개</span>
+															</a>
+														</li>
+														
+														
+														
+														
+														<li>
+															<a href="/html/kor/infrls/bnsdc/bsnDisclosure.do" class="link">
+																<span class="text small">경영공시</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/infrls/ethc/ethcMngm.do" class="link">
+																<span class="text small">윤리경영</span>
+															</a>
+														</li>
+														
+														<li>
+															<a href="/html/kor/infrls/hmn/hmnRghtMngm.do" class="link">
+																<span class="text small">인권경영</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/infrls/infrls/ovseaBztrpRptp.do" class="link">
+																<span class="text small">해외출장보고서</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/infrls/open/openData.do" class="link">
+																<span class="text small">공공데이터개방</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/infrls/bsnsnm/bsnsRealNmTap.do" class="link">
+																<span class="text small">사업실명제</span>
+															</a>
+														</li>
+														<li>
+															<a href="/html/kor/infrls/rprcnt/rprcntTab.do" class="link">
+																<span class="text small">신고센터</span>
+															</a>
+														</li>
+														
+														
+														
+													</ul>
+												</div>
+											</div>
+										</li>
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+									</ul>
+								</div>
+							</div>
+							<div class="mo_background"></div>
+						</div>
+						                       
+
+						                        
+						<div class="siteMapInfoRls-menu pc" id="siteMap_infoRls">
+							<div class="siteMap-in">
+								<div class="pc-top">
+									<a href="javascript:;" id="siteMap_infoRls_close" class="close open"></a>
+								</div>
+								<div class="inner">
+									<ul class="gnb">
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										<li class="depth-1">
+											<a href="javascript:;" class="link" aria-hidden="true" tabindex="-1"><span class="text">정보공개</span></a>
+											<div class="depth-2">
+												<div class="depth-2-wrap">
+													<ul class="depth-2-ul">
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														
+														<li class="siteMapInfoRlsLi">
+															<a href="/html/kor/infrls/infrls/infoRlsPreInfoRls.do" class="link"><span class="text small">정보공개</span></a>
+															<ul>
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+															</ul>
+														</li>
+														
+														
+														
+														
+														<li class="siteMapInfoRlsLi">
+															<a href="/html/kor/infrls/bnsdc/bsnDisclosure.do" class="link"><span class="text small">경영공시</span></a>
+															<ul>
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+															</ul>
+														</li>
+														<li class="siteMapInfoRlsLi">
+															<a href="/html/kor/infrls/ethc/ethcMngm.do" class="link"><span class="text small">윤리경영</span></a>
+															<ul>
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+															</ul>
+														</li>
+														
+														<li class="siteMapInfoRlsLi">
+															<a href="/html/kor/infrls/hmn/hmnRghtMngm.do" class="link"><span class="text small">인권경영</span></a>
+															<ul>
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+															</ul>
+														</li>
+														<li class="siteMapInfoRlsLi">
+															<a href="/html/kor/infrls/infrls/ovseaBztrpRptp.do" class="link"><span class="text small">해외출장보고서</span></a>
+															<ul>
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+															</ul>
+														</li>
+														<li class="siteMapInfoRlsLi">
+															<a href="/html/kor/infrls/open/openData.do" class="link"><span class="text small">공공데이터개방</span></a>
+															<ul>
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+															</ul>
+														</li>
+														<li class="siteMapInfoRlsLi">
+															<a href="/html/kor/infrls/bsnsnm/bsnsRealNmTap.do" class="link"><span class="text small">사업실명제</span></a>
+															<ul>
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+															</ul>
+														</li>
+														<li class="siteMapInfoRlsLi">
+															<a href="/html/kor/infrls/rprcnt/rprcntTab.do" class="link"><span class="text small">신고센터</span></a>
+															<ul>
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+																
+															</ul>
+														</li>
+														
+														
+														
+													</ul>
+												</div>
+											</div>
+										</li>
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+										
+									</ul>
+								</div>
+							</div>
+							<div class="mo_background"></div>
+						</div>
+						                          
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+
+
+		
+		<div class="sub-layout">
+			<div class="inner">
+				<div class="sub-layout-in">
+					<div class="location" tabindex="-1" aria-hidden="true">
+						<ul>
+							<li>
+								<div class="img ioc">
+									<a href="/html/kor/main/main.do" target="_self" id="moveHome"><img src="/img/common/icon_loc_home.svg" alt="홈으로 이동"><span>홈</span></a>
+								</div>
+							</li>
+							<li>
+								<span class="txt" id="naviRootMenuNm">통계·DB</span>
+							</li>
+							<li>
+								<span class="txt" id="naviSubMenuNm">통계DB</span>
+							</li>
+						</ul>
+					</div>
+
+					<div id="content">
+						
+	<div class="content-header">
+		<h2 class="h2-title"><span>통계DB</span></h2>
+	</div>
+	<div class="sub-layout-tab">
+		
+		                    
+		<div class="tab-wrapper">
+			<button class="scroll-btn left"></button>
+			<div class="tab-scroll">
+
+				<div class="tab-list-wrap">
+					<button type="button" class="btn menu_select" title="펼치기">
+						<span class="sr-only">메뉴 분류 선택</span>
+						<strong class="title"></strong>
+					</button>
+					<ul class="tab-list tab_type06">
+						<li class="tab-button" data-tab-index="0">
+							<button type="button" class="t-btn" data-action="statDbTabModule.fnTabClick|0"><span>기본연구과제</span></button>
+						</li>
+						<li class="tab-button" data-tab-index="1">
+							<button type="button" class="t-btn" data-action="statDbTabModule.fnTabClick|1"><span>수시연구과제</span></button>
+						</li>
+						<li class="tab-button" data-tab-index="2">
+							<button type="button" class="t-btn" data-action="statDbTabModule.fnTabClick|2"><span>조사과제</span></button>
+						</li>
+						<li class="tab-button" data-tab-index="3">
+							<button type="button" class="t-btn" data-action="statDbTabModule.fnTabClick|3"><span>사회통합실태조사</span></button>
+						</li>
+						<li class="tab-button" data-tab-index="4">
+							<button type="button" class="t-btn" data-action="statDbTabModule.fnTabClick|4"><span>공직생활실태조사</span></button>
+						</li>
+						<li class="tab-button qna" data-a="5" data-tab-index="5">
+							<button type="button" class="t-btn" data-action="statDbTabModule.fnTabClick|5"><span>통계DB 묻고답하기</span></button>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<button class="scroll-btn right"></button>
+		</div>
+
+		
+		
+		
+		
+			
+	<script>
+	MyApp.statDbScrIntgRsrcModule = (function(axiosInstance) {
+		                                                                                                                                                      
+		//첨부파일
+		let fileList = [];
+
+		//게시글 기본조회정보
+		let param = {
+			chkArr : [],
+			clctDataTypeCd : "q",		//수집자료유형코드
+			clctLwrDataTypeCd : "qc",	//수집하위자료유형코드
+			clctCtgryCd : "12289",		//수집카테고리코드
+			clctCtgryNm : "",			//수집카테고리코드명
+			clctSn : "",				//게시글번호
+			srchWrd : "",				//검색어
+			sort : "DESC"				//정렬(기본 내림차순)
+		}
+
+		let arrIdx = 0;
+		let prvClctSn = "";
+		let chkList = {};
+		let chkArr = [];
+
+		//메인화면 상세정보
+		let mainParam ={
+			clctSn : null,
+			flag : null
+		};
+		                                                                                                                                                       
+		const privateFnc = {
+			                                    
+			pfnSearch: () => {
+				param.srchWrd = $("#srchWrd").val();
+				privateFnc.pfnSetStatDbList();
+			},
+
+			                                                     
+			pfnSetStatDbList: async () => {
+				try {
+					const res = await axiosInstance.post('/service/kor/stt/stat/selectStatDbList', param);
+					if(res.data.status == 200) {
+						let result = res.data.result;
+
+						if(utilModule.gfnIsNotEmpty(result)) {
+							await privateFnc.pfnSetStatDbContet(result);
+						}
+					}
+
+					axiosModule.gfnHideLoadingScreen();
+
+				}catch(err) {
+					axiosModule.gfnHideLoadingScreen();
+				}
+			},
+
+			                                                      
+			pfnSetStatDbContet: (result) => {
+				let dataList = result.dataList;
+				fileList = result.fileList;
+
+				if(dataList.length > 0){
+					//카테고리명 저장
+					param.clctCtgryNm = dataList[0].clctCtgryNm;
+
+					//기본정보
+					let listTmpl = `
+						<tr>
+							<td>
+								<div class="txt-btn-box" data-rel="popup-wrap-box">
+									<div class="txt-box" id="listNm_{{{it.clctSn}}}" data-a="{{{it.clctSn}}}">
+										<a href="javascript:;" id="listTitle_{{{it.clctSn}}}" data-rel="popup-btn" data-target="statDbDtlPopup" data-action="statDbScrIntgRsrcModule.fnDtlInfoPopup|{{{it.clctSn}}},,listTitle">
+											<p class="txt">
+											{# if(it.ttlNm.indexOf(utilModule.gfnSetLimitDateFormatter(it.exmnBgngYmd, 'YYYY')) > -1) { #}
+												{{{it.ttlNm}}}
+											{# } else { #}
+												{{utilModule.gfnSetLimitDateFormatter(it.exmnBgngYmd, 'YYYY')}}년 {{{it.ttlNm}}}
+											{# } #}
+											</p>
+										</a>
+									</div>
+									<div class="btn-box" id="svy_{{{it.clctSn}}}">
+										<button type="button" class="btn icon right glasses" id="btnDtlPopup_{{{it.clctSn}}}" data-action="statDbScrIntgRsrcModule.fnDtlInfoPopup|{{{it.clctSn}}},,btnDtlPopup" data-rel="popup-btn" data-target="statDbDtlPopup" >
+											<span>조사정보</span>
+										</button>
+									</div>
+								</div>
+							</td>
+							<td>
+								<div class="ck-box-wrap" id="stat_{{{it.clctSn}}}"></div>
+						   </td>
+						</tr>
+					`;
+					$("#statDbContent").empty().append(baseModule.gfnMakeLodashTmplNodeList(listTmpl, dataList)).trigger("create");
+
+					//설문개요서, 설문지
+					_.each(dataList, (d) => {
+						let svyList = _.filter(fileList, (f) => {return d.clctSn == f.clctSn && (f.atchFileSeCd == "ELCF000001" || f.atchFileSeCd == "ELCF000002") && f.atchRank == "1"})
+										.map(f => ({...f, exmnBgngYmd: d.exmnBgngYmd}));
+
+						if(utilModule.gfnIsNotEmpty(svyList)) {
+							listTmpl = `
+								{# if(it.length <= 1) { #}
+									<button type="button" class="btn icon right btn-down {{it.atchFileSeCd == 'ELCF000002' ? '' : 'disabled'}}"
+											data-a="{{{it.clctSn}}}" data-b="{{it.atchFileSeCd == 'ELCF000002' ? it.atchFileSeCd : ''}}" data-c="{{{it.ttlNm}}}" data-d="{{{it.statYmd}}}" data-e="{{{it.atchFileSn}}}" data-f="{{{it.exmnBgngYmd}}}"
+											data-action="statDbScrIntgRsrcModule.fnFileDown|{{{it.clctSn}}},{{it.atchFileSeCd == 'ELCF000002' ? it.atchFileSeCd : ''}}">
+										<span>설문개요서</span>
+									</button>
+									<button type="button" class="btn icon right btn-down {{it.atchFileSeCd == 'ELCF000001' ? '' : 'disabled'}}"
+											data-a="{{{it.clctSn}}}" data-b="{{it.atchFileSeCd == 'ELCF000001' ? it.atchFileSeCd : ''}}" data-c="{{{it.ttlNm}}}" data-d="{{{it.statYmd}}}" data-e="{{{it.atchFileSn}}}" data-f="{{{it.exmnBgngYmd}}}"
+											data-action="statDbScrIntgRsrcModule.fnFileDown|{{{it.clctSn}}},{{it.atchFileSeCd == 'ELCF000001' ? it.atchFileSeCd : ''}}">
+										<span>설문지</span>
+									</button>
+								{# } #}
+
+								{# if(it.length > 1) { #}
+									{# if(it.atchFileSeCd == "ELCF000002") { #}
+										<button type="button" class="btn icon right btn-down" data-a="{{{it.clctSn}}}" data-b="{{{it.atchFileSeCd}}}" data-c="{{{it.ttlNm}}}" data-d="{{{it.statYmd}}}" data-e="{{{it.atchFileSn}}}" data-f="{{{it.exmnBgngYmd}}}" data-action="statDbScrIntgRsrcModule.fnFileDown|{{{it.clctSn}}},{{{it.atchFileSeCd}}}"><span>설문개요서</span></button>
+									{# } #}
+
+									{# if(it.atchFileSeCd == "ELCF000001") { #}
+										<button type="button" class="btn icon right btn-down" data-a="{{{it.clctSn}}}" data-b="{{{it.atchFileSeCd}}}" data-c="{{{it.ttlNm}}}" data-d="{{{it.statYmd}}}" data-e="{{{it.atchFileSn}}}" data-f="{{{it.exmnBgngYmd}}}" data-action="statDbScrIntgRsrcModule.fnFileDown|{{{it.clctSn}}},{{{it.atchFileSeCd}}}"><span>설문지</span></button>
+									{# } #}
+								{# } #}
+							`;
+							$("#svy_"+d.clctSn).append(baseModule.gfnMakeLodashTmplNodeList(listTmpl, svyList)).trigger("create");
+						}else {
+							listTmpl = `
+								<button type="button" class="btn icon right btn-down disabled" ><span>설문개요서</span>	</button>
+								<button type="button" class="btn icon right btn-down disabled" ><span>설문지</span></button>
+							`;
+							$("#svy_"+d.clctSn).append(listTmpl);
+						}
+					});
+
+					//파일(SAV, EXCEL)
+					_.each(dataList, (d) => {
+						let statList = _.filter(fileList, (f) => {return d.clctSn == f.clctSn && (f.atchFileSeCd == "ELCF000003" || f.atchFileSeCd == "ELCF000004")})
+										.map(f => ({...f, exmnBgngYmd: d.exmnBgngYmd}));
+
+						if(utilModule.gfnIsNotEmpty(statList)) {
+							listTmpl = `
+								{# if(it.length <= 1) { #}
+									<div class="ck-box-down sav">
+										<input type="checkbox" class="btn-down" name="chkData" id="s_{{{it.clctSn}}}" data-a="{{{it.clctSn}}}" data-b="{{it.atchFileSeCd == 'ELCF000003' ? it.atchFileSeCd : ''}}" data-c="{{{it.ttlNm}}}" data-d="{{{it.statYmd}}}" data-e="{{{it.atchFileSn}}}" data-f="{{{it.exmnBgngYmd}}}" {{it.atchFileSeCd == 'ELCF000003' ? '' : 'disabled'}}>
+										<label class="{{it.atchFileSeCd == 'ELCF000003' ? '' : 'disabled'}}" for="s_{{{it.clctSn}}}"><span class="txt">SAV</span></label>
+									</div>
+									<div class="ck-box-down xl">
+										<input type="checkbox" class="btn-down" name="chkData" id="e_{{{it.clctSn}}}" data-a="{{{it.clctSn}}}" data-b="{{it.atchFileSeCd == 'ELCF000004' ? it.atchFileSeCd : ''}}" data-c="{{{it.ttlNm}}}" data-d="{{{it.statYmd}}}"  data-e="{{{it.atchFileSn}}}" data-f="{{{it.exmnBgngYmd}}}" {{it.atchFileSeCd == 'ELCF000004' ? '' : 'disabled'}}>
+										<label class="{{it.atchFileSeCd == 'ELCF000004' ? '' : 'disabled'}}" for="e_{{{it.clctSn}}}"><span class="txt">EXCEL</span></label>
+									</div>
+								{# } #}
+
+								{# if(it.length > 1) { #}
+									{# if(it.atchFileSeCd == "ELCF000003") { #}
+										<div class="ck-box-down sav">
+											<input type="checkbox" class="btn-down" name="chkData" id="s_{{{it.clctSn}}}" data-a="{{{it.clctSn}}}" data-b="{{{it.atchFileSeCd}}}" data-c="{{{it.ttlNm}}}" data-d="{{{it.statYmd}}}" data-e="{{{it.atchFileSn}}}" data-f="{{{it.exmnBgngYmd}}}">
+											<label class="" for="s_{{{it.clctSn}}}"><span class="txt">SAV</span></label>
+										</div>
+									{# } #}
+									{# if(it.atchFileSeCd == "ELCF000004") { #}
+										<div class="ck-box-down xl">
+											<input type="checkbox" class="btn-down" name="chkData" id="e_{{{it.clctSn}}}" data-a="{{{it.clctSn}}}" data-b="{{{it.atchFileSeCd}}}" data-c="{{{it.ttlNm}}}" data-d="{{{it.statYmd}}}"  data-e="{{{it.atchFileSn}}}" data-f="{{{it.exmnBgngYmd}}}">
+											<label class="" for="e_{{{it.clctSn}}}"><span class="txt">EXCEL</span></label>
+										</div>
+									{# } #}
+								{# } #}
+							`;
+							$("#stat_"+d.clctSn).append(baseModule.gfnMakeLodashTmplNodeList(listTmpl, statList)).trigger("create");
+						}else{
+							listTmpl = `
+								<div class="ck-box-down sav" >
+									<input type="checkbox" class="btn-down" name="chkData" data-b="" disabled>
+									<label class="disabled" ><span class="txt">SAV</span></label>
+								</div>
+								<div class="ck-box-down xl">
+									<input type="checkbox" class="btn-down" name="chkData" data-b="" disabled>
+									<label class="disabled" ><span class="txt">EXCEL</span></label>
+								</div>
+							`;
+							$("#stat_"+d.clctSn).append(listTmpl);
+						}
+					});
+				}else{
+					let emptyTmpl = "<tr><td colspan=3><p class='no-data'>검색된 데이터가 없습니다.</p></td></tr>";
+					$("#statDbContent").empty().append(emptyTmpl);
+				}
+
+				//선택된 체크박스 체크 이벤트
+				if(utilModule.gfnIsNotEmpty(param.chkArr)){
+					privateFnc.pfnChkArrChk(param.chkArr);
+				}
+
+				//메인에서 넘어온 경우
+				if(null != mainParam.flag && mainParam.flag == "main") {
+					$("#btnDtlPopup_"+mainParam.clctSn).click();
+				}
+			},
+
+			                                                                     
+			pfnChkArrChk: (chkArr) => {
+				// 전체 체크해제
+				$("input[name=chkData]").prop("checked", false);
+
+				$.each(chkArr, function(idx, item) {
+					const clctSn = item.clctSn;
+					const chkFiles = item.chkFile.split(',');
+					const chkFileSns = item.chkFileSn.split(',');
+					const ttlNm = item.ttlNm;
+
+					$.each(chkFiles, function(i, chkFile) {
+						const chkFileSn = chkFileSns[i];
+			  			const $checkbox = $(`input[name="chkData"][data-a="${clctSn}"][data-b="${chkFile}"]`);
+						if ($checkbox.length) {
+							$checkbox.prop('checked', true).trigger('change');
+						}
+					});
+				});
+			},
+
+			                                                 
+			pfnStatDbDtlPopup: (clctSn,focusDiv) => {
+				layerModule.gfnLoadPagePopup({
+					action: '/html/kor/stt/stat/statDbTabPopup.do',
+					target: 'statDbDtlPopup',
+					param: {
+						popupContNm: 'statDbDtlPopup',
+						popMenuNm: '통계DB',
+						popupTitle: '사회통합실태조사',
+						popupSubTitle: '',
+						popupType: 'type-02',
+						contSe: 'slider',
+						// 부모 정보
+						parentNm: 'statDbScrIntgRsrcModule',
+						callbackFuncNm: '',
+						focusId: focusDiv+'_'+clctSn,
+						// 게시글 번호
+						clctSn: clctSn,
+						clctDataTypeCd: param.clctDataTypeCd,
+						clctLwrDataTypeCd: param.clctLwrDataTypeCd,
+						clctCtgryCd: param.clctCtgryCd,
+						parentTabIdx: 3
+					}
+				}, () => {});
+			},
+
+			                                                                  
+			pfnDtlDownPopup: (flag) => {
+				let chkLen = "";
+				let allYn = flag == "all"? "Y" : "N";
+				param.allYn = allYn;
+
+				//전체선택
+				if(flag == "all"){
+					chkLen = $(".btn-down").length;
+
+					arrIdx = param.chkArr.length;
+					prvClctSn = "";
+					if(chkLen > 0){
+						$(".btn-down").each(function(idx){
+							if($(this).attr("data-b") != "" && $(this).attr("data-b") != undefined){
+								privateFnc.pfnMakeChkList(chkLen, idx, $(this), allYn);
+							}
+						});
+					}
+				//개별선택
+				}else{
+					chkLen = $("input:checkbox[name='chkData']:checked").length;
+
+					if(chkLen == 0){
+						layerModule.gfnShowCmnAlertModal("선택된 자료가 없습니다.", "알림");
+						return false;
+					}
+
+					arrIdx = param.chkArr.length;
+					prvClctSn = "";
+					if(chkLen > 0){
+						$("input:checkbox[name='chkData']:checked").each(function(idx){
+							if($(this).attr("data-b") != ""){
+								privateFnc.pfnMakeChkList(chkLen, idx, $(this), allYn);
+							}
+						});
+					}
+				}
+
+				// clctSn 중복제거(chkFile 포함할 경우 chkFile 값만 지우고 리스트 유지)
+				param.chkArr = param.chkArr.reduce((prev, now) => {
+					const existingIndex = prev.findIndex(item => item.clctSn === now.clctSn);
+					  if (existingIndex !== -1) {
+					    prev[existingIndex] = now; // 이전 걸 덮어쓰기
+					  } else {
+					    prev.push(now); // 처음 등장한 경우는 그냥 추가
+					  }
+					  return prev;
+				}, []);
+
+				// chkFile이 빈값인 경우 제거 > clctSn 순서대로 정렬
+				param.chkArr = (param.chkArr)
+					.filter(item => item.chkFile !== "" && item.chkFile !== 'undefined' && item.chkFile !== 'undefined,undefined')
+					.sort((a, b) => Number(b.clctSn) - Number(a.clctSn));
+
+				//다운로드 목록 팝업 호출
+				privateFnc.pfnDownListPopup(param);
+			},
+
+			                                                                  
+			pfnMakeChkList: (chkLen, idx, obj, allYn) =>{
+				if(idx == 0){
+					chkList = {
+						"clctCtgryNm": param.clctCtgryNm,
+						"clctSn": obj.attr("data-a"),
+						"chkFile": obj.attr("data-b"),
+						"chkFileSn": obj.attr("data-e"),
+						"ttlNm": obj.attr("data-c"),
+						"statYmd": obj.attr("data-d"),
+						"exmnBgngYmd": obj.attr("data-f"),
+						"allYn": allYn
+					};
+					prvClctSn = obj.attr("data-a");
+					param.chkArr.push(chkList);
+				}else{
+					if(prvClctSn == obj.attr("data-a")){
+						param.chkArr[arrIdx].chkFile += ","+obj.attr("data-b");
+						param.chkArr[arrIdx].chkFileSn += ","+obj.attr("data-e");
+						if(idx == (chkLen-1)) param.chkArr.push(chkList);
+					}else{
+						arrIdx++;
+						chkList = {
+							"clctCtgryNm": param.clctCtgryNm,
+							"clctSn": obj.attr("data-a"),
+							"chkFile": obj.attr("data-b"),
+							"chkFileSn": obj.attr("data-e"),
+							"ttlNm": obj.attr("data-c"),
+							"statYmd": obj.attr("data-d"),
+							"exmnBgngYmd": obj.attr("data-f"),
+							"allYn": allYn
+						};
+						prvClctSn = obj.attr("data-a");
+						param.chkArr.push(chkList);
+					}
+				}
+			},
+
+			                                                               
+			pfnDownListPopup: (param) => {
+				layerModule.gfnLoadPagePopup({
+					action: '/html/kor/stt/stat/statDbTabDownPopup.do',
+					target: 'statDbDtlPopup',
+					param: {
+						popupContNm: 'statDbDtlPopup',
+						popMenuNm: '통계DB',
+						popupTitle: '다운로드 목록',
+						popupSubTitle: '',
+						popupType: 'down',
+						contSe: 'popup',
+						// 부모 정보
+						parentNm: 'statDbScrIntgRsrcModule',
+						callbackFuncNm: 'fnSetChkArr',
+						focusId: param.allYn == 'Y' ? 'btnAllDown' : 'btnDown',
+						// 파라미터
+						clctCtgryNm : param.clctCtgryNm,
+						chkData : param.chkArr,
+						allYn: param.allYn,
+						notCopyUrlYn: 'Y'
+					}
+				}, () => {});
+			},
+
+			                                                                  
+			pfnChkArrDelete: (obj) =>{
+				const delChkArr = (param.chkArr).map(item => {
+						if (item.clctSn === obj.attr("data-a")) {
+						    const newChkFiles = (item.chkFile).split(',').filter(f => f !== obj.attr("data-b")).join(',');
+						    const newChkFileSn = (item.chkFileSn).split(',').filter(f => f !== obj.attr("data-e")).join(',');
+						    return { ...item, chkFile: newChkFiles, chkFileSn: newChkFileSn };
+						  }
+					  return item;
+				});
+
+				// chkFile이 빈값인 경우 제거
+				param.chkArr = (delChkArr).filter(item => item.chkFile !== "");
+			},
+
+			                                          
+			pfnFileDown: async (clctSn,atchFileSeCd) => {
+				//첨부파일 목록 필터링
+				let downList = _.filter(fileList, (f) => { return f.clctSn == clctSn && f.atchFileSeCd == atchFileSeCd});
+
+				//다운로드
+				if(downList.length > 1){
+					let zipNm = "";
+					if(atchFileSeCd == "ELCF000001") {
+						zipNm = "설문지_"+utilModule.gfnGetDate("time")+".zip";
+					}else if(atchFileSeCd == "ELCF000002"){
+						zipNm = "설문개요서_"+utilModule.gfnGetDate("time")+".zip"
+					}
+
+					param.zipNm = zipNm;
+					param.fileList = downList;
+					param.randomSeq = utilModule.gfnGetRandomKey();
+					let downYn = await atchFileModule.gfnSelectElcLibClctAllAtchFileRealInfo(param);
+
+					//완료
+					//if(downYn == false){
+					//	layerModule.gfnShowCmnAlertModal("다운로드에 실패했습니다.", "알림");
+					//	return false;
+					//}
+				}else{
+					await atchFileModule.gfnElcLibClctDownFile(downList,'D');
+
+				}
+			},
+
+			                                                                  
+			pfnFnDtlPageMove:(rsltInfo) => {
+				const dtlData = $.extend({}, {certUserNm: rsltInfo.certUserNm, certUserPhone: rsltInfo.certUserPhone, pTabIndex:'0'});
+                layerModule.gfnMovePostPage2('/html/kor/stt/stat/statDbAplDsctnInq.do', dtlData);
+			}
+		}
+
+		                                                                                                                                                      
+		return {
+			                                             
+			fnInit: async () => {
+				//목록조회
+				await privateFnc.pfnSetStatDbList();
+			},
+
+			                                            
+			fnSearch: () => {
+				privateFnc.pfnSearch();
+			},
+
+			                                                    
+			fnSrchInit: () => {
+				$("#srchWrd").val("");
+				privateFnc.pfnSearch();
+			},
+
+			                                    
+			fnSortChange: (value) => {
+				param.sort = value;
+				privateFnc.pfnSetStatDbList(param);
+			},
+
+			                                                 
+			fnDtlInfoPopup: (clctSn,flag,focusDiv) => {
+				//버튼에 on이벤트
+				$("button[id^=btnDtlPopup_]").removeClass("on");
+				$("#btnDtlPopup_"+clctSn).addClass("on");
+
+				//자료명에 on이벤트
+				$("div[id^=listNm_]").removeClass("on");
+				$("#listNm_"+clctSn).addClass("on");
+
+				privateFnc.pfnStatDbDtlPopup(clctSn,focusDiv);
+			},
+
+			                                                 
+			fnAllDown: () => {
+				//설문개요서, 설문지, SAV, EXCEL 전체선택
+				$("button[class^='btn icon right btn-down']").addClass("on");
+				$("input:checkbox[name='chkData'][data-b != '']").prop("checked", true);
+
+				privateFnc.pfnDtlDownPopup("all");
+			},
+
+			                                                                  
+			fnDtlDownPopup: () => {
+				privateFnc.pfnDtlDownPopup();
+			},
+
+			                                                                  
+			fnChkArrDelete: (obj) => {
+				privateFnc.pfnChkArrDelete(obj);
+			},
+
+			                                                       
+			fnFileDown: (clctSn,atchFileSeCd) => {
+				privateFnc.pfnFileDown(clctSn,atchFileSeCd);
+			},
+
+			                                                                
+			fnSetChkArr: (reChkArr) => {
+				param.chkArr = reChkArr;
+				privateFnc.pfnChkArrChk(reChkArr);
+			},
+
+			                                                              
+			fnAplyDtlList: async () => {
+				await baseModule.gfnIntgCertPage('statDbScrIntgRsrcModule', 'fnSimpleAuthBak');
+			},
+
+			                                                       
+			fnSimpleAuthBak: (rsltInfo) => {
+				privateFnc.pfnFnDtlPageMove(rsltInfo);
+			},
+
+		};
+	})(window.axiosModule.instance);
+
+	$(function() {
+		// 초기화 하기
+		MyApp.statDbScrIntgRsrcModule.fnInit();
+
+		//엔터이벤트
+		$("#srchWrd").keydown(function (key) {
+		    if (key.keyCode == 13) {
+		    	MyApp.statDbScrIntgRsrcModule.fnSearch();
+		    }
+		});
+
+		// 파일형식 체크박스 클릭이벤트
+		$(document).on("click", "input[name=chkData]", function() {
+			let chkYn = $(this).is(':checked');
+
+			if(!chkYn){
+				MyApp.statDbScrIntgRsrcModule.fnChkArrDelete($(this));
+			}
+		});
+	});
+	</script>
+
+	<div class="tab-content">
+		<div class="top-cont-schBox">
+			<div class="left-box">
+				<a href="javascript:;" class="btn icon b-s-40 r_arrow" data-action="statDbScrIntgRsrcModule.fnAplyDtlList"><span>신청내역조회</span></a>
+			</div>
+			<div class="right-box">
+				<div class="search-inp-box b-s-40">
+					<div class="sel-inp-box">
+						<input type="text" id="srchWrd" name="srchWrd" title="검색어" value="" maxlength="500" placeholder="자료명을 입력해주세요.">
+					</div>
+					<button type="button" class="bnt-i-search" data-action="statDbScrIntgRsrcModule.fnSearch">
+						<span class="sr-only">검색</span>
+					</button>
+				</div>
+				<button type="button" class="btn icon b-s-40 btn-reset" data-action="statDbScrIntgRsrcModule.fnSrchInit">
+					<span>초기화</span>
+				</button>
+			</div>
+		</div>                          
+
+		<p class="info_p info_p_db">데이터는 다중 선택이 가능하므로, 파일 형식에서 원하는 자료를 선택하여 화면 하단의 &nbsp; <span>다운로드</span> &nbsp;&nbsp;버튼을 눌러 다운로드할 수 있습니다.</p>
+		<div class="table-db">
+			<table>
+				<caption>본 게시판은 사회통합실태조사 통계db 자료와 파일을 제공합니다.</caption>
+				<colgroup>
+					<col style="width:80%;">
+					<col style="width:20%;">
+				</colgroup>
+				<thead>
+					<tr>
+						<th>
+							<div class="tit-flex">
+								<span>자료명</span>
+								<div class="inp-wrap">
+									<div class="toggle-box inline-flex g-5">
+										<button type="button" class="btn icon list-down right on" data-action="statDbScrIntgRsrcModule.fnSortChange|DESC"><span>내림차순</span></button>
+										<button type="button" class="btn icon list-up right" data-action="statDbScrIntgRsrcModule.fnSortChange|ASC"><span>올림차순</span></button>
+									</div>
+								</div>
+							</div>
+						</th>
+						<th><span>파일형식</span></th>
+					</tr>
+				</thead>
+				<tbody id="statDbContent"></tbody>
+			</table>
+		</div>
+
+		<div class="bottom-btn-wrap center">
+			<button type="button" class="btn big center" id="btnAllDown" data-action="statDbScrIntgRsrcModule.fnAllDown"><span>전체선택</span></button>
+			<button type="button" class="btn big center" id="btnDown" data-rel="popup-btn" data-action="statDbScrIntgRsrcModule.fnDtlDownPopup"><span>다운로드</span></button>
+		</div>
+
+		                        
+		<div id="statDbDtlPopup" ></div>
+
+	</div>                    
+
+		
+		
+	</div>
+
+						<div id="dtlContainer"></div>
+						<div id="picContainer">
+							<div class="srvy-wrap">
+								<p>이 페이지에서 제공하는 정보에 대하여 어느 정도 만족하셨습니까?</p>
+								<div>
+									<form name="srvyForm" onsubmit="return false;">
+										<div class="srvy-sel-score">
+											<label>
+												<input type="radio" id="recommendScore5" name="recommendScore" value="5" />
+												매우만족
+											</label>
+											<label>
+												<input type="radio" id="recommendScore4" name="recommendScore" value="4" />
+												만족
+											</label>
+											<label>
+												<input type="radio" id="recommendScore3" name="recommendScore" value="3" />
+												보통
+											</label>
+											<label>
+												<input type="radio" id="recommendScore2" name="recommendScore" value="2" />
+												불만
+											</label>
+											<label>
+												<input type="radio" id="recommendScore1" name="recommendScore" value="1" />
+												매우불만
+											</label>
+										</div>
+										<div class="srvy-recommend-text">
+											<input type="text" id="recommendText" name="recommendText" maxLength="100">
+											<button type="button" class="btn center" data-action="subLayoutModule.fnSrvySave"><span>등록</span></button>
+										</div>
+									</form>
+								</div>
+								<p>소중한 의견 감사드리며 답변이 필요한 의견은 <a href="/html/kor/cmn/bbs/cmnBbsGenList.do/278" target="_blank" title="소통마당 묻고답하기 바로 가기">묻고답하기 게시판</a>을 이용해 주시기 바랍니다.</p>
+							</div>
+							<div class="pic-wrap">
+								<ul>
+									<li>
+										<div>담당부서 : </div>
+										<div>국정데이터조사센터</div>
+									</li>
+								</ul>
+								<div>
+									<img src="/img/common/img_opentype02.jpg" class="kogl-type" alt="공공누리 제 2유형">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div id="sns" class="sns-wrap">
+					<a href="javascript:void(0);" class="chatbot"><span>인공지능 챗봇</span></a>
+					                                                                                                                                                                                                    
+					<a href="https://www.youtube.com/channel/UCavD95DUpkV_x70VdHia-2Q?app" target="_blank" class="youtube"><span>유튜브</span></a>
+					<a href="https://www.instagram.com/kipasince1991" target="_blank" class="instagram"><span>인스타그램</span></a>
+					<a href="http://www.facebook.com/kipasince1991" target="_blank" class="facebook"><span>페이스북</span></a>
+					<a href="/html/kor/rscid/lctDrc/locationDrc.do" class="location"><span>찾아오시는길</span></a>
+					<a href="javascript:void(0);" class="ch" data-action="subLayoutModule.fnMoveSubMenu|게시판,277,10161"><span>대관신청 바로가기</span></a>
+					<a href="javascript:void(0);" class="qna" id="prdocIssuBtn" data-action="subLayoutModule.fnSimpleAuth"><span>증명서발급</em></span></a>
+					<a href="#top" class="top"><span class="sr-only">top</span></a>
+				</div>
+			</div>
+
+			                      
+			<div id="prdocIssuPopup" ></div>
+		</div>
+
+		<div id="loaddingSpinner" style="display: none;">
+			<img src="/img/cmn/spinner.gif" alt="로딩 이미지">
+		</div>
+
+		
+		
+    <div id="footer">
+        <div class="inner">
+            <div class="foot-wrap">
+                <div class="f-logo"><span class="sr-only">한국행정연구원</span></div>
+                <div class="f-menu">
+                    <ul>
+                                                                                                                        
+                        <li><a href="/html/kor/srvcgd/privacyPolicy.do"><strong class="f_p_color">개인정보처리방침</strong></a></li>
+                        <li><a href="/html/kor/srvcgd/copyrightPolicy.do"><span>저작권 보호방침</span></a></li>
+                        <li><a href="/html/kor/srvcgd/cctvMngPolicy.do"><span>CCTV운영방침</span></a></li>
+                        <li><a href="/html/kor/rscid/lctDrc/locationDrc.do"><span>찾아오시는 길</span></a></li>
+                        <li><a href="https://mail.kipa.re.kr/"><span>사내메일</span></a></li>
+                    </ul>
+
+                    <copyright>
+                        <p>(우)03367 서울시 은평구 진흥로 235 대표전화 02)564-2000</p>
+                        
+                    </copyright>
+                </div>
+            </div>
+        </div>
+    </div>
+
+	</div>
+</body>
+</html>
