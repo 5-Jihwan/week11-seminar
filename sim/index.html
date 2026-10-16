@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>한 사람의 사회자본</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--ink:#1b1f26;--ink2:#4a505b;--mute:#8a909b;--line:#d9dce2;--bg:#fff;--accent:#1f3a5f;--accent2:#e8eef6;--grey:#c9ccd2}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--ink);font-family:Pretendard,-apple-system,"Segoe UI",system-ui,sans-serif;line-height:1.55;-webkit-text-size-adjust:100%}
+body{max-width:480px;margin:0 auto;padding:20px 20px 92px}
+header{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:22px}
+header .t{font-size:13px;letter-spacing:.04em;color:var(--accent);font-weight:600}
+header .n{font-size:12px;color:var(--mute)}
+h1{font-size:22px;font-weight:700;letter-spacing:-.01em;line-height:1.35;margin-bottom:14px}
+p{font-size:16px;color:var(--ink);margin-bottom:12px}
+p.sub{font-size:14px;color:var(--ink2)}
+p.src{font-size:12px;color:var(--mute);margin-top:14px}
+.quote{border-left:3px solid var(--accent);padding:4px 0 4px 14px;margin:14px 0}
+.quote p{font-size:15px;margin-bottom:4px}
+.quote .src{margin-top:2px}
+label{display:block;font-size:14px;color:var(--ink2);margin:16px 0 6px}
+input[type=text]{width:100%;font:inherit;font-size:17px;padding:12px;border:1px solid var(--line);border-radius:0;background:#fff}
+input[type=text]:focus{outline:none;border-color:var(--accent)}
+.opts{display:flex;flex-direction:column;gap:10px;margin:14px 0 6px}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-size:16px;line-height:1.45;padding:14px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.opt b{display:block;font-size:12px;letter-spacing:.08em;color:var(--mute);font-weight:600;margin-bottom:2px}
+.opt.sel{border-color:var(--accent);background:var(--accent2)}
+.opt:disabled{cursor:default}
+.scale{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;margin:12px 0 4px}
+.scale button{font:inherit;font-size:14px;padding:10px 0;border:1px solid var(--line);background:#fff;cursor:pointer}
+.scale button.sel{background:var(--accent);color:#fff;border-color:var(--accent)}
+.scale-lab{display:flex;justify-content:space-between;font-size:12px;color:var(--mute)}
+.list{list-style:none;margin:10px 0 14px}
+.list li{padding:8px 0 8px 16px;position:relative;font-size:15px;border-bottom:1px solid var(--line)}
+.list li::before{content:"";position:absolute;left:0;top:18px;width:7px;height:1.5px;background:var(--ink)}
+.btn{display:inline-block;font:inherit;font-size:16px;font-weight:600;padding:13px 22px;border:1px solid var(--accent);background:var(--accent);color:#fff;cursor:pointer;margin-top:18px}
+.btn:disabled{background:var(--grey);border-color:var(--grey);cursor:default}
+.btn.ghost{background:#fff;color:var(--accent)}
+.bars{margin:18px 0 6px}
+.bar{display:grid;grid-template-columns:52px 1fr 40px;align-items:center;gap:10px;margin-bottom:9px;font-size:14px}
+.bar .tr{height:10px;background:var(--accent2);position:relative}
+.bar .fl{position:absolute;left:0;top:0;bottom:0;background:var(--accent);transition:width .6s ease}
+.bar .v{text-align:right;color:var(--ink2);font-variant-numeric:tabular-nums}
+.delta{font-size:14px;color:var(--accent);margin:4px 0 12px}
+.year{font-size:13px;letter-spacing:.06em;color:var(--accent);font-weight:600;margin-bottom:6px}
+.card{border:1px solid var(--ink);padding:18px;margin:16px 0}
+.card h2{font-size:15px;font-weight:600;margin-bottom:10px}
+.card dl{display:grid;grid-template-columns:72px 1fr;row-gap:8px;font-size:14px}
+.card dt{color:var(--mute)}
+.wait{color:var(--mute);font-size:15px;padding:22px 0;text-align:center;border:1px dashed var(--line)}
+footer{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 20px 14px;font-size:12px;color:var(--mute);text-align:center;line-height:1.4}
+</style>
+</head>
+<body>
+<header><div class="t">한 사람의 사회자본</div><div class="n" id="who"></div></header>
+<main id="app"></main>
+<footer>논문 결과의 방향을 따른 교육용 모형, 실제 추정치 아님</footer>
+<script>
+// ---------- 설정 ----------
+const CONFIG = {
+  endpoint: '',   // Apps Script 웹앱 URL. 비우면 로컬(localStorage)에만 기록
+  open: null,     // 열린 챕터. null이면 URL ?open= (프로토타입 기본 5)
+};
+const qs = new URLSearchParams(location.search);
+const OFFLINE = qs.get('mode') === 'offline';   // Ji 노트북 손들기 모드: 별명 없음, 저장 없음
+const OPEN = CONFIG.open ?? (qs.get('open') ? +qs.get('open') : 5);
+
+// ---------- 상태 ----------
+const S = JSON.parse(localStorage.getItem('sc_state') || 'null') || {
+  nick: '', init: {}, trust: 50, part: 40, tie: 40, log: [], step: 'nick'
+};
+if (OFFLINE) S.nick = S.nick || '손들기';
+function persist(){ localStorage.setItem('sc_state', JSON.stringify(S)); }
+
+// 한 행 = 선택 하나: ts, nick, chapter, step, choice, condition, init_trust
+function save(chapter, step, choice, condition){
+  const row = { ts: new Date().toISOString(), nick: S.nick, chapter, step, choice, condition: condition || '', init_trust: S.init.trust ?? '' };
+  S.log.push(row); persist();
+  if (OFFLINE || !CONFIG.endpoint) return;
+  fetch(CONFIG.endpoint, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'text/plain'}, body: JSON.stringify(row) }).catch(() => {});
+}
+const clamp = v => Math.max(0, Math.min(100, Math.round(v)));
+function bump(k, d){ S[k] = clamp(S[k] + d); persist(); }
+
+// ---------- 렌더 ----------
+const app = document.getElementById('app');
+const who = document.getElementById('who');
+function go(step){ S.step = step; persist(); render(); window.scrollTo(0, 0); }
+function h(html){ app.innerHTML = html; }
+function bars(){
+  const row = (n, k) => `<div class="bar"><span>${n}</span><div class="tr"><div class="fl" style="width:${S[k]}%"></div></div><span class="v">${S[k]}</span></div>`;
+  return `<div class="bars">${row('신뢰', 'trust')}${row('참여', 'part')}${row('관계', 'tie')}</div>`;
+}
+function choice(opts, cb){
+  setTimeout(() => {
+    document.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+      document.querySelectorAll('.opt').forEach(x => { x.classList.toggle('sel', x === b); x.disabled = true; });
+      cb(b.dataset.k);
+    });
+  });
+  return `<div class="opts">${opts.map(o => `<button class="opt" data-k="${o.k}"><b>${o.k}</b>${o.t}</button>`).join('')}</div>`;
+}
+function next(label, step){
+  setTimeout(() => { const b = document.getElementById('nx'); if (b) b.onclick = () => go(step); });
+  return `<button class="btn" id="nx">${label || '다음'}</button>`;
+}
+const later = step => setTimeout(() => go(step), 500);
+
+const V = {
+  // ----- 별명 -----
+  nick(){
+    if (OFFLINE) return go('q1');
+    h(`<h1>별명 하나만 정해 주세요</h1>
+    <p class="sub">이름은 쓰지 않습니다. 오늘 선택은 이 수업 안에서만 쓰고, 끝나면 지웁니다.</p>
+    <label>별명</label><input type="text" id="nk" maxlength="12" placeholder="예: 파란우산" value="${S.nick}">
+    <button class="btn" id="nx" disabled>시작</button>`);
+    const i = document.getElementById('nk'), b = document.getElementById('nx');
+    i.oninput = () => b.disabled = !i.value.trim(); b.disabled = !i.value.trim();
+    b.onclick = () => { S.nick = i.value.trim(); go('q1'); };
+  },
+  // ----- 오프닝 3문항 -----
+  q1(){
+    h(`<h1>이웃이 고를 쪽은</h1><p class="sub">여러분의 이웃이라면 어느 쪽을 고를까요.</p>
+    ${choice([{k:'A', t:'혼자 10단위를 경작한다'}, {k:'B', t:'둘이 함께 25단위를 공동 경작한다'}], k => {
+      S.init.q1 = k; S.tie = k === 'B' ? 60 : 40; save(0, 'q1', k); later('q2');
+    })}
+    <p class="src">Krishna (2007) 사회자본 지수 문항</p>`);
+  },
+  q2(){
+    h(`<h1>사람들은 대체로 믿을 만한가</h1><p class="sub">0은 전혀 믿을 수 없다, 10은 대체로 믿을 수 있다.</p>
+    <div class="scale" id="sc">${[...Array(11)].map((_, i) => `<button>${i}</button>`).join('')}</div>
+    <div class="scale-lab"><span>전혀</span><span>대체로</span></div>
+    <p class="src">Kumlin &amp; Rothstein (2005) 대인신뢰 문항, SOM 1999</p>`);
+    document.querySelectorAll('#sc button').forEach((b, i) => b.onclick = () => {
+      document.querySelectorAll('#sc button').forEach(x => { x.classList.toggle('sel', x === b); x.disabled = true; });
+      S.init.trust = i; S.trust = i * 10; save(0, 'q2', i); later('q3');
+    });
+  },
+  q3(){
+    h(`<h1>지난 1년, 단체 활동이 있었나</h1><p class="sub">동호회, 시민단체, 종교단체, 자원봉사 어느 것이든.</p>
+    ${choice([{k:'A', t:'있었다'}, {k:'B', t:'없었다'}], k => {
+      S.init.q3 = k; S.part = k === 'A' ? 60 : 30; save(0, 'q3', k); later('start');
+    })}
+    <p class="src">Freitag (2006) 결사체 참여 문항, SHP 1999</p>`);
+  },
+  start(){
+    h(`<h1>방금 답한 것이 오늘 다섯 편의 종속변수입니다</h1>
+    <p class="sub">세 막대가 여러분의 출발점입니다. 챕터가 열리면 상황이 하나씩 주어지고, 선택에 따라 막대가 움직입니다.</p>
+    ${bars()}
+    ${OPEN >= 5 ? next('5장 복지 창구 열기', 'c5_1') : '<div class="wait">다음 챕터가 열리면 화면이 바뀝니다</div>'}`);
+  },
+
+  // ----- 5장 복지 창구 (Kumlin & Rothstein) -----
+  c5_1(){
+    h(`<div class="year">2018년</div><h1>첫 아이가 태어났습니다</h1>
+    <p>아동수당을 신청하러 주민센터에 갑니다. 이해 아동수당은 소득 하위 90%에게만 줍니다. 창구에서 이렇게 안내합니다.</p>
+    <ul class="list"><li>가구 소득·재산 조사 동의서</li><li>건강보험료 납부 확인서</li><li>임대차 계약서 또는 등기부등본</li><li>금융재산 조회 동의</li></ul>
+    <p>심사 결과는 한 달쯤 뒤에 나옵니다.</p>
+    ${next('심사를 기다린다', 'c5_2')}`);
+  },
+  c5_2(){
+    h(`<div class="year">2018년</div><h1>기다리는 동안 드는 생각은</h1>
+    ${choice([{k:'A', t:'받을 사람을 가리는 거니까, 당연한 절차다'}, {k:'B', t:'내가 숨기는 게 있는지 의심받는 기분이다'}], k => {
+      save(5, 'fair2018', k); bump('trust', k === 'B' ? -8 : -3); later('c5_3');
+    })}`);
+  },
+  c5_3(){
+    h(`<div class="year">2018년</div><h1>한 달 뒤, 수급 결정 통지</h1>
+    <p>월 10만 원이 들어옵니다. 신뢰 막대가 조금 내려갔습니다.</p>
+    ${bars()}
+    <p class="delta">선별 창구 접촉 1곳당 신뢰 −.26 (0~10점 척도)</p>
+    <p class="src">Kumlin &amp; Rothstein (2005) Table 5. 방향만 따른 교육용 반영</p>
+    ${next('다음 해로', 'c5_4')}`);
+  },
+  c5_4(){
+    bump('trust', 2);
+    h(`<div class="year">2019년</div><h1>둘째가 태어났습니다</h1>
+    <p>이해 9월부터 소득 기준이 없어졌습니다. 신청서 한 장을 내면 끝입니다. 서류도, 심사도 없습니다.</p>
+    <p>다음 달부터 두 아이 몫이 들어옵니다.</p>
+    ${bars()}
+    <p class="delta">보편 창구 접촉 1곳당 신뢰 +.07</p>
+    ${next('그런데', 'c5_5')}`);
+  },
+  c5_5(){
+    const t = S.init.trust;
+    h(`<h1>그런데, 당신은 처음에 ${t}점이었습니다</h1>
+    <p>오프닝에서 "사람들은 대체로 믿을 만한가"에 ${t}점을 주셨습니다. ${t <= 5 ? '원래 신뢰가 낮은 편입니다.' : '원래 신뢰가 낮지 않은 편입니다.'}</p>
+    <p>2018년 창구가 신뢰를 깎은 걸까요, 아니면 원래 신뢰가 낮은 사람이 그 창구를 그렇게 느낀 걸까요. 이 화면으로는 가를 수 없습니다.</p>
+    <div class="quote"><p>"the opposite is always possible, especially when using nonexperimental data"</p><p class="src">Kumlin &amp; Rothstein (2005: 355), 저자 자인</p></div>
+    ${next('정책 담당자 자리로', 'c5_6')}`);
+  },
+  c5_6(){
+    h(`<h1>당신이 아동수당 담당자라면</h1><p class="sub">예산은 같습니다. 어느 쪽으로 설계하시겠습니까.</p>
+    ${choice([{k:'A', t:'상위 10%를 걸러내고 나머지에게 준다'}, {k:'B', t:'소득과 상관없이 모두에게 준다'}], k => {
+      save(5, 'policy', k); later('c5_7');
+    })}`);
+  },
+  c5_7(){
+    h(`<h1>당신이 연구자라면</h1><p class="sub">창구가 신뢰를 깎는지, 낮은 신뢰가 창구로 가는지. 방향을 어떻게 가르시겠습니까.</p>
+    ${choice([{k:'A', t:'같은 사람을 몇 년 동안 추적한다'}, {k:'B', t:'2019년 제도 전환 전후를 비교한다'}, {k:'C', t:'무작위로 나눠 한쪽만 심사를 받게 한다'}], k => {
+      save(5, 'design', k); later('end');
+    })}
+    <p class="src">다섯 편 모두 하지 못한 일입니다. 한국에는 B가 있습니다.</p>`);
+  },
+
+  // ----- 엔딩 카드 -----
+  end(){
+    const L = Object.fromEntries(S.log.filter(r => r.chapter === 5).map(r => [r.step, r.choice]));
+    h(`<h1>${S.nick}의 사회자본</h1>
+    ${bars()}
+    <div class="card"><h2>무엇이 막대를 움직였나</h2><dl>
+      <dt>개인 선택</dt><dd>심사를 ${L.fair2018 === 'B' ? '의심으로' : '절차로'} 받아들임 · 설계는 ${L.policy === 'B' ? '보편' : '선별'} · 식별은 ${({A:'추적', B:'전환 전후', C:'실험'})[L.design] || '—'}</dd>
+      <dt>제도</dt><dd>2018년 선별 창구 한 번, 2019년 보편 창구 한 번</dd>
+      <dt>숨은 변수</dt><dd>출발 신뢰 ${S.init.trust}점. 창구 이전에 이미 있던 것</dd>
+    </dl></div>
+    <p class="sub">이 카드는 Ji 화면의 분포와 함께 봅니다.</p>
+    <button class="btn ghost" id="rs">처음부터</button>`);
+    document.getElementById('rs').onclick = () => { localStorage.removeItem('sc_state'); location.reload(); };
+  },
+};
+
+function render(){ who.textContent = S.nick; (V[S.step] || V.nick)(); }
+render();
+</script>
+</body>
+</html>
