@@ -5,8 +5,7 @@ data/raw/
 .env
 .Renviron
 backend/secrets*
-data/codebooks/**/*.pdf
-data/codebooks/**/*.hwp
-data/codebooks/**/*.xlsx
-data/codebooks/**/*.txt
 corpus/.batch_id
+data/codebooks/**
+!data/codebooks/**/
+!data/codebooks/**/items_*.md
