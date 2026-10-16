@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 11 · Social Capital as Dependent Variable — 1부</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+  :root{
+    --ink:#1b1f26; --ink2:#4a505b; --mute:#8a909b; --line:#d9dce2; --bg:#ffffff;
+    --accent:#1f3a5f; --accent2:#e8eef6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#eceef1;font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;color:var(--ink)}
+  #stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  #deck{width:1280px;height:720px;position:relative;transform-origin:center center;background:var(--bg);box-shadow:0 0 0 1px var(--line)}
+  .slide{position:absolute;inset:0;display:none;padding:56px 80px 48px 80px;background:var(--bg)}
+  .slide.active{display:block}
+  .hd{position:absolute;top:52px;left:80px;right:80px}
+  .tag{font-size:14px;letter-spacing:.06em;color:var(--accent);font-weight:600;text-transform:uppercase}
+  .hd h1{font-size:34px;font-weight:700;margin-top:6px;letter-spacing:-.01em}
+  .hd .sub{font-size:16px;color:var(--ink2);margin-top:4px}
+  .bd{position:absolute;top:150px;bottom:96px;left:80px;right:80px;display:flex;align-items:center;justify-content:center}
+  .bd>.inner{width:100%;max-width:1040px}
+  .cap{position:absolute;left:80px;right:80px;bottom:44px;font-size:13px;color:var(--mute);line-height:1.5}
+  .pg{position:absolute;right:80px;bottom:20px;font-size:12px;color:var(--mute)}
+  .run{position:absolute;left:80px;bottom:20px;font-size:12px;color:var(--mute)}
+
+  /* 강 */
+  .st{font-size:38px;font-weight:600;line-height:1.35;text-align:center;letter-spacing:-.01em}
+  .st.small{font-size:30px}
+  .big{font-size:96px;font-weight:700;line-height:1;letter-spacing:-.02em}
+  .vote{margin-top:36px;display:flex;gap:20px;justify-content:center}
+  .vote div{border:1px solid var(--line);padding:14px 28px;font-size:20px;min-width:260px;text-align:center}
+  .vote div span{display:block;font-size:13px;color:var(--mute);margin-bottom:4px;letter-spacing:.08em}
+  .q{font-size:22px;color:var(--ink2);text-align:center;margin-top:28px}
+
+  /* 중·약 */
+  table{border-collapse:collapse;width:100%;font-size:18px}
+  th,td{padding:10px 14px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+  th{font-weight:600;font-size:15px;color:var(--ink2);border-bottom:2px solid var(--ink)}
+  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr.hi td{color:var(--accent);font-weight:600}
+  tr.dim td{color:var(--mute)}
+  ul{list-style:none}
+  ul li{padding:9px 0 9px 18px;position:relative;font-size:20px;line-height:1.45}
+  ul li::before{content:"";position:absolute;left:0;top:19px;width:7px;height:1.5px;background:var(--ink)}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+  .three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:28px}
+  .quote{border-left:3px solid var(--accent);padding:6px 0 6px 22px;margin:4px 0 18px}
+  .quote p{font-size:20px;line-height:1.5;color:var(--ink)}
+  .quote p.tr{font-size:17px;color:var(--ink2);margin-top:6px}
+  .quote .src{font-size:13px;color:var(--mute);margin-top:6px}
+  .next{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);font-size:18px;color:var(--accent)}
+  .k{color:var(--accent)}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  .titleline{font-size:34px;line-height:1.5;display:grid;grid-template-columns:90px 1fr;row-gap:10px;align-items:baseline}
+  .titleline .y{font-size:16px;color:var(--mute);letter-spacing:.06em}
+  .box{border:1px dashed var(--line);padding:40px;text-align:center;color:var(--mute);font-size:18px}
+
+  /* 표지 */
+  .cover{position:absolute;inset:0;padding:0 120px;display:flex;flex-direction:column;justify-content:center}
+  .cover .t1{font-size:16px;letter-spacing:.1em;color:var(--accent);font-weight:600}
+  .cover h1{font-size:56px;font-weight:700;letter-spacing:-.02em;margin-top:14px;line-height:1.15}
+  .cover .t2{font-size:24px;color:var(--ink2);margin-top:14px}
+  .cover .meta{font-size:15px;color:var(--mute);margin-top:56px;line-height:1.8}
+
+  /* notes */
+  #notes{position:fixed;left:0;right:0;bottom:0;background:#1b1f26;color:#f5f5f5;font-size:15px;line-height:1.6;padding:18px 32px;max-height:34vh;overflow:auto;display:none;font-family:inherit}
+  #notes.on{display:block}
+  #notes b{color:#9fc0e8;font-weight:600}
+  #help{position:fixed;top:8px;right:12px;font-size:11px;color:#8a909b}
+</style>
+</head>
+<body>
+<div id="stage"><div id="deck">
+
+<!-- 1 표지 -->
+<section class="slide" data-w="강">
+  <div class="cover">
+    <div class="t1">「사회자본과 공공정책」 WEEK 11 · 1부</div>
+    <h1>Social Capital<br>as Dependent Variable</h1>
+    <div class="t2">제도·정책은 사회자본을 만드는가, 부수는가</div>
+    <div class="meta">
+      Krishna (2007) · Lowndes &amp; Wilson (2001) · Freitag (2006) · Mettler (2002) · Kumlin &amp; Rothstein (2005)<br>
+      2026. 11. 13.(금) · 발제 오지환 · 성균관대학교 국정전문대학원
+    </div>
+  </div>
+  <div class="notes">표지. 오프닝 문항부터 바로 들어갑니다. 인사는 한 문장만.</div>
+</section>
+
+<!-- 2 세 가지 질문 -->
+<section class="slide" data-w="강">
+  <div class="hd"><div class="tag">도입 1</div><h1>세 가지 질문</h1></div>
+  <div class="bd"><div class="inner">
+    <div class="three">
+      <div><div class="mono k" style="font-size:14px">① 손들기</div><p style="font-size:22px;margin-top:10px;line-height:1.5">이웃이 고를 쪽은<br>혼자 10단위 경작<br>둘이 25단위 공동 경작</p><p style="font-size:13px;color:var(--mute);margin-top:10px">Krishna (2007) 문항 6</p></div>
+      <div><div class="mono k" style="font-size:14px">② QR 투표</div><p style="font-size:22px;margin-top:10px;line-height:1.5">사람들은 대체로<br>믿을 만한가<br><span class="mono">0 ─────── 10</span></p><p style="font-size:13px;color:var(--mute);margin-top:10px">Kumlin &amp; Rothstein (2005), SOM 1999 문항</p></div>
+      <div><div class="mono k" style="font-size:14px">③ 손들기</div><p style="font-size:22px;margin-top:10px;line-height:1.5">지난 1년<br>동호회·단체·자원봉사<br>활동 여부</p><p style="font-size:13px;color:var(--mute);margin-top:10px">Freitag (2006), SHP 1999 문항</p></div>
+    </div>
+  </div></div>
+  <div class="cap">세 문항 모두 오늘 다섯 편의 종속변수</div>
+  <div class="notes"><b>말:</b> 세 가지만 답해 주시면 됩니다. 첫째, 여러분 이웃이라면 어느 쪽을 고를까요. 둘째, 폰으로 0에서 10 사이 숫자 하나. 셋째, 지난 1년 동안 동호회나 단체 활동 하신 분.<br><b>받기:</b> 방금 답하신 게 오늘 다섯 편의 종속변수입니다. ①은 Krishna, ②는 Kumlin과 Rothstein, ③은 Freitag이 잰 것입니다. 오늘은 이 답이 어디서 오는지를 묻습니다.<br><b>반응 0:</b> 손 안 드신 분이 다수네요. 라자스탄에서도 그랬습니다.</div>
+</section>
+
+<!-- 3 동사 하나 -->
+<section class="slide" data-w="강">
+  <div class="hd"><div class="tag">도입 2</div><h1>동사 하나</h1></div>
+  <div class="bd"><div class="inner">
+    <div class="titleline">
+      <span class="y">1985</span><span>Bringing the State Back In</span>
+      <span class="y">2002</span><span>Bringing the State Back In <span class="k">to Civic Engagement</span></span>
+      <span class="y">2006</span><span><span class="k">Bowling</span> the State Back In</span>
+    </div>
+  </div></div>
+  <div class="cap">Evans, Rueschemeyer &amp; Skocpol (1985) · Mettler (2002) · Freitag (2006) · 'Bowling' — Putnam, <i>Bowling Alone</i> (1995; 2000)</div>
+  <div class="notes"><b>말:</b> 번역하지 않겠습니다. 동사 하나가 바뀌었을 뿐입니다. 1985년 정치학이 국가를 다시 불러들였고, 2000년대 사회자본 연구가 같은 일을 했습니다. 오늘 다섯 편 중 두 편의 제목이 그 구호의 정색 버전과 농담 버전입니다.</div>
+</section>
+
+<!-- 4 타임라인 -->
+<section class="slide" data-w="중">
+  <div class="hd"><div class="tag">도입 3</div><h1>1993 → 1996 → 5편</h1></div>
+  <div class="bd"><div class="inner">
+    <svg viewBox="0 0 1040 360" width="1040" height="360" font-family="inherit">
+      <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#1b1f26"/></marker></defs>
+      <!-- 1993 -->
+      <text x="20" y="40" font-size="14" fill="#8a909b" letter-spacing="2">1993</text>
+      <text x="20" y="70" font-size="22" font-weight="600" fill="#1b1f26">Putnam</text>
+      <text x="20" y="96" font-size="15" fill="#4a505b">Making Democracy Work</text>
+      <text x="20" y="118" font-size="15" fill="#4a505b">사회자본 = 역사의 산물</text>
+      <line x1="230" y1="75" x2="300" y2="75" stroke="#1b1f26" stroke-width="1.5" marker-end="url(#ar)"/>
+      <!-- 1996 -->
+      <text x="320" y="40" font-size="14" fill="#8a909b" letter-spacing="2">1996</text>
+      <text x="320" y="70" font-size="22" font-weight="600" fill="#1b1f26">"정부는 어디 갔나"</text>
+      <text x="320" y="100" font-size="16" fill="#1f3a5f" font-weight="600">Levi · Tarrow · Foley &amp; Edwards</text>
+      <text x="320" y="124" font-size="16" fill="#4a505b">Skocpol</text>
+      <!-- branches -->
+      <line x1="620" y1="95" x2="700" y2="60" stroke="#1b1f26" stroke-width="1.5" marker-end="url(#ar)"/>
+      <line x1="620" y1="110" x2="700" y2="200" stroke="#1b1f26" stroke-width="1.5" marker-end="url(#ar)"/>
+      <text x="720" y="30" font-size="13" fill="#8a909b" letter-spacing="2">정치학 계보</text>
+      <text x="720" y="58" font-size="18" fill="#1b1f26">Lowndes &amp; Wilson 2001</text>
+      <text x="720" y="84" font-size="18" fill="#1b1f26">Freitag 2006</text>
+      <text x="720" y="110" font-size="18" fill="#1b1f26">Krishna 2007</text>
+      <text x="720" y="180" font-size="13" fill="#8a909b" letter-spacing="2">정책환류 계보 · Pierson 1993 · Soss 1999</text>
+      <text x="720" y="208" font-size="18" fill="#1b1f26">Mettler 2002</text>
+      <text x="720" y="234" font-size="18" fill="#1b1f26">Kumlin &amp; Rothstein 2005</text>
+      <!-- skocpol dashed -->
+      <line x1="400" y1="130" x2="720" y2="215" stroke="#8a909b" stroke-width="1" stroke-dasharray="4 4"/>
+      <text x="420" y="320" font-size="15" fill="#4a505b">Levi (1996) 인용: 5편 중 4편 · Skocpol: Freitag·Mettler만 인용 (두 계보를 잇는 유일한 이름)</text>
+    </svg>
+  </div></div>
+  <div class="cap">Levi (1996) "Social and Unsocial Capital," <i>Politics &amp; Society</i> 24(1) · Tarrow (1996) <i>APSR</i> 90(2) · Foley &amp; Edwards (1996) <i>J. of Democracy</i> 7(3) · Skocpol (1996) <i>American Prospect</i> 25</div>
+  <div class="notes"><b>말:</b> Putnam은 사회자본이 역사가 정한다고 했습니다. 북부 이탈리아는 12세기 코뮌 때문이라고요. 3년 뒤 네 사람이 같은 말을 했습니다. 정부는 어디 갔나. 오늘 다섯 편은 그 질문에 대한 답안지입니다. 넷 중 넷이 Levi를 인용합니다. 계보는 둘로 갈립니다. 정치학 쪽과 정책환류 쪽. 두 계보를 잇는 이름은 Skocpol 하나뿐입니다.</div>
+</section>
+
+<!-- 5 축 뒤집기 -->
+<section class="slide" data-w="중">
+  <div class="hd"><div class="tag">도입 4</div><h1>왼쪽에서 오른쪽으로</h1></div>
+  <div class="bd"><div class="inner">
+    <svg viewBox="0 0 1040 330" width="1040" height="330" font-family="inherit">
+      <defs><marker id="ar2" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#1b1f26"/></marker></defs>
+      <text x="0" y="30" font-size="13" fill="#8a909b" letter-spacing="2">WEEK 6–10</text>
+      <rect x="0" y="48" width="220" height="56" fill="none" stroke="#1b1f26" stroke-width="1.5"/>
+      <text x="110" y="83" font-size="20" text-anchor="middle" fill="#1b1f26">사회자본</text>
+      <line x1="220" y1="76" x2="330" y2="76" stroke="#1b1f26" stroke-width="1.5" marker-end="url(#ar2)"/>
+      <text x="350" y="62" font-size="18" fill="#4a505b">민주주의 (6주차)</text>
+      <text x="350" y="86" font-size="18" fill="#4a505b">정부 성과 (7주차)</text>
+      <text x="350" y="110" font-size="18" fill="#4a505b">경제 성장 (9–10주차)</text>
+
+      <text x="0" y="190" font-size="13" fill="#1f3a5f" letter-spacing="2" font-weight="600">WEEK 11</text>
+      <rect x="0" y="208" width="220" height="56" fill="none" stroke="#1b1f26" stroke-width="1.5"/>
+      <text x="110" y="243" font-size="20" text-anchor="middle" fill="#1b1f26">정치제도 · 공공정책</text>
+      <line x1="220" y1="236" x2="330" y2="236" stroke="#1f3a5f" stroke-width="2" marker-end="url(#ar2)"/>
+      <rect x="350" y="208" width="220" height="56" fill="#e8eef6" stroke="#1f3a5f" stroke-width="1.5"/>
+      <text x="460" y="243" font-size="20" text-anchor="middle" fill="#1f3a5f" font-weight="600">사회자본</text>
+
+      <text x="680" y="190" font-size="13" fill="#8a909b" letter-spacing="2">WEEK 4 · FORMATION</text>
+      <text x="680" y="222" font-size="17" fill="#4a505b">문화 (Guiso et al. 2008)</text>
+      <text x="680" y="246" font-size="17" fill="#4a505b">개인 투자 (Glaeser et al. 2002)</text>
+      <text x="680" y="270" font-size="17" fill="#4a505b">인구·지역 구성 (Rupasingha et al. 2006)</text>
+      <text x="680" y="304" font-size="17" fill="#1f3a5f" font-weight="600">→ 오늘: 국가</text>
+    </svg>
+  </div></div>
+  <div class="cap">강의계획서 6~11주차 · 4주차 Formation of Social Capital과의 대비</div>
+  <div class="notes"><b>말:</b> 지난 5주 동안 왼쪽에 있던 변수를 오늘은 오른쪽에 놓습니다. 4주차에 같은 자리에 문화와 개인 투자를 넣었다면, 오늘은 국가를 넣습니다. 그러면 안 보이던 문제가 보입니다. 2부에서 그걸 데이터로 봅니다.</div>
+</section>
+
+<!-- 6 Krishna 비유 -->
+<section class="slide" data-w="강">
+  <div class="hd"><div class="tag">1 · Krishna (2007)</div><h1>총무 있는 동창회</h1><div class="sub">How Does Social Capital Grow? A Seven-Year Study of Villages in India · <i>Journal of Politics</i> 69(4)</div></div>
+  <div class="bd"><div class="inner">
+    <p class="st">사무국이 만든 동창회 — 총무가 만든 동창회<br>졸업 7년 뒤</p>
+    <p class="q">외부(정부·NGO)가 만든 조직은 마을 사회자본을 키웠는가</p>
+    <div class="vote"><div><span>A</span>키웠다</div><div><span>B</span>키우지 못했다</div></div>
+  </div></div>
+  <div class="cap">라자스탄 61개 마을, 1997 → 2004 패널 · 응답자 1,731명 재면접</div>
+  <div class="notes"><b>비유:</b> 졸업 7년 뒤 동창회 둘이 있습니다. 하나는 학교 동문회 사무국이 만들어준 공식 동창회, 하나는 친구 하나가 단톡 파고 총무 맡은 동창회. 7년 뒤 어느 쪽이 살아 있습니까.<br><b>투표 → 30초.</b><br><b>받기:</b> 라자스탄 61개 마을을 7년 뒤 다시 갔습니다. 16개는 1 표준편차 넘게 올랐고 7개는 떨어졌습니다. 역사가 정한다면 이 변화가 없어야 합니다.<br><b>소환:</b> 장진 원우가 3주차에 정리한 Bourdieu의 "축적된 역사"와 정면으로 부딪히는 결과입니다.</div>
+</section>
+
+<!-- 7 Krishna 표 -->
+<section class="slide" data-w="중">
+  <div class="hd"><div class="tag">1 · Krishna (2007)</div><h1>자생 조직 · 규칙 · 리더</h1></div>
+  <div class="bd"><div class="inner" style="max-width:860px">
+    <table>
+      <tr><th>독립변수 (1997 측정)</th><th class="num">b</th><th class="num">(SE)</th></tr>
+      <tr class="dim"><td>정부 주도 조직 가입</td><td class="num">7.42</td><td class="num">(7.38)</td></tr>
+      <tr class="dim"><td>NGO 주도 조직 가입</td><td class="num">3.31</td><td class="num">(4.52)</td></tr>
+      <tr class="hi"><td>주민 자생 조직 가입</td><td class="num">17.57*</td><td class="num">(7.39)</td></tr>
+      <tr class="hi"><td>마을 규칙의 명확성·동의</td><td class="num">3.77*</td><td class="num">(.46)</td></tr>
+      <tr class="hi"><td>신진 리더(new leaders) 접촉</td><td class="num">5.59*</td><td class="num">(2.03)</td></tr>
+      <tr class="dim"><td>정부 신뢰(faith in government)</td><td class="num">−.49</td><td class="num">(.92)</td></tr>
+      <tr><td>토지 보유 불평등 (SD)</td><td class="num">−.13*</td><td class="num">(.05)</td></tr>
+      <tr><td>사회자본 지수 1997</td><td class="num">.12*</td><td class="num">(.05)</td></tr>
+    </table>
+  </div></div>
+  <div class="cap">Krishna (2007) Table 2, Model 2 발췌 · DV = 마을 사회자본 지수 2004 (0–100) · OLS, N = 60, R² = .79 · *p &lt; .05 (원문 표기; 본문에서 규칙 p &lt; .001, 신진 리더 p &lt; .01) · 지방정부 리더·카스트 리더·교육·인구·강우 실패 등 통제 생략</div>
+  <div class="notes"><b>말:</b> 위 두 줄이 외부가 만든 조직입니다. 둘 다 유의하지 않습니다. 유의한 건 주민이 직접 만든 조직, 규칙, 그리고 젊은 신진 리더입니다. 정부 신뢰도 유의하지 않습니다. 사무국이 아니라 총무였습니다.</div>
+</section>
+
+<!-- 8 Krishna 급소 -->
+<section class="slide" data-w="약">
+  <div class="hd"><div class="tag">1 · Krishna (2007)</div><h1>외적 타당성</h1></div>
+  <div class="bd"><div class="inner">
+    <div class="quote">
+      <p>"Social capital is socially generated through the internal efforts of community groups."</p>
+      <p class="tr">사회자본은 공동체 집단의 내부 노력으로 사회적으로 생성됨</p>
+      <div class="src">Krishna (2007: 941), abstract</div>
+    </div>
+    <ul>
+      <li>범위 — 라자스탄 농촌 61개 마을. 공식 조직 가입률 2% 미만, 비공식 연결망 중심</li>
+      <li>측정 — 회원 수 지표를 거부하고 맥락 특화 6문항 지수 구성 (구조 3 + 인지 3)</li>
+      <li>미답 — 관료제가 작동하는 국가에서 '외부 조직 무효'가 유지되는가</li>
+    </ul>
+    <div class="next">→ 내부 리더가 키운다면, 국가는 할 일이 없는가 (Freitag)</div>
+  </div></div>
+  <div class="cap">Krishna (2007: 944–946) 측정 절; 외부 개입 가설 검토는 951–953</div>
+  <div class="notes"><b>급소(비유 회수):</b> 라자스탄에서 살아남은 건 총무 있는 쪽이었습니다. 그런데 이게 관료제가 있는 나라에서도 그럴까요. 동문회 사무국이 꽤 유능한 나라에서는요.<br><b>넘김:</b> 내부 리더가 키운다면 국가는 할 일이 없나 — 스위스로 갑니다. <b>(3초 여백)</b></div>
+</section>
+
+<!-- 9 Freitag 비유 -->
+<section class="slide" data-w="강">
+  <div class="hd"><div class="tag">2 · Freitag (2006)</div><h1>학생총회 있는 학교</h1><div class="sub">Bowling the State Back In: Political Institutions and the Creation of Social Capital · <i>EJPR</i> 45(1)</div></div>
+  <div class="bd"><div class="inner">
+    <p class="st">학생총회로 교칙을 바꾸는 학교 — 교무실이 통보하는 학교<br>동아리 수</p>
+    <p class="q">결사체가 많은 칸톤이 많은 이유는</p>
+    <div class="vote"><div><span>A</span>직접민주주의</div><div><span>B</span>독일어권</div></div>
+  </div></div>
+  <div class="cap">스위스 24개 칸톤, 1980–1999 · 결사체 지수 = SHP 1999 4문항 (참여·명예직·시간·회원 수) 주성분</div>
+  <div class="notes"><b>비유:</b> 학생총회로 교칙을 바꿀 수 있는 학교와 교무실이 통보하는 학교. 어느 쪽에 동아리가 많을까요. 당연히 전자죠. 그런데 전자가 전부 특목고라면요.<br><b>투표 → 30초.</b><br><b>받기:</b> 저자의 답은 둘 다입니다. 각주 10에 상관 .86을 적어뒀습니다.<br><b>소환:</b> 박민지 원우가 2주차에 정리한 Olson의 선택적 유인 — 직접민주주의가 바로 그 유인 아닙니까.</div>
+</section>
+
+<!-- 10 Freitag 표 -->
+<section class="slide" data-w="중">
+  <div class="hd"><div class="tag">2 · Freitag (2006)</div><h1>직접민주주의 계수</h1></div>
+  <div class="bd"><div class="inner" style="max-width:860px">
+    <table>
+      <tr><th>독립변수</th><th class="num">Model 1</th><th class="num">Model 5</th></tr>
+      <tr class="hi"><td>직접민주주의 지수</td><td class="num">.47*** (3.15)</td><td class="num">.18 (0.94)</td></tr>
+      <tr><td>합의민주주의 (정부 연합 득표율)</td><td class="num">.38*** (3.73)</td><td class="num">.43*** (4.22)</td></tr>
+      <tr><td>지방자치 수준</td><td class="num">.21** (2.81)</td><td class="num">.19** (2.28)</td></tr>
+      <tr><td>언어권 (독일어 사용자 비율)</td><td class="num">—</td><td class="num">.38** (2.17)</td></tr>
+      <tr><td>R²</td><td class="num">.76</td><td class="num">.79</td></tr>
+    </table>
+  </div></div>
+  <div class="cap">Freitag (2006) Table 6 발췌 · 표준화 계수 (괄호 |t|, White 강건 SE) · N = 24 칸톤 · DV = 결사체 지수 1999 · *p &lt; .10 **p &lt; .05 ***p &lt; .01 · 각주 10: 직접민주주의–언어권 r = .86</div>
+  <div class="notes"><b>말:</b> 왼쪽 열에서 직접민주주의는 .47로 가장 큰 계수입니다. 언어권을 넣은 오른쪽 열에서 .18로 내려가고 유의성이 사라집니다. 저자가 직접 적어둔 상관이 .86입니다. 특목고 변수를 넣은 겁니다.</div>
+</section>
+
+<!-- 11 Freitag 급소 -->
+<section class="slide" data-w="약">
+  <div class="hd"><div class="tag">2 · Freitag (2006)</div><h1>결사체만</h1></div>
+  <div class="bd"><div class="inner">
+    <div class="quote">
+      <p>"it seems likely that the most common direction of procedure is from trusting to joining associations"</p>
+      <p class="tr">가장 흔한 방향은 신뢰에서 결사체 가입으로 — 신뢰는 종속변수가 아닌 통제변수로 처리</p>
+      <div class="src">Freitag (2006: 134)</div>
+    </div>
+    <ul>
+      <li>DV 범위 — 결사체 참여만. 신뢰·규범은 제외</li>
+      <li>식별 — 제도 변수와 언어권이 동일 지역에서 겹침 (Model 5)</li>
+      <li>결론 — 'top-down path' (145). 단, 국가가 만든 것이 '모임'인지 '신뢰'인지 미식별</li>
+      <li>N = 24 · 횡단면 · 저자 스스로 "suggestive and explorative" (146)</li>
+    </ul>
+    <div class="next">→ 제도가 만든다고 하자. 어떤 설계가 (Lowndes &amp; Wilson)</div>
+  </div></div>
+  <div class="cap">Freitag (2006: 126–127, 134, 145–146)</div>
+  <div class="notes"><b>급소(회수):</b> 스위스에서 투표권 많은 칸톤은 거의 다 독일어권입니다. 학생총회 때문인지 특목고라서인지 이 데이터로는 못 가립니다. 하나 더. 종속변수가 결사체 참여뿐입니다. 신뢰는 통제변수로 뺐습니다. 국가가 만든 게 '모임'인지 '신뢰'인지 이 논문으론 모릅니다.<br><b>넘김:</b> 제도가 만든다고 치죠. 어떤 설계가요. <b>(3초)</b></div>
+</section>
+
+<!-- 12 L&W 비유 -->
+<section class="slide" data-w="강">
+  <div class="hd"><div class="tag">3 · Lowndes &amp; Wilson (2001)</div><h1>건의함</h1><div class="sub">Social Capital and Local Governance: Exploring the Institutional Design Variable · <i>Political Studies</i> 49(4)</div></div>
+  <div class="bd"><div class="inner">
+    <p class="st">건의함을 달면<br>아이디어가 생기는가, 있던 것이 나오는가</p>
+    <p class="q">지방정부의 제도 설계는 사회자본을</p>
+    <div class="vote"><div><span>A</span>만든다</div><div><span>B</span>있던 것을 동원되게 한다</div></div>
+  </div></div>
+  <div class="cap">영국 New Labour 지방정부 개혁('democratic renewal') 사전 평가 · 실증 자료 없음</div>
+  <div class="notes"><b>비유:</b> 학생들이 아이디어가 없어서 조용한 게 아닙니다. 건의함이 없어서 조용한 겁니다. 건의함을 달면 아이디어가 생기는 걸까요, 있던 게 나오는 걸까요.<br><b>투표 → 30초.</b><br><b>받기:</b> 저자는 둘 다라는데, 데이터가 없습니다.</div>
+</section>
+
+<!-- 13 L&W 네 차원 -->
+<section class="slide" data-w="중">
+  <div class="hd"><div class="tag">3 · Lowndes &amp; Wilson (2001)</div><h1>제도 설계의 네 차원</h1></div>
+  <div class="bd"><div class="inner">
+    <table>
+      <tr><th style="width:36%">차원</th><th>사회자본에 작동하는 경로</th></tr>
+      <tr><td>자발부문과의 관계</td><td>지원·인정의 조건이 결사체의 유인 구조를 바꿈. 계약·파트너십은 소규모 단체를 배제</td></tr>
+      <tr><td>시민 참여 기회</td><td>숙의형 참여(시민배심·포럼)만 신뢰·호혜 규범을 생성. 만족도 조사는 기여 없음</td></tr>
+      <tr><td>의사결정의 반응성</td><td>응답 없는 참여는 참여를 소멸시킴. 공급된 사회자본에 대응하는 '수요' 필요</td></tr>
+      <tr><td>민주적 리더십·사회적 포용</td><td>참여 확대 ≠ 민주주의. 절차의 시간·형식이 집단별 접근을 결정</td></tr>
+    </table>
+    <div class="quote" style="margin-top:22px">
+      <p>"Social capital may, then, remain a 'latent' phenomenon in the absence of responsive political institutions."</p>
+      <p class="tr">반응하는 정치제도가 없으면 사회자본은 '잠재' 상태로 남음</p>
+      <div class="src">Lowndes &amp; Wilson (2001: 638)</div>
+    </div>
+  </div></div>
+  <div class="cap">Lowndes &amp; Wilson (2001: 633–641)</div>
+  <div class="notes"><b>말:</b> 네 차원 중 셋째가 핵심입니다. 참여를 열어놓고 응답하지 않으면 참여가 사라진다. 사회자본은 공급이 아니라 수요 쪽에서 막힌다는 겁니다. '잠재'라는 단어가 그래서 나옵니다.</div>
+</section>
+
+<!-- 14 L&W 급소 -->
+<section class="slide" data-w="약">
+  <div class="hd"><div class="tag">3 · Lowndes &amp; Wilson (2001)</div><h1>설계도만</h1></div>
+  <div class="bd"><div class="inner">
+    <ul>
+      <li>자료 — 없음. 개혁 프로그램의 예상 효과를 개념틀로 추론</li>
+      <li>표적 — Putnam이 이탈리아 지역정부의 제도 설계를 '상수'로 둔 것 (632). 20년간 설계가 같았다는 가정 자체를 공격</li>
+      <li>결론 — 'institutional gardening' vs 'engineering' (645). 설계의 내용만큼 과정이 결정적</li>
+      <li>지위 — 오늘 5편 중 유일하게 반박 불가능한 논문. 강점이자 약점</li>
+    </ul>
+    <div class="next">→ 그러면 실제 정책 하나를 놓고 보자 (Mettler)</div>
+  </div></div>
+  <div class="cap">Lowndes &amp; Wilson (2001: 632, 641–645)</div>
+  <div class="notes"><b>급소(회수):</b> 저자는 '나오는 것'이라고 합니다. 그런데 이 논문은 건의함을 달아본 적이 없습니다. 설계도만 있고 지은 건물이 없는 논문입니다.<br><b>넘김:</b> 그럼 실제 정책 하나를 놓고 봅시다. <b>(3초)</b><br><b>시간 초과 시 이 논문 전체(12~14) 삭제.</b></div>
+</section>
+
+<!-- 15 Mettler 비유 -->
+<section class="slide" data-w="강">
+  <div class="hd"><div class="tag">4 · Mettler (2002)</div><h1>전액 장학금</h1><div class="sub">Bringing the State Back In to Civic Engagement: Policy Feedback Effects of the G.I. Bill · <i>APSR</i> 96(2)</div></div>
+  <div class="bd"><div class="inner">
+    <p class="st">전액 장학금 졸업생의 모교 기부<br>돈 때문인가, 알아봐 준 기억 때문인가</p>
+    <p class="q">G.I. Bill 수혜자의 높은 시민참여는</p>
+    <div class="vote"><div><span>A</span>교육 효과 (by-product)</div><div><span>B</span>정책 설계 효과 (feedback)</div></div>
+  </div></div>
+  <div class="cap">2차대전 참전자 716명 우편조사(1998) + 면접 28명 · 대상 기간 1950–64</div>
+  <div class="notes"><b>비유:</b> 전액 장학금 받은 졸업생이 나중에 모교에 기부를 더 합니다. 돈이 생겨서일까요, 학교가 나를 알아봐 줬다는 기억 때문일까요.<br><b>투표 → 30초.</b><br><b>받기:</b> 교육 수준을 통제해도 G.I. Bill 계수가 남습니다. 교육 효과만이면 사라져야 합니다.<br><b>(선택) 미생 컷:</b> 장그래 정규직 탈락 — 돈 문제가 아니라 회사가 나를 어떻게 봤나의 문제.</div>
+</section>
+
+<!-- 16 Mettler 표 -->
+<section class="slide" data-w="중">
+  <div class="hd"><div class="tag">4 · Mettler (2002)</div><h1>교육 통제 후</h1></div>
+  <div class="bd"><div class="inner">
+    <div class="two">
+      <div>
+        <svg viewBox="0 0 440 240" width="440" height="240" font-family="inherit">
+          <defs><marker id="ar3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#1b1f26"/></marker></defs>
+          <rect x="0" y="80" width="120" height="80" fill="none" stroke="#1b1f26" stroke-width="1.5"/>
+          <text x="60" y="112" font-size="15" text-anchor="middle">공공정책</text>
+          <text x="60" y="134" font-size="12" text-anchor="middle" fill="#8a909b">급여 · 규칙</text>
+          <line x1="120" y1="100" x2="190" y2="60" stroke="#1b1f26" stroke-width="1.5" marker-end="url(#ar3)"/>
+          <line x1="120" y1="140" x2="190" y2="180" stroke="#1b1f26" stroke-width="1.5" marker-end="url(#ar3)"/>
+          <text x="200" y="58" font-size="15">자원 효과 → 역량</text>
+          <text x="200" y="186" font-size="15">해석 효과 → 성향</text>
+          <line x1="330" y1="60" x2="380" y2="110" stroke="#1b1f26" stroke-width="1.5" marker-end="url(#ar3)"/>
+          <line x1="330" y1="180" x2="380" y2="130" stroke="#1b1f26" stroke-width="1.5" marker-end="url(#ar3)"/>
+          <text x="440" y="125" font-size="16" text-anchor="end" fill="#1f3a5f" font-weight="600">시민참여</text>
+          <text x="0" y="230" font-size="12" fill="#8a909b">Figure 1 (353) 단순화</text>
+        </svg>
+      </div>
+      <table>
+        <tr><th></th><th class="num">단체 가입 수</th><th class="num">정치 참여</th></tr>
+        <tr class="hi"><td>G.I. Bill 이용</td><td class="num">.47 (p=.01)</td><td class="num">.38 (p=.01)</td></tr>
+        <tr><td>최종 학력</td><td class="num">.09 (p=.02)</td><td class="num">.01 (p=.67)</td></tr>
+        <tr><td>부모의 시민/정치 활동</td><td class="num">.28 (p&lt;.01)</td><td class="num">.18 (p&lt;.01)</td></tr>
+        <tr><td>R² · N</td><td class="num">.14 · 393</td><td class="num">.08 · 379</td></tr>
+      </table>
+    </div>
+  </div></div>
+  <div class="cap">Mettler (2002) Table 1·2 발췌 · OLS 비표준화 계수 · DV = 1950–64 단체 가입 수 / 정치활동 합산 · 부모 학력·1920년대 생활수준·1960년대 생활수준 통제 생략</div>
+  <div class="notes"><b>말:</b> 학력을 통제했는데 G.I. Bill 계수가 .47, 정치참여 .38로 남습니다. 정치참여 쪽은 학력이 아예 유의하지 않습니다. 돈만 준 게 아니라는 뜻입니다.</div>
+</section>
+
+<!-- 17 Mettler 급소 -->
+<section class="slide" data-w="약">
+  <div class="hd"><div class="tag">4 · Mettler (2002)</div><h1>회상 50년</h1></div>
+  <div class="bd"><div class="inner">
+    <ul>
+      <li>시점 — 1998년 조사로 1950–64년 활동을 회고. 'landmark event' 논리로 방어 (Appendix A)</li>
+      <li>표본 — 4개 부대 참전자회 명단, 응답 716명(73.5%), 백인 98.5%. 흑인 부대 미포함</li>
+      <li>효과 분포 — 저·중 생활수준 출신에서 유의, 최저층 비유의 (Table 6)</li>
+      <li>지속 — 1965년 이후 G.I. Bill 계수 비유의, 학력 효과로 대체 (각주 15)</li>
+    </ul>
+    <div class="quote">
+      <p>"It is time to 'bring the state back in' to the study of civic life."</p>
+      <p class="tr">시민생활 연구에 국가를 다시 불러들일 때</p>
+      <div class="src">Mettler (2002: 363)</div>
+    </div>
+    <div class="next">→ 정책이 만든다면, 부술 수도 있는가 (Kumlin &amp; Rothstein)</div>
+  </div></div>
+  <div class="cap">Mettler (2002: 355, 361–364)</div>
+  <div class="notes"><b>급소(회수):</b> 참전용사들은 G.I. Bill을 권리가 아니라 선물로 기억했습니다. 그런데 그 기억을 1998년에 물었습니다. 50년 전 일을요. 장학금 받은 걸 50년 뒤에 물으면 뭐라고 답하시겠습니까.<br><b>넘김:</b> 정책이 만든다면, 부술 수도 있나요. <b>(3초)</b></div>
+</section>
+
+<!-- 18 K&R 비유 -->
+<section class="slide" data-w="강">
+  <div class="hd"><div class="tag">5 · Kumlin &amp; Rothstein (2005)</div><h1>두 번 받은 재난지원금</h1><div class="sub">Making and Breaking Social Capital: The Impact of Welfare-State Institutions · <i>CPS</i> 38(4)</div></div>
+  <div class="bd"><div class="inner">
+    <p class="st">2020 전 국민 — 2021 하위 88%<br>어느 쪽이 국가를 더 믿게 했는가</p>
+    <p class="q">선별복지와 불신의 관계는</p>
+    <div class="vote"><div><span>A</span>선별이 불신을 낳는다</div><div><span>B</span>불신하는 사람이 선별로 간다</div></div>
+  </div></div>
+  <div class="cap">서부 스웨덴 SOM 1999, N = 3,615 · 선별(자산조사) 7개 기관 vs 보편 10개 기관 접촉 수</div>
+  <div class="notes"><b>비유:</b> 2020년엔 전 국민이 받았고, 2021년엔 하위 88%만 받았습니다. 같은 돈을 두 번 받았는데, 한 번은 그냥 받았고 한 번은 내가 88% 안에 드는지 확인하고 받았습니다. 어느 쪽이 국가를 더 믿게 했습니까.<br><b>투표 → 30초.</b><br><b>받기:</b> 저자도 355쪽에서 인정합니다. 횡단면이라 못 가른다, 실험 데이터가 필요하다.</div>
+</section>
+
+<!-- 19 K&R 숫자 -->
+<section class="slide" data-w="중">
+  <div class="hd"><div class="tag">5 · Kumlin &amp; Rothstein (2005)</div><h1>−0.26 / +0.07</h1></div>
+  <div class="bd"><div class="inner">
+    <div class="two" style="grid-template-columns:1fr 1.3fr">
+      <div style="text-align:center">
+        <div class="big k">−.26</div>
+        <p style="font-size:16px;color:var(--ink2);margin-top:8px">선별(자산조사) 기관 접촉 1곳당</p>
+        <div class="big" style="margin-top:28px">+.07</div>
+        <p style="font-size:16px;color:var(--ink2);margin-top:8px">보편 기관 접촉 1곳당</p>
+      </div>
+      <div>
+        <table>
+          <tr><th>선별 기관 접촉 수</th><th class="num">0</th><th class="num">1</th><th class="num">2+</th></tr>
+          <tr><td>평균 대인신뢰 (0–10)</td><td class="num">6.7</td><td class="num">6.0</td><td class="num">5.7</td></tr>
+          <tr><td style="color:var(--mute)">N</td><td class="num" style="color:var(--mute)">2,411</td><td class="num" style="color:var(--mute)">829</td><td class="num" style="color:var(--mute)">294</td></tr>
+        </table>
+        <p style="font-size:15px;color:var(--ink2);margin-top:18px;line-height:1.6">통제 10개: 연령 · 학력 · 계층 · 가구소득 · 결사체 가입 수 · 정치관심 · 공공부문 종사 · 삶의 만족 · 좌우 이념 · 실업</p>
+      </div>
+    </div>
+  </div></div>
+  <div class="cap">Kumlin &amp; Rothstein (2005) Table 3·5 · OLS 비표준화, DV = 대인신뢰 0–10 · 두 계수 모두 p &lt; .01 · Adj. R² = .10, N = 2,543 · 매개: 공정 대우 지각 (Table 7, 6개 기관 중 4개 유의)</div>
+  <div class="notes"><b>말:</b> 자산조사 창구 한 곳 더 다닐 때마다 0.26 내려가고, 보편 서비스 한 곳 더 쓸 때마다 0.07 올라갑니다. 통제 열 개를 넣어도 남습니다. 평균으로 보면 6.7, 6.0, 5.7.</div>
+</section>
+
+<!-- 20 K&R 급소 -->
+<section class="slide" data-w="약">
+  <div class="hd"><div class="tag">5 · Kumlin &amp; Rothstein (2005)</div><h1>횡단면</h1></div>
+  <div class="bd"><div class="inner">
+    <div class="quote">
+      <p>"the opposite is always possible, especially when using nonexperimental data"</p>
+      <p class="tr">역방향 인과는 늘 가능 — 특히 비실험 자료에서 (저자 자인)</p>
+      <div class="src">Kumlin &amp; Rothstein (2005: 355)</div>
+    </div>
+    <ul>
+      <li>기제 — 창구 경험 → 절차공정성 지각 → 타인 신뢰 (세 가지 심리 경로, 349)</li>
+      <li>역인과 — 원래 불신하는 사람이 선별 급여 수급층에 집중될 가능성 미배제</li>
+      <li>방어 — 통제 10개. 통제의 수가 방향을 정하지는 않음</li>
+      <li>함의 — 복지국가의 크기가 아니라 설계 ('creeping selectivization', 361)</li>
+    </ul>
+    <div class="next">→ 이 −0.26을 한국에서 다시 볼 수 있는가 (2부)</div>
+  </div></div>
+  <div class="cap">Kumlin &amp; Rothstein (2005: 349, 355, 360–361)</div>
+  <div class="notes"><b>급소(회수):</b> 스웨덴에선 창구 하나 더 다닐 때마다 0.26씩 내려갔습니다. 그런데 창구를 다녀서 불신하게 된 건지, 원래 불신하던 사람이 창구를 다니게 된 건지 — 저자도 모른다고 썼습니다.<br><b>넘김:</b> 이 −0.26을 한국에서 다시 볼 수 있을까요. <b>(3초)</b></div>
+</section>
+
+<!-- 21 무엇을 쟀나 -->
+<section class="slide" data-w="약">
+  <div class="hd"><div class="tag">마무리 1</div><h1>무엇을 쟀나</h1></div>
+  <div class="bd"><div class="inner">
+    <table style="font-size:17px">
+      <tr><th>논문</th><th>종속변수</th><th>측정</th><th>그 선택의 이유</th></tr>
+      <tr><td>Krishna</td><td>집합행동 성향</td><td>자체 6문항 지수</td><td>라자스탄에 공식 조직 없음 — 회원 수 무의미</td></tr>
+      <tr><td>Freitag</td><td>결사체 참여</td><td>SHP 4문항 주성분</td><td>신뢰 → 참여 방향 가정. 신뢰는 통제</td></tr>
+      <tr><td>Lowndes &amp; Wilson</td><td>Putnam 혼합 정의</td><td>—</td><td>'잠재'와 '동원'의 구분을 추가</td></tr>
+      <tr><td>Mettler</td><td>단체 가입 수 · 정치활동</td><td>회고 설문 합산</td><td>Bowling Alone 식 집계. 신뢰 미측정</td></tr>
+      <tr><td>Kumlin &amp; Rothstein</td><td>대인신뢰</td><td>0–10 단일 문항</td><td>참여 → 신뢰 증거 없음 (Stolle 1998). 결사체는 통제</td></tr>
+    </table>
+    <p style="font-size:19px;margin-top:22px;color:var(--ink2)">합의: 사회자본은 만들어진다 · 불합의: 무엇이 사회자본인가 — 결사체를 재면 국가가 만들고, 신뢰를 재면 국가가 부순다</p>
+  </div></div>
+  <div class="cap">3주차 정의(Bourdieu·Coleman·Putnam)의 차이가 11주차 측정의 차이로 — Freitag (2006: 134) vs Kumlin &amp; Rothstein (2005: 345–346)</div>
+  <div class="notes"><b>말:</b> 다섯이 '만들 수 있다'엔 합의했고, '무엇을'엔 합의가 없습니다. 결사체를 재면 국가가 만들고, 신뢰를 재면 국가가 부숩니다. 종속변수를 뭘로 재느냐가 결론을 정합니다. 2부 첫 변형이 이겁니다.</div>
+</section>
+
+<!-- 22 지도 -->
+<section class="slide" data-w="중">
+  <div class="hd"><div class="tag">마무리 2</div><h1>지도</h1></div>
+  <div class="bd"><div class="inner">
+    <div class="box" style="height:300px;display:flex;flex-direction:column;justify-content:center">
+      SLNA 인용망 지도 — 삽입 예정<br><span style="font-size:14px;margin-top:10px">주 경로(main path) · 클러스터 · 오늘 5편의 위치 5점 · 5편이 다루지 않은 클러스터 1개 표시</span>
+    </div>
+    <p style="font-size:17px;color:var(--ink2);margin-top:18px">휴식 후 2부: 이 지도 위에서 한국 데이터로 Kumlin &amp; Rothstein을 돌리고, 종속변수·분석단위·식별전략을 바꿔가며 점의 이동을 본다 · 배부: 토론 계획서 · 데이터 매핑표 · R 스크립트</p>
+  </div></div>
+  <div class="cap">SLNA 검색식·DB·편수는 핸드아웃 부록</div>
+  <div class="notes"><b>말:</b> 교수님이 고르신 5편은 이 지도의 이 능선입니다. 여기 이 덩어리는 오늘 안 다뤘습니다. 휴식 후 이 지도 위에서 한국 데이터를 돌립니다. 배부물 받아 가세요.<br><b>방법 설명 금지.</b> 지도 한 장, 위치 다섯 점만.</div>
+</section>
+
+<!-- A1 부록 -->
+<section class="slide" data-w="약">
+  <div class="hd"><div class="tag">부록 A1</div><h1>비판자 인용 교차표</h1></div>
+  <div class="bd"><div class="inner">
+    <table style="font-size:17px">
+      <tr><th></th><th>Freitag</th><th>L&amp;W</th><th>Krishna</th><th>Mettler</th><th>K&amp;R</th></tr>
+      <tr class="hi"><td>Levi 1996</td><td>○</td><td>○</td><td>○</td><td>—</td><td>○</td></tr>
+      <tr><td>Tarrow 1996</td><td>○</td><td>○</td><td>○</td><td>—</td><td>—</td></tr>
+      <tr><td>Foley &amp; Edwards 1996</td><td>○</td><td>○</td><td>(1998)</td><td>—</td><td>—</td></tr>
+      <tr><td>Skocpol 1996 / et al. 2000</td><td>○</td><td>—</td><td>—</td><td>○</td><td>—</td></tr>
+      <tr><td>Pierson 1993</td><td>—</td><td>—</td><td>—</td><td>○</td><td>○</td></tr>
+      <tr><td>Soss 1999</td><td>—</td><td>—</td><td>—</td><td>○</td><td>○</td></tr>
+      <tr><td>Berman 1997</td><td>—</td><td>—</td><td>○</td><td>—</td><td>○</td></tr>
+      <tr><td>Stolle 1998</td><td>○</td><td>—</td><td>—</td><td>—</td><td>○</td></tr>
+    </table>
+  </div></div>
+  <div class="cap">5편 참고문헌 대조 · 상호 인용: Freitag → Mettler, L&amp;W · Krishna → K&amp;R, L&amp;W · K&amp;R → Mettler · Portes 1998은 Freitag의 정의 각주에만 등장 (14주차 Dark Side로 이월)</div>
+  <div class="notes">Q&amp;A 대비. 교수님이 계보를 물으면 이 표.</div>
+</section>
+
+</div></div>
+<div id="notes"></div>
+<div id="help">←/→ 이동 · N 노트 · 쪽번호</div>
+
+<script>
+(function(){
+  const slides=[...document.querySelectorAll('.slide')];
+  const notes=document.getElementById('notes');
+  let i=0;
+  slides.forEach((s,k)=>{
+    const pg=document.createElement('div');pg.className='pg';pg.textContent=(k+1)+' / '+slides.length;s.appendChild(pg);
+    if(k>0){const r=document.createElement('div');r.className='run';r.textContent='「사회자본과 공공정책」 11주차 · Social Capital as Dependent Variable · 1부';s.appendChild(r);}
+  });
+  function show(n){
+    i=Math.max(0,Math.min(slides.length-1,n));
+    slides.forEach((s,k)=>s.classList.toggle('active',k===i));
+    const nt=slides[i].querySelector('.notes');
+    notes.innerHTML=(nt?nt.innerHTML:'')+'<div style="color:#8a909b;margin-top:8px;font-size:12px">무게: '+(slides[i].dataset.w||'')+'</div>';
+    location.hash=i+1;
+  }
+  function fit(){
+    const sx=window.innerWidth/1280, sy=(window.innerHeight-(notes.classList.contains('on')?notes.offsetHeight:0))/720;
+    const s=Math.min(sx,sy);
+    const d=document.getElementById('deck');
+    d.style.transform='scale('+s+')';
+    d.style.marginBottom=(notes.classList.contains('on')?notes.offsetHeight:0)+'px';
+  }
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){show(i+1);}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){show(i-1);}
+    else if(e.key==='n'||e.key==='N'){notes.classList.toggle('on');fit();}
+    else if(e.key==='Home'){show(0);} else if(e.key==='End'){show(slides.length-1);}
+  });
+  document.getElementById('deck').addEventListener('click',e=>{ if(e.clientX>window.innerWidth/2)show(i+1);else show(i-1); });
+  window.addEventListener('resize',fit);
+  const h=parseInt(location.hash.slice(1));
+  show(isNaN(h)?0:h-1); fit();
+  // hide inline notes from render
+  document.querySelectorAll('.slide .notes').forEach(n=>n.style.display='none');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+data/raw/
+*.sav
+*.dta
+*.rds
+.env
+.Renviron
+backend/secrets*
