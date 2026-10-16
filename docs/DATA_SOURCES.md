@@ -29,13 +29,32 @@
 | 복지로 | 보건복지부 | https://www.bokjiro.go.kr | 아동수당 연혁: 2018.9 소득 하위 90% 선별 도입 → **2019.1 소득 기준 폐지(보편)** → 2019.9 만 7세 미만으로 연령 확대 |
 | e-나라지표 | 정부 | https://www.index.go.kr | 아동수당·기초연금 수급 추이. 2018·2019 수급자 표는 검색에서 못 찾음 → 보건복지부 통계연보·국회 자료로 |
 
-## 3. 국제 비교·선행연구 검색
+## 3. 국제 조사 — 외국인 연구자가 받을 수 있는 것 (2026-10-16 확인)
+
+GESIS·ANES·PSID는 자동 접속이 403이라 접근 조건은 검색 요약 기준. ESS 질문지와 SHP 이용 안내는 원문을 읽었다.
+
+| 조사 | 입구 | 외국인 접근 | 신뢰 | 참여 | 복지·제도 | 한국 포함 |
+| --- | --- | --- | --- | --- | --- | --- |
+| **ESS** 유럽사회조사 | https://ess.sikt.no | 등록만(무료) R11까지 | ppltrst 0~10(K&R과 같은 척도), pplfair, 기관신뢰 trstprl·trstlgl·trstplc(B6~12) | 단체·정당 활동 B15~17 | **R4(2008)·R8(2016) 복지국가 모듈** E1~42: 부정수급 인식·실업급여 조건 태도. 본인 수급은 주소득원만 | 미포함 |
+| **SHP** 스위스 가구패널 | https://forscenter.ch/projects/swiss-household-panel/data/ | SWISSUbase 계약 서명(무료·비상업) | 일반신뢰 | 결사체 가입·자원봉사(Freitag 2006 원자료) | 사회·민간 이전소득 | 없음 |
+| ISSP | https://issp.org (GESIS 배포) | GESIS 등록(무료) | 2014 Citizenship II 정치인 신뢰 | 2014 단체 가입 | 2016 Role of Government V | **2014 한·일, 2016 한국** |
+| WVS / EVS | https://www.worldvaluessurvey.org · https://europeanvaluesstudy.eu | 등록만(무료, 재배포 금지) | 일반신뢰·기관신뢰 | 단체 가입 | 태도 문항 | WVS W7 한국·미국. 일본은 SSJDA 신청 |
+| GSS 미국 | https://gss.norc.org | 공개 다운로드 | TRUST, FAIR, 기관신뢰 CON* | MEMNUM 등 | HELPPOOR·NATFARE 태도. 수급 변수 미확인 | 없음. 2006~14 패널 있음 |
+| EASS 동아시아 | ICPSR 36277 | JGSS와 동일 | 2012 Network Social Capital 모듈 | 단체 가입 | 미확인 | 한·일·중·대만 |
+| JGSS / SSJDA 일본 | https://jgss.daishodai.ac.jp · https://csrda.iss.u-tokyo.ac.jp | 계정 + 연구계획 심사, 대학원생은 지도교수 동의. 해외는 직접 문의 | 미확인 | 미확인 | 미확인 | 없음(EASS로 연결) |
+| SHARE 유럽 50+ | https://share-eric.eu | User Statement 이메일, 약 10영업일 | 미확인 | 미확인 | 연금·수급 미확인 | 없음 |
+| Eurobarometer | GESIS | 등록 | 기관신뢰 | — | — | 없음 |
+| CPS 시민참여 보충 | 미국 센서스·AmeriCorps | 공개 | — | 자원봉사·참여 | — | 없음 |
+| ANES | https://electionstudies.org | 등록 | VCF0619 일반신뢰 | — | — | 없음 |
+| PSID | https://psidonline.isr.umich.edu | 등록 | 미확인 | 미확인 | 수급 변수 | 없음 |
+| ICPSR | https://www.icpsr.umich.edu | 무료 MyData 계정, 일부는 기관회원 한정(성균관대 회원 여부 미확인) | — | — | — | EASS 경유 |
+
+**판단** Freitag 재현(제도 → 결사체)은 SHP가 1순위. K&R 재현(선별 수급 → 신뢰)은 국제 공개 자료 중 개인 수급 변수가 확인된 곳이 없다. 가장 가까운 것은 ESS R8 복지 모듈이나 인식 문항이고 횡단면이다. 한국을 함께 보려면 ISSP 2014. GSS 패널은 코드북에서 패널 파일 내 문항을 먼저 확인.
+
+## 3-1. 선행연구 검색
 
 | 자료 | 입구 | 쓰임 |
 | --- | --- | --- |
-| World Values Survey | https://www.worldvaluessurvey.org | 일반신뢰 국제 비교(K&R 344의 66% vs 48%) |
-| Asian Barometer | https://www.asianbarometer.org | 한국 신뢰·제도 신뢰 |
-| European Social Survey | https://www.europeansocialsurvey.org | 스웨덴·스위스 비교 |
 | OpenAlex API | https://api.openalex.org | 선행연구 후보 수집(corpus/fetch_openalex.py). cursor 2페이지째 401 → page 방식 |
 | Semantic Scholar API | https://api.semanticscholar.org | 인용 보완 |
 | KCI | https://www.kci.go.kr | 국내 논문 검색("사회자본 결정요인", "복지 수급 신뢰", "제도신뢰 대인신뢰") |
