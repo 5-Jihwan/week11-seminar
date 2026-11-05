@@ -4,8 +4,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}body{font-family:Pretendard,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;background:#f1f5f9;color:#0f172a;min-height:100vh}
-.topbar{background:#1e3a5f;color:#fff;display:flex;align-items:center;gap:12px;padding:14px 24px;position:sticky;top:0;z-index:5}.logo{font-size:18px;font-weight:900;letter-spacing:-.5px}.badge{font-size:10px;font-weight:800;background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;letter-spacing:.08em;text-transform:uppercase}
-.right{margin-left:auto;display:flex;align-items:center;gap:14px}.rbtn{padding:6px 14px;border:1.5px solid rgba(255,255,255,.3);border-radius:6px;color:#fff;background:none;font-size:12px;cursor:pointer;font-weight:600;font-family:inherit}.rbtn:hover{background:rgba(255,255,255,.1)}.live{font-size:11px;color:#93c5fd;display:flex;align-items:center;gap:6px}.live i{width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block;animation:bl 1.4s infinite}@keyframes bl{50%{opacity:.3}}
+.topbar{height:52px;background:rgba(250,250,247,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;gap:8px;padding:0 16px;position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;letter-spacing:-.02em;color:#022448}.brand .dot{width:20px;height:20px;border-radius:6px;background:linear-gradient(135deg,#022448,#006a61)}.badge{padding:3px 10px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:.04em;background:#f0fdf8;color:#006a61;border:1px solid #99f6e4}
+.right{margin-left:auto;display:flex;align-items:center;gap:10px}.rbtn{height:30px;padding:0 12px;border:1px solid #d8dbe1;border-radius:999px;color:#434a56;background:#fff;font-size:12px;cursor:pointer;font-weight:600;font-family:inherit}.rbtn:hover{background:#f3f3ee}.rbtn.dark{background:#022448;color:#fff;border-color:#022448}.live{font-size:11px;color:#5c626d;display:flex;align-items:center;gap:6px}.live i{width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block;animation:bl 1.4s infinite}@keyframes bl{50%{opacity:.3}}
 .content{max-width:1240px;margin:0 auto;padding:24px}
 .stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px}.stat{background:#fff;border-radius:12px;padding:18px 16px;border-top:3px solid transparent}.stat.blue{border-top-color:#3b82f6}.stat.purple{border-top-color:#8b5cf6}.stat.green{border-top-color:#16a34a}.stat.amber{border-top-color:#f59e0b}.stat.red{border-top-color:#ef4444}.stat.gray{border-top-color:#94a3b8}
 .num{font-size:32px;font-weight:900;line-height:1;margin-bottom:4px}.blue .num{color:#3b82f6}.purple .num{color:#8b5cf6}.green .num{color:#16a34a}.amber .num{color:#f59e0b}.red .num{color:#ef4444}.gray .num{color:#94a3b8}.lab{font-size:11px;color:#64748b;font-weight:600}
@@ -25,8 +26,8 @@
 .study{border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;margin-bottom:6px;font-size:12px}.study b{display:block}
 .hint{font-size:11px;color:#94a3b8;margin-top:6px}
 </style></head><body>
-<div class="topbar"><span class="logo">Galpi</span><span class="badge">Admin · 11주차</span><span style="font-size:12px;color:#93c5fd">토론 관리자 · 교수님 읽기 전용</span>
-  <div class="right"><span class="live"><i></i>실시간 <span id="src">이 브라우저(데모)</span></span><span style="font-size:11px;color:#93c5fd" id="last">–</span><button class="rbtn" id="demo">시연용 학생 17명 생성</button><button class="rbtn" id="clear">비우기</button><button class="rbtn" id="proj">프로젝터 모드</button></div></div>
+<div class="topbar"><div class="brand"><div class="dot"></div><span>사회자본 연구모형</span></div><span class="badge">2부 · 관리자</span>
+  <div class="right"><span class="live"><i></i>실시간 <span id="src">이 브라우저(데모)</span></span><span style="font-size:11px;color:#8b919c" id="last">–</span><button class="rbtn" id="demo">시연용 학생 17명 생성</button><button class="rbtn" id="clear">비우기</button><button class="rbtn dark" id="proj">프로젝터 모드</button></div></div>
 <div class="content">
   <div class="stats" id="stats"></div>
   <div class="three">
