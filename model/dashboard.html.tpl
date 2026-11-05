@@ -44,6 +44,7 @@
 </div>
 <div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
 <script>
+// READ_URL: backend/apps-script.gs 웹앱 주소(캔버스 SAVE_URL과 같은 값). 있으면 10초마다 시트를 읽고, 없으면 이 브라우저 localStorage만 본다.
 const CAT=__CAT__, PAPERS=__PAPERS__, READ_URL="";
 const S=CAT.surveys,C=CAT.concepts,IT=CAT.items,cname=id=>(C.find(c=>c.id===id)||{}).label||id,sname=k=>(S[k]||{}).name||k;
 const COMP_KO={generalized_trust:"일반신뢰",institutional_trust:"기관신뢰",neighbor_trust:"이웃 신뢰",participation:"단체 참여",volunteer_donate:"봉사·기부",network:"연결망",reciprocity:"호혜",political_participation:"정치 참여"};

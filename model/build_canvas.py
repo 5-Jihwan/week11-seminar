@@ -10,6 +10,8 @@ STUDIES = [{"id": r["id"], "au": (r["authors"].split(",")[0].split(" ")[-1] if r
             "link": r["link"], "comps": [c for c in r["dv_components"].split("|") if c], "unit": r["unit"], "inst": r["iv_institution"] == "Y", "reg": r["iv_region"] == "Y",
             "net": r["iv_network"] == "Y", "med": r["mediator"] == "Y", "lin": r["lineage"], "line": r["measure_line"], "design": r["design"], "ok": r["verified"] == "TRUE"}
            for r in csv.DictReader(open(os.path.join(HERE, "..", "corpus", "studies.csv"), encoding="utf-8-sig")) if r["dv_components"]]
+_seen = set()  # 같은 논문이 두 출처(출판본·워킹페이퍼)로 들어온 것은 제목으로 한 번만
+STUDIES = [s for s in STUDIES if not (s["t"].lower().strip().rstrip(".") in _seen or _seen.add(s["t"].lower().strip().rstrip(".")))]
 spec = importlib.util.spec_from_file_location("bi", os.path.join(HERE, "build_index.py"))
 # build_index.py는 import 시 index.html을 다시 쓴다(부작용 무해). REVIEWS·COND·PAPERS·CAT를 재사용.
 bi = importlib.util.module_from_spec(spec); spec.loader.exec_module(bi)

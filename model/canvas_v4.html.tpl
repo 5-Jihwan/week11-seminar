@@ -120,6 +120,7 @@ svg.edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 <div class="banner" id="banner"><span class="ms">auto_awesome</span><div class="bt"><div class="b1">연구 모형 완성됐나요?</div><div class="b2">확인하면 선행연구와 비교하고 가설을 제안해 드려요.</div></div><div style="display:flex;gap:8px"><button class="no" id="b-no">아직요</button><button class="go" id="b-go">선행연구 비교</button></div></div>
 <div class="toast" id="toast"></div><div class="pop" id="pop"></div>
 <script>
+// SAVE_URL: backend/apps-script.gs를 웹앱으로 배포한 주소(비우면 이 브라우저 localStorage만). DEMO=false면 verified=TRUE 선행연구만 보인다(가드레일 2).
 const CAT=__CAT__, REV=__REV__, PAPERS=__PAPERS__, STUDIES=__STUDIES__, SAVE_URL="", DEMO=true;
 const S=CAT.surveys, C=CAT.concepts, IT=CAT.items;
 const ROLE={DV:"종속변수",IV:"독립변수",MV:"매개변수",CV:"통제변수"},RDESC={IV:"원인이 되는 변수",MV:"인과를 전달하는 변수",DV:"결과가 되는 변수",CV:"연결 없이 배치됨"},RC={IV:["#1e3a5f","#eef4ff","#adc8f5"],MV:["#006a61","#e6fdf9","#6bd8cb"],DV:["#6d28d9","#f3e8ff","#c084fc"],CV:["#374151","#f9fafb","#d1d5db"]};
@@ -236,9 +237,11 @@ function lineage(){const dv=dvConcept(),iv=ivConcepts(),med=medConcept();if(!dv)
   if(P.includes(dv)&&(has('institution_participation')||has('region')))return['참여 제도가 결사체를 키운다','2장 Freitag'];if(P.includes(dv)&&has('welfare_universal'))return['정책 수혜가 참여를 만든다','4장 Mettler'];if(P.includes(dv)&&has('welfare_selective'))return['Mettler의 반대 설계(심사형)','4장 Mettler · 5장 K&R 교차'];
   if(['network_reciprocity','trust_neighbor'].includes(dv)&&(has('region')||has('public_service_experience')))return['지역 맥락이 협력 성향을 만든다','1장 Krishna'];if(has('institution_participation')&&(med==='fairness'||med==='trust_institution'))return['반응하는 제도가 사회자본을 꺼낸다','3장 L&W'];
   if(dv==='trust_institution'&&has('public_service_experience'))return['서비스 경험이 기관신뢰로','5장 K&R 기제 1(일선 관료)'];if(T.includes(dv)&&has('institution_participation'))return['Freitag의 종속변수를 신뢰로 바꾼 조합. Freitag은 신뢰를 재지 않았다','2장 밖'];
-  if(['network_reciprocity','trust_neighbor'].includes(dv)&&wel)return["K&R의 독립변수에 Krishna의 종속변수",'1·5장 밖'];return['1부 다섯 편 밖의 조합','밖'];}
+  if(['network_reciprocity','trust_neighbor'].includes(dv)&&wel)return["K&R의 독립변수에 Krishna의 종속변수",'1·5장 밖'];
+  const cs=dvComps();if(cs.some(c=>/reciprocity|neighbor|network/.test(c))&&(has('region')||has('public_service_experience')))return['신뢰와 호혜를 함께 묶은 Krishna식 정의, 지역·서비스 맥락이 원인','1장 Krishna 변형'];
+  if(T.includes(dv)&&has('public_service_experience'))return['서비스 접촉이 신뢰로. K&R이 매개로 둔 공정성이 빠져 있다','5장 K&R 변형'];return['1부 다섯 편 밖의 조합','밖'];}
 function match(){const cs=dvComps();if(!cs.length)return[];const iv=ivConcepts(),med=!!st.nodes.find(n=>n.role==="MV"),myUnit=iv.includes('region')&&st.survey==='chs'?'region':'individual',myInst=iv.some(g=>/welfare|public_service|institution/.test(g)),myReg=iv.includes('region');
-  const linMap={'5장 K&R':'kr','5장 K&R 매개':'kr','5장 K&R 기제 1(일선 관료)':'kr','2장 Freitag':'freitag','3장 L&W':'lw','4장 Mettler':'mettler','4장 Mettler · 5장 K&R 교차':'mettler','1장 Krishna':'krishna'},myLin=linMap[(lineage()||[])[1]]||null;
+  const linMap={'5장 K&R':'kr','5장 K&R 매개':'kr','5장 K&R 기제 1(일선 관료)':'kr','5장 K&R 변형':'kr','2장 Freitag':'freitag','3장 L&W':'lw','4장 Mettler':'mettler','4장 Mettler · 5장 K&R 교차':'mettler','1장 Krishna':'krishna','1장 Krishna 변형':'krishna'},myLin=linMap[(lineage()||[])[1]]||null;
   return STUDIES.filter(s=>DEMO||s.ok).map(s=>{const inter=s.comps.filter(c=>cs.includes(c)),uni=[...new Set([...s.comps,...cs])];let sc=3*inter.length/uni.length;if(s.unit===myUnit||s.unit==='mixed')sc+=1;if(myInst&&s.inst)sc+=1;if(myReg&&s.reg)sc+=1;if(med&&s.med)sc+=1;if(myLin&&s.lin===myLin)sc+=1.5;return {s,sc,inter,only:s.comps.filter(c=>!cs.includes(c)),miss:cs.filter(c=>!s.comps.includes(c))};}).filter(x=>x.inter.length).sort((a,b)=>b.sc-a.sc).slice(0,5);}
 function topFor(cs){const m=STUDIES.filter(s=>DEMO||s.ok).map(s=>{const inter=s.comps.filter(c=>cs.includes(c)),uni=[...new Set([...s.comps,...cs])];return {s,sc:3*inter.length/uni.length+(s.unit==='individual'||s.unit==='mixed'?1:0),inter};}).filter(x=>x.inter.length).sort((a,b)=>b.sc-a.sc)[0];return m?`${m.s.au} (${m.s.y})`:'없음';}
 function altDefs(){const d=dvNode();if(!d||!d.items.length)return[];const out=[],cs=comps(d),now=topFor(cs),compsOf=ks=>[...new Set(ks.map(k=>COMP_OF[IT[k].concept]).filter(Boolean))];
