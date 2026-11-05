@@ -9,3 +9,6 @@ corpus/.batch_id
 data/codebooks/**
 !data/codebooks/**/
 !data/codebooks/**/items_*.md
+
+corpus/*.jsonl
+data/raw/harvest/
