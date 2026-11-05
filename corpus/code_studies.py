@@ -9,7 +9,7 @@
 import csv, json, sys, time
 from pathlib import Path
 
-MODEL = "claude-opus-5-5"
+MODEL = "claude-haiku-5-5"  # 수업 때 17명 이상이 같은 모델을 쓰므로 코딩도 같은 모델로 고정(11-05 Ji)
 BATCH_ID_FILE = Path(__file__).with_name(".batch_id")
 
 ENUM = {
@@ -18,6 +18,7 @@ ENUM = {
     "design": ["cross_section", "panel", "quasi_experiment", "experiment", "other", ""],
     "result_direction": ["positive", "negative", "mixed", "null", ""],
     "lineage": ["krishna", "freitag", "lw", "mettler", "kr", "none"],
+    "component": ["generalized_trust", "institutional_trust", "neighbor_trust", "participation", "volunteer_donate", "network", "reciprocity", "political_participation", "other"],
 }
 SCHEMA = {
     "type": "object",
@@ -28,6 +29,8 @@ SCHEMA = {
         "unit": {"type": "string", "enum": ENUM["unit"], "description": "분석 단위"},
         "dv_type": {"type": "string", "enum": ENUM["dv_type"], "description": "사회자본 종속변수의 종류. 사회자본이 독립변수이면 other"},
         "dv_measure": {"type": "string", "description": "종속변수 측정 방식 한 구절(예: 일반신뢰 단일 문항 0-10)"},
+        "dv_components": {"type": "array", "items": {"type": "string", "enum": ENUM["component"]}, "description": "사회자본 측정에 묶인 구성 요소 전부. 단일 문항이면 하나. 초록에 없으면 빈 배열"},
+        "measure_line": {"type": "string", "description": "학생 화면에 그대로 붙일 한국어 한 문장: '이 연구는 사회자본을 ○○(자료·문항·단위)로 쟀다'. 초록에 측정 정보가 없으면 '초록에 측정 방식이 없다'"},
         "iv_institution": {"type": "string", "description": "제도·정책 독립변수. 없으면 빈 문자열"},
         "iv_individual": {"type": "string", "description": "개인 특성 독립변수. 없으면 빈 문자열"},
         "iv_region": {"type": "string", "description": "지역·국가 특성 독립변수. 없으면 빈 문자열"},
@@ -39,7 +42,7 @@ SCHEMA = {
         "lineage": {"type": "string", "enum": ENUM["lineage"], "description": "가장 가까운 지정문헌. krishna=공동체 내부 노력, freitag=정치제도→결사체, lw=지방정부 제도설계, mettler=정책환류→참여, kr=복지제도 설계→신뢰. 해당 없으면 none"},
         "notes": {"type": "string", "description": "한국어 한 문장. 인과 표현 금지('영향을 미친다' 대신 '관련이 있다')"},
     },
-    "required": list(["is_quant", "country", "data", "unit", "dv_type", "dv_measure", "iv_institution", "iv_individual",
+    "required": list(["is_quant", "country", "data", "unit", "dv_type", "dv_measure", "dv_components", "measure_line", "iv_institution", "iv_individual",
                       "iv_region", "iv_network", "mediator", "moderator", "design", "result_direction", "lineage", "notes"]),
     "additionalProperties": False,
 }
@@ -98,7 +101,7 @@ def collect(src, dst):
                 pass
         else:
             print(f"{res.custom_id}: {res.result.type}", file=sys.stderr)
-    cols = "id,authors,year,title,journal,link,country,data,unit,dv_type,dv_measure,iv_institution,iv_individual,iv_region,iv_network,mediator,moderator,design,result_direction,lineage,verified,notes,seeds,cited_by".split(",")
+    cols = "id,authors,year,title,journal,link,country,data,unit,dv_type,dv_measure,dv_components,measure_line,iv_institution,iv_individual,iv_region,iv_network,mediator,moderator,design,result_direction,lineage,verified,notes,seeds,cited_by".split(",")
     n = 0
     with open(dst, "w", newline="", encoding="utf-8-sig") as f:
         w = csv.DictWriter(f, fieldnames=cols); w.writeheader()
@@ -106,6 +109,7 @@ def collect(src, dst):
             c = coded.get(r["id"])
             if not c or not c["is_quant"]:
                 continue
+            c["dv_components"] = "|".join(c.get("dv_components") or [])  # csv 한 칸에 '|'로
             w.writerow({**{k: c.get(k, "") for k in cols}, "id": r["id"], "authors": r["authors"], "year": r["year"], "title": r["title"],
                         "journal": r["venue"], "link": ("https://doi.org/" + r["doi"]) if r["doi"] else "", "verified": "FALSE",
                         "seeds": r["seeds"], "cited_by": r["cited_by"]})
