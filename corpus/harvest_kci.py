@@ -8,7 +8,8 @@ sys.stdout.reconfigure(encoding="utf-8")
 HERE = os.path.dirname(os.path.abspath(__file__)); CK = os.path.join(HERE, "..", "data", "raw", "harvest"); os.makedirs(CK, exist_ok=True)
 B = "http://open.kci.go.kr/oai/request?verb=ListRecords&resumptionToken="
 RANGES = {0: (0, 1_000_000), 1: (1_000_000, 2_000_000), 2: (2_000_000, 10_000_000)}
-PAT = re.compile(r"사회\s*적?\s*자본|social capital|사회적\s*신뢰|대인\s*신뢰|일반\s*신뢰|기관\s*신뢰|정부\s*신뢰|제도\s*신뢰|시민\s*참여|시민\s*의식|자원봉사|결사체|generalized trust|social trust|institutional trust|civic (?:engagement|participation)", re.I)
+PAT = re.compile(r"사회\s*적?\s*자본|social capital", re.I)  # 사회자본 논문만. 양적 여부는 코딩 단계(초록의 회귀·표본·조사 단서)에서 거른다
+QUANT = re.compile(r"회귀|패널|구조방정식|다층|위계|로짓|프로빗|분석결과|유의|표본|조사\s*자료|설문|실태조사|패널조사|regression|panel|survey|sample|significant|SEM|multilevel", re.I)
 R = lambda tag, x, attr="": (re.search(rf"<{tag}{attr}[^>]*>(.*?)</{tag}>", x, re.S) or [None, ""])[1].strip()
 
 
@@ -26,7 +27,11 @@ def keep(d):
             return False
     except ValueError:
         return False
-    return bool(PAT.search(" ".join([d["title"], d["title_en"], d["abstract"][:3000], d["abstract_en"][:3000], d["keywords"]])))
+    txt = " ".join([d["title"], d["title_en"], d["abstract"][:3000], d["abstract_en"][:3000]])
+    if not PAT.search(txt):
+        return False
+    d["quant_hint"] = len(QUANT.findall(txt))  # 0이면 비양적일 가능성. 코딩 단계에서 최종 판단
+    return True
 
 
 def fetch(tok):

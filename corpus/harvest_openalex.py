@@ -52,7 +52,10 @@ def harvest(axis, q, year):
             params = {"filter": f"title.search:{q},publication_year:{year},type:article,has_abstract:true", "per-page": 200, "page": page, "select": FIELDS, "mailto": "ojh121523@gmail.com"}
             data = get(API + "?" + urllib.parse.urlencode(params, quote_via=urllib.parse.quote))
             for w in data["results"]:
-                f.write(json.dumps(row(w, axis), ensure_ascii=False) + "\n"); n += 1
+                r = row(w, axis)
+                if axis != "sc" and "social capital" not in (r["title"] + " " + r["abstract"]).lower():
+                    continue  # 신뢰·시민참여 축은 사회자본을 말하는 논문만
+                f.write(json.dumps(r, ensure_ascii=False) + "\n"); n += 1
             if len(data["results"]) < 200 or page >= 50:  # 50쪽 = 10,000건 상한
                 break
             page += 1; time.sleep(1.0)
