@@ -1,97 +1,1346 @@
 {
-  "_meta": {
-    "made": "2026-10-17",
-    "source": "data/codebooks/*/items_*.md (조사표·코드북 원문 대조). 원자료 없음. 변수명은 조사표·지침서 기준이며 코드북 값 라벨은 미대조",
-    "note": "학생 화면에는 question·scale·survey·wave만 노출. var는 Ji 참고용",
-    "role": "dv = 종속변수 후보, iv = 독립변수 후보, med = 매개변수 후보, ctl = 통제·지역"
+ "_meta": {
+  "made": "2026-10-17",
+  "source": "data/codebooks/*/items_*.md (조사표·코드북 원문 대조). 원자료 없음. 변수명은 조사표·지침서 기준이며 코드북 값 라벨은 미대조",
+  "note": "학생 화면에는 question·scale·survey·wave만 노출. var는 Ji 참고용",
+  "role": "dv = 종속변수 후보, iv = 독립변수 후보, med = 매개변수 후보, ctl = 통제·지역"
+ },
+ "surveys": {
+  "koweps": {
+   "name": "한국복지패널",
+   "org": "보건사회연구원·서울대",
+   "unit": "개인(가구원)·가구",
+   "region": "시도 변수 미확인(코드북 필요)",
+   "best_wave": "16차(2021 조사, 2020 기준)",
+   "why": "대인신뢰와 선별·보편 수급이 한 가구원에게 함께 있는 유일한 조사. 신뢰는 3년 주기"
   },
-  "surveys": {
-    "koweps": {"name": "한국복지패널", "org": "보건사회연구원·서울대", "unit": "개인(가구원)·가구", "region": "시도 변수 미확인(코드북 필요)", "best_wave": "16차(2021 조사, 2020 기준)", "why": "대인신뢰와 선별·보편 수급이 한 가구원에게 함께 있는 유일한 조사. 신뢰는 3년 주기"},
-    "kipa": {"name": "사회통합실태조사", "org": "한국행정연구원", "unit": "개인", "region": "표지 주소란, 공개 변수 미확인", "best_wave": "2023", "why": "대인·기관 신뢰 + 공정성 + 참여가 한 조사표에. 수급 경험 문항은 없음"},
-    "kgss": {"name": "한국종합사회조사(KGSS)", "org": "성균관대 서베이리서치센터", "unit": "개인", "region": "7개 권역 + 도시/농촌", "best_wave": "2012 (N=1,396), 2023 (N=1,230)", "why": "사회자본 문항이 가장 풍부(GSS·ISSP·EASS 모듈). 수급 문항은 없음"},
-    "kostat_social": {"name": "사회조사", "org": "국가데이터처", "unit": "개인(만 13세 이상)", "region": "시도(공표), 변수 미확인", "best_wave": "2023", "why": "단체 참여·기부·봉사 상세. 제도별 수급 없음, 대인신뢰 없음(사회 신뢰만)"},
-    "kostat_hfls": {"name": "가계금융복지조사", "org": "국가데이터처", "unit": "가구(가구원별 소득)", "region": "표지 주소란", "best_wave": "2023 (2022 소득)", "why": "공적이전 9항목 가구원별 유무·금액. 신뢰·참여 문항 없음"},
-    "youth2022": {"name": "청년삶실태조사", "org": "국무조정실·보건사회연구원", "unit": "개인(19~34세)", "region": "17개 시도, 수도권 여부", "best_wave": "2022", "why": "사회 신뢰 0~10 + 기초수급·실업급여 + 시도가 한 사람에게. 청년 한정. 조사표는 보고서 부록 OCR본"},
-    "elderly2023": {"name": "노인실태조사", "org": "보건복지부·보건사회연구원", "unit": "개인(65세 이상)", "region": "미확인", "best_wave": "2023", "why": "가족·이웃·언론·기업·정부 신뢰(4점) + 기초생활·기초연금 수급 + 단체·봉사. 노인 한정. 최종 조사표 미입수(보고서 표 기준)"},
-    "klips": {"name": "한국노동패널(KLIPS)", "org": "한국노동연구원", "unit": "개인·가구", "region": "미확인", "best_wave": "18차(2015) 부가조사만 대인신뢰", "why": "일반신뢰는 18차 한 번뿐. 수급은 가구용. 2부 메뉴에서는 제외"},
-    "chs": {"name": "지역사회건강조사", "org": "질병관리청", "unit": "개인(가구 문항 포함)", "region": "시군구 코드 signgu_code, 보건소 pbhlth_code", "best_wave": "2023 (이웃 신뢰·단체 참여·기초수급 동시, 그 외 2011·13·15·17·19)", "why": "이웃 신뢰 + 기초수급 + 시군구가 한 사람에게. 표본 20만 명대. 단, 신뢰가 '동네 사람' 대상이고 예/아니오"}
+  "kipa": {
+   "name": "사회통합실태조사",
+   "org": "한국행정연구원",
+   "unit": "개인",
+   "region": "표지 주소란, 공개 변수 미확인",
+   "best_wave": "2023",
+   "why": "대인·기관 신뢰 + 공정성 + 참여가 한 조사표에. 수급 경험 문항은 없음"
   },
-  "concepts": [
-    {"id": "trust_general", "label": "대인신뢰(일반신뢰)", "role": "dv", "lineage": "kr", "paper_measure": "K&R: '사람들은 대체로 믿을 만한가' 0~10"},
-    {"id": "trust_social", "label": "사회 신뢰", "role": "dv", "lineage": "kr", "paper_measure": "변형. 사람이 아니라 '우리 사회'"},
-    {"id": "trust_neighbor", "label": "이웃 신뢰", "role": "dv", "lineage": "krishna", "paper_measure": "Krishna 마을 단위 신뢰 문항에 가장 가까움. K&R의 일반신뢰와는 대상이 다름"},
-    {"id": "trust_institution", "label": "기관신뢰", "role": "dv", "lineage": "kr", "paper_measure": "Krishna의 정부 신뢰(독립변수), K&R 논의의 정치 신뢰"},
-    {"id": "participation", "label": "단체 참여·결사체", "role": "dv", "lineage": "freitag", "paper_measure": "Freitag: 동호회 참여·명예직·봉사 시간·활동 회원 수 / Mettler: 단체 가입 수"},
-    {"id": "volunteer_donate", "label": "자원봉사·기부", "role": "dv", "lineage": "mettler", "paper_measure": "Mettler 시민참여의 일부"},
-    {"id": "network_reciprocity", "label": "이웃 교류·호혜", "role": "dv", "lineage": "krishna", "paper_measure": "Krishna 6문항 중 호혜·연대·분쟁 해결"},
-    {"id": "political_participation", "label": "정치 참여", "role": "dv", "lineage": "mettler", "paper_measure": "Mettler: 접촉·캠페인·기부·시위 등 6종"},
-    {"id": "fairness", "label": "공정성 지각", "role": "med", "lineage": "kr", "paper_measure": "K&R 매개: '받을 자격이 있는 것을 받았나' 1~5"},
-    {"id": "welfare_selective", "label": "선별 수급 경험(자산조사)", "role": "iv", "lineage": "kr", "paper_measure": "K&R 선별 7기관 접촉 수"},
-    {"id": "welfare_universal", "label": "보편 수급·서비스 경험", "role": "iv", "lineage": "kr", "paper_measure": "K&R 보편 10기관 접촉 수. Mettler G.I. Bill"},
-    {"id": "public_service_experience", "label": "공공서비스 접촉 경험", "role": "iv", "lineage": "lw", "paper_measure": "L&W 반응성, K&R 접촉"},
-    {"id": "institution_participation", "label": "참여 제도 경험", "role": "iv", "lineage": "freitag", "paper_measure": "Freitag 직접민주주의, L&W 참여 기회"},
-    {"id": "region", "label": "지역", "role": "ctl", "lineage": "freitag", "paper_measure": "Freitag 칸톤·언어권"}
-  ],
-  "items": [
-    {"concept": "trust_general", "survey": "koweps", "wave": "16차(2020 기준)", "var": "p1604_1", "question": "일반적으로 볼 때, 귀하는 대부분의 사람들을 믿을만하다고 생각하십니까?", "scale": "3범주: 믿을만하다 / 매우 조심해야 한다 / 잘 모르겠다", "unit": "가구원", "note": "3년 주기(1·4·7·10·13·16차). 17·18차 없음"},
-    {"concept": "trust_general", "survey": "kipa", "wave": "2023", "var": "Q28", "question": "귀하는 일반적으로 사람들을 어느 정도 믿을 수 있다고 생각하십니까?", "scale": "4점: 전혀 믿을 수 없다 ~ 매우 믿을 수 있다", "unit": "개인", "note": "2019~2022는 Q33·Q31, 2025는 문구 변경"},
-    {"concept": "trust_general", "survey": "kipa", "wave": "2023", "var": "Q29", "question": "다음 집단들에 대하여 얼마나 신뢰하고 있습니까? 가족 / 이웃 / 친분 있는 사람 / 처음 만난 낯선 사람 / 국내 거주 외국인", "scale": "4점", "unit": "개인", "note": "특수신뢰 vs 일반신뢰 구분 가능"},
-    {"concept": "trust_general", "survey": "kgss", "wave": "2004~2025(대부분 해)", "var": "CANTRUST", "question": "귀하는 일반적으로 사람들을 신뢰할 수 있다고 생각하십니까, 아니면 조심해야 한다고 생각하십니까?", "scale": "4점: 항상 신뢰 ~ 항상 조심", "unit": "개인", "note": "2025는 TRUST10S(0~10)도 있음"},
-    {"concept": "trust_general", "survey": "kgss", "wave": "2003~2025(대부분 해)", "var": "FAIR / HELPFUL", "question": "대부분의 사람들이 기회만 있으면 귀하를 이용하려 들 것이라고 생각하십니까, 아니면 공정하게 대할 것이라고 생각하십니까? / 사람들이 대체로 남을 도우려 한다고 생각하십니까?", "scale": "3택", "unit": "개인", "note": "GSS 3문항 세트"},
-    {"concept": "trust_general", "survey": "kgss", "wave": "2012, 2023", "var": "PERTRT1-5", "question": "다음 사람들을 어느 정도 신뢰하십니까? 친척 / 친구 / 이웃 / 직장동료 / 낯선 사람", "scale": "4점", "unit": "개인", "note": "EASS 모듈"},
-    {"concept": "trust_social", "survey": "kgss", "wave": "2004~2025(대부분 해)", "var": "RELIABLE", "question": "귀하는 우리 사회가 어느 정도 믿을 수 있는 사회라고 생각하십니까?", "scale": "0~10", "unit": "개인", "note": "K&R과 같은 0~10이지만 대상이 '사회'"},
-    {"concept": "trust_social", "survey": "kostat_social", "wave": "2023", "var": "문22", "question": "귀하는 우리 사회가 어느 정도 믿을 수 있는 사회라고 생각하십니까?", "scale": "4점", "unit": "개인", "note": "사회조사에는 대인신뢰 문항 없음"},
-    {"concept": "trust_social", "survey": "kipa", "wave": "2024, 2025", "var": "Q30", "question": "귀하는 일반적으로 우리 사회를 어느 정도 믿을 수 있다고 생각하십니까?", "scale": "4점", "unit": "개인", "note": "2023 이전 없음"},
-    {"concept": "trust_institution", "survey": "kipa", "wave": "2023", "var": "Q30", "question": "다음 기관들이 맡은 일을 얼마나 잘 수행하고 있다고 믿습니까? 중앙정부 부처 / 국회 / 법원 / 검찰 / 경찰 / 지방자치단체 / 공기업 / 군대 / 노조 / 시민단체 / TV / 신문 / 교육 / 의료 / 대기업 / 종교 / 금융 (17개)", "scale": "4점", "unit": "개인", "note": "Q31 청렴도 17개 동일 기관"},
-    {"concept": "trust_institution", "survey": "kgss", "wave": "매 조사(2003~2025)", "var": "CONGOVT, CONLGOVT, CONLEGIS, CONJUDGE 등 16개", "question": "다음 기관들을 이끌어가는 사람들을 어느 정도 신뢰하는지: 중앙정부 부처 / 지방자치정부 / 국회 / 대법원 / 군대 / 대기업 / 종교계 / 교육계 / 노조 / 신문 / TV / 의료계 / 학계 / 금융 / 대통령실 / 시민운동단체", "scale": "3점: 매우 / 다소 / 거의 신뢰하지 않음", "unit": "개인", "note": "2021~2025 검찰청·통계청·선관위 추가, 0~10 척도 변형도 있음"},
-    {"concept": "trust_institution", "survey": "kgss", "wave": "2012, 2023", "var": "PERTRT12-14, 16-17", "question": "다음 사람들을 어느 정도 신뢰하십니까? 지방정부 공무원 / 중앙정부 공무원 / 경찰관 / 판사 / 검사", "scale": "4점", "unit": "개인", "note": "일선 관료 신뢰 = K&R 기제 1"},
-    {"concept": "participation", "survey": "kipa", "wave": "2023", "var": "Q14", "question": "다음 사회단체에 대하여 활동 정도가 어떻게 되십니까? 정당 / 노조·직업조합 / 종교단체 / 동호회 / 시민단체 / 지역사회 공공모임(반상회·주민조직) / 동창회·향우회 / 자원봉사·기부단체 / 사회적 경제조직 (9개)", "scale": "5점: 소속된 적 없다 ~ 소속·적극 활동", "unit": "개인", "note": "Freitag 4문항 중 '활동 회원'에 대응"},
-    {"concept": "participation", "survey": "kgss", "wave": "2012, 2023", "var": "MEMB1-9", "question": "다음 조직이나 공식 모임의 구성원이십니까? 적극 참여하십니까? 정치모임 / 주민협회·반상회 / 사회봉사클럽 / 시민사회단체 / 종교집단 / 동창회 / 여가모임 / 노조 / 직업·직능단체", "scale": "3점: 적극 참여 / 구성원이나 참여 안 함 / 구성원 아님", "unit": "개인", "note": "EASS 모듈. 2004·2014·2016·2018은 GRP*·VA* 변형"},
-    {"concept": "participation", "survey": "kostat_social", "wave": "2023", "var": "문24", "question": "지난 1년 동안 다음 단체에 참여하여 활동하신 적이 있으십니까? 친목·사교 / 취미·스포츠 / 종교 / 시민사회 / 학술 / 이익단체 / 정치단체 / 지역사회 모임(반상회·입주자대표회) / 기타", "scale": "항목별 참여/불참", "unit": "개인", "note": "N이 가장 큼(전국 3만여 가구)"},
-    {"concept": "participation", "survey": "koweps", "wave": "4차~", "var": "p1602_4aq1", "question": "(취업자만) 직장에서 노동조합에 가입되어 있습니까?", "scale": "4범주", "unit": "가구원", "note": "복지패널에는 일반 단체 참여 문항이 없음. 노조·종교·기부·봉사가 대용"},
-    {"concept": "volunteer_donate", "survey": "koweps", "wave": "매년", "var": "p1604_4 / p1604_5 / p1604_6", "question": "정기적으로 기부를 하거나 자원봉사활동을 하고 있습니까? / 1년간 기부액 / 자원봉사 횟수", "scale": "여부 / 만원 / 회", "unit": "가구원", "note": "_6이 횟수인지 여부인지 코드북 확인 필요"},
-    {"concept": "volunteer_donate", "survey": "kostat_social", "wave": "2023", "var": "문25~33", "question": "지난 1년 동안 현금·물품을 기부한 적이 있는가(경로별 횟수·금액) / 자원봉사 참여 여부(분야 13종, 횟수·시간)", "scale": "여부 + 숫자", "unit": "개인", "note": "가장 상세"},
-    {"concept": "volunteer_donate", "survey": "kgss", "wave": "2023 / 2012", "var": "VOLUN12M / PUBPAR1-3", "question": "지난 1년간 봉사단체·자선단체 활동 참여 빈도 / 지역사회 개선·문화·취약집단 자원봉사 참여 여부", "scale": "6점 빈도 / 여부", "unit": "개인", "note": "일반 기부 행위 문항은 없음"},
-    {"concept": "network_reciprocity", "survey": "kgss", "wave": "2012, 2023", "var": "NGHGRT / NGHASK / POLPAR05-06", "question": "서로 인사하고 지내는 이웃 수 / 부탁할 수 있는 이웃 수 / 내 이웃은 서로 관심을 보인다 / 이웃은 내가 도움이 필요할 때 기꺼이 도와주려 한다", "scale": "5구간 / 7점 동의", "unit": "개인", "note": "Krishna 호혜 문항에 가장 가까움"},
-    {"concept": "network_reciprocity", "survey": "kgss", "wave": "2023", "var": "SOCNET1-10, GIVELT/EC/CR", "question": "우리 동네 사람들은 서로를 돕는다 / 지인에게 받는·주는 정서·물질 도움 / 지난 1년 누구에게 고민 들어주기·경제 지원·돌봄을 제공했나", "scale": "0~6, 0~10, 복수응답", "unit": "개인", "note": ""},
-    {"concept": "network_reciprocity", "survey": "kipa", "wave": "2023", "var": "Q26-1 / Q26-2", "question": "목돈·간병·고민 상황에서 도와줄 사람 수 / 가장 먼저 도움을 청할 대상(가족·친구·이웃·정부기관 등)", "scale": "5범주 / 9범주", "unit": "개인", "note": "'정부·공공서비스기관' 보기 있음"},
-    {"concept": "network_reciprocity", "survey": "kostat_social", "wave": "2023", "var": "문23 / 문23-1", "question": "몸이 아플 때·큰돈·우울할 때 도움 받을 사람 유무와 수 / 하루 평균 교류 인원", "scale": "있음(명)/없음", "unit": "개인", "note": ""},
-    {"concept": "network_reciprocity", "survey": "koweps", "wave": "3년 주기", "var": "p1604_2 / p1604_3", "question": "지역사회에서 누군가 위급하게 도움을 필요로 하면 기꺼이 도울 의향 / 비선호시설(화장시설·특수학교 등) 입지 수용", "scale": "5점", "unit": "가구원", "note": "성인 이웃 교류 빈도 문항은 없음"},
-    {"concept": "political_participation", "survey": "kipa", "wave": "2023", "var": "Q18 / Q19", "question": "정치·사회 활동 9개(서명·시위·민원·후원 등) 경험 / 최근 3개 선거 투표 여부", "scale": "4범주(지난 1년/오래전/의향/없음) / 여부", "unit": "개인", "note": "Mettler 6종 활동과 거의 대응"},
-    {"concept": "political_participation", "survey": "kgss", "wave": "2004, 2009, 2014, 2016, 2018 / 매 조사", "var": "SIGNPET, JOINDEM, CNTCTGOV, POLFUNDS 등 / VOTE*", "question": "진정서 서명 / 시위 참가 / 정치인·공무원 접촉 / 기부·모금 / 선거별 투표 여부", "scale": "4택 / 여부", "unit": "개인", "note": "2012 LOCPAR1-4 지역 이슈 집단토론 참여"},
-    {"concept": "fairness", "survey": "kipa", "wave": "2023", "var": "Q34 / Q35 / Q36", "question": "우리 사회가 얼마나 공정한가 / 행정기관·국회·법원·검찰·경찰이 공정한가 / 분야별 15개 중 '복지혜택을 받을 수 있는 기회'의 공정성", "scale": "4점", "unit": "개인", "note": "K&R 매개(절차공정성)에 가장 가까운 국내 문항. Q42 부당한 대우 경험"},
-    {"concept": "fairness", "survey": "kgss", "wave": "2011, 2012, 2014", "var": "KRDJ1-5", "question": "한국사회로부터 받는 대우가 능력·기술·노력·학력·경력에 비해 공정한가", "scale": "5점", "unit": "개인", "note": "2006 OFFEQUIT: 공무원이 나 같은 사람을 공정하게 대하나"},
-    {"concept": "fairness", "survey": "koweps", "wave": "복지인식 부가(2·5·8·11·14·17차)", "var": "wc*_58", "question": "나보다 돈을 많이 벌면서 세금을 적게 내는 사람이 많다고 생각하십니까?", "scale": "7점", "unit": "가구원", "note": "조세 공평성만. 16차에는 부가조사 없음"},
-    {"concept": "welfare_selective", "survey": "koweps", "wave": "16차(2020 기준)", "var": "h1612_2_11aq1 / aq4 / aq13", "question": "국민기초생활보장 급여(맞춤형 급여)를 신청한 적이 있는가 / 수급자로 선정되었는가(전부·일부·불선정) / 받은 경험이 있는가", "scale": "여부·3범주", "unit": "가구", "note": "신청했으나 탈락한 집단 식별 가능 = '심사 경험'. aq5~8 비선정 이유(소득·자동차·부양의무자)"},
-    {"concept": "welfare_selective", "survey": "koweps", "wave": "16차", "var": "h1608_11aq2~8 / h1601_11aq*", "question": "생계·주거·교육급여 수급 개월수·연액 / 급여별 수급형태", "scale": "개월, 만원", "unit": "가구", "note": "의료급여는 h1604_7aq1 ⑤⑥"},
-    {"concept": "welfare_selective", "survey": "koweps", "wave": "16차", "var": "h1612_1_5aq1 / 5aq2", "question": "근로·자녀장려금을 신청했는가 / 받았는가", "scale": "4범주", "unit": "가구", "note": "소득 심사형"},
-    {"concept": "welfare_selective", "survey": "koweps", "wave": "16차", "var": "h1608_10aq1 / h1614_4", "question": "기초연금 연액 / 기초연금 이용 경험(65세 이상 노인 가구)", "scale": "만원 / 여부", "unit": "가구", "note": "소득 하위 70% 선별"},
-    {"concept": "welfare_selective", "survey": "koweps", "wave": "16차", "var": "h1608_aq16 / h1616_6aq1 / h1616_6aq4", "question": "장애수당·장애인연금 연액 / 장애인연금 경험 / 장애수당 경험", "scale": "만원 / 여부", "unit": "가구", "note": ""},
-    {"concept": "welfare_selective", "survey": "kostat_hfls", "wave": "2023(2022 소득)", "var": "30-6-② ④ ⑤", "question": "공적이전소득: 기초연금 / 맞춤형 기초생활보장 지원금 / 근로·자녀장려금 (가구원별 유무·금액)", "scale": "유무 + 만원", "unit": "가구원별 소득", "note": "신뢰 문항 없음 → 시도 집계 결합용"},
-    {"concept": "welfare_universal", "survey": "koweps", "wave": "16차(14차~)", "var": "h1615_14aq1 / h1608_14aq3", "question": "아동수당 이용 경험(0~17세 아동 가구) / 아동수당 연액", "scale": "여부 / 만원", "unit": "가구", "note": "2019.1 보편 전환 이후. 14차(2018 기준)는 선별 시기 → 전환 전후 비교 가능"},
-    {"concept": "welfare_universal", "survey": "koweps", "wave": "16차", "var": "h1615_8 / h1608_aq21 / h1608_5aq3", "question": "양육·보육료·유치원비 보조 경험 / 양육수당 연액 / 보육료 지원 연액", "scale": "여부 / 만원", "unit": "가구", "note": ""},
-    {"concept": "welfare_universal", "survey": "koweps", "wave": "16차", "var": "p1601_1 / p1601_15", "question": "1년간 공적연금(국민연금 등)을 받았는가 / 고용보험 급여(실업급여 등)를 받았는가", "scale": "여부(+종류·금액)", "unit": "가구원", "note": "개인 단위라 신뢰와 같은 행"},
-    {"concept": "welfare_universal", "survey": "koweps", "wave": "매년", "var": "h1604_7aq1 / h1605_4", "question": "건강보험 가입 종류(직장·지역·의료급여) / 건강보험료 미납 경험", "scale": "8범주 / 여부", "unit": "가구원 / 가구", "note": ""},
-    {"concept": "welfare_universal", "survey": "kostat_hfls", "wave": "2023", "var": "30-6-① ⑥ ⑦", "question": "공적연금 / 양육수당(아동수당 합산) / 고용·산재보험 급여", "scale": "유무 + 만원", "unit": "가구원별 소득", "note": "아동수당 단독 식별 불가"},
-    {"concept": "public_service_experience", "survey": "kipa", "wave": "2023", "var": "Q33 / Q33-1", "question": "지난 1년 동안 다음 공공서비스를 경험했는가: 주민자치센터 / 인허가 / 인터넷 민원 / 세무 / 경찰 / 소방 / 교육 / 보건 + 만족도", "scale": "경험 여부 + 5점", "unit": "개인", "note": "K&R '접촉 수'의 보편 서비스 쪽 대용. 2019~2022는 공청회·주민참여예산 항목 포함"},
-    {"concept": "public_service_experience", "survey": "kipa", "wave": "2023", "var": "Q53", "question": "지난 1년 동안 끼니를 거른 적 / 병원비 때문에 진료 못 받은 적 / 공과금 체납 / 집세 상승으로 이사", "scale": "있다/없다", "unit": "개인", "note": "수급 경험 대용(욕구 측)"},
-    {"concept": "institution_participation", "survey": "kipa", "wave": "2019~2022", "var": "Q38(연도별 번호 상이)", "question": "공공서비스 경험 항목 중 공청회·청문회 / 주민참여예산", "scale": "경험 여부", "unit": "개인", "note": "2023 이후 항목 삭제. L&W 참여 기회·Freitag 직접민주주의 대용"},
-    {"concept": "institution_participation", "survey": "kgss", "wave": "2012", "var": "LOCPAR1-4", "question": "지역사회 이슈(환경·교육·안전·소비자) 관련 집단토론에 지난 1년간 얼마나 자주 참여했나", "scale": "4점 빈도", "unit": "개인", "note": "L&W 숙의형 참여"},
-    {"concept": "region", "survey": "kgss", "wave": "전 조사", "var": "REGION / URBAN", "question": "거주 권역(서울·경기·강원·충청·경상·전라·제주) / 도시·농촌", "scale": "7 / 2범주", "unit": "개인", "note": "시군구 없음"},
-    {"concept": "region", "survey": "koweps", "wave": "—", "var": "미확인", "question": "지침서·변수이력표에 시도 변수 없음. 코드북 확인 필요", "scale": "", "unit": "", "note": "조사지역 17개 시도 244개 시군구"},
-    {"concept": "region", "survey": "kipa", "wave": "2023", "var": "Q5", "question": "시·도 / 시·군·구 / 읍·면·동에 대한 소속감", "scale": "4점", "unit": "개인", "note": "행정구역 변수 공개 여부 미확인"},
-    {"concept": "trust_neighbor", "survey": "chs", "wave": "2011·13·15·17·19·21·23·25", "var": "ena_01a1", "question": "우리 동네 사람들은 서로 믿고 신뢰할 수 있다", "scale": "예/아니오", "unit": "개인", "note": "짝수 연도 없음. 2014·2016은 일부 시도만"},
-    {"concept": "network_reciprocity", "survey": "chs", "wave": "2011~2025 홀수 연도", "var": "ena_01b1", "question": "우리 동네 사람들은 경조사가 있을 때 서로 도움을 주고받는다", "scale": "예/아니오", "unit": "개인", "note": "2017 이전 문구: '전통이 있다'"},
-    {"concept": "network_reciprocity", "survey": "chs", "wave": "2011·13·15·17·19·23·25", "var": "enb_01z1 / enb_02z1 / enb_03z1", "question": "가장 많이 접촉하는 친척 / 이웃 / 친구와 얼마나 자주 보거나 연락합니까", "scale": "6점: 월 1회 미만 ~ 주 4회 이상", "unit": "개인", "note": "2021 없음"},
-    {"concept": "participation", "survey": "chs", "wave": "2011·13·15·17·19·23", "var": "enb_04z1~07z1", "question": "한 달에 한 번 이상 정기적으로 참여합니까: 종교활동 / 친목활동(계모임·동창회·향우회 등) / 여가·레저 / 자선단체", "scale": "항목별 예/아니오", "unit": "개인", "note": "2021·2025 삭제"},
-    {"concept": "welfare_selective", "survey": "chs", "wave": "2009~2025 매년", "var": "fma_04z1", "question": "귀 가구는 현재 기초생활 수급자입니까?", "scale": "3범주: 그렇다 / 지금은 아니지만 과거에 수급자였다 / 아니다", "unit": "가구(개인 응답)", "note": "'과거 수급' 범주 = 심사·탈락 경험의 대용. 이웃 신뢰와 같은 사람"},
-    {"concept": "public_service_experience", "survey": "chs", "wave": "2011~2025 홀수 연도", "var": "ena_01c1~g1", "question": "동네의 안전 / 자연환경 / 생활환경 / 대중교통 / 의료서비스 여건에 만족한다", "scale": "항목별 예/아니오", "unit": "개인", "note": "L&W 반응성의 결과 측 대용"},
-    {"concept": "region", "survey": "chs", "wave": "2021~ 지침서 확인", "var": "signgu_code / pbhlth_code", "question": "시도+시군구 5자리 행정코드 / 보건소 8자리 코드", "scale": "코드", "unit": "개인", "note": "시군구 단위 분석 가능. Freitag 칸톤 자리에 시군구. 2021 이전 공개 여부 미확인"},
-    {"concept": "trust_social", "survey": "youth2022", "wave": "2022", "var": "G4", "question": "우리 사회를 얼마나 신뢰합니까", "scale": "0~10", "unit": "개인", "note": "K&R과 같은 0~10. 대상은 '사회'"},
-    {"concept": "welfare_selective", "survey": "youth2022", "wave": "2022", "var": "A9 / H2-4-1", "question": "국민기초생활보장 수급 여부 / 정부 보조금 수령", "scale": "여부", "unit": "개인·가구", "note": "E18-4 실업급여"},
-    {"concept": "political_participation", "survey": "youth2022", "wave": "2022", "var": "F3", "question": "정치·사회 참여(자원봉사·기부 포함) 경험", "scale": "항목별 여부", "unit": "개인", "note": "G13 공정성(척도 미확인)"},
-    {"concept": "region", "survey": "youth2022", "wave": "2022", "var": "지역1·2", "question": "17개 시도 / 수도권 여부", "scale": "코드", "unit": "개인", "note": "변수명 미확인"},
-    {"concept": "trust_institution", "survey": "elderly2023", "wave": "2023", "var": "H25", "question": "가족 / 이웃 / 언론 / 기업 / 정부를 얼마나 신뢰합니까", "scale": "4점", "unit": "개인", "note": "최종 조사표 원문 미확인(보고서 표 기준). H24 최근 3년 투표 90.2%"},
-    {"concept": "welfare_selective", "survey": "elderly2023", "wave": "2023", "var": "J2 / J3-9", "question": "국민기초생활보장 수급 / 기초연금 수급", "scale": "여부", "unit": "개인", "note": "D5 단체 참여, D6 자원봉사, F6 친구·이웃 교류"}
-  ]
+  "kgss": {
+   "name": "한국종합사회조사(KGSS)",
+   "org": "성균관대 서베이리서치센터",
+   "unit": "개인",
+   "region": "7개 권역 + 도시/농촌",
+   "best_wave": "2012 (N=1,396), 2023 (N=1,230)",
+   "why": "사회자본 문항이 가장 풍부(GSS·ISSP·EASS 모듈). 수급 문항은 없음"
+  },
+  "kostat_social": {
+   "name": "사회조사",
+   "org": "국가데이터처",
+   "unit": "개인(만 13세 이상)",
+   "region": "시도(공표), 변수 미확인",
+   "best_wave": "2023",
+   "why": "단체 참여·기부·봉사 상세. 제도별 수급 없음, 대인신뢰 없음(사회 신뢰만)"
+  },
+  "kostat_hfls": {
+   "name": "가계금융복지조사",
+   "org": "국가데이터처",
+   "unit": "가구(가구원별 소득)",
+   "region": "표지 주소란",
+   "best_wave": "2023 (2022 소득)",
+   "why": "공적이전 9항목 가구원별 유무·금액. 신뢰·참여 문항 없음"
+  },
+  "youth2022": {
+   "name": "청년삶실태조사",
+   "org": "국무조정실·보건사회연구원",
+   "unit": "개인(19~34세)",
+   "region": "17개 시도, 수도권 여부",
+   "best_wave": "2022",
+   "why": "사회 신뢰 0~10 + 기초수급·실업급여 + 시도가 한 사람에게. 청년 한정. 조사표는 보고서 부록 OCR본"
+  },
+  "elderly2023": {
+   "name": "노인실태조사",
+   "org": "보건복지부·보건사회연구원",
+   "unit": "개인(65세 이상)",
+   "region": "미확인",
+   "best_wave": "2023",
+   "why": "가족·이웃·언론·기업·정부 신뢰(4점) + 기초생활·기초연금 수급 + 단체·봉사. 노인 한정. 최종 조사표 미입수(보고서 표 기준)"
+  },
+  "klips": {
+   "name": "한국노동패널(KLIPS)",
+   "org": "한국노동연구원",
+   "unit": "개인·가구",
+   "region": "미확인",
+   "best_wave": "18차(2015) 부가조사만 대인신뢰",
+   "why": "일반신뢰는 18차 한 번뿐. 수급은 가구용. 2부 메뉴에서는 제외"
+  },
+  "chs": {
+   "name": "지역사회건강조사",
+   "org": "질병관리청",
+   "unit": "개인(가구 문항 포함)",
+   "region": "시군구 코드 signgu_code, 보건소 pbhlth_code",
+   "best_wave": "2023 (이웃 신뢰·단체 참여·기초수급 동시, 그 외 2011·13·15·17·19)",
+   "why": "이웃 신뢰 + 기초수급 + 시군구가 한 사람에게. 표본 20만 명대. 단, 신뢰가 '동네 사람' 대상이고 예/아니오"
+  }
+ },
+ "concepts": [
+  {
+   "id": "trust_general",
+   "label": "대인신뢰(일반신뢰)",
+   "role": "dv",
+   "lineage": "kr",
+   "paper_measure": "K&R: '사람들은 대체로 믿을 만한가' 0~10",
+   "dim": "cognitive",
+   "src": ""
+  },
+  {
+   "id": "trust_social",
+   "label": "사회 신뢰",
+   "role": "dv",
+   "lineage": "kr",
+   "paper_measure": "변형. 사람이 아니라 '우리 사회'",
+   "dim": "cognitive",
+   "src": ""
+  },
+  {
+   "id": "trust_neighbor",
+   "label": "이웃 신뢰",
+   "role": "dv",
+   "lineage": "krishna",
+   "paper_measure": "Krishna 마을 단위 신뢰 문항에 가장 가까움. K&R의 일반신뢰와는 대상이 다름",
+   "dim": "cognitive",
+   "src": ""
+  },
+  {
+   "id": "trust_institution",
+   "label": "기관신뢰",
+   "role": "dv",
+   "lineage": "kr",
+   "paper_measure": "Krishna의 정부 신뢰(독립변수), K&R 논의의 정치 신뢰",
+   "dim": "cognitive",
+   "src": ""
+  },
+  {
+   "id": "participation",
+   "label": "단체 참여·결사체",
+   "role": "dv",
+   "lineage": "freitag",
+   "paper_measure": "Freitag: 동호회 참여·명예직·봉사 시간·활동 회원 수 / Mettler: 단체 가입 수",
+   "dim": "structural",
+   "src": ""
+  },
+  {
+   "id": "volunteer_donate",
+   "label": "자원봉사·기부",
+   "role": "dv",
+   "lineage": "mettler",
+   "paper_measure": "Mettler 시민참여의 일부",
+   "dim": "structural",
+   "src": ""
+  },
+  {
+   "id": "network_reciprocity",
+   "label": "이웃 교류·호혜",
+   "role": "dv",
+   "lineage": "krishna",
+   "paper_measure": "Krishna 6문항 중 호혜·연대·분쟁 해결",
+   "dim": "both",
+   "src": ""
+  },
+  {
+   "id": "political_participation",
+   "label": "정치 참여",
+   "role": "dv",
+   "lineage": "mettler",
+   "paper_measure": "Mettler: 접촉·캠페인·기부·시위 등 6종",
+   "dim": "structural",
+   "src": ""
+  },
+  {
+   "id": "fairness",
+   "label": "공정성 지각",
+   "role": "med",
+   "lineage": "kr",
+   "paper_measure": "K&R 매개: '받을 자격이 있는 것을 받았나' 1~5",
+   "dim": "",
+   "src": "institution"
+  },
+  {
+   "id": "welfare_selective",
+   "label": "선별 수급 경험(자산조사)",
+   "role": "iv",
+   "lineage": "kr",
+   "paper_measure": "K&R 선별 7기관 접촉 수",
+   "dim": "",
+   "src": "institution"
+  },
+  {
+   "id": "welfare_universal",
+   "label": "보편 수급·서비스 경험",
+   "role": "iv",
+   "lineage": "kr",
+   "paper_measure": "K&R 보편 10기관 접촉 수. Mettler G.I. Bill",
+   "dim": "",
+   "src": "institution"
+  },
+  {
+   "id": "public_service_experience",
+   "label": "공공서비스 접촉 경험",
+   "role": "iv",
+   "lineage": "lw",
+   "paper_measure": "L&W 반응성, K&R 접촉",
+   "dim": "",
+   "src": "institution"
+  },
+  {
+   "id": "institution_participation",
+   "label": "참여 제도 경험",
+   "role": "iv",
+   "lineage": "freitag",
+   "paper_measure": "Freitag 직접민주주의, L&W 참여 기회",
+   "dim": "",
+   "src": "institution"
+  },
+  {
+   "id": "region",
+   "label": "지역",
+   "role": "ctl",
+   "lineage": "freitag",
+   "paper_measure": "Freitag 칸톤·언어권",
+   "dim": "",
+   "src": "context"
+  },
+  {
+   "id": "demo_gender",
+   "label": "성별",
+   "role": "demo",
+   "lineage": "",
+   "dim": "",
+   "src": "individual",
+   "paper_measure": "Mettler·K&R 통제변수. Bourdieu·Lin에서는 개인 자원(원인)"
+  },
+  {
+   "id": "demo_age",
+   "label": "연령",
+   "role": "demo",
+   "lineage": "",
+   "dim": "",
+   "src": "individual",
+   "paper_measure": "Mettler·K&R 통제변수. Bourdieu·Lin에서는 개인 자원(원인)"
+  },
+  {
+   "id": "demo_edu",
+   "label": "학력",
+   "role": "demo",
+   "lineage": "",
+   "dim": "",
+   "src": "individual",
+   "paper_measure": "Mettler·K&R 통제변수. Bourdieu·Lin에서는 개인 자원(원인)"
+  },
+  {
+   "id": "demo_income",
+   "label": "소득",
+   "role": "demo",
+   "lineage": "",
+   "dim": "",
+   "src": "individual",
+   "paper_measure": "Mettler·K&R 통제변수. Bourdieu·Lin에서는 개인 자원(원인)"
+  },
+  {
+   "id": "demo_employ",
+   "label": "경제활동",
+   "role": "demo",
+   "lineage": "",
+   "dim": "",
+   "src": "individual",
+   "paper_measure": "Mettler·K&R 통제변수. Bourdieu·Lin에서는 개인 자원(원인)"
+  },
+  {
+   "id": "demo_area",
+   "label": "거주지 유형",
+   "role": "demo",
+   "lineage": "",
+   "dim": "",
+   "src": "individual",
+   "paper_measure": "Mettler·K&R 통제변수. Bourdieu·Lin에서는 개인 자원(원인)"
+  }
+ ],
+ "items": [
+  {
+   "concept": "trust_general",
+   "survey": "koweps",
+   "wave": "16차(2020 기준)",
+   "var": "p1604_1",
+   "question": "일반적으로 볼 때, 귀하는 대부분의 사람들을 믿을만하다고 생각하십니까?",
+   "scale": "3범주: 믿을만하다 / 매우 조심해야 한다 / 잘 모르겠다",
+   "unit": "가구원",
+   "note": "3년 주기(1·4·7·10·13·16차). 17·18차 없음"
+  },
+  {
+   "concept": "trust_general",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "Q28",
+   "question": "귀하는 일반적으로 사람들을 어느 정도 믿을 수 있다고 생각하십니까?",
+   "scale": "4점: 전혀 믿을 수 없다 ~ 매우 믿을 수 있다",
+   "unit": "개인",
+   "note": "2019~2022는 Q33·Q31, 2025는 문구 변경"
+  },
+  {
+   "concept": "trust_general",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "Q29",
+   "question": "다음 집단들에 대하여 얼마나 신뢰하고 있습니까? 가족 / 이웃 / 친분 있는 사람 / 처음 만난 낯선 사람 / 국내 거주 외국인",
+   "scale": "4점",
+   "unit": "개인",
+   "note": "특수신뢰 vs 일반신뢰 구분 가능"
+  },
+  {
+   "concept": "trust_general",
+   "survey": "kgss",
+   "wave": "2004~2025(대부분 해)",
+   "var": "CANTRUST",
+   "question": "귀하는 일반적으로 사람들을 신뢰할 수 있다고 생각하십니까, 아니면 조심해야 한다고 생각하십니까?",
+   "scale": "4점: 항상 신뢰 ~ 항상 조심",
+   "unit": "개인",
+   "note": "2025는 TRUST10S(0~10)도 있음"
+  },
+  {
+   "concept": "trust_general",
+   "survey": "kgss",
+   "wave": "2003~2025(대부분 해)",
+   "var": "FAIR / HELPFUL",
+   "question": "대부분의 사람들이 기회만 있으면 귀하를 이용하려 들 것이라고 생각하십니까, 아니면 공정하게 대할 것이라고 생각하십니까? / 사람들이 대체로 남을 도우려 한다고 생각하십니까?",
+   "scale": "3택",
+   "unit": "개인",
+   "note": "GSS 3문항 세트"
+  },
+  {
+   "concept": "trust_general",
+   "survey": "kgss",
+   "wave": "2012, 2023",
+   "var": "PERTRT1-5",
+   "question": "다음 사람들을 어느 정도 신뢰하십니까? 친척 / 친구 / 이웃 / 직장동료 / 낯선 사람",
+   "scale": "4점",
+   "unit": "개인",
+   "note": "EASS 모듈"
+  },
+  {
+   "concept": "trust_social",
+   "survey": "kgss",
+   "wave": "2004~2025(대부분 해)",
+   "var": "RELIABLE",
+   "question": "귀하는 우리 사회가 어느 정도 믿을 수 있는 사회라고 생각하십니까?",
+   "scale": "0~10",
+   "unit": "개인",
+   "note": "K&R과 같은 0~10이지만 대상이 '사회'"
+  },
+  {
+   "concept": "trust_social",
+   "survey": "kostat_social",
+   "wave": "2023",
+   "var": "문22",
+   "question": "귀하는 우리 사회가 어느 정도 믿을 수 있는 사회라고 생각하십니까?",
+   "scale": "4점",
+   "unit": "개인",
+   "note": "사회조사에는 대인신뢰 문항 없음"
+  },
+  {
+   "concept": "trust_social",
+   "survey": "kipa",
+   "wave": "2024, 2025",
+   "var": "Q30",
+   "question": "귀하는 일반적으로 우리 사회를 어느 정도 믿을 수 있다고 생각하십니까?",
+   "scale": "4점",
+   "unit": "개인",
+   "note": "2023 이전 없음"
+  },
+  {
+   "concept": "trust_institution",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "Q30",
+   "question": "다음 기관들이 맡은 일을 얼마나 잘 수행하고 있다고 믿습니까? 중앙정부 부처 / 국회 / 법원 / 검찰 / 경찰 / 지방자치단체 / 공기업 / 군대 / 노조 / 시민단체 / TV / 신문 / 교육 / 의료 / 대기업 / 종교 / 금융 (17개)",
+   "scale": "4점",
+   "unit": "개인",
+   "note": "Q31 청렴도 17개 동일 기관"
+  },
+  {
+   "concept": "trust_institution",
+   "survey": "kgss",
+   "wave": "매 조사(2003~2025)",
+   "var": "CONGOVT, CONLGOVT, CONLEGIS, CONJUDGE 등 16개",
+   "question": "다음 기관들을 이끌어가는 사람들을 어느 정도 신뢰하는지: 중앙정부 부처 / 지방자치정부 / 국회 / 대법원 / 군대 / 대기업 / 종교계 / 교육계 / 노조 / 신문 / TV / 의료계 / 학계 / 금융 / 대통령실 / 시민운동단체",
+   "scale": "3점: 매우 / 다소 / 거의 신뢰하지 않음",
+   "unit": "개인",
+   "note": "2021~2025 검찰청·통계청·선관위 추가, 0~10 척도 변형도 있음"
+  },
+  {
+   "concept": "trust_institution",
+   "survey": "kgss",
+   "wave": "2012, 2023",
+   "var": "PERTRT12-14, 16-17",
+   "question": "다음 사람들을 어느 정도 신뢰하십니까? 지방정부 공무원 / 중앙정부 공무원 / 경찰관 / 판사 / 검사",
+   "scale": "4점",
+   "unit": "개인",
+   "note": "일선 관료 신뢰 = K&R 기제 1"
+  },
+  {
+   "concept": "participation",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "Q14",
+   "question": "다음 사회단체에 대하여 활동 정도가 어떻게 되십니까? 정당 / 노조·직업조합 / 종교단체 / 동호회 / 시민단체 / 지역사회 공공모임(반상회·주민조직) / 동창회·향우회 / 자원봉사·기부단체 / 사회적 경제조직 (9개)",
+   "scale": "5점: 소속된 적 없다 ~ 소속·적극 활동",
+   "unit": "개인",
+   "note": "Freitag 4문항 중 '활동 회원'에 대응"
+  },
+  {
+   "concept": "participation",
+   "survey": "kgss",
+   "wave": "2012, 2023",
+   "var": "MEMB1-9",
+   "question": "다음 조직이나 공식 모임의 구성원이십니까? 적극 참여하십니까? 정치모임 / 주민협회·반상회 / 사회봉사클럽 / 시민사회단체 / 종교집단 / 동창회 / 여가모임 / 노조 / 직업·직능단체",
+   "scale": "3점: 적극 참여 / 구성원이나 참여 안 함 / 구성원 아님",
+   "unit": "개인",
+   "note": "EASS 모듈. 2004·2014·2016·2018은 GRP*·VA* 변형"
+  },
+  {
+   "concept": "participation",
+   "survey": "kostat_social",
+   "wave": "2023",
+   "var": "문24",
+   "question": "지난 1년 동안 다음 단체에 참여하여 활동하신 적이 있으십니까? 친목·사교 / 취미·스포츠 / 종교 / 시민사회 / 학술 / 이익단체 / 정치단체 / 지역사회 모임(반상회·입주자대표회) / 기타",
+   "scale": "항목별 참여/불참",
+   "unit": "개인",
+   "note": "N이 가장 큼(전국 3만여 가구)"
+  },
+  {
+   "concept": "participation",
+   "survey": "koweps",
+   "wave": "4차~",
+   "var": "p1602_4aq1",
+   "question": "(취업자만) 직장에서 노동조합에 가입되어 있습니까?",
+   "scale": "4범주",
+   "unit": "가구원",
+   "note": "복지패널에는 일반 단체 참여 문항이 없음. 노조·종교·기부·봉사가 대용"
+  },
+  {
+   "concept": "volunteer_donate",
+   "survey": "koweps",
+   "wave": "매년",
+   "var": "p1604_4 / p1604_5 / p1604_6",
+   "question": "정기적으로 기부를 하거나 자원봉사활동을 하고 있습니까? / 1년간 기부액 / 자원봉사 횟수",
+   "scale": "여부 / 만원 / 회",
+   "unit": "가구원",
+   "note": "_6이 횟수인지 여부인지 코드북 확인 필요"
+  },
+  {
+   "concept": "volunteer_donate",
+   "survey": "kostat_social",
+   "wave": "2023",
+   "var": "문25~33",
+   "question": "지난 1년 동안 현금·물품을 기부한 적이 있는가(경로별 횟수·금액) / 자원봉사 참여 여부(분야 13종, 횟수·시간)",
+   "scale": "여부 + 숫자",
+   "unit": "개인",
+   "note": "가장 상세"
+  },
+  {
+   "concept": "volunteer_donate",
+   "survey": "kgss",
+   "wave": "2023 / 2012",
+   "var": "VOLUN12M / PUBPAR1-3",
+   "question": "지난 1년간 봉사단체·자선단체 활동 참여 빈도 / 지역사회 개선·문화·취약집단 자원봉사 참여 여부",
+   "scale": "6점 빈도 / 여부",
+   "unit": "개인",
+   "note": "일반 기부 행위 문항은 없음"
+  },
+  {
+   "concept": "network_reciprocity",
+   "survey": "kgss",
+   "wave": "2012, 2023",
+   "var": "NGHGRT / NGHASK / POLPAR05-06",
+   "question": "서로 인사하고 지내는 이웃 수 / 부탁할 수 있는 이웃 수 / 내 이웃은 서로 관심을 보인다 / 이웃은 내가 도움이 필요할 때 기꺼이 도와주려 한다",
+   "scale": "5구간 / 7점 동의",
+   "unit": "개인",
+   "note": "Krishna 호혜 문항에 가장 가까움"
+  },
+  {
+   "concept": "network_reciprocity",
+   "survey": "kgss",
+   "wave": "2023",
+   "var": "SOCNET1-10, GIVELT/EC/CR",
+   "question": "우리 동네 사람들은 서로를 돕는다 / 지인에게 받는·주는 정서·물질 도움 / 지난 1년 누구에게 고민 들어주기·경제 지원·돌봄을 제공했나",
+   "scale": "0~6, 0~10, 복수응답",
+   "unit": "개인",
+   "note": ""
+  },
+  {
+   "concept": "network_reciprocity",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "Q26-1 / Q26-2",
+   "question": "목돈·간병·고민 상황에서 도와줄 사람 수 / 가장 먼저 도움을 청할 대상(가족·친구·이웃·정부기관 등)",
+   "scale": "5범주 / 9범주",
+   "unit": "개인",
+   "note": "'정부·공공서비스기관' 보기 있음"
+  },
+  {
+   "concept": "network_reciprocity",
+   "survey": "kostat_social",
+   "wave": "2023",
+   "var": "문23 / 문23-1",
+   "question": "몸이 아플 때·큰돈·우울할 때 도움 받을 사람 유무와 수 / 하루 평균 교류 인원",
+   "scale": "있음(명)/없음",
+   "unit": "개인",
+   "note": ""
+  },
+  {
+   "concept": "network_reciprocity",
+   "survey": "koweps",
+   "wave": "3년 주기",
+   "var": "p1604_2 / p1604_3",
+   "question": "지역사회에서 누군가 위급하게 도움을 필요로 하면 기꺼이 도울 의향 / 비선호시설(화장시설·특수학교 등) 입지 수용",
+   "scale": "5점",
+   "unit": "가구원",
+   "note": "성인 이웃 교류 빈도 문항은 없음"
+  },
+  {
+   "concept": "political_participation",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "Q18 / Q19",
+   "question": "정치·사회 활동 9개(서명·시위·민원·후원 등) 경험 / 최근 3개 선거 투표 여부",
+   "scale": "4범주(지난 1년/오래전/의향/없음) / 여부",
+   "unit": "개인",
+   "note": "Mettler 6종 활동과 거의 대응"
+  },
+  {
+   "concept": "political_participation",
+   "survey": "kgss",
+   "wave": "2004, 2009, 2014, 2016, 2018 / 매 조사",
+   "var": "SIGNPET, JOINDEM, CNTCTGOV, POLFUNDS 등 / VOTE*",
+   "question": "진정서 서명 / 시위 참가 / 정치인·공무원 접촉 / 기부·모금 / 선거별 투표 여부",
+   "scale": "4택 / 여부",
+   "unit": "개인",
+   "note": "2012 LOCPAR1-4 지역 이슈 집단토론 참여"
+  },
+  {
+   "concept": "fairness",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "Q34 / Q35 / Q36",
+   "question": "우리 사회가 얼마나 공정한가 / 행정기관·국회·법원·검찰·경찰이 공정한가 / 분야별 15개 중 '복지혜택을 받을 수 있는 기회'의 공정성",
+   "scale": "4점",
+   "unit": "개인",
+   "note": "K&R 매개(절차공정성)에 가장 가까운 국내 문항. Q42 부당한 대우 경험"
+  },
+  {
+   "concept": "fairness",
+   "survey": "kgss",
+   "wave": "2011, 2012, 2014",
+   "var": "KRDJ1-5",
+   "question": "한국사회로부터 받는 대우가 능력·기술·노력·학력·경력에 비해 공정한가",
+   "scale": "5점",
+   "unit": "개인",
+   "note": "2006 OFFEQUIT: 공무원이 나 같은 사람을 공정하게 대하나"
+  },
+  {
+   "concept": "fairness",
+   "survey": "koweps",
+   "wave": "복지인식 부가(2·5·8·11·14·17차)",
+   "var": "wc*_58",
+   "question": "나보다 돈을 많이 벌면서 세금을 적게 내는 사람이 많다고 생각하십니까?",
+   "scale": "7점",
+   "unit": "가구원",
+   "note": "조세 공평성만. 16차에는 부가조사 없음"
+  },
+  {
+   "concept": "welfare_selective",
+   "survey": "koweps",
+   "wave": "16차(2020 기준)",
+   "var": "h1612_2_11aq1 / aq4 / aq13",
+   "question": "국민기초생활보장 급여(맞춤형 급여)를 신청한 적이 있는가 / 수급자로 선정되었는가(전부·일부·불선정) / 받은 경험이 있는가",
+   "scale": "여부·3범주",
+   "unit": "가구",
+   "note": "신청했으나 탈락한 집단 식별 가능 = '심사 경험'. aq5~8 비선정 이유(소득·자동차·부양의무자)"
+  },
+  {
+   "concept": "welfare_selective",
+   "survey": "koweps",
+   "wave": "16차",
+   "var": "h1608_11aq2~8 / h1601_11aq*",
+   "question": "생계·주거·교육급여 수급 개월수·연액 / 급여별 수급형태",
+   "scale": "개월, 만원",
+   "unit": "가구",
+   "note": "의료급여는 h1604_7aq1 ⑤⑥"
+  },
+  {
+   "concept": "welfare_selective",
+   "survey": "koweps",
+   "wave": "16차",
+   "var": "h1612_1_5aq1 / 5aq2",
+   "question": "근로·자녀장려금을 신청했는가 / 받았는가",
+   "scale": "4범주",
+   "unit": "가구",
+   "note": "소득 심사형"
+  },
+  {
+   "concept": "welfare_selective",
+   "survey": "koweps",
+   "wave": "16차",
+   "var": "h1608_10aq1 / h1614_4",
+   "question": "기초연금 연액 / 기초연금 이용 경험(65세 이상 노인 가구)",
+   "scale": "만원 / 여부",
+   "unit": "가구",
+   "note": "소득 하위 70% 선별"
+  },
+  {
+   "concept": "welfare_selective",
+   "survey": "koweps",
+   "wave": "16차",
+   "var": "h1608_aq16 / h1616_6aq1 / h1616_6aq4",
+   "question": "장애수당·장애인연금 연액 / 장애인연금 경험 / 장애수당 경험",
+   "scale": "만원 / 여부",
+   "unit": "가구",
+   "note": ""
+  },
+  {
+   "concept": "welfare_selective",
+   "survey": "kostat_hfls",
+   "wave": "2023(2022 소득)",
+   "var": "30-6-② ④ ⑤",
+   "question": "공적이전소득: 기초연금 / 맞춤형 기초생활보장 지원금 / 근로·자녀장려금 (가구원별 유무·금액)",
+   "scale": "유무 + 만원",
+   "unit": "가구원별 소득",
+   "note": "신뢰 문항 없음 → 시도 집계 결합용"
+  },
+  {
+   "concept": "welfare_universal",
+   "survey": "koweps",
+   "wave": "16차(14차~)",
+   "var": "h1615_14aq1 / h1608_14aq3",
+   "question": "아동수당 이용 경험(0~17세 아동 가구) / 아동수당 연액",
+   "scale": "여부 / 만원",
+   "unit": "가구",
+   "note": "2019.1 보편 전환 이후. 14차(2018 기준)는 선별 시기 → 전환 전후 비교 가능"
+  },
+  {
+   "concept": "welfare_universal",
+   "survey": "koweps",
+   "wave": "16차",
+   "var": "h1615_8 / h1608_aq21 / h1608_5aq3",
+   "question": "양육·보육료·유치원비 보조 경험 / 양육수당 연액 / 보육료 지원 연액",
+   "scale": "여부 / 만원",
+   "unit": "가구",
+   "note": ""
+  },
+  {
+   "concept": "welfare_universal",
+   "survey": "koweps",
+   "wave": "16차",
+   "var": "p1601_1 / p1601_15",
+   "question": "1년간 공적연금(국민연금 등)을 받았는가 / 고용보험 급여(실업급여 등)를 받았는가",
+   "scale": "여부(+종류·금액)",
+   "unit": "가구원",
+   "note": "개인 단위라 신뢰와 같은 행"
+  },
+  {
+   "concept": "welfare_universal",
+   "survey": "koweps",
+   "wave": "매년",
+   "var": "h1604_7aq1 / h1605_4",
+   "question": "건강보험 가입 종류(직장·지역·의료급여) / 건강보험료 미납 경험",
+   "scale": "8범주 / 여부",
+   "unit": "가구원 / 가구",
+   "note": ""
+  },
+  {
+   "concept": "welfare_universal",
+   "survey": "kostat_hfls",
+   "wave": "2023",
+   "var": "30-6-① ⑥ ⑦",
+   "question": "공적연금 / 양육수당(아동수당 합산) / 고용·산재보험 급여",
+   "scale": "유무 + 만원",
+   "unit": "가구원별 소득",
+   "note": "아동수당 단독 식별 불가"
+  },
+  {
+   "concept": "public_service_experience",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "Q33 / Q33-1",
+   "question": "지난 1년 동안 다음 공공서비스를 경험했는가: 주민자치센터 / 인허가 / 인터넷 민원 / 세무 / 경찰 / 소방 / 교육 / 보건 + 만족도",
+   "scale": "경험 여부 + 5점",
+   "unit": "개인",
+   "note": "K&R '접촉 수'의 보편 서비스 쪽 대용. 2019~2022는 공청회·주민참여예산 항목 포함"
+  },
+  {
+   "concept": "public_service_experience",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "Q53",
+   "question": "지난 1년 동안 끼니를 거른 적 / 병원비 때문에 진료 못 받은 적 / 공과금 체납 / 집세 상승으로 이사",
+   "scale": "있다/없다",
+   "unit": "개인",
+   "note": "수급 경험 대용(욕구 측)"
+  },
+  {
+   "concept": "institution_participation",
+   "survey": "kipa",
+   "wave": "2019~2022",
+   "var": "Q38(연도별 번호 상이)",
+   "question": "공공서비스 경험 항목 중 공청회·청문회 / 주민참여예산",
+   "scale": "경험 여부",
+   "unit": "개인",
+   "note": "2023 이후 항목 삭제. L&W 참여 기회·Freitag 직접민주주의 대용"
+  },
+  {
+   "concept": "institution_participation",
+   "survey": "kgss",
+   "wave": "2012",
+   "var": "LOCPAR1-4",
+   "question": "지역사회 이슈(환경·교육·안전·소비자) 관련 집단토론에 지난 1년간 얼마나 자주 참여했나",
+   "scale": "4점 빈도",
+   "unit": "개인",
+   "note": "L&W 숙의형 참여"
+  },
+  {
+   "concept": "region",
+   "survey": "kgss",
+   "wave": "전 조사",
+   "var": "REGION / URBAN",
+   "question": "거주 권역(서울·경기·강원·충청·경상·전라·제주) / 도시·농촌",
+   "scale": "7 / 2범주",
+   "unit": "개인",
+   "note": "시군구 없음"
+  },
+  {
+   "concept": "region",
+   "survey": "koweps",
+   "wave": "—",
+   "var": "미확인",
+   "question": "지침서·변수이력표에 시도 변수 없음. 코드북 확인 필요",
+   "scale": "",
+   "unit": "",
+   "note": "조사지역 17개 시도 244개 시군구"
+  },
+  {
+   "concept": "region",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "Q5",
+   "question": "시·도 / 시·군·구 / 읍·면·동에 대한 소속감",
+   "scale": "4점",
+   "unit": "개인",
+   "note": "행정구역 변수 공개 여부 미확인"
+  },
+  {
+   "concept": "trust_neighbor",
+   "survey": "chs",
+   "wave": "2011·13·15·17·19·21·23·25",
+   "var": "ena_01a1",
+   "question": "우리 동네 사람들은 서로 믿고 신뢰할 수 있다",
+   "scale": "예/아니오",
+   "unit": "개인",
+   "note": "짝수 연도 없음. 2014·2016은 일부 시도만"
+  },
+  {
+   "concept": "network_reciprocity",
+   "survey": "chs",
+   "wave": "2011~2025 홀수 연도",
+   "var": "ena_01b1",
+   "question": "우리 동네 사람들은 경조사가 있을 때 서로 도움을 주고받는다",
+   "scale": "예/아니오",
+   "unit": "개인",
+   "note": "2017 이전 문구: '전통이 있다'"
+  },
+  {
+   "concept": "network_reciprocity",
+   "survey": "chs",
+   "wave": "2011·13·15·17·19·23·25",
+   "var": "enb_01z1 / enb_02z1 / enb_03z1",
+   "question": "가장 많이 접촉하는 친척 / 이웃 / 친구와 얼마나 자주 보거나 연락합니까",
+   "scale": "6점: 월 1회 미만 ~ 주 4회 이상",
+   "unit": "개인",
+   "note": "2021 없음"
+  },
+  {
+   "concept": "participation",
+   "survey": "chs",
+   "wave": "2011·13·15·17·19·23",
+   "var": "enb_04z1~07z1",
+   "question": "한 달에 한 번 이상 정기적으로 참여합니까: 종교활동 / 친목활동(계모임·동창회·향우회 등) / 여가·레저 / 자선단체",
+   "scale": "항목별 예/아니오",
+   "unit": "개인",
+   "note": "2021·2025 삭제"
+  },
+  {
+   "concept": "welfare_selective",
+   "survey": "chs",
+   "wave": "2009~2025 매년",
+   "var": "fma_04z1",
+   "question": "귀 가구는 현재 기초생활 수급자입니까?",
+   "scale": "3범주: 그렇다 / 지금은 아니지만 과거에 수급자였다 / 아니다",
+   "unit": "가구(개인 응답)",
+   "note": "'과거 수급' 범주 = 심사·탈락 경험의 대용. 이웃 신뢰와 같은 사람"
+  },
+  {
+   "concept": "public_service_experience",
+   "survey": "chs",
+   "wave": "2011~2025 홀수 연도",
+   "var": "ena_01c1~g1",
+   "question": "동네의 안전 / 자연환경 / 생활환경 / 대중교통 / 의료서비스 여건에 만족한다",
+   "scale": "항목별 예/아니오",
+   "unit": "개인",
+   "note": "L&W 반응성의 결과 측 대용"
+  },
+  {
+   "concept": "region",
+   "survey": "chs",
+   "wave": "2021~ 지침서 확인",
+   "var": "signgu_code / pbhlth_code",
+   "question": "시도+시군구 5자리 행정코드 / 보건소 8자리 코드",
+   "scale": "코드",
+   "unit": "개인",
+   "note": "시군구 단위 분석 가능. Freitag 칸톤 자리에 시군구. 2021 이전 공개 여부 미확인"
+  },
+  {
+   "concept": "trust_social",
+   "survey": "youth2022",
+   "wave": "2022",
+   "var": "G4",
+   "question": "우리 사회를 얼마나 신뢰합니까",
+   "scale": "0~10",
+   "unit": "개인",
+   "note": "K&R과 같은 0~10. 대상은 '사회'"
+  },
+  {
+   "concept": "welfare_selective",
+   "survey": "youth2022",
+   "wave": "2022",
+   "var": "A9 / H2-4-1",
+   "question": "국민기초생활보장 수급 여부 / 정부 보조금 수령",
+   "scale": "여부",
+   "unit": "개인·가구",
+   "note": "E18-4 실업급여"
+  },
+  {
+   "concept": "political_participation",
+   "survey": "youth2022",
+   "wave": "2022",
+   "var": "F3",
+   "question": "정치·사회 참여(자원봉사·기부 포함) 경험",
+   "scale": "항목별 여부",
+   "unit": "개인",
+   "note": "G13 공정성(척도 미확인)"
+  },
+  {
+   "concept": "region",
+   "survey": "youth2022",
+   "wave": "2022",
+   "var": "지역1·2",
+   "question": "17개 시도 / 수도권 여부",
+   "scale": "코드",
+   "unit": "개인",
+   "note": "변수명 미확인"
+  },
+  {
+   "concept": "trust_institution",
+   "survey": "elderly2023",
+   "wave": "2023",
+   "var": "H25",
+   "question": "가족 / 이웃 / 언론 / 기업 / 정부를 얼마나 신뢰합니까",
+   "scale": "4점",
+   "unit": "개인",
+   "note": "최종 조사표 원문 미확인(보고서 표 기준). H24 최근 3년 투표 90.2%"
+  },
+  {
+   "concept": "welfare_selective",
+   "survey": "elderly2023",
+   "wave": "2023",
+   "var": "J2 / J3-9",
+   "question": "국민기초생활보장 수급 / 기초연금 수급",
+   "scale": "여부",
+   "unit": "개인",
+   "note": "D5 단체 참여, D6 자원봉사, F6 친구·이웃 교류"
+  },
+  {
+   "concept": "demo_gender",
+   "survey": "koweps",
+   "wave": "16차(2021 조사, 2020 기준)",
+   "var": "",
+   "question": "성별",
+   "scale": "남/여",
+   "unit": "개인(가구원)·가구",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_age",
+   "survey": "koweps",
+   "wave": "16차(2021 조사, 2020 기준)",
+   "var": "",
+   "question": "만 나이",
+   "scale": "연속",
+   "unit": "개인(가구원)·가구",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_edu",
+   "survey": "koweps",
+   "wave": "16차(2021 조사, 2020 기준)",
+   "var": "",
+   "question": "최종 학력",
+   "scale": "범주(무학~대학원)",
+   "unit": "개인(가구원)·가구",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_income",
+   "survey": "koweps",
+   "wave": "16차(2021 조사, 2020 기준)",
+   "var": "",
+   "question": "가구 월평균 소득",
+   "scale": "연속 또는 구간",
+   "unit": "개인(가구원)·가구",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_employ",
+   "survey": "koweps",
+   "wave": "16차(2021 조사, 2020 기준)",
+   "var": "",
+   "question": "현재 경제활동 상태",
+   "scale": "범주(취업/실업/비경활)",
+   "unit": "개인(가구원)·가구",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_area",
+   "survey": "koweps",
+   "wave": "16차(2021 조사, 2020 기준)",
+   "var": "",
+   "question": "거주 지역 유형(동/읍·면)",
+   "scale": "2범주",
+   "unit": "개인(가구원)·가구",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_gender",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "",
+   "question": "성별",
+   "scale": "남/여",
+   "unit": "개인",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_age",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "",
+   "question": "만 나이",
+   "scale": "연속",
+   "unit": "개인",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_edu",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "",
+   "question": "최종 학력",
+   "scale": "범주(무학~대학원)",
+   "unit": "개인",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_income",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "",
+   "question": "가구 월평균 소득",
+   "scale": "연속 또는 구간",
+   "unit": "개인",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_employ",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "",
+   "question": "현재 경제활동 상태",
+   "scale": "범주(취업/실업/비경활)",
+   "unit": "개인",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_area",
+   "survey": "kipa",
+   "wave": "2023",
+   "var": "",
+   "question": "거주 지역 유형(동/읍·면)",
+   "scale": "2범주",
+   "unit": "개인",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_gender",
+   "survey": "kgss",
+   "wave": "2012 (N=1,396), 2023 (N=1,230)",
+   "var": "",
+   "question": "성별",
+   "scale": "남/여",
+   "unit": "개인",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_age",
+   "survey": "kgss",
+   "wave": "2012 (N=1,396), 2023 (N=1,230)",
+   "var": "",
+   "question": "만 나이",
+   "scale": "연속",
+   "unit": "개인",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_edu",
+   "survey": "kgss",
+   "wave": "2012 (N=1,396), 2023 (N=1,230)",
+   "var": "",
+   "question": "최종 학력",
+   "scale": "범주(무학~대학원)",
+   "unit": "개인",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_income",
+   "survey": "kgss",
+   "wave": "2012 (N=1,396), 2023 (N=1,230)",
+   "var": "",
+   "question": "가구 월평균 소득",
+   "scale": "연속 또는 구간",
+   "unit": "개인",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_employ",
+   "survey": "kgss",
+   "wave": "2012 (N=1,396), 2023 (N=1,230)",
+   "var": "",
+   "question": "현재 경제활동 상태",
+   "scale": "범주(취업/실업/비경활)",
+   "unit": "개인",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_area",
+   "survey": "kgss",
+   "wave": "2012 (N=1,396), 2023 (N=1,230)",
+   "var": "",
+   "question": "거주 지역 유형(동/읍·면)",
+   "scale": "2범주",
+   "unit": "개인",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_gender",
+   "survey": "kostat_social",
+   "wave": "2023",
+   "var": "",
+   "question": "성별",
+   "scale": "남/여",
+   "unit": "개인(만 13세 이상)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_age",
+   "survey": "kostat_social",
+   "wave": "2023",
+   "var": "",
+   "question": "만 나이",
+   "scale": "연속",
+   "unit": "개인(만 13세 이상)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_edu",
+   "survey": "kostat_social",
+   "wave": "2023",
+   "var": "",
+   "question": "최종 학력",
+   "scale": "범주(무학~대학원)",
+   "unit": "개인(만 13세 이상)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_income",
+   "survey": "kostat_social",
+   "wave": "2023",
+   "var": "",
+   "question": "가구 월평균 소득",
+   "scale": "연속 또는 구간",
+   "unit": "개인(만 13세 이상)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_employ",
+   "survey": "kostat_social",
+   "wave": "2023",
+   "var": "",
+   "question": "현재 경제활동 상태",
+   "scale": "범주(취업/실업/비경활)",
+   "unit": "개인(만 13세 이상)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_area",
+   "survey": "kostat_social",
+   "wave": "2023",
+   "var": "",
+   "question": "거주 지역 유형(동/읍·면)",
+   "scale": "2범주",
+   "unit": "개인(만 13세 이상)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_gender",
+   "survey": "kostat_hfls",
+   "wave": "2023 (2022 소득)",
+   "var": "",
+   "question": "성별",
+   "scale": "남/여",
+   "unit": "가구(가구원별 소득)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_age",
+   "survey": "kostat_hfls",
+   "wave": "2023 (2022 소득)",
+   "var": "",
+   "question": "만 나이",
+   "scale": "연속",
+   "unit": "가구(가구원별 소득)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_edu",
+   "survey": "kostat_hfls",
+   "wave": "2023 (2022 소득)",
+   "var": "",
+   "question": "최종 학력",
+   "scale": "범주(무학~대학원)",
+   "unit": "가구(가구원별 소득)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_income",
+   "survey": "kostat_hfls",
+   "wave": "2023 (2022 소득)",
+   "var": "",
+   "question": "가구 월평균 소득",
+   "scale": "연속 또는 구간",
+   "unit": "가구(가구원별 소득)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_employ",
+   "survey": "kostat_hfls",
+   "wave": "2023 (2022 소득)",
+   "var": "",
+   "question": "현재 경제활동 상태",
+   "scale": "범주(취업/실업/비경활)",
+   "unit": "가구(가구원별 소득)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_area",
+   "survey": "kostat_hfls",
+   "wave": "2023 (2022 소득)",
+   "var": "",
+   "question": "거주 지역 유형(동/읍·면)",
+   "scale": "2범주",
+   "unit": "가구(가구원별 소득)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_gender",
+   "survey": "youth2022",
+   "wave": "2022",
+   "var": "",
+   "question": "성별",
+   "scale": "남/여",
+   "unit": "개인(19~34세)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_age",
+   "survey": "youth2022",
+   "wave": "2022",
+   "var": "",
+   "question": "만 나이",
+   "scale": "연속",
+   "unit": "개인(19~34세)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_edu",
+   "survey": "youth2022",
+   "wave": "2022",
+   "var": "",
+   "question": "최종 학력",
+   "scale": "범주(무학~대학원)",
+   "unit": "개인(19~34세)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_income",
+   "survey": "youth2022",
+   "wave": "2022",
+   "var": "",
+   "question": "가구 월평균 소득",
+   "scale": "연속 또는 구간",
+   "unit": "개인(19~34세)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_employ",
+   "survey": "youth2022",
+   "wave": "2022",
+   "var": "",
+   "question": "현재 경제활동 상태",
+   "scale": "범주(취업/실업/비경활)",
+   "unit": "개인(19~34세)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_area",
+   "survey": "youth2022",
+   "wave": "2022",
+   "var": "",
+   "question": "거주 지역 유형(동/읍·면)",
+   "scale": "2범주",
+   "unit": "개인(19~34세)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_gender",
+   "survey": "elderly2023",
+   "wave": "2023",
+   "var": "",
+   "question": "성별",
+   "scale": "남/여",
+   "unit": "개인(65세 이상)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_age",
+   "survey": "elderly2023",
+   "wave": "2023",
+   "var": "",
+   "question": "만 나이",
+   "scale": "연속",
+   "unit": "개인(65세 이상)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_edu",
+   "survey": "elderly2023",
+   "wave": "2023",
+   "var": "",
+   "question": "최종 학력",
+   "scale": "범주(무학~대학원)",
+   "unit": "개인(65세 이상)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_income",
+   "survey": "elderly2023",
+   "wave": "2023",
+   "var": "",
+   "question": "가구 월평균 소득",
+   "scale": "연속 또는 구간",
+   "unit": "개인(65세 이상)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_employ",
+   "survey": "elderly2023",
+   "wave": "2023",
+   "var": "",
+   "question": "현재 경제활동 상태",
+   "scale": "범주(취업/실업/비경활)",
+   "unit": "개인(65세 이상)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_area",
+   "survey": "elderly2023",
+   "wave": "2023",
+   "var": "",
+   "question": "거주 지역 유형(동/읍·면)",
+   "scale": "2범주",
+   "unit": "개인(65세 이상)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_gender",
+   "survey": "chs",
+   "wave": "2023 (이웃 신뢰·단체 참여·기초수급 동시, 그 외 2011·13·15·17·19)",
+   "var": "",
+   "question": "성별",
+   "scale": "남/여",
+   "unit": "개인(가구 문항 포함)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_age",
+   "survey": "chs",
+   "wave": "2023 (이웃 신뢰·단체 참여·기초수급 동시, 그 외 2011·13·15·17·19)",
+   "var": "",
+   "question": "만 나이",
+   "scale": "연속",
+   "unit": "개인(가구 문항 포함)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_edu",
+   "survey": "chs",
+   "wave": "2023 (이웃 신뢰·단체 참여·기초수급 동시, 그 외 2011·13·15·17·19)",
+   "var": "",
+   "question": "최종 학력",
+   "scale": "범주(무학~대학원)",
+   "unit": "개인(가구 문항 포함)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_income",
+   "survey": "chs",
+   "wave": "2023 (이웃 신뢰·단체 참여·기초수급 동시, 그 외 2011·13·15·17·19)",
+   "var": "",
+   "question": "가구 월평균 소득",
+   "scale": "연속 또는 구간",
+   "unit": "개인(가구 문항 포함)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_employ",
+   "survey": "chs",
+   "wave": "2023 (이웃 신뢰·단체 참여·기초수급 동시, 그 외 2011·13·15·17·19)",
+   "var": "",
+   "question": "현재 경제활동 상태",
+   "scale": "범주(취업/실업/비경활)",
+   "unit": "개인(가구 문항 포함)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  },
+  {
+   "concept": "demo_area",
+   "survey": "chs",
+   "wave": "2023 (이웃 신뢰·단체 참여·기초수급 동시, 그 외 2011·13·15·17·19)",
+   "var": "",
+   "question": "거주 지역 유형(동/읍·면)",
+   "scale": "2범주",
+   "unit": "개인(가구 문항 포함)",
+   "note": "기본 인구 문항(변수명은 조사표 확인)"
+  }
+ ]
 }

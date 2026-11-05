@@ -17,7 +17,7 @@ spec = importlib.util.spec_from_file_location("bi", os.path.join(HERE, "build_in
 bi = importlib.util.module_from_spec(spec); spec.loader.exec_module(bi)
 
 CAT, PAPERS = json.dumps(bi.CAT, ensure_ascii=False), json.dumps(bi.PAPERS, ensure_ascii=False)
-HTML = open(os.path.join(HERE, "canvas_v4.html.tpl"), encoding="utf-8").read()  # v4: Galpi 화면 구조(헤더·역할색 노드·존·조절 서랍·검증 배지) + v3 흐름(자료 먼저 → 끌어 묶기 → 정의 → 비교)
+HTML = open(os.path.join(HERE, "canvas_v5.html.tpl"), encoding="utf-8").read()  # v5: 개념화 단계·역할 자유(문항에 역할 없음)·조절·통제·분류 틀(원인 축×종속 차원) + Galpi 화면 구조
 out = (HTML.replace("__CAT__", CAT).replace("__REV__", json.dumps({"base": bi.REVIEWS, "cond": bi.COND}, ensure_ascii=False))
        .replace("__PAPERS__", PAPERS).replace("__STUDIES__", json.dumps(STUDIES, ensure_ascii=False)))
 open(os.path.join(HERE, "canvas.html"), "w", encoding="utf-8").write(out)
