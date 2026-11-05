@@ -9,7 +9,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 STUDIES = [{"id": r["id"], "au": (r["authors"].split(",")[0].split(" ")[-1] if r["authors"] else "") + (" 외" if "," in r["authors"] else ""), "y": r["year"], "t": r["title"], "j": r["journal"],
             "link": r["link"], "comps": [c for c in r["dv_components"].split("|") if c], "unit": r["unit"], "inst": r["iv_institution"] == "Y", "reg": r["iv_region"] == "Y",
             "net": r["iv_network"] == "Y", "med": r["mediator"] == "Y", "lin": r["lineage"], "line": r["measure_line"], "design": r["design"], "ok": r["verified"] == "TRUE"}
-           for r in csv.DictReader(open(os.path.join(HERE, "..", "corpus", "studies.csv"), encoding="utf-8-sig")) if r["dv_components"]]
+           for r in csv.DictReader(open(os.path.join(HERE, "..", "corpus", "studies.csv"), encoding="utf-8-sig"))]  # 346편 전부. 구성 요소가 비면 그물망 바깥 껍질에만 뜬다
 _seen = set()  # 같은 논문이 두 출처(출판본·워킹페이퍼)로 들어온 것은 제목으로 한 번만
 STUDIES = [s for s in STUDIES if not (s["t"].lower().strip().rstrip(".") in _seen or _seen.add(s["t"].lower().strip().rstrip(".")))]
 spec = importlib.util.spec_from_file_location("bi", os.path.join(HERE, "build_index.py"))
@@ -21,7 +21,7 @@ HTML = open(os.path.join(HERE, "canvas_v5.html.tpl"), encoding="utf-8").read()  
 out = (HTML.replace("__CAT__", CAT).replace("__REV__", json.dumps({"base": bi.REVIEWS, "cond": bi.COND}, ensure_ascii=False))
        .replace("__PAPERS__", PAPERS).replace("__STUDIES__", json.dumps(STUDIES, ensure_ascii=False)))
 open(os.path.join(HERE, "canvas.html"), "w", encoding="utf-8").write(out)
-print("canvas.html", len(out) // 1024, "KB · 선행연구", len(STUDIES), "편(구성 요소 있는 것)")
+print("canvas.html", len(out) // 1024, "KB · 선행연구", len(STUDIES), "편(구성 요소 있는 것", sum(1 for s in STUDIES if s["comps"]), ")")
 # 관리자 대시보드(제출 목록·자료 빈도·정의 구성·계보·spotlight). 데모는 같은 브라우저 localStorage 'w11_model'을 storage 이벤트로 읽는다.
 dash = open(os.path.join(HERE, "dashboard.html.tpl"), encoding="utf-8").read().replace("__CAT__", CAT).replace("__PAPERS__", PAPERS).replace("__STUDIES__", json.dumps(STUDIES, ensure_ascii=False))
 open(os.path.join(HERE, "dashboard.html"), "w", encoding="utf-8").write(dash)
