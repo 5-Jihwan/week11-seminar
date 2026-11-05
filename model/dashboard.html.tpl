@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Galpi Admin · 사회자본 11주차</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}body{font-family:Pretendard,-apple-system,'Segoe UI','Malgun Gothic',sans-serif;background:#f1f5f9;color:#0f172a;min-height:100vh}
+.topbar{background:#1e3a5f;color:#fff;display:flex;align-items:center;gap:12px;padding:14px 24px;position:sticky;top:0;z-index:5}.logo{font-size:18px;font-weight:900;letter-spacing:-.5px}.badge{font-size:10px;font-weight:800;background:#f59e0b;color:#fff;padding:2px 8px;border-radius:4px;letter-spacing:.08em;text-transform:uppercase}
+.right{margin-left:auto;display:flex;align-items:center;gap:14px}.rbtn{padding:6px 14px;border:1.5px solid rgba(255,255,255,.3);border-radius:6px;color:#fff;background:none;font-size:12px;cursor:pointer;font-weight:600;font-family:inherit}.rbtn:hover{background:rgba(255,255,255,.1)}.live{font-size:11px;color:#93c5fd;display:flex;align-items:center;gap:6px}.live i{width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block;animation:bl 1.4s infinite}@keyframes bl{50%{opacity:.3}}
+.content{max-width:1240px;margin:0 auto;padding:24px}
+.stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:24px}.stat{background:#fff;border-radius:12px;padding:18px 16px;border-top:3px solid transparent}.stat.blue{border-top-color:#3b82f6}.stat.purple{border-top-color:#8b5cf6}.stat.green{border-top-color:#16a34a}.stat.amber{border-top-color:#f59e0b}.stat.red{border-top-color:#ef4444}.stat.gray{border-top-color:#94a3b8}
+.num{font-size:32px;font-weight:900;line-height:1;margin-bottom:4px}.blue .num{color:#3b82f6}.purple .num{color:#8b5cf6}.green .num{color:#16a34a}.amber .num{color:#f59e0b}.red .num{color:#ef4444}.gray .num{color:#94a3b8}.lab{font-size:11px;color:#64748b;font-weight:600}
+.sh{display:flex;align-items:center;gap:10px;margin-bottom:12px}.st{font-size:14px;font-weight:800;color:#1e3a5f}.sc{font-size:11px;background:#e0e7ff;color:#4338ca;padding:2px 8px;border-radius:99px;font-weight:700}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:24px}@media(max-width:900px){.two,.three{grid-template-columns:1fr}}
+.card{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e2e8f0}
+.bar{display:flex;align-items:center;gap:8px;margin:5px 0;font-size:12px}.bar span{width:150px;color:#334155;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bar i{display:block;height:14px;border-radius:3px;background:linear-gradient(90deg,#1e3a5f,#3b82f6);min-width:2px}.bar b{color:#1e3a5f;font-size:12px}
+.grid{width:100%;border-collapse:collapse;font-size:12px}.grid th,.grid td{border:1px solid #e2e8f0;padding:8px 6px;text-align:center}.grid th{background:#f8fafc;color:#64748b;font-size:10.5px;font-weight:800}.grid td.z{background:#f0fdf4;color:#16a34a;font-weight:700}.grid td.n{background:#eff6ff;font-weight:700;color:#1d4ed8}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;background:#fff;border-radius:10px;overflow:hidden;border:1px solid #e2e8f0}.tbl th{background:#f8fafc;padding:10px 12px;text-align:left;font-size:10.5px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #e2e8f0}.tbl td{padding:9px 12px;border-bottom:1px solid #f1f5f9;vertical-align:top}.tbl tr:hover td{background:#f8fafc;cursor:pointer}.tbl tr.new td{animation:hl 2s}@keyframes hl{from{background:#fef9c3}}
+.pill{font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;white-space:nowrap}.p-kr{background:#fee2e2;color:#b91c1c}.p-fr{background:#dbeafe;color:#1d4ed8}.p-lw{background:#dcfce7;color:#15803d}.p-me{background:#fef3c7;color:#b45309}.p-kn{background:#ede9fe;color:#6d28d9}.p-out{background:#f3f4f6;color:#6b7280}
+.empty{text-align:center;padding:48px 20px;background:#fff;border-radius:10px;color:#94a3b8;font-size:13px;border:1px dashed #e2e8f0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}.modal.on{display:flex}.mbox{background:#fff;border-radius:16px;width:min(1000px,100%);max-height:92vh;overflow-y:auto;padding:22px 26px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.mh{display:flex;align-items:center;gap:12px;margin-bottom:12px}.mh h2{font-size:18px;color:#1e3a5f}.mh .x{margin-left:auto;border:0;background:none;font-size:22px;cursor:pointer;color:#64748b}
+.diag{position:relative;height:300px;background:#fafaf7;background-image:radial-gradient(circle at 2px 2px,rgba(60,64,75,.18) 1px,transparent 0);background-size:28px 28px;border-radius:12px;border:1px solid #e2e8f0;overflow:hidden;margin-bottom:14px}
+.nd{position:absolute;min-width:118px;max-width:170px;padding:8px 14px;text-align:center;border-radius:10px;border:1.5px solid;font-size:12px;font-weight:700}.nd.IV{background:linear-gradient(160deg,#fff,#d5e3ff);border-color:#adc8f5;color:#1e3a5f}.nd.MV{background:linear-gradient(160deg,#fff,#b4f5ec);border-color:#6bd8cb;color:#006a61}.nd.DV{background:linear-gradient(160deg,#fff,#e9d5ff);border-color:#c084fc;color:#6d28d9}.nd.CV{background:linear-gradient(160deg,#fff,#e5e7eb);border-color:#d1d5db;color:#374151}.nd small{display:block;font-size:8.5px;font-family:monospace;opacity:.6;font-weight:800;letter-spacing:.1em}
+.def{padding:10px 12px;border-radius:10px;background:#f0f4ff;border:1px solid #c7d2fe;font-size:13px;line-height:1.6;color:#1e3a5f;margin-bottom:10px}.k{font-size:11px;color:#64748b;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin:12px 0 6px}
+.study{border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px;margin-bottom:6px;font-size:12px}.study b{display:block}
+.hint{font-size:11px;color:#94a3b8;margin-top:6px}
+</style></head><body>
+<div class="topbar"><span class="logo">Galpi</span><span class="badge">Admin · 11주차</span><span style="font-size:12px;color:#93c5fd">토론 관리자 · 교수님 읽기 전용</span>
+  <div class="right"><span class="live"><i></i>실시간 <span id="src">이 브라우저(데모)</span></span><span style="font-size:11px;color:#93c5fd" id="last">–</span><button class="rbtn" id="demo">시연용 학생 17명 생성</button><button class="rbtn" id="clear">비우기</button><button class="rbtn" id="proj">프로젝터 모드</button></div></div>
+<div class="content">
+  <div class="stats" id="stats"></div>
+  <div class="three">
+    <div><div class="sh"><span class="st">어떤 자료를 썼나</span><span class="sc" id="c1"></span></div><div class="card" id="bySurvey"></div></div>
+    <div><div class="sh"><span class="st">사회자본을 무엇으로 정의했나</span><span class="sc" id="c2"></span></div><div class="card" id="byComp"><div class="hint">정의 구성 요소(중복 집계)</div></div></div>
+    <div><div class="sh"><span class="st">어느 논리를 따랐나</span><span class="sc" id="c3"></span></div><div class="card" id="byLin"></div></div>
+  </div>
+  <div class="two">
+    <div><div class="sh"><span class="st">종속 구성 × 독립 묶음</span><span class="sc">빈 칸 = 연구 빈자리</span></div><div class="card" id="grid"></div></div>
+    <div><div class="sh"><span class="st">원인으로 무엇을 뒀나</span></div><div class="card" id="byIv"></div><div class="sh" style="margin-top:14px"><span class="st">1부 다섯 편이 잰 것</span></div><div class="card" id="papers"></div></div>
+  </div>
+  <div class="sh"><span class="st">제출된 연구모형</span><span class="sc" id="cnt"></span><span style="font-size:11px;color:#94a3b8">행을 누르면 크게 봅니다 (spotlight)</span></div>
+  <div id="list"></div>
+</div>
+<div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<script>
+const CAT=__CAT__, PAPERS=__PAPERS__, READ_URL="";
+const S=CAT.surveys,C=CAT.concepts,IT=CAT.items,cname=id=>(C.find(c=>c.id===id)||{}).label||id,sname=k=>(S[k]||{}).name||k;
+const COMP_KO={generalized_trust:"일반신뢰",institutional_trust:"기관신뢰",neighbor_trust:"이웃 신뢰",participation:"단체 참여",volunteer_donate:"봉사·기부",network:"연결망",reciprocity:"호혜",political_participation:"정치 참여"};
+const LIN=l=>!l?'':/K&R/.test(l)?'p-kr':/Freitag/.test(l)?'p-fr':/L&W/.test(l)?'p-lw':/Mettler/.test(l)?'p-me':/Krishna/.test(l)?'p-kn':'p-out';
+let rows=[],seen=new Set();
+function load(){try{rows=JSON.parse(localStorage.getItem('w11_model')||'[]').filter(r=>r.stage==='model');}catch(e){rows=[]}if(READ_URL)fetch(READ_URL+'?stage=model').then(r=>r.json()).then(j=>{rows=j;render();}).catch(()=>{});render();}
+function count(arr){const c={};arr.forEach(k=>{if(k)c[k]=(c[k]||0)+1});return Object.entries(c).sort((a,b)=>b[1]-a[1]);}
+function bars(el,pairs,label){const mx=Math.max(1,...pairs.map(p=>p[1]));el.innerHTML=(pairs.length?pairs.map(([k,v])=>`<div class="bar"><span title="${label(k)}">${label(k)}</span><i style="width:${v/mx*100}%;max-width:220px"></i><b>${v}</b></div>`).join(''):'<div class="hint">아직 없음</div>')+(el.id==='byComp'?'<div class="hint">정의 구성 요소(중복 집계)</div>':'');}
+function render(){const n=rows.length,sv=count(rows.map(r=>r.value.survey)),cp=count(rows.flatMap(r=>r.value.comps||[])),ln=count(rows.map(r=>r.value.lineage)),iv=count(rows.flatMap(r=>r.value.iv||[]));
+  const multi=rows.filter(r=>(r.value.comps||[]).length>1).length,med=rows.filter(r=>r.value.med).length,out=rows.filter(r=>/밖/.test(r.value.lineage||'')).length,ql=rows.filter(r=>/영향/.test(r.value.q||'')).length;
+  $('stats').innerHTML=[['blue',n,'제출된 모형'],['purple',sv.length,'쓰인 자료 종류'],['green',multi,'문항을 2개 이상 묶어 정의'],['amber',med,'매개를 넣음'],['red',out,'1부 밖의 조합'],['gray',ql,'연구질문에 "영향"']].map(([c,v,l])=>`<div class="stat ${c}"><div class="num">${v}</div><div class="lab">${l}</div></div>`).join('');
+  $('c1').textContent=n;$('c2').textContent=cp.reduce((a,b)=>a+b[1],0);$('c3').textContent=n;bars($('bySurvey'),sv,sname);bars($('byComp'),cp,k=>COMP_KO[k]||k);bars($('byLin'),ln,k=>k);bars($('byIv'),iv,cname);
+  $('papers').innerHTML=PAPERS.map(p=>`<div class="bar"><span><b>${p[0]}</b></span><span style="width:auto;flex:1;white-space:normal">${p[1]}</span></div>`).join('');
+  const comps=['generalized_trust','institutional_trust','neighbor_trust','participation','volunteer_donate','reciprocity','political_participation'],ivs=['welfare_selective','welfare_universal','public_service_experience','institution_participation','region'];
+  $('grid').innerHTML=`<table class="grid"><tr><th></th>${ivs.map(i=>`<th>${cname(i).slice(0,6)}</th>`).join('')}</tr>`+comps.map(c=>`<tr><th style="text-align:left">${COMP_KO[c]}</th>${ivs.map(i=>{const v=rows.filter(r=>(r.value.comps||[]).includes(c)&&(r.value.iv||[]).includes(i)).length;return `<td class="${v?'n':'z'}">${v||'·'}</td>`}).join('')}</tr>`).join('')+`</table>`;
+  $('cnt').textContent=n;$('last').textContent='갱신: '+new Date().toLocaleTimeString('ko-KR');
+  $('list').innerHTML=n?`<table class="tbl"><tr><th>#</th><th>별명</th><th>자료</th><th>정의</th><th>원인 묶음</th><th>매개</th><th>변수·경로</th><th>계보</th><th>시각</th></tr>`+rows.map((r,i)=>`<tr data-i="${i}" class="${seen.has(r.ts)?'':'new'}"><td style="color:#94a3b8">${i+1}</td><td><b>${r.nick||'–'}</b></td><td>${sname(r.value.survey).slice(0,9)}</td><td>${r.value.dv_name||''} <span style="color:#64748b">(${(r.value.comps||[]).map(c=>COMP_KO[c]).join('·')||'–'})</span></td><td>${(r.value.iv||[]).map(cname).join(', ')||'–'}</td><td>${r.value.med?cname(r.value.med):'–'}</td><td>${(r.value.nodes||[]).length}N ${(r.value.edges||[]).length}E</td><td><span class="pill ${LIN(r.value.lineage)}">${r.value.lineage||'–'}</span></td><td style="color:#94a3b8">${new Date(r.ts).toLocaleTimeString('ko-KR')}</td></tr>`).join('')+`</table>`:`<div class="empty">아직 제출이 없습니다. 캔버스에서 제출하면 바로 여기 뜹니다.</div>`;
+  rows.forEach(r=>seen.add(r.ts));document.querySelectorAll('.tbl tr[data-i]').forEach(tr=>tr.onclick=()=>spot(rows[+tr.dataset.i]));}
+function spot(r){const v=r.value,ns=v.nodes||[],mnx=Math.min(...ns.map(n=>n.x),0),mny=Math.min(...ns.map(n=>n.y),0);const pos={};
+  $('mbox').innerHTML=`<div class="mh"><h2>${r.nick||'–'}의 연구모형</h2><span class="pill ${LIN(v.lineage)}">${v.lineage||''}</span><button class="x" id="mx">×</button></div>
+  <div class="diag" id="diag">${ns.map(n=>`<div class="nd ${n.role}" data-id="${n.id}" style="left:${n.x-mnx+10}px;top:${n.y-mny+10}px"><small>${n.role}</small>${n.name}<small style="letter-spacing:0;font-weight:400">${n.items.length}문항</small></div>`).join('')}<svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"><defs><marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#e53e3e"/></marker></defs><g id="dg"></g></svg></div>
+  <div class="def">${v.definition||'(정의 없음)'}<br><span style="font-size:12px;color:#64748b">자료 ${sname(v.survey)} · ${v.lineage_t||''}</span></div>
+  ${v.q?`<div class="k">연구질문</div><div style="font-size:13px">${v.q}${/영향/.test(v.q)?' <span class="pill p-me">인과형</span>':''}</div>`:''}
+  <div class="two" style="margin-top:12px"><div><div class="k">가설</div>${(v.hyps||[]).map(h=>`<div class="study">${h}</div>`).join('')||'<div class="hint">없음</div>'}</div><div><div class="k">닮은 선행연구</div>${(v.matches||[]).map(m=>`<div class="study"><b>${m.au} (${m.y})</b>${m.t}</div>`).join('')||'<div class="hint">없음</div>'}</div></div>
+  <div class="k">묶인 문항</div>${ns.map(n=>`<div class="study"><b>${n.role} · ${n.name}</b>${n.items.map(k=>IT[k]?IT[k].question:k).join(' / ')}</div>`).join('')}`;
+  $('modal').classList.add('on');$('mx').onclick=()=>$('modal').classList.remove('on');
+  const box=id=>{const el=document.querySelector(`.nd[data-id="${id}"]`);return el?{x:el.offsetLeft,y:el.offsetTop,w:el.offsetWidth,h:el.offsetHeight}:null};
+  $('dg').innerHTML=(v.edges||[]).map(e=>{const a=box(e.from),b=box(e.to);if(!a||!b)return'';const L=a.x+a.w/2<=b.x+b.w/2,x1=L?a.x+a.w:a.x,x2=L?b.x:b.x+b.w,y1=a.y+a.h/2,y2=b.y+b.h/2;return `<path d="M${x1},${y1} C${x1+(L?50:-50)},${y1} ${x2+(L?-50:50)},${y2} ${x2},${y2}" stroke="#e53e3e" stroke-width="2" fill="none" marker-end="url(#m)"/>`}).join('');}
+$('modal').onclick=e=>{if(e.target===$('modal'))$('modal').classList.remove('on');};
+function $(id){return document.getElementById(id)}
+/* 시연용 학생 17명 */
+$('demo').onclick=()=>{const nicks=["달팽이","감자","바람","모과","소나기","연필","자몽","고래","밤톨","우산","호두","민들레","참새","구름","은행","여우","도토리"],svs=["kipa","kipa","kipa","koweps","koweps","kgss","chs","chs","kipa","kostat_social","youth2022","kipa","koweps","kgss","kipa","chs","kipa"];
+  const now=Date.now(),rows2=nicks.map((nk,i)=>{const s=svs[i],its=IT.map((it,k)=>({it,k})).filter(x=>x.it.survey===s),dvs=its.filter(x=>(C.find(c=>c.id===x.it.concept)||{}).role==='dv'),ivs=its.filter(x=>(C.find(c=>c.id===x.it.concept)||{}).role==='iv'||x.it.concept==='region');
+    const pick=(arr,n)=>arr.slice().sort(()=>Math.random()-.5).slice(0,n),dvk=pick(dvs,1+(i%3===0?1:0)+(i%5===0?1:0)).map(x=>x.k),ivk=pick(ivs,1+(i%2)).map(x=>x.k),comps=[...new Set(dvk.map(k=>({trust_general:"generalized_trust",trust_social:"generalized_trust",trust_neighbor:"neighbor_trust",trust_institution:"institutional_trust",participation:"participation",volunteer_donate:"volunteer_donate",network_reciprocity:"reciprocity",political_participation:"political_participation"})[IT[k].concept]).filter(Boolean))];
+    const ivc=[...new Set(ivk.map(k=>IT[k].concept))],lin=comps.some(c=>/trust/.test(c))&&ivc.some(c=>/welfare/.test(c))?'5장 K&R':comps.includes('participation')&&ivc.includes('institution_participation')?'2장 Freitag':comps.includes('reciprocity')&&ivc.includes('region')?'1장 Krishna':i%4===0?'밖':'4장 Mettler';
+    const nodes=[{id:'n1',name:i%3===0?'내 사회자본':cname(IT[dvk[0]].concept),role:'DV',items:dvk,x:560,y:120},...ivk.map((k,j)=>({id:'n'+(j+2),name:cname(IT[k].concept),role:'IV',items:[k],x:40,y:60+j*90}))];if(i%4===1&&its.some(x=>x.it.concept==='fairness'))nodes.push({id:'nm',name:'공정성 지각',role:'MV',items:[its.find(x=>x.it.concept==='fairness').k],x:300,y:120});
+    const edges=nodes.filter(n=>n.role==='IV').map(n=>({from:n.id,to:nodes.find(x=>x.role==='MV')?'nm':'n1'}));if(nodes.find(x=>x.role==='MV'))edges.push({from:'nm',to:'n1'});
+    return {ts:new Date(now-(17-i)*40000).toISOString(),nick:nk,stage:'model',key:'submit',value:{survey:s,dv:IT[dvk[0]].concept,dv_name:nodes[0].name,definition:`${nodes[0].name} = ${sname(s)} · ${[...new Set(dvk.map(k=>cname(IT[k].concept)))].join(' + ')} · ${S[s].unit}`,comps,iv:ivc,med:nodes.find(x=>x.role==='MV')?'fairness':null,nodes,edges,q:i%5===2?'수급 경험이 신뢰에 영향을 미치는가':i%2?'제도 경험은 신뢰와 관련이 있는가':'',lineage:lin,lineage_t:lin,matches:[],hyps:edges.map((e,j)=>`H${j+1}. ${nodes.find(n=>n.id===e.from).name}은(는) ${nodes.find(n=>n.id===e.to).name}와(과) 관련이 있을 것이다.`)}};});
+  localStorage.setItem('w11_model',JSON.stringify(rows2));load();};
+$('clear').onclick=()=>{if(confirm('이 브라우저의 제출 기록을 지웁니다.')){localStorage.removeItem('w11_model');seen=new Set();load();}};
+$('proj').onclick=()=>{document.body.classList.toggle('proj');document.querySelectorAll('.tbl td:nth-child(2)').forEach(td=>td.style.visibility=document.body.classList.contains('proj')?'hidden':'visible');$('proj').textContent=document.body.classList.contains('proj')?'관리자 모드':'프로젝터 모드';};
+window.addEventListener('storage',e=>{if(e.key==='w11_model')load();});setInterval(()=>{if(READ_URL)load();},10000);load();
+</script></body></html>
