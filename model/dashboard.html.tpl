@@ -39,13 +39,16 @@
     <div><div class="sh"><span class="st">종속 구성 × 독립 묶음</span><span class="sc">빈 칸 = 연구 빈자리</span></div><div class="card" id="grid"></div></div>
     <div><div class="sh"><span class="st">원인으로 무엇을 뒀나</span></div><div class="card" id="byIv"></div><div class="sh" style="margin-top:14px"><span class="st">1부 다섯 편이 잰 것</span></div><div class="card" id="papers"></div></div>
   </div>
+  <div class="sh"><span class="st">선행연구 그물망 · 17명은 어디에 있나</span><span class="sc" id="netc"></span><span style="font-size:11px;color:#94a3b8">점 = 선행연구(규칙 코딩·미검수) · 선 = 같은 구성 요소를 재고 같은 원인 축인 이웃 · 금색 = 제출된 모형 · 점을 누르면 원문</span></div>
+  <div class="card" style="padding:0;margin-bottom:24px;position:relative"><canvas id="net" style="width:100%;height:520px;display:block;border-radius:10px"></canvas><div id="nettip" style="position:absolute;display:none;background:#0f172a;color:#fff;font-size:11.5px;padding:6px 10px;border-radius:6px;pointer-events:none;max-width:320px;line-height:1.5"></div>
+    <div style="position:absolute;left:12px;bottom:10px;display:flex;gap:10px;font-size:11px;color:#475569;background:rgba(255,255,255,.85);padding:4px 8px;border-radius:6px"><span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#1e3a5f"></i> 제도 중심</span><span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#0d9488"></i> 사회 중심</span><span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#16a34a"></i> 지역 맥락</span><span><i style="display:inline-block;width:9px;height:9px;border-radius:50%;background:#94a3b8"></i> 개인·미상</span><span><i style="display:inline-block;width:11px;height:11px;border-radius:50%;background:#f59e0b;border:2px solid #b45309"></i> 학생 모형</span></div></div>
   <div class="sh"><span class="st">제출된 연구모형</span><span class="sc" id="cnt"></span><span style="font-size:11px;color:#94a3b8">행을 누르면 크게 봅니다 (spotlight)</span></div>
   <div id="list"></div>
 </div>
 <div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
 <script>
 // READ_URL: backend/apps-script.gs 웹앱 주소(캔버스 SAVE_URL과 같은 값). 있으면 10초마다 시트를 읽고, 없으면 이 브라우저 localStorage만 본다.
-const CAT=__CAT__, PAPERS=__PAPERS__, READ_URL="";
+const CAT=__CAT__, PAPERS=__PAPERS__, STUDIES=__STUDIES__, READ_URL="";
 const S=CAT.surveys,C=CAT.concepts,IT=CAT.items,cname=id=>(C.find(c=>c.id===id)||{}).label||id,sname=k=>(S[k]||{}).name||k;
 const COMP_KO={generalized_trust:"일반신뢰",institutional_trust:"기관신뢰",neighbor_trust:"이웃 신뢰",participation:"단체 참여",volunteer_donate:"봉사·기부",network:"연결망",reciprocity:"호혜",political_participation:"정치 참여"};
 const LIN=l=>!l?'':/제도 중심/.test(l)?'p-fr':/사회 중심/.test(l)?'p-lw':/개인 자원/.test(l)?'p-me':/지역 맥락/.test(l)?'p-kn':'p-out';
@@ -75,7 +78,7 @@ function spot(r){const v=r.value,ns=v.nodes||[],mnx=Math.min(...ns.map(n=>n.x),0
   <div class="k">묶인 문항</div>${ns.map(n=>`<div class="study"><b>${n.role} · ${n.name}</b>${n.items.map(k=>IT[k]?IT[k].question:k).join(' / ')}</div>`).join('')}`;
   $('modal').classList.add('on');$('mx').onclick=()=>$('modal').classList.remove('on');
   const box=id=>{const el=document.querySelector(`.nd[data-id="${id}"]`);return el?{x:el.offsetLeft,y:el.offsetTop,w:el.offsetWidth,h:el.offsetHeight}:null};
-  $('dg').innerHTML=(v.edges||[]).map(e=>{const a=box(e.from),b=box(e.to);if(!a||!b)return'';const L=a.x+a.w/2<=b.x+b.w/2,x1=L?a.x+a.w:a.x,x2=L?b.x:b.x+b.w,y1=a.y+a.h/2,y2=b.y+b.h/2;return `<path d="M${x1},${y1} C${x1+(L?50:-50)},${y1} ${x2+(L?-50:50)},${y2} ${x2},${y2}" stroke="#e53e3e" stroke-width="2" fill="none" marker-end="url(#m)"/>`}).join('');}
+  $('dg').innerHTML=(v.edges||[]).map(e=>{const a=box(e.from),b=box(e.to),zv=(ns.find(n=>n.id===e.from)||{}).role==='ZV';if(!a||!b)return'';const L=a.x+a.w/2<=b.x+b.w/2,x1=L?a.x+a.w:a.x,x2=L?b.x:b.x+b.w,y1=a.y+a.h/2,y2=b.y+b.h/2;return `<path d="M${x1},${y1} C${x1+(L?50:-50)},${y1} ${x2+(L?-50:50)},${y2} ${x2},${y2}" stroke="${zv?'#f59e0b':'#e53e3e'}" stroke-width="2" fill="none" ${zv?'stroke-dasharray="4 5"':'marker-end="url(#m)"'}/>`}).join('');}
 $('modal').onclick=e=>{if(e.target===$('modal'))$('modal').classList.remove('on');};
 function $(id){return document.getElementById(id)}
 /* 시연용 학생 17명 */
@@ -91,5 +94,30 @@ $('demo').onclick=()=>{const nicks=["달팽이","감자","바람","모과","소�
   localStorage.setItem('w11_model',JSON.stringify(rows2));load();};
 $('clear').onclick=()=>{if(confirm('이 브라우저의 제출 기록을 지웁니다.')){localStorage.removeItem('w11_model');seen=new Set();load();}};
 $('proj').onclick=()=>{document.body.classList.toggle('proj');document.querySelectorAll('.tbl td:nth-child(2)').forEach(td=>td.style.visibility=document.body.classList.contains('proj')?'hidden':'visible');$('proj').textContent=document.body.classList.contains('proj')?'관리자 모드':'프로젝터 모드';};
+/* ── 선행연구 그물망: kNN(4) 유사도 그래프 + 간단한 힘 배치. 외부 라이브러리 없음. ── */
+const SRC_C={institution:'#1e3a5f',society:'#0d9488',context:'#16a34a',individual:'#94a3b8'};
+const ssrc=s=>s.inst?'institution':s.net?'society':s.reg?'context':'individual',jac=(a,b)=>{const i=a.filter(x=>b.includes(x)).length;return i?i/new Set([...a,...b]).size:0};
+const sim=(a,b)=>jac(a.comps,b.comps)+(a.src===b.src?.5:0)+(a.unit&&a.unit===b.unit?.2:0);
+let NET=null;
+function buildNet(){const ns=STUDIES.map((s,i)=>({i,id:s.id,t:s.t,au:s.au,y:s.y,link:s.link,comps:s.comps,src:ssrc(s),unit:s.unit,r:3.5,x:0,y0:0,vx:0,vy:0,kind:'s'}));
+  const es=new Set();ns.forEach(a=>{ns.map(b=>[b,a===b?-1:sim(a,b)]).filter(x=>x[1]>0.3).sort((x,y)=>y[1]-x[1]).slice(0,4).forEach(([b])=>es.add(a.i<b.i?a.i+'-'+b.i:b.i+'-'+a.i));});
+  const E=[...es].map(k=>k.split('-').map(Number));ns.forEach((n,i)=>{const a=i/ns.length*Math.PI*2,R=.35+.1*(i%3);n.x=.5+R*Math.cos(a);n.y=.5+R*Math.sin(a);});
+  return {ns,E,adj:E.reduce((m,[a,b])=>(m[a]=(m[a]||[]).concat(b),m[b]=(m[b]||[]).concat(a),m),{})};}
+function stepNet(net,iters){const {ns,E}=net,W=1,H=1;for(let it=0;it<iters;it++){const k=.045;for(let i=0;i<ns.length;i++){const a=ns[i];for(let j=i+1;j<ns.length;j++){const b=ns[j];let dx=a.x-b.x,dy=a.y-b.y,d2=dx*dx+dy*dy+1e-4;if(d2>.09)continue;const f=k*k/d2*.002;dx*=f;dy*=f;a.vx+=dx;a.vy+=dy;b.vx-=dx;b.vy-=dy;}}
+    E.forEach(([i,j])=>{const a=ns[i],b=ns[j];let dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)+1e-6,f=(d-k*1.6)*.08/d;dx*=f;dy*=f;a.vx+=dx;a.vy+=dy;b.vx-=dx;b.vy-=dy;});
+    ns.forEach(n=>{n.vx+=(.5-n.x)*.004;n.vy+=(.5-n.y)*.004;n.x=Math.max(.03,Math.min(.97,n.x+n.vx));n.y=Math.max(.05,Math.min(.95,n.y+n.vy));n.vx*=.6;n.vy*=.6;});}}
+function drawNet(){const cv=$('net');if(!cv)return;if(!NET){NET=buildNet();stepNet(NET,220);}
+  NET.ns=NET.ns.filter(n=>n.kind==='s');NET.E=NET.E.filter(([a,b])=>a<NET.ns.length&&b<NET.ns.length);
+  rows.forEach((r,ri)=>{const v=r.value,my={comps:v.comps||[],src:(v.srcs||[])[0]||'individual',unit:'individual'};const near=NET.ns.filter(n=>n.kind==='s').map(n=>[n,sim(my,n)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]).slice(0,4);
+    const n={i:NET.ns.length,kind:'m',nick:r.nick,t:v.definition,r:7,src:my.src,x:near.length?near.reduce((s,[b])=>s+b.x,0)/near.length+(Math.random()-.5)*.03:.5,y:near.length?near.reduce((s,[b])=>s+b.y,0)/near.length+(Math.random()-.5)*.03:.5,vx:0,vy:0,row:ri};NET.ns.push(n);near.forEach(([b])=>NET.E.push([n.i,b.i]));});
+  stepNet(NET,rows.length?25:0);
+  const dpr=window.devicePixelRatio||1,W=cv.clientWidth,H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;const g=cv.getContext('2d');g.scale(dpr,dpr);g.fillStyle='#fafaf7';g.fillRect(0,0,W,H);
+  g.lineWidth=.7;NET.E.forEach(([i,j])=>{const a=NET.ns[i],b=NET.ns[j];g.strokeStyle=a.kind==='m'||b.kind==='m'?'rgba(245,158,11,.55)':'rgba(30,58,95,.10)';g.lineWidth=a.kind==='m'||b.kind==='m'?1.4:.7;g.beginPath();g.moveTo(a.x*W,a.y*H);g.lineTo(b.x*W,b.y*H);g.stroke();});
+  NET.ns.forEach(n=>{g.beginPath();g.arc(n.x*W,n.y*H,n.r,0,7);if(n.kind==='m'){g.fillStyle='#f59e0b';g.fill();g.strokeStyle='#b45309';g.lineWidth=2;g.stroke();g.fillStyle='#0f172a';g.font='700 11px Pretendard';g.fillText(n.nick,n.x*W+10,n.y*H+4);}else{g.fillStyle=SRC_C[n.src];g.globalAlpha=.8;g.fill();g.globalAlpha=1;}});
+  $('netc').textContent=`${STUDIES.length}편 · 모형 ${rows.length}`;
+  cv.onmousemove=e=>{const b=cv.getBoundingClientRect(),x=(e.clientX-b.left)/W,y=(e.clientY-b.top)/H,n=NET.ns.find(n=>Math.hypot((n.x-x)*W,(n.y-y)*H)<n.r+3),tip=$('nettip');if(!n){tip.style.display='none';cv.style.cursor='default';return;}
+    tip.style.display='block';tip.style.left=Math.min(e.clientX-b.left+12,W-330)+'px';tip.style.top=(e.clientY-b.top+12)+'px';tip.innerHTML=n.kind==='m'?`<b>${n.nick}</b><br>${n.t}`:`<b>${n.au} (${n.y})</b><br>${n.t}<br><span style="color:#94a3b8">${n.comps.map(c=>COMP_KO[c]||c).join('·')} · ${({institution:'제도 중심',society:'사회 중심',context:'지역 맥락',individual:'개인·미상'})[n.src]}</span>`;cv.style.cursor='pointer';};
+  cv.onclick=e=>{const b=cv.getBoundingClientRect(),x=(e.clientX-b.left)/W,y=(e.clientY-b.top)/H,n=NET.ns.find(n=>Math.hypot((n.x-x)*W,(n.y-y)*H)<n.r+3);if(!n)return;if(n.kind==='m')spot(rows[n.row]);else if(n.link)window.open(n.link,'_blank');};}
+const _render=render;render=function(){_render();drawNet();};window.addEventListener('resize',()=>{NET=null;drawNet();});
 window.addEventListener('storage',e=>{if(e.key==='w11_model')load();});setInterval(()=>{if(READ_URL)load();},10000);load();
 </script></body></html>

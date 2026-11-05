@@ -23,6 +23,6 @@ out = (HTML.replace("__CAT__", CAT).replace("__REV__", json.dumps({"base": bi.RE
 open(os.path.join(HERE, "canvas.html"), "w", encoding="utf-8").write(out)
 print("canvas.html", len(out) // 1024, "KB · 선행연구", len(STUDIES), "편(구성 요소 있는 것)")
 # 관리자 대시보드(제출 목록·자료 빈도·정의 구성·계보·spotlight). 데모는 같은 브라우저 localStorage 'w11_model'을 storage 이벤트로 읽는다.
-dash = open(os.path.join(HERE, "dashboard.html.tpl"), encoding="utf-8").read().replace("__CAT__", CAT).replace("__PAPERS__", PAPERS)
+dash = open(os.path.join(HERE, "dashboard.html.tpl"), encoding="utf-8").read().replace("__CAT__", CAT).replace("__PAPERS__", PAPERS).replace("__STUDIES__", json.dumps(STUDIES, ensure_ascii=False))
 open(os.path.join(HERE, "dashboard.html"), "w", encoding="utf-8").write(dash)
 print("dashboard.html", len(dash) // 1024, "KB")
