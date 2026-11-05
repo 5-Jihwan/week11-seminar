@@ -62,7 +62,7 @@ const MED=[["fairness","공정성 지각"],["trust_institution","기관신뢰"],
 let st={nick:"",dv:null,item:null,iv:[],med:undefined,q:"",survey:null}, cur=0;
 const $=id=>document.getElementById(id), cname=id=>(C.find(c=>c.id===id)||{}).label||id, sname=k=>(S[k]||{}).name||k;
 // 지역은 공개 변수가 확인된 조사만 켠다(복지패널·사회통합은 catalog에 '확인 필요' 메모만 있음 → 회색)
-const avail=(concept,survey)=>IT.filter(i=>i.concept===concept&&i.survey===survey&&!(concept==='region'&&/확인 필요|미확인/.test((i.question||'')+(i.note||''))));
+const avail=(concept,survey)=>IT.filter(i=>i.concept===concept&&i.survey===survey&&!(concept==='region'&&/확인 필요|소속감/.test(i.question||'')));
 const ivWhy=(g)=>{const where=[...new Set(IT.filter(i=>i.concept===g).map(i=>sname(i.survey)))];return `이 두 문항은 같은 사람에게 없습니다. ${cname(st.dv)}은 ${sname(st.survey)}에, ${cname(g)}은 ${where.join('·')||'다른 조사'}에 있습니다.`};
 function render(){
   document.querySelectorAll('.scr').forEach((s,i)=>s.classList.toggle('on',i===cur));
