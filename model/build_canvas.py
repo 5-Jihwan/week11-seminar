@@ -24,7 +24,19 @@ if CLASS:
     STUDIES = [s for s in STUDIES if s["ok"]]
     assert STUDIES, "수업판인데 verified=TRUE가 0편. corpus/studies.csv의 verified 열을 먼저 채우십시오"
 DEMO = "false" if CLASS else "true"
-CAT, PAPERS = json.dumps(bi.CAT, ensure_ascii=False), json.dumps(bi.PAPERS, ensure_ascii=False)
+# 조사표 전체 문항(model/full_items.json, parse_*_full.py가 만든다): 기본 화면엔 안 보이고 「전체 문항」·검색에서만. 주제별 의사 개념 full_XX에 차원·원인 축을 붙인다
+FULLC = {"TR": ("신뢰 (조사표)", "cognitive", ""), "NW": ("참여·관계 (조사표)", "structural", ""), "FA": ("공정성 (조사표)", "", "institution"), "IN": ("제도·서비스 경험 (조사표)", "", "institution"),
+         "RG": ("지역 (조사표)", "", "context"), "DM": ("개인 특성 (조사표)", "", "individual"), "ET": ("기타 문항 (조사표)", "", "")}
+CATX = json.loads(json.dumps(bi.CAT))
+for k, (lab, dim, src) in FULLC.items():
+    CATX["concepts"].append({"id": "full_" + k, "label": lab, "role": "full", "lineage": "", "dim": dim, "src": src, "paper_measure": "조사표 전체 문항. 1부 다섯 편에는 없음"})
+fp = os.path.join(HERE, "full_items.json")
+FULL = json.load(open(fp, encoding="utf-8")) if os.path.exists(fp) else {}
+for sv, its in FULL.items():
+    for i in its:
+        CATX["items"].append({"concept": "full_" + i["theme"], "survey": sv, "wave": i["wave"], "var": i["var"], "question": i["question"], "scale": i["scale"], "unit": i["unit"], "note": "조사표 전체", "full": 1})
+print("조사표 전체 문항", {k: len(v) for k, v in FULL.items()})
+CAT, PAPERS = json.dumps(CATX, ensure_ascii=False), json.dumps(bi.PAPERS, ensure_ascii=False)
 HTML = open(os.path.join(HERE, "canvas_v5.html.tpl"), encoding="utf-8").read()  # v5: 개념화 단계·역할 자유(문항에 역할 없음)·조절·통제·분류 틀(원인 축×종속 차원) + Galpi 화면 구조
 out = (HTML.replace("__CAT__", CAT).replace("__REV__", json.dumps({"base": bi.REVIEWS, "cond": bi.COND}, ensure_ascii=False))
        .replace("__PAPERS__", PAPERS).replace("__STUDIES__", json.dumps(STUDIES, ensure_ascii=False)).replace("__DEMO__", DEMO))
