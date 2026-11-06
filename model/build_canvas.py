@@ -2,13 +2,16 @@
 """2부 캔버스 데모 v3(Galpi 방식 + 원래 컨셉): 자료(조사) 먼저 고르기 → 그 조사의 문항 카드를 끌어다 놓기(빈 곳=새 변수, 변수 위=묶기) → 이름·역할은 학생이 → 탭으로 잇기
 → 3초 멈추면 검증 패널(오류·경고·내 정의·계보·닮은 선행연구·리뷰·가설). 화면 틀은 canvas_v3.html.tpl. catalog·규칙은 build_index.py와 같은 것을 심는다(file://로 열림, localStorage 저장).
 실행: python model/build_canvas.py → model/canvas.html"""
-import csv, json, os, sys, importlib.util
+import csv, json, os, re, sys, importlib.util
 sys.stdout.reconfigure(encoding="utf-8")
 HERE = os.path.dirname(os.path.abspath(__file__))
 # 선행연구(corpus/studies.csv, 규칙 코딩·미검수). 화면에 필요한 칸만 심는다. 수업판은 verified=TRUE만 남긴다(가드레일 2).
-STUDIES = [{"id": r["id"], "au": (r["authors"].split(",")[0].split(" ")[-1] if r["authors"] else "") + (" 외" if "," in r["authors"] else ""), "y": r["year"], "t": r["title"], "j": r["journal"],
-            "link": r["link"], "comps": [c for c in r["dv_components"].split("|") if c], "unit": r["unit"], "inst": r["iv_institution"] == "Y", "reg": r["iv_region"] == "Y",
-            "net": r["iv_network"] == "Y", "med": r["mediator"] == "Y", "lin": r["lineage"], "line": r["measure_line"], "design": r["design"], "ok": r["verified"] == "TRUE"}
+def _au(a):  # "홍길동(대학); 김철수(대학)" 또는 "Smith, J.; Lee, K." → 첫 저자 성 + 외
+    first = re.split(r"[;,]", a)[0].strip(); first = re.sub(r"\(.*?\)", "", first).strip()
+    return (first.split(" ")[-1] if re.search(r"[A-Za-z]", first) else first) + (" 외" if re.search(r"[;,]", a) else "")
+STUDIES = [{"id": r["id"], "src": r.get("src", "openalex"), "au": _au(r["authors"]) if r["authors"] else "", "y": r["year"], "t": r["title"], "j": r["journal"],
+            "link": r["link"], "comps": [c for c in r["dv_components"].split("|") if c], "unit": r["unit"], "data": r.get("data", ""), "kr": r.get("country", "") == "KR", "dv": r.get("sc_dv", "") == "Y",
+            "inst": r["iv_institution"] == "Y", "reg": r["iv_region"] == "Y", "net": r["iv_network"] == "Y", "med": r["mediator"] == "Y", "lin": r["lineage"], "line": r["measure_line"], "design": r["design"], "ok": r["verified"] == "TRUE"}
            for r in csv.DictReader(open(os.path.join(HERE, "..", "corpus", "studies.csv"), encoding="utf-8-sig"))]  # 346편 전부. 구성 요소가 비면 그물망 바깥 껍질에만 뜬다
 _seen = set()  # 같은 논문이 두 출처(출판본·워킹페이퍼)로 들어온 것은 제목으로 한 번만
 STUDIES = [s for s in STUDIES if not (s["t"].lower().strip().rstrip(".") in _seen or _seen.add(s["t"].lower().strip().rstrip(".")))]
