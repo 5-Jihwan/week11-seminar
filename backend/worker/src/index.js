@@ -33,6 +33,12 @@ export default {
       const rows = await Promise.all(list.keys.map(k => env.W11.get(k.name, "json")));
       return json(rows.filter(Boolean));
     }
+    if (req.method === "GET" && path === "/peers") {  // 학생용: 별명·자료·정의·칸만(개인정보 없음). 기기당 최신 제출
+      const list = await env.W11.list({ prefix: "model:" });
+      const rows = (await Promise.all(list.keys.map(k => env.W11.get(k.name, "json")))).filter(Boolean).sort((a, b) => (a.ts < b.ts ? -1 : 1));
+      const by = {}; rows.forEach(r => { by[r.dev] = r; });
+      return json(Object.values(by).map(r => ({ ts: r.ts, dev: r.dev, nick: r.nick, stage: "model", value: { survey: r.value?.survey, definition: r.value?.definition, lineage: r.value?.lineage } })));
+    }
     if (req.method === "POST" && path === "/control") {
       if (!admin) return json({ ok: false, error: "admin" }, 401);
       const b = await req.json().catch(() => null); if (!b || !b.value) return json({ ok: false }, 400);
