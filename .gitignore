@@ -14,3 +14,5 @@ corpus/*.jsonl
 data/raw/harvest/
 
 __pycache__/
+corpus/candidates_kci.csv
+corpus/candidates_oa.csv
