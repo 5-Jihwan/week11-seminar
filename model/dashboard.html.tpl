@@ -49,6 +49,8 @@
 <div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
 <script>
 // READ_URL: backend/apps-script.gs 웹앱 주소(캔버스 SAVE_URL과 같은 값). 있으면 10초마다 시트를 읽고, 없으면 이 브라우저 localStorage만 본다.
+// ADMIN_PIN: 비우면 묻지 않음(데모). 배포 전에 네 자리 숫자를 넣는다. 화면 가림용이지 보안이 아니다(가드레일: 별명만, 수업 뒤 시트 삭제).
+const ADMIN_PIN="";(function(){if(!ADMIN_PIN)return;try{if(sessionStorage.getItem('w11_admin')===ADMIN_PIN)return;}catch(e){}const p=prompt('관리자 PIN');if(p!==ADMIN_PIN){document.body.innerHTML='<p style="padding:40px;font-size:15px">관리자 화면입니다. 학생 화면은 canvas.html로 들어가 주세요.</p>';throw new Error('pin');}try{sessionStorage.setItem('w11_admin',p);}catch(e){}})();
 const CAT=__CAT__, PAPERS=__PAPERS__, STUDIES=__STUDIES__, READ_URL="";
 const S=CAT.surveys,C=CAT.concepts,IT=CAT.items,cname=id=>(C.find(c=>c.id===id)||{}).label||id,sname=k=>(S[k]||{}).name||k;
 const COMP_KO={generalized_trust:"일반신뢰",institutional_trust:"기관신뢰",neighbor_trust:"이웃 신뢰",participation:"단체 참여",volunteer_donate:"봉사·기부",network:"연결망",reciprocity:"호혜",political_participation:"정치 참여"};
