@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2부 설계 검토서</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/static/pretendard.css">
+<style>
+:root{--navy:#1e3a5f;--ink:#1a1f29;--mute:#5c626d;--line:#dcdfe5;--soft:#f5f6f8}
+*{box-sizing:border-box}body{margin:0;font-family:Pretendard,-apple-system,"Malgun Gothic",sans-serif;color:var(--ink);background:#fff;line-height:1.65;font-size:14.5px;word-break:keep-all}
+.wrap{max-width:900px;margin:0 auto;padding:44px 24px 80px}h1{font-size:24px;margin:0 0 4px}h2{font-size:17px;color:var(--navy);border-top:2px solid var(--navy);padding-top:12px;margin:40px 0 10px}h3{font-size:14.5px;margin:18px 0 6px}
+.meta{color:var(--mute);font-size:13px;margin-bottom:22px}p{margin:6px 0}.note{color:var(--mute);font-size:13px}
+table{border-collapse:collapse;width:100%;margin:8px 0 4px;font-size:13.5px}th,td{border-top:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}th{font-weight:600;color:var(--mute);font-size:12px;border-top:0;padding-top:0}tr:last-child td{border-bottom:1px solid var(--line)}td.n{text-align:right;white-space:nowrap}
+code{font-family:"JetBrains Mono",Consolas,monospace;font-size:12.5px;background:var(--soft);padding:1px 5px;border-radius:3px}pre{font-family:"JetBrains Mono",Consolas,monospace;font-size:12.5px;background:var(--soft);padding:12px 14px;border-radius:4px;overflow-x:auto;line-height:1.5}
+ol,ul{margin:6px 0 6px 20px;padding:0}li{margin:3px 0}.toc{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:13px;margin-bottom:6px}.toc a{color:var(--navy);text-decoration:none}
+.flag{border-left:3px solid #b45309;background:#fffaf0;padding:6px 12px;margin:8px 0}.flag b{color:#b45309}.ok{border-left:3px solid var(--navy);background:var(--soft);padding:6px 12px;margin:8px 0}
+.kv td:first-child{white-space:nowrap;font-family:"JetBrains Mono",Consolas,monospace;font-size:12.5px;color:var(--navy)}
+@media print{.wrap{padding:0}h2{break-after:avoid}table{break-inside:avoid}}
+</style></head><body><div class="wrap">
+<h1>2부 연구모형 캔버스 · 설계 검토서</h1>
+<div class="meta">2026-11-06 · 브랜치 worktree-sim-proto · 캔버스 v5 · 코드 1,253줄(파이썬 도구 포함) · 읽는 사람: Ji</div>
+<div class="toc"><a href="#s1">1 한눈에</a><a href="#s2">2 파일 지도</a><a href="#s3">3 캔버스 상태와 흐름</a><a href="#s4">4 데이터 모델</a><a href="#s5">5 규칙</a><a href="#s6">6 대시보드</a><a href="#s7">7 코퍼스 파이프라인</a><a href="#s8">8 저장 백엔드</a><a href="#s9">9 약한 곳</a><a href="#s10">10 테스트가 보는 것</a></div>
+
+<h2 id="s1">1. 한눈에</h2>
+<pre>수집(KCI·OpenAlex, jsonl) → screen_quant(양적만, csv) → code_rules(구조 코딩, studies.csv) → build_canvas(HTML에 심기)
+                                                                                           ├─ canvas.html   학생: 자료 → 개념화 → 조작화 → 검증 → 비교 → 제출
+                                                                                           └─ dashboard.html 관리자: 집계 · 격자 · 그물망 · 되감기 · spotlight · 판정
+학생 ──POST /submit──▶ Cloudflare Worker(KV) ◀──GET /rows (헤더 PIN)── 관리자
+학생 ◀──GET /peers, /control?dev──┘          └──POST /control (헤더 PIN)── 관리자</pre>
+<p>서버는 행을 넣고 꺼내는 일만 합니다. 점수·검증·가설·분류는 전부 학생 브라우저 안에서 규칙으로 계산됩니다. 실시간 AI 호출은 없고(선택 엔드포인트만 있음), 선행연구는 빌드 때 HTML에 심긴 목록 밖에서 나올 수 없습니다.</p>
+
+<h2 id="s2">2. 파일 지도</h2>
+<table><tr><th>파일</th><th>줄</th><th>역할</th><th>입력 → 출력</th></tr>
+<tr><td>model/canvas_v5.html.tpl</td><td class="n">354</td><td>학생 화면 전체(마크업·CSS·로직)</td><td>__CAT__·__REV__·__PAPERS__·__STUDIES__ 자리에 JSON이 심겨 canvas.html</td></tr>
+<tr><td>model/dashboard.html.tpl</td><td class="n">151</td><td>관리자 화면</td><td>__CAT__·__PAPERS__·__STUDIES__ → dashboard.html</td></tr>
+<tr><td>model/build_canvas.py</td><td class="n">31</td><td>빌더. studies.csv를 읽어 화면용 칸만 추려 심는다</td><td>catalog.json + studies.csv + build_index의 REVIEWS·COND·PAPERS → 두 HTML</td></tr>
+<tr><td>model/build_index.py</td><td class="n">169</td><td>옛 폼 데모. 지금은 REVIEWS(조사별 리뷰 7)·COND(조건 10)·PAPERS(5편 측정)만 재사용</td><td>catalog.json → index.html(부작용, 무해)</td></tr>
+<tr><td>model/catalog.json</td><td class="n">—</td><td>조사 9 · 개념 20(dim·src 포함) · 문항 108</td><td>patch_catalog.py가 인구 특성 문항과 차원·원인 축을 덧붙임</td></tr>
+<tr><td>model/test_canvas.py</td><td class="n">88</td><td>Playwright 걸음 테스트</td><td>canvas.html·dashboard.html → 단언 20여 개</td></tr>
+<tr><td>corpus/harvest_kci.py · harvest_openalex.py</td><td class="n">74 · 75</td><td>전수 수집기(체크포인트·무한 재시도)</td><td>OAI 커서 / OpenAlex 연도×축 → jsonl</td></tr>
+<tr><td>corpus/screen_quant.py</td><td class="n">44</td><td>양적 연구 거르기</td><td>jsonl → candidates_kci.csv · candidates_oa.csv</td></tr>
+<tr><td>corpus/code_rules.py</td><td class="n">76</td><td>규칙 코딩(미검수)</td><td>후보 3종 → studies.csv (5,210행)</td></tr>
+<tr><td>corpus/code_studies.py</td><td class="n">123</td><td>Haiku 5.5 배치 코딩(키 필요, 미실행)</td><td>같은 칸 스키마</td></tr>
+<tr><td>backend/worker/src/index.js</td><td class="n">68</td><td>Cloudflare Worker</td><td>KV W11</td></tr></table>
+
+<h2 id="s3">3. 캔버스 상태와 흐름</h2>
+<h3>상태 하나</h3>
+<table class="kv"><tr><td>st.survey</td><td>고른 조사 id. 바꾸면 노드·경로를 비운다</td></tr>
+<tr><td>st.concept</td><td>{text, dim: cognitive|structural|both, level: individual|collective}. STEP 2에서 받음</td></tr>
+<tr><td>st.nodes[]</td><td>변수. {id, name, role: DV|IV|MV|ZV|CV, items[문항 index], x, y}</td></tr>
+<tr><td>st.edges[]</td><td>경로. {id, from, to} 또는 조절 {id, from, toEdge: 경로 id}</td></tr>
+<tr><td>st.sel</td><td>연결 중인 노드 id. 조절변수면 화면이 zvsel 상태(손잡이 표시)</td></tr>
+<tr><td>st.q · st.hypEdits</td><td>연구질문 한 줄 · 학생이 고친 가설 {index: 문장}</td></tr>
+<tr><td>hist[] · prev</td><td>되돌리기 스택(최대 60). touch()마다 직전 상태를 push</td></tr></table>
+<h3>단계</h3>
+<ol><li><b>gate()</b> 자료 선택. 문항이 있고 차원이 있는 조사만 보인다(7개).</li>
+<li><b>cgate()</b> 개념화. 문장은 선택, 차원·수준은 필수.</li>
+<li><b>renderPanel()</b> 팔레트. 주제(신뢰·참여와 연결망·제도 경험·공정성·지역·개인 특성)로만 묶는다. 역할은 붙이지 않는다.</li>
+<li>끌기: 빈 곳에 놓으면 <b>rolePop()</b>(다섯 역할 동일 순서) → <b>newNode()</b>. 변수 위에 놓으면 그 변수에 묶임. 끌기가 안 되면 + 버튼.</li>
+<li>잇기: <b>tapNode()</b> 두 번. 조절변수는 <b>snapZV()</b>로 손잡이 근처에 놓거나 손잡이 클릭 → <b>attachZV()</b>.</li>
+<li>매 변화마다 <b>touch()</b> → draw() → validate() → 배지, persist()(새로고침 복원), sendDraft()(3초 뒤 초안 전송), 10초 멈춤이면 배너.</li>
+<li>서랍 넷: 변수(이 문항의 1부 자리) · 정의(개념화·조작화·간격·대안 정의) · 선행연구(칸·격자·국내 5·해외 5·전체 스크리닝·옆 사람·연구질문·제출) · 리뷰(약한 고리·한 단계).</li>
+<li><b>submit()</b> → modelValue()를 localStorage w11_model과 워커로. 기기 ID(DEV)가 같으면 최신만 센다.</li></ol>
+<h3>저장 키(브라우저)</h3>
+<table class="kv"><tr><td>w11_dev</td><td>기기 ID. 재제출·초안 합치기 기준</td></tr><tr><td>w11_work</td><td>작업 상태 전체. 새로고침 복원</td></tr><tr><td>w11_draft</td><td>초안 행(최대 400). 대시보드 "작업 중"과 되감기</td></tr><tr><td>w11_model</td><td>제출 행</td></tr><tr><td>w11_control</td><td>교수님 판정 행. 학생 화면이 storage 이벤트로 받음</td></tr></table>
+
+<h2 id="s4">4. 데이터 모델</h2>
+<h3>문항(catalog.items)</h3><p><code>{concept, survey, wave, var, question, scale, unit, note}</code>. 개념(concepts)에 <code>dim</code>(cognitive·structural·both·빈칸)과 <code>src</code>(institution·context·individual·빈칸)이 있고, 빈칸이면 사회자본 문항이 아니거나(dim) 사회 중심 원인(src)으로 본다.</p>
+<h3>선행연구(STUDIES, 화면에 심기는 칸)</h3><p><code>{id, src, au, y, t, j, link, comps[], unit, data, kr, dv, inst, reg, net, med, lin, line, design, ok}</code>. 초록·전문은 심지 않는다. <code>ok</code>(verified)는 전부 FALSE라 DEMO=true로만 보인다.</p>
+<h3>제출 value</h3><p><code>survey, concept, dv, dv_name, definition, comps[], dim, srcs[], iv[], med, zv[], cv[], gap_ok, nodes[], edges[], q, lineage(칸 이름), lineage_t, matches[5+5: id·au·y·t·sc·pct·why], tiers{닮음·부분·다름·무관 수}, hyps[]</code></p>
+
+<h2 id="s5">5. 규칙</h2>
+<h3>5.1 구조 검증 validate() — 오류 6 · 경고 7 · 정보 4</h3>
+<table><tr><th>등급</th><th>조건</th><th>뜻</th></tr>
+<tr><td>오류</td><td>종속 없음 / 독립 없음 / 문항 없는 변수 / 종속에서 나가는 경로 / 매개→독립 / 조절변수로 들어오는 화살표 / 조절이 잘못된 경로 위</td><td>제출이 잠긴다</td></tr>
+<tr><td>경고</td><td>경로 없음 / 단위 다름 / 독립→독립 / 고립 변수(통제 제외) / 매개의 들어오는·나가는 경로 부족 / 개념·측정 어긋남 2종</td><td>제출은 된다</td></tr>
+<tr><td>정보</td><td>통제에 경로 / 둘 다라 했는데 한쪽만 / 공동체라 했는데 개인 응답 / 종속에 사회자본 밖 문항</td><td>설계 선택으로 둔다</td></tr></table>
+<h3>5.2 개념·측정 간격 gap()</h3><p>개념 dim과 종속변수 문항들의 dim 집합을 비교한다. 인지적이라 했는데 구조적 문항뿐이면 경고, 반대도 경고, 둘 다라 했는데 한쪽뿐이면 정보. 수준이 공동체인데 지역 변수가 없고 조사 단위도 개인이면 정보. 종속에 dim 없는 문항(제도 경험·인구 특성)이 섞이면 정보.</p>
+<h3>5.3 분류 틀 cell()</h3><p>종속 차원 <code>dvDim()</code> = 종속 문항들의 dim 집합(둘 다 있거나 both가 있으면 both). 원인 축 <code>ivSrcs()</code> = 독립 노드 문항 개념의 src 집합(src가 비고 dim이 있으면 'society'). 칸 이름은 "원인 축들 → 차원 사회자본 · 개인/공동체". 같은 칸의 1부 논문은 PAPER_CELL 표(Krishna 사회·지역/both, Freitag 제도/구조, L&W 제도/both, Mettler 제도/구조, K&R 제도/인지)에서 원인 축이 겹치고 차원이 같거나 both면 뽑는다. 선행연구 편수는 같은 조건으로 STUDIES를 센다(연구 쪽 차원은 comps로: trust·reciprocity → 인지, 나머지 → 구조).</p>
+<h3>5.4 유사도 screen() — 최대 11점</h3>
+<table><tr><th>항목</th><th>점</th><th>조건</th></tr>
+<tr><td>구성 요소 겹침</td><td class="n">0~3</td><td>자카드(겹침/합집합)×3. 0이면 등급 '무관'</td></tr><tr><td>같은 단위</td><td class="n">1</td><td>개인(지역 조사+지역 원인이면 지역) 또는 연구가 다수준</td></tr>
+<tr><td>같은 원인 축</td><td class="n">1.5</td><td>ssrc(연구: inst→제도, net→사회, reg→지역, 없으면 개인)와 내 srcs가 하나라도 겹침</td></tr><tr><td>매개 있음</td><td class="n">1</td><td>내 모형에 매개가 있고 연구도 매개</td></tr>
+<tr><td>같은 차원</td><td class="n">1</td><td>sdim(연구) = dvDim()</td></tr><tr><td>같은 자료</td><td class="n">2</td><td>연구의 data가 내 조사 이름을 포함</td></tr><tr><td>국내</td><td class="n">0.5</td><td>country=KR</td></tr><tr><td>사회자본이 종속</td><td class="n">1</td><td>초록에 결정요인·형성·영향 단서</td></tr></table>
+<p>등급: 닮음 ≥ 6 · 부분 ≥ 3.5 · 다름 &gt; 0 · 무관 0. 퍼센트 = 점수/11. 화면의 "가장 닮은"은 국내 5·해외 5(match()). 대시보드 그물망의 sim()은 같은 식에서 자료·국내·종속 항목을 뺀 것(연구끼리 비교라 의미가 없어서).</p>
+<h3>5.5 대안 정의 altDefs()</h3><p>셋을 만든다. 마지막에 묶은 문항을 빼면 → 1위 연구가 바뀌나. 같은 조사의 다른 사회자본 문항을 더하면 → 바뀌나. 같은 개념을 다른 조사로 재면 → 척도·단위가 어떻게 다른가. topFor()는 자카드와 단위만 쓴다(단순 비교용).</p>
+<h3>5.6 리뷰 review()</h3><p>조사별 기본 카드 2장(REVIEWS: 약한 고리·한 단계) + 조건 카드(COND 10: 매개 있음, 공정성 매개+사회통합, 기관신뢰 종속, 선별 수급+복지패널, 선별 수급+지역사회건강, 참여 제도+사회통합, 지역(시군구/광역), 연구질문에 "영향", 이웃 신뢰+복지) + 조절 있음 1장.</p>
+<h3>5.7 가설 hyps()</h3><p>경로마다 "A은 B와 관련이 있을 것이다". 조절(toEdge)은 그 경로의 "A과 B의 관계는 Z에 따라 다를 것이다". 매개는 들어오는 변수마다 "A과 D의 관계를 M이 매개할 것이다". 종속에서 나가는 것, 통제가 낀 것은 빼고, 학생이 고친 문장(hypEdits)이 우선한다.</p>
+
+<h2 id="s6">6. 대시보드</h2>
+<ul><li><b>dedupe()</b> 기기(dev)당 최신 제출 하나. dev가 없으면 별명. 같은 별명·다른 기기는 (2).</li>
+<li>카드 9(제출·작업 중·자료 종류·개념대로 쟀다·2문항 이상·매개·조절·"영향"·…), 막대 5(자료·구성 요소·칸·개념화·원인), 종속 구성×독립 묶음 격자.</li>
+<li><b>그물망</b>: 코딩된 연구를 국내 우선 1,200편까지. 이웃 4편(sim &gt; 2) 연결, 3차원 힘 배치 200회(반발·당김·중심), 2D 투영(요·피치·줌). 학생 모형은 닮은 4편 평균 + 제출 시각 해시 지터라 다시 그려도 같은 자리. 끌어 회전, 휠 확대, 자동 회전.</li>
+<li><b>되감기</b>: 시각 t까지의 제출(기기별 최신) + 아직 안 낸 기기의 마지막 초안.</li>
+<li><b>spotlight</b>: 모형 그림(경로·조절 기하 재현), 개념화·조작화·연구질문·가설·닮은 연구·묶인 문항, 판정 버튼 4(control 행으로 학생에게).</li>
+<li>프로젝터 모드는 별명 열만 숨긴다. PIN은 서버 검증(워커) + 화면 가림(ADMIN_PIN).</li></ul>
+
+<h2 id="s7">7. 코퍼스 파이프라인</h2>
+<table><tr><th>단계</th><th>규칙</th><th>결과(11-06 16시)</th></tr>
+<tr><td>수집 KCI</td><td>OAI 커서 전체 훑기(워커 3). 발행 1996 이후, 제목·초록에 사회자본|social capital</td><td>약 4,600편(진행 중)</td></tr>
+<tr><td>수집 OpenAlex</td><td>연도×축(제목 social capital / 신뢰 / 시민참여), 초록 있는 article. 신뢰·시민참여 축은 초록에 social capital이 있을 때만</td><td>2026~2020년 8,638편(예산 대기)</td></tr>
+<tr><td>양적 거르기</td><td>초록 있음, 양적 단서 2종 이상(회귀·패널·표본·조사 자료 등 국·영문), 서평·고찰·메타분석 단서 있으면 제외</td><td>국내 1,959 · 해외 2,920</td></tr>
+<tr><td>규칙 코딩</td><td>COMP 8(구성 요소) · UNIT 3 · DESIGN 4 · IV 4 · LINEAGE 5 · DATA(자료명 30여 개) · SC_DV(종속 단서) · 매개·조절</td><td>5,210편, 구성 요소 2,168, 종속 단서 723, 자료명 462</td></tr>
+<tr><td>Haiku 코딩</td><td>같은 스키마를 초록 읽고 채움. 모델 고정 claude-haiku-5-5, 배치</td><td>키 대기</td></tr></table>
+
+<h2 id="s8">8. 저장 백엔드</h2>
+<table><tr><th>요청</th><th>누가</th><th>규칙</th></tr>
+<tr><td>POST /submit</td><td>학생</td><td>stage ∈ model·draft·vote·sim, 별명 12자, 60KB 상한, 14일 만료. 초안은 기기당 한 키</td></tr>
+<tr><td>GET /peers</td><td>학생</td><td>기기당 최신 제출의 별명·자료·정의·칸만</td></tr>
+<tr><td>GET /control?dev=</td><td>학생</td><td>자기 기기 또는 전체 앞으로 온 행</td></tr>
+<tr><td>GET /rows, POST /control</td><td>관리자</td><td>헤더 X-Admin-Pin = 시크릿 ADMIN_PIN</td></tr>
+<tr><td>POST /ai</td><td>학생(선택)</td><td>시크릿 키, Haiku 5.5 고정, 200토큰, 목록 밖 논문 언급 금지 시스템 프롬프트</td></tr></table>
+
+<h2 id="s9">9. 약한 곳과 판단이 필요한 곳</h2>
+<div class="flag"><b>점수 가중치는 임의다.</b> 3·1·1.5·1·1·2·0.5·1은 "구성 요소가 제일 중요하고 같은 자료가 그다음"이라는 판단을 숫자로 적은 것이지 추정된 값이 아니다. 검수 50편이 끝나면 "사람이 닮았다고 한 쌍"으로 가중치를 다시 잡아야 한다. 논문에 쓸 때는 반드시.</div>
+<div class="flag"><b>규칙 코딩의 연결망 과다.</b> 국내 1,959편 중 621편이 'network'로 잡힌 건 "네트워크·교류" 패턴이 넓어서다. 초록에 "네트워크 분석"이 있어도 잡힌다. Haiku 코딩 전까지는 그물망의 사회 중심 쪽이 부풀어 보인다.</div>
+<div class="flag"><b>'사회자본이 종속' 단서 723편은 느슨하다.</b> "사회자본에 미치는 영향" 류 문구로 잡는데, 반대 방향 문장("사회자본이 ○○에 미치는 영향")도 일부 걸린다. 가산 1점이라 순위가 크게 흔들리진 않지만, 수업에서 "원인 쪽일 수 있음" 경고 문구가 이 한계를 가리고 있다.</div>
+<div class="flag"><b>원인 축 '사회 중심'의 정의가 약하다.</b> 캔버스에서는 "dim이 있는 문항을 독립변수로 쓰면 사회 중심"이고, 연구 쪽은 iv_network=Y면 사회 중심이다. 둘 다 Hooghe & Stolle의 "결사체·공동체 경험이 원인"을 대충 흉내 낸 것이라, 토론 때 교수님이 짚으실 수 있다.</div>
+<div class="flag"><b>단위 판정.</b> 내 단위는 '개인'이 기본이고, 지역사회건강조사에 지역 원인을 두면 '지역'이다. 복지패널의 가구·가구원 섞임은 경고만 한다. 다수준 설계를 표현할 자리가 없다.</div>
+<div class="flag"><b>크기.</b> canvas.html 2.9MB(선행연구 5,181편 제목·코딩). 폰 첫 로딩 2~3초. 수업판에서 verified만 남기면 수십 KB로 준다.</div>
+<div class="flag"><b>옆 사람·판정은 같은 브라우저(데모) 또는 워커(수업)에서만.</b> localStorage 모드에서는 다른 폰이 안 보인다. 당연하지만 데모를 보여 줄 때 설명이 필요하다.</div>
+<div class="flag"><b>그물망 1,200편 상한.</b> 국내가 먼저 들어가 해외 코딩본 일부는 그물망에 없다(전체 스크리닝에는 있음). 설명 문구에 적혀 있다.</div>
+<div class="ok"><b>괜찮은 곳.</b> 상태가 하나(st)라 복원·되돌리기·제출이 같은 객체를 쓴다. 규칙은 전부 순수 함수(validate·gap·cell·screen·hyps)라 테스트와 대시보드가 같은 값을 본다. 서버는 행 저장뿐이라 와이파이가 끊겨도 화면 로직은 전부 돈다. 선행연구는 목록 밖에서 나올 수 없다.</div>
+
+<h2 id="s10">10. 테스트가 보는 것</h2>
+<p><code>python model/test_canvas.py</code> 한 번에 확인하는 것: 자료 선택 → 개념화 → 끌어 놓기·역할 선택 → 묶기 → 간격 경고 생김/사라짐 → 조절변수 붙기와 조절 가설 → 칸·격자 표시 → 닮은 연구 3편 이상 → 서랍 폭 조절 → 역방향 오류로 제출 잠김 → 되돌리기 → 등급 목록 → 새로고침 복원 → + 버튼 추가 → 가설 편집 반영 → 제출 → 대시보드 행·spotlight·판정 수신 → 17명 생성 → 되감기 → 옆 사람. 페이지 오류 0.</p>
+<p class="note">안 보는 것: 폰 실기기, 워커와의 실제 통신(URL 비어 있음), 그물망 렌더 내용, 손잡이로 놓기(별도 스크립트로 한 번 확인), 760px 이하 레이아웃.</p>
+</div></body></html>
