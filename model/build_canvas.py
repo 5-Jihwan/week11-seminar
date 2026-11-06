@@ -32,8 +32,12 @@ for k, (lab, dim, src) in FULLC.items():
     CATX["concepts"].append({"id": "full_" + k, "label": lab, "role": "full", "lineage": "", "dim": dim, "src": src, "paper_measure": "조사표 전체 문항. 1부 다섯 편에는 없음"})
 fp = os.path.join(HERE, "full_items.json")
 FULL = json.load(open(fp, encoding="utf-8")) if os.path.exists(fp) else {}
+_norm = lambda q: re.sub(r"[\s\W_]+", "", q)[:22]
+_have = {(i["survey"], _norm(i["question"])) for i in CATX["items"]}  # 요약 문항의 (조사, 문장 앞 22자)
 for sv, its in FULL.items():
     for i in its:
+        if (sv, _norm(i["question"])) in _have:
+            continue  # 요약 문항에 이미 같은 문장이 있다 → 전체 목록에서 뺀다(완전 중복)
         CATX["items"].append({"concept": "full_" + i["theme"], "survey": sv, "wave": i["wave"], "var": i["var"], "question": i["question"], "scale": i["scale"], "unit": i["unit"], "note": "조사표 전체", "full": 1})
 print("조사표 전체 문항", {k: len(v) for k, v in FULL.items()})
 CAT, PAPERS = json.dumps(CATX, ensure_ascii=False), json.dumps(bi.PAPERS, ensure_ascii=False)
