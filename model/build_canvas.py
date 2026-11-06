@@ -32,14 +32,24 @@ for k, (lab, dim, src) in FULLC.items():
     CATX["concepts"].append({"id": "full_" + k, "label": lab, "role": "full", "lineage": "", "dim": dim, "src": src, "paper_measure": "조사표 전체 문항. 1부 다섯 편에는 없음"})
 fp = os.path.join(HERE, "full_items.json")
 FULL = json.load(open(fp, encoding="utf-8")) if os.path.exists(fp) else {}
-_norm = lambda q: re.sub(r"[\s\W_]+", "", q)[:22]
-_have = {(i["survey"], _norm(i["question"])) for i in CATX["items"]}  # 요약 문항의 (조사, 문장 앞 22자)
+_norm = lambda q: re.sub(r"[^\w]|_", "", q or "")  # 유니코드 \w: 한글 유지
+_have = {(i["survey"], _norm(i["question"])) for i in CATX["items"]}  # 요약 문항의 (조사, 문장 전체)
+_dropped = 0
 for sv, its in FULL.items():
     for i in its:
         if (sv, _norm(i["question"])) in _have:
-            continue  # 요약 문항에 이미 같은 문장이 있다 → 전체 목록에서 뺀다(완전 중복)
+            _dropped += 1; continue  # 요약 문항과 문장이 완전히 같다 → 전체 목록에서 뺀다
         CATX["items"].append({"concept": "full_" + i["theme"], "survey": sv, "wave": i["wave"], "var": i["var"], "question": i["question"], "scale": i["scale"], "unit": i["unit"], "note": "조사표 전체", "full": 1})
-print("조사표 전체 문항", {k: len(v) for k, v in FULL.items()})
+print("조사표 전체 문항", {k: len(v) for k, v in FULL.items()}, "· 요약과 완전 중복 제거", _dropped)
+# 묶음 키: 조사표 문항은 (조사, 문항 줄기 = ' — '/' - ' 앞) → 행렬형 하위 항목이 한 묶음(gk='sub'). 요약 문항은 (조사, 개념, 문장 앞 10자) → 같은 개념의 변형(gk='var')
+_stem = lambda q: re.split(r"\s[—-]\s", q or "", maxsplit=1)[0]
+for i in CATX["items"]:
+    if i.get("full"):
+        i["grp"] = f"f|{i['survey']}|{_norm(_stem(i['question']))}"; i["gk"] = "sub"
+    else:
+        i["grp"] = f"s|{i['survey']}|{i['concept']}|{_norm(i['question'])[:10]}"; i["gk"] = "var"
+# 문항 번호(배열 index)가 빌드마다 바뀔 수 있으므로 지문을 심는다. 복원 때 지문이 다르면 작업 상태를 버린다
+CATX["_meta"]["items_sig"] = f"{len(CATX['items'])}:{sum(len(i['question']) for i in CATX['items']) % 100003}"
 CAT, PAPERS = json.dumps(CATX, ensure_ascii=False), json.dumps(bi.PAPERS, ensure_ascii=False)
 HTML = open(os.path.join(HERE, "canvas_v5.html.tpl"), encoding="utf-8").read()  # v5: 개념화 단계·역할 자유(문항에 역할 없음)·조절·통제·분류 틀(원인 축×종속 차원) + Galpi 화면 구조
 out = (HTML.replace("__CAT__", CAT).replace("__REV__", json.dumps({"base": bi.REVIEWS, "cond": bi.COND}, ensure_ascii=False))
