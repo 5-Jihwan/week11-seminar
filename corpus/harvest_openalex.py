@@ -50,6 +50,8 @@ def harvest(axis, q, year):
     with open(OUT, "a", encoding="utf-8") as f:
         while True:
             params = {"filter": f"title.search:{q},publication_year:{year},type:article,has_abstract:true", "per-page": 200, "page": page, "select": FIELDS, "mailto": "ojh121523@gmail.com"}
+            if os.environ.get("OPENALEX_API_KEY"):  # 키 없으면 네트워크(IP) 공용 일일 예산을 쓴다. 학교망에서는 금방 바닥남 → openalex.org 무료 키를 환경변수로
+                params["api_key"] = os.environ["OPENALEX_API_KEY"]
             data = get(API + "?" + urllib.parse.urlencode(params, quote_via=urllib.parse.quote))
             for w in data["results"]:
                 r = row(w, axis)
