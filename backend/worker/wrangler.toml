@@ -1,0 +1,12 @@
+name = "w11-seminar"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+# KV: `wrangler kv namespace create W11` 로 만든 id를 넣는다. 수업 뒤 `wrangler kv namespace delete --namespace-id=...` 로 전부 삭제.
+[[kv_namespaces]]
+binding = "W11"
+id = "REPLACE_WITH_KV_ID"
+
+# 시크릿(저장소에 넣지 않음):
+#   wrangler secret put ADMIN_PIN          관리자 네 자리
+#   wrangler secret put ANTHROPIC_API_KEY  선택. 실시간 한 줄 코멘트용. 콘솔에서 지출 한도 설정
