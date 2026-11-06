@@ -20,7 +20,10 @@ export default {
     if (req.method === "POST" && path === "/submit") {
       const b = await req.json().catch(() => null);
       if (!b || !/^(model|draft|vote|sim)$/.test(b.stage)) return json({ ok: false, error: "stage" }, 400);
-      const row = { ts: new Date().toISOString(), dev: clean(b.dev, 24), nick: clean(b.nick, 12) || "익명", stage: b.stage, key: clean(b.key, 32), value: b.value ?? null };
+      const dev = clean(b.dev, 24), tok = clean(b.tok, 64); if (!dev || !tok) return json({ ok: false, error: "dev/tok" }, 400);
+      const had = await env.W11.get("tok:" + dev); if (had && had !== tok) return json({ ok: false, error: "dev taken" }, 403);  // 기기 ID 도용 방지: 첫 토큰만 유효
+      if (!had) await env.W11.put("tok:" + dev, tok, { expirationTtl: 60 * 60 * 24 * 14 });
+      const row = { ts: new Date().toISOString(), dev, nick: clean(b.nick, 12) || "익명", stage: b.stage, key: clean(b.key, 32), value: b.value ?? null };
       const body = JSON.stringify(row); if (body.length > 60000) return json({ ok: false, error: "too large" }, 413);
       const id = b.stage === "draft" ? `draft:${row.dev}` : `${b.stage}:${row.ts}:${row.dev}`;  // 초안은 기기당 최신 하나만
       await env.W11.put(id, body, { expirationTtl: 60 * 60 * 24 * 14 });
@@ -33,11 +36,12 @@ export default {
       const rows = await Promise.all(list.keys.map(k => env.W11.get(k.name, "json")));
       return json(rows.filter(Boolean));
     }
-    if (req.method === "GET" && path === "/peers") {  // 학생용: 별명·자료·정의·칸만(개인정보 없음). 기기당 최신 제출
+    if (req.method === "GET" && path === "/peers") {  // 학생용: 별명·자료·정의·칸만. 기기 ID는 내보내지 않는다(자기 것만 제외)
+      const me = url.searchParams.get("dev") || "";
       const list = await env.W11.list({ prefix: "model:" });
       const rows = (await Promise.all(list.keys.map(k => env.W11.get(k.name, "json")))).filter(Boolean).sort((a, b) => (a.ts < b.ts ? -1 : 1));
       const by = {}; rows.forEach(r => { by[r.dev] = r; });
-      return json(Object.values(by).map(r => ({ ts: r.ts, dev: r.dev, nick: r.nick, stage: "model", value: { survey: r.value?.survey, definition: r.value?.definition, lineage: r.value?.lineage } })));
+      return json(Object.values(by).filter(r => r.dev !== me).map(r => ({ ts: r.ts, dev: "", nick: r.nick, stage: "model", value: { survey: r.value?.survey, definition: r.value?.definition, lineage: r.value?.lineage } })));
     }
     if (req.method === "POST" && path === "/control") {
       if (!admin) return json({ ok: false, error: "admin" }, 401);
@@ -47,7 +51,8 @@ export default {
       return json({ ok: true });
     }
     if (req.method === "GET" && path === "/control") {
-      const dev = url.searchParams.get("dev") || "";
+      const dev = url.searchParams.get("dev") || "", tok = url.searchParams.get("tok") || "";
+      const had = await env.W11.get("tok:" + dev); if (!had || had !== tok) return json([], 200);  // 남의 판정은 못 본다
       const list = await env.W11.list({ prefix: "control:" });
       const rows = (await Promise.all(list.keys.map(k => env.W11.get(k.name, "json")))).filter(r => r && r.value && (r.value.dev === dev || r.value.dev === "all"));
       return json(rows);

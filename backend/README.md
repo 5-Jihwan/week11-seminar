@@ -1,8 +1,8 @@
 # 저장 백엔드
 
-둘 중 하나를 쓴다. 기본은 Cloudflare Worker(관리자 확인을 서버에서 하고, 키는 시크릿).
+Cloudflare Worker 하나다(관리자 확인을 서버에서 하고, 키는 시크릿). 클라이언트가 워커 경로(/submit·/peers·/control)와 기기 토큰을 쓰므로 다른 백엔드로 바꾸려면 같은 경로를 구현해야 한다.
 
-## Cloudflare Worker (기본)
+## Cloudflare Worker
 
 ```
 cd backend/worker
@@ -20,10 +20,8 @@ wrangler deploy                         # https://w11-seminar.<계정>.workers.d
 | `GET /control?dev=` | 학생 | 자기 기기 앞으로 온 판정 |
 | `POST /ai` | 학생(선택) | 연구질문 한 줄 코멘트. 목록 밖 논문 언급 금지 |
 
-배포 뒤 `model/canvas_v5.html.tpl`의 `SAVE_URL`과 `model/dashboard.html.tpl`의 `READ_URL`에 워커 주소를 넣고 `python model/build_canvas.py`. 대시보드는 같은 PIN을 헤더로 보낸다.
+배포 뒤 `model/canvas_v5.html.tpl`의 `SAVE_URL`과 `model/dashboard.html.tpl`의 `READ_URL`에 워커 주소를 넣고 빌드한다. 데모는 `python model/build_canvas.py`(전부·미검수 표시), 수업판은 `python model/build_canvas.py --class`(verified=TRUE만, DEMO=false). 대시보드는 열 때 PIN을 묻고 세션에만 두며 헤더로 보낸다. PIN은 소스에 없다.
+
+기기 토큰: 학생 브라우저가 처음 보낼 때 만든 토큰을 워커가 기기 ID와 함께 기억하고, 이후 같은 토큰만 받는다(남의 제출·초안 덮어쓰기 방지). /peers는 기기 ID를 내보내지 않는다.
 
 수업 뒤: `wrangler kv namespace delete --namespace-id=<id>` (가드레일 5).
-
-## Google Apps Script (대안)
-
-`apps-script.gs`를 시트에 붙여 웹앱으로 배포. 인증 없음, 수업 1회용.

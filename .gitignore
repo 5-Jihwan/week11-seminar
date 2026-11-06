@@ -12,3 +12,5 @@ data/codebooks/**
 
 corpus/*.jsonl
 data/raw/harvest/
+
+__pycache__/

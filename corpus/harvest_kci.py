@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """국내 30년(발행 1996~) 전수 수집: KCI OAI-PMH(무인증) ARTI 전체를 커서로 훑으며 사회자본·신뢰·시민참여 논문만 남긴다.
-토큰 형식이 from:until:100:cursor 라 커서를 직접 만들어 어디서든 이어받는다. 체크포인트 data/raw/harvest/kci_w{n}.cursor, 결과 corpus/kci_w{n}.jsonl.
+토큰 형식이 from:until:100:cursor 라 커서를 직접 만들어 어디서든 이어받는다. KCI OAI의 가장 이른 datestamp가 2013-03-21이라 창은 2013~2026이고, 발행연도는 레코드 안의 dc:date로 거른다(1996~). 체크포인트 data/raw/harvest/kci_w{n}.cursor, 결과 corpus/kci_w{n}.jsonl.
 워커 셋으로 나눠 병렬(0~1M, 1M~2M, 2M~끝). 무한 재시도(이동 중 끊김 대비). 100건에 약 3초.
 사용: python -I corpus/harvest_kci.py <워커번호 0|1|2> [시작커서 끝커서]"""
 import json, os, re, sys, time, urllib.parse, urllib.request
@@ -48,14 +48,19 @@ def main(w, start=None, end=None):
     lo, hi = RANGES[w]; start = lo if start is None else start; end = hi if end is None else end
     ckf = os.path.join(CK, f"kci_w{w}.cursor"); out = os.path.join(HERE, f"kci_w{w}.jsonl")
     cur = int(open(ckf).read().strip()) if os.path.exists(ckf) else start
-    kept = seen = 0; t0 = time.time()
+    kept = seen = empty = 0; t0 = time.time()
     with open(out, "a", encoding="utf-8") as f:
         while cur < end:
             x = fetch(f"2013-01-01:2026-12-31:100:{cur}")
             recs = re.findall(r"<record>(.*?)</record>", x, re.S)
             if not recs:
-                if "<error" in x and "noRecordsMatch" in x or not recs:
+                if "noRecordsMatch" in x or "empty set" in x:  # 진짜 끝
                     print(f"w{w} end at cursor {cur}", flush=True); break
+                empty += 1
+                if empty >= 5:  # 오류 본문이 다섯 번 연속이면 100 건너뛴다(끝으로 오인하지 않음)
+                    print(f"w{w} skip at cursor {cur}: {x[:80]!r}", flush=True); cur += 100; open(ckf, "w").write(str(cur)); empty = 0
+                time.sleep(2); continue
+            empty = 0
             for rec in recs:
                 d = parse(rec); seen += 1
                 if keep(d):

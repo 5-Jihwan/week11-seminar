@@ -19,13 +19,18 @@ spec = importlib.util.spec_from_file_location("bi", os.path.join(HERE, "build_in
 # build_index.py는 import 시 index.html을 다시 쓴다(부작용 무해). REVIEWS·COND·PAPERS·CAT를 재사용.
 bi = importlib.util.module_from_spec(spec); spec.loader.exec_module(bi)
 
+CLASS = "--class" in sys.argv  # 수업판: verified=TRUE만 심고 DEMO=false(가드레일 2). 기본은 데모(전부, 미검수 표시)
+if CLASS:
+    STUDIES = [s for s in STUDIES if s["ok"]]
+    assert STUDIES, "수업판인데 verified=TRUE가 0편. corpus/studies.csv의 verified 열을 먼저 채우십시오"
+DEMO = "false" if CLASS else "true"
 CAT, PAPERS = json.dumps(bi.CAT, ensure_ascii=False), json.dumps(bi.PAPERS, ensure_ascii=False)
 HTML = open(os.path.join(HERE, "canvas_v5.html.tpl"), encoding="utf-8").read()  # v5: 개념화 단계·역할 자유(문항에 역할 없음)·조절·통제·분류 틀(원인 축×종속 차원) + Galpi 화면 구조
 out = (HTML.replace("__CAT__", CAT).replace("__REV__", json.dumps({"base": bi.REVIEWS, "cond": bi.COND}, ensure_ascii=False))
-       .replace("__PAPERS__", PAPERS).replace("__STUDIES__", json.dumps(STUDIES, ensure_ascii=False)))
+       .replace("__PAPERS__", PAPERS).replace("__STUDIES__", json.dumps(STUDIES, ensure_ascii=False)).replace("__DEMO__", DEMO))
 open(os.path.join(HERE, "canvas.html"), "w", encoding="utf-8").write(out)
-print("canvas.html", len(out) // 1024, "KB · 선행연구", len(STUDIES), "편(구성 요소 있는 것", sum(1 for s in STUDIES if s["comps"]), ")")
+print(("수업판 " if CLASS else "데모 ") + "canvas.html", len(out) // 1024, "KB · 선행연구", len(STUDIES), "편(구성 요소 있는 것", sum(1 for s in STUDIES if s["comps"]), ")")
 # 관리자 대시보드(제출 목록·자료 빈도·정의 구성·계보·spotlight). 데모는 같은 브라우저 localStorage 'w11_model'을 storage 이벤트로 읽는다.
-dash = open(os.path.join(HERE, "dashboard.html.tpl"), encoding="utf-8").read().replace("__CAT__", CAT).replace("__PAPERS__", PAPERS).replace("__STUDIES__", json.dumps(STUDIES, ensure_ascii=False))
+dash = open(os.path.join(HERE, "dashboard.html.tpl"), encoding="utf-8").read().replace("__CAT__", CAT).replace("__PAPERS__", PAPERS).replace("__STUDIES__", json.dumps(STUDIES, ensure_ascii=False)).replace("__DEMO__", DEMO)
 open(os.path.join(HERE, "dashboard.html"), "w", encoding="utf-8").write(dash)
 print("dashboard.html", len(dash) // 1024, "KB")
