@@ -16,3 +16,6 @@ data/raw/harvest/
 __pycache__/
 corpus/candidates_kci.csv
 corpus/candidates_oa.csv
+corpus/.submitted.jsonl
+corpus/.coded.json
+corpus/studies_haiku.csv
