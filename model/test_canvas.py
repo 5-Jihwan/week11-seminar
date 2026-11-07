@@ -22,6 +22,10 @@ def drop_new(pg, sel, x, y, role):
     drag(pg, sel, x, y); pg.click(f"#pop button[data-r={role}]"); pg.wait_for_timeout(300)
 
 
+def closep(pg):  # 검증·유사도 패널이 노드를 가리면 닫는다(실사용자는 X를 누름)
+    pg.evaluate("() => {document.getElementById('vpanel').classList.remove('on'); document.getElementById('spanel').classList.remove('on');}")
+
+
 def node_box(pg, i):  # draw()가 노드를 다시 그리는 순간이면 None이 올 수 있어 한 번 더 잰다
     for _ in range(5):
         bb = pg.locator("#nodes .node").nth(i).bounding_box()
@@ -49,9 +53,10 @@ with sync_playwright() as p:
     nb = node_box(pg, 0); drag(pg, "#pcontent .vcard:has-text('도와줄 사람 수')", nb["x"] + nb["width"] / 2, nb["y"] + nb["height"] / 2)   # 호혜 문항 묶기 → 해소
     pg.wait_for_timeout(200); n_items = pg.locator("#dbody .item").count(); gap2 = pg.locator("#vbody .iss.warn:has-text('구조적')").count()
     deftxt = pg.locator("#dbody .def").first.inner_text().splitlines()[0]
-    drop_new(pg, "#pcontent .vcard:has-text('성별')", cv["x"] + cv["width"] * 0.42, cv["y"] + 90, "ZV")               # 집단 비교
-    ids = pg.eval_on_selector_all("#nodes .node", "els => els.map(e => e.dataset.id)")
+    closep(pg); drop_new(pg, "#pcontent .vcard:has-text('성별')", cv["x"] + cv["width"] * 0.42, cv["y"] + 90, "ZV")               # 집단 비교
+    ids = pg.eval_on_selector_all("#nodes .node", "els => els.map(e => e.dataset.id)"); closep(pg)
     pg.click(f"#nodes .node[data-id='{ids[2]}']"); pg.click(f"#nodes .node[data-id='{ids[0]}']")                     # ZV → DV
+    pg.click("#vbtn"); pg.wait_for_timeout(150)  # 검증 패널을 열어야 가설 칸이 그려진다
     vb = " ".join(pg.locator("#vbody textarea").evaluate_all("els => els.map(e => e.value)")); zv_edge = pg.locator("#edges path.edge.zv").count()
     pg.click(".sbtn[data-d=studies]"); cell = pg.locator("#dbody .def b").inner_text(); me = pg.locator("#dbody td.me").count()
     titles = pg.eval_on_selector_all("#dbody .study .ti", "els => els.slice(0,5).map(e => e.textContent)")
@@ -60,15 +65,15 @@ with sync_playwright() as p:
     w1 = pg.locator("#dpanel").bounding_box()["width"]; pg.screenshot(path=os.path.join(SHOT, "v5_studies.png"))
     print("간격 경고 전/후:", gap1, gap2, "· 묶인 문항:", n_items); print("정의:", deftxt); print("칸:", cell, "· 격자 표시:", me)
     print("닮은 선행연구:", titles[:3]); print("조절 가설:", "따라 다를" in vb, "· ZV 점선:", zv_edge, f"· 서랍 {w0:.0f}→{w1:.0f}px")
-    pg.fill("#q", "공공서비스 경험은 신뢰와 관련이 있는가")
+    pg.fill("#q", "공공서비스 경험은 신뢰와 관련이 있는가"); closep(pg)
     pg.click(f"#nodes .node[data-id='{ids[0]}']"); pg.click(f"#nodes .node[data-id='{ids[1]}']")                     # DV → IV 역방향
     pg.click("#vbtn"); pg.click("#vbtn"); rev = pg.locator("#vbody .iss.err:has-text('역방향')").count(); locked = pg.locator("#submit").is_disabled()
     print("역방향 오류:", rev, "· 제출 잠김:", locked); pg.screenshot(path=os.path.join(SHOT, "v5_reverse.png"))
-    pg.keyboard.press("Control+z"); undo_ok = pg.locator("#edges path.edge").count() == 2                                  # 되돌리기(역방향 경로 사라짐)
+    closep(pg); pg.keyboard.press("Control+z"); undo_ok = pg.locator("#edges path.edge").count() == 2                                  # 되돌리기(역방향 경로 사라짐)
     pg.click(".sbtn[data-d=studies]"); tiers = pg.locator("#tiers button").all_inner_texts(); tier_rows = pg.locator("#tierlist .item").count()
     pg.click("#tiers button[data-t=다름]"); tier_rows2 = pg.locator("#tierlist .item").count()
     pg.reload(); pg.wait_for_timeout(400); restored = pg.locator("#nodes .node").count()                                    # 새로고침 복원
-    pg.click("#pcontent .vcard:has-text('최종 학력') .addk"); pg.click("#pop button[data-r=CV]"); pg.wait_for_timeout(200); added = pg.locator("#nodes .node.CV").count()   # + 버튼
+    closep(pg); pg.click("#pcontent .vcard:has-text('최종 학력') .addk"); pg.click("#pop button[data-r=CV]"); pg.wait_for_timeout(200); added = pg.locator("#nodes .node.CV").count()   # + 버튼
     pg.click("#vbtn"); pg.fill("#vbody textarea[data-h='0']", "H1. 공공서비스를 겪은 사람은 신뢰가 높을 것이다."); pg.press("#vbody textarea[data-h='0']", "Tab")
     pg.click("#submit"); pg.wait_for_timeout(200); sub = pg.locator("#submit").inner_text().strip()
     d = ctx.new_page(); d.on("pageerror", lambda e: errors.append("dash:" + str(e))); d.goto(DASH)
