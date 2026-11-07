@@ -78,7 +78,7 @@ def submit(n=None, only=None):
     rows = [r for r in load() if not only or r["_src"] == ("openalex" if only == "oa" else only)]
     done = set(json.loads(l)["id"] for l in open(H / ".submitted.jsonl", encoding="utf-8")) if (H / ".submitted.jsonl").exists() else set()
     rows = [r for r in rows if r["id"][:64] not in done]
-    if n: rows = rows[:int(n)]
+    if n and str(n).isdigit() and int(n) > 0: rows = rows[:int(n)]  # 0·all 이면 전부
     if not rows:
         print("nothing to submit", file=sys.stderr); return
     ids = []
