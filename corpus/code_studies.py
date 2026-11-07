@@ -96,10 +96,14 @@ def collect():
     client = anthropic.Anthropic()
     bids = [b for b in BATCH_ID_FILE.read_text().split() if b]
     coded = json.load(open(H / ".coded.json", encoding="utf-8")) if (H / ".coded.json").exists() else {}
+    def get(bid):  # 핫스팟 끊김 등 연결 오류는 포기하지 않고 다시 시도
+        while True:
+            try: return client.messages.batches.retrieve(bid)
+            except anthropic.APIConnectionError as e: print(f"connection error, retry in 60s: {e}", file=sys.stderr); time.sleep(60)
     for bid in bids:
-        b = client.messages.batches.retrieve(bid)
+        b = get(bid)
         while b.processing_status != "ended":
-            print(f"{bid} {b.processing_status}: {b.request_counts}", file=sys.stderr); time.sleep(60); b = client.messages.batches.retrieve(bid)
+            print(f"{bid} {b.processing_status}: {b.request_counts}", file=sys.stderr, flush=True); time.sleep(60); b = get(bid)
         for res in client.messages.batches.results(bid):
             if res.result.type != "succeeded": continue
             msg = res.result.message
