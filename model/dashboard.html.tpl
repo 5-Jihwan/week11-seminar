@@ -47,10 +47,11 @@
   <div id="list"></div>
 </div>
 <div class="modal" id="modal"><div class="mbox" id="mbox"></div></div>
+<script src="studies.js" async></script>
 <script>
 // READ_URL: backend/worker 주소(캔버스 SAVE_URL과 같은 값). 관리자 요청은 ADMIN_PIN을 헤더로 보내 서버가 확인한다. 있으면 10초마다 시트를 읽고, 없으면 이 브라우저 localStorage만 본다.
 // 관리자 PIN은 소스에 두지 않는다. 열 때 묻고(READ_URL 있을 때만) 세션에만 저장, 헤더로 보내 워커가 검증한다. 데모(READ_URL 없음)는 묻지 않는다.
-const CAT=__CAT__, PAPERS=__PAPERS__, STUDIES=__STUDIES__, READ_URL="";
+const CAT=__CAT__, PAPERS=__PAPERS__, READ_URL="", UNV=__UNV__;let STUDIES=window.__STUDIES||[];  // 선행연구는 studies.js(비동기). UNV=true면 검수 전 것도 보인다
 let ADMIN_PIN='';(function(){if(!READ_URL)return;try{ADMIN_PIN=sessionStorage.getItem('w11_admin')||'';}catch(e){}if(ADMIN_PIN)return;const p=prompt('관리자 PIN');if(p===null){document.body.innerHTML='<p style="padding:40px;font-size:15px">관리자 화면입니다. 학생 화면은 canvas.html로 들어가 주세요. <a href="javascript:location.reload()">다시 시도</a></p>';throw new Error('pin');}ADMIN_PIN=p;try{sessionStorage.setItem('w11_admin',p);}catch(e){}})();
 const S=CAT.surveys,C=CAT.concepts,IT=CAT.items,cname=id=>(C.find(c=>c.id===id)||{}).label||id,sname=k=>(S[k]||{}).name||k;
 const COMP_KO={generalized_trust:"일반신뢰",institutional_trust:"기관신뢰",neighbor_trust:"이웃 신뢰",participation:"단체 참여",volunteer_donate:"봉사·기부",network:"연결망",reciprocity:"호혜",political_participation:"정치 참여"};
@@ -92,6 +93,7 @@ function spot(r){const v=r.value,ns=v.nodes||[],mnx=Math.min(...ns.map(n=>n.x),0
 $('modal').onclick=e=>{if(e.target===$('modal'))$('modal').classList.remove('on');};
 function $(id){return document.getElementById(id)}
 /* 시연용 학생 17명 */
+if(!DEMO)$('demo').style.display='none';  // 수업판에서는 시연용 17명 생성 버튼을 숨긴다(가짜 행 금지)
 $('demo').onclick=()=>{const nicks=["달팽이","감자","바람","모과","소나기","연필","자몽","고래","밤톨","우산","호두","민들레","참새","구름","은행","여우","도토리"],svs=["kipa","kipa","kipa","koweps","koweps","kgss","chs","chs","kipa","kostat_social","youth2022","kipa","koweps","kgss","kipa","chs","kipa"];
   const now=Date.now(),rows2=nicks.map((nk,i)=>{const s=svs[i],its=IT.map((it,k)=>({it,k})).filter(x=>x.it.survey===s),dvs=its.filter(x=>(C.find(c=>c.id===x.it.concept)||{}).role==='dv'),ivs=its.filter(x=>(C.find(c=>c.id===x.it.concept)||{}).role==='iv'||x.it.concept==='region');
     const pick=(arr,n)=>arr.slice().sort(()=>Math.random()-.5).slice(0,n),dvk=pick(dvs,1+(i%3===0?1:0)+(i%5===0?1:0)).map(x=>x.k),ivk=pick(ivs,1+(i%2)).map(x=>x.k),comps=[...new Set(dvk.map(k=>({trust_general:"generalized_trust",trust_social:"generalized_trust",trust_neighbor:"neighbor_trust",trust_institution:"institutional_trust",participation:"participation",volunteer_donate:"volunteer_donate",network_reciprocity:"reciprocity",political_participation:"political_participation"})[IT[k].concept]).filter(Boolean))];
@@ -110,7 +112,8 @@ const SRC_C={institution:'#1e3a5f',society:'#0d9488',context:'#16a34a',individua
 const ssrc=s=>{const o=[];if(s.inst)o.push('institution');if(s.net)o.push('society');if(s.reg)o.push('context');if(!o.length)o.push('individual');return o},sdim=s=>{const d=new Set(s.comps.map(c=>/trust/.test(c)||c==='reciprocity'?'cognitive':'structural'));return d.size===2?'both':d.size?[...d][0]:'none'};
 const jac=(a,b)=>{const i=a.filter(x=>b.includes(x)).length;return i?i/new Set([...a,...b]).size:0};
 const sim=(a,b)=>{const j=jac(a.comps,b.comps);if(!j)return 0;return 3*j+(a.unit===b.unit||b.unit==='mixed'?1:0)+(a.srcs.some(x=>b.srcs.includes(x))?1.5:0)+(a.med&&b.med?1:0)+(a.dim===b.dim?1:0);};
-const VIS=STUDIES.filter(s=>(DEMO||s.ok)&&s.comps.length).sort((a,b)=>(b.kr?1:0)-(a.kr?1:0)||String(a.id).localeCompare(String(b.id))).slice(0,1200);  /* 코딩된 것만, 국내 먼저, 1,200편 상한(O(n²) 힘 배치) */let NET=null,models={},view={yaw:.4,pitch:.35,zoom:1,auto:true},raf=null,curList=null;
+let VIS=[];const visOf=()=>STUDIES.filter(s=>(UNV||s.ok)&&s.comps.length).sort((a,b)=>(b.kr?1:0)-(a.kr?1:0)||String(a.id).localeCompare(String(b.id))).slice(0,1200);VIS=visOf();
+function onStudies(){STUDIES=window.__STUDIES||[];VIS=visOf();NET=null;if(typeof drawNet==='function')drawNet(curList);}  /* 코딩된 것만, 국내 먼저, 1,200편 상한(O(n²) 힘 배치) */let NET=null,models={},view={yaw:.4,pitch:.35,zoom:1,auto:true},raf=null,curList=null;
 const hash=k=>[...k].reduce((a,c)=>(a*31+c.charCodeAt(0))>>>0,7);
 function buildNet(){const ns=VIS.map((s,i)=>({i,id:s.id,t:s.t,au:s.au,y:s.y,link:s.link,comps:s.comps,kr:s.kr,data:s.data,srcs:s.comps.length?ssrc(s):['none'],unit:s.unit,med:s.med,dim:sdim(s),coded:!!s.comps.length,r:s.comps.length?3.5:2.2,x:0,y:0,z:0,vx:0,vy:0,vz:0,kind:'s'}));
   const es=new Set();ns.forEach(a=>{if(!a.coded)return;ns.filter(b=>b.coded).map(b=>[b,a===b?-1:sim(a,b)]).filter(x=>x[1]>2).sort((x,y)=>y[1]-x[1]).slice(0,4).forEach(([b])=>es.add(a.i<b.i?a.i+'-'+b.i:b.i+'-'+a.i));});

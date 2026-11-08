@@ -87,7 +87,20 @@ with sync_playwright() as p:
     pg.evaluate("loadPeers()"); pg.click(".sbtn[data-d=def]"); pg.click(".sbtn[data-d=studies]"); peers_n = pg.locator("#dbody:has-text('옆 사람')").count()
     print("제출:", sub, "· 대시보드 행:", rows, "· 첫 행:", first.replace("\t", " | ")[:110]); print("spotlight 노드:", spot_nodes, "개념화:", spot_c, "가설 수정 반영:", hyp_edit, "· 17명 후 행:", rows17)
     print("되돌리기:", undo_ok, "· 등급:", tiers, "닮음", tier_rows, "다름", tier_rows2, "· 복원 노드:", restored, "· + 버튼 CV:", added); print("판정 수신:", verdict, "· 되감기:", rw, "· 옆 사람:", peers_n)
+    # 비동기 선행연구(studies.js)·같은 자료 빈자리·가중치 고지
+    n_st = pg.evaluate("STUDIES.length"); pg.click("#sbtn"); pg.wait_for_timeout(200); sim_html = pg.locator("#sbody").inner_html()
+    print("선행연구 적재:", n_st, "· 같은 자료 문구:", "결과로 본 선행연구" in sim_html, "· 가중치 고지:", "임의 가중치" in sim_html)
+    # 폰(390px): 끌기 없이 + 버튼으로 변수 → 자동 맞춤, 배지 유지
+    m = b.new_context(viewport={"width": 390, "height": 780}, is_mobile=True, has_touch=True).new_page(); m.on("pageerror", lambda e: errors.append("mobile:" + str(e)))
+    m.goto(URL); m.evaluate("localStorage.clear()"); m.reload(); m.fill("#nick", "나"); m.click("#gate .surv:has-text('사회통합실태조사')")
+    m.fill("#ctext", "믿음"); m.click("#cdim button[data-v=cognitive]"); m.click("#clevel button[data-v=individual]"); m.click("#cgo")
+    m.click("#mobpick"); m.click("#pcontent .vcard:has-text('일반적으로 사람들을') .addk"); m.click("#pop button[data-r=DV]"); m.wait_for_timeout(300)
+    m.click("#mobpick"); m.click("#pcontent .vcard:has-text('공공서비스를 경험') .addk"); m.click("#pop button[data-r=IV]"); m.wait_for_timeout(300)
+    mob_nodes = m.locator("#nodes .node").count(); mob_in = m.evaluate("[...document.querySelectorAll('#nodes .node')].every(e=>{const r=e.getBoundingClientRect();return r.left>=0&&r.right<=390})")
+    mob_badge = m.locator("#sbtn").is_visible(); m.screenshot(path=os.path.join(SHOT, "v5_mobile.png"))
+    print("폰 노드:", mob_nodes, "· 화면 안:", mob_in, "· 유사도 배지:", mob_badge)
     b.close()
 print("page errors:", errors or "없음")
+assert n_st > 7000 and "결과로 본 선행연구" in sim_html and "임의 가중치" in sim_html and mob_nodes == 2 and mob_in and mob_badge
 assert not errors and gap1 == 1 and gap2 == 0 and n_items == 2 and zv_edge == 1 and "따라 다를" in vb and me == 1 and rev == 1 and locked and len(titles) >= 3 and w1 > w0 + 100 and rows == 1 and spot_nodes == 4 and spot_c == 1 and rows17 == 17
 assert undo_ok and restored == 3 and added == 1 and hyp_edit == 1 and "빈자리" in verdict and tier_rows > 0 and len(tiers) == 4 and "제출" in rw and peers_n == 1

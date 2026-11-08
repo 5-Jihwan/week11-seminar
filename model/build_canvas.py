@@ -19,11 +19,12 @@ spec = importlib.util.spec_from_file_location("bi", os.path.join(HERE, "build_in
 # build_index.py는 import 시 index.html을 다시 쓴다(부작용 무해). REVIEWS·COND·PAPERS·CAT를 재사용.
 bi = importlib.util.module_from_spec(spec); spec.loader.exec_module(bi)
 
-CLASS = "--class" in sys.argv  # 수업판: verified=TRUE만 심고 DEMO=false(가드레일 2). 기본은 데모(전부, 미검수 표시)
-if CLASS:
+CLASS = "--class" in sys.argv  # 수업판: DEMO=false(시연 버튼 없음). verified=TRUE가 있으면 그것만(가드레일 2), 하나도 없으면 전부 심고 「검수 전」 표시(UNV=true)
+if CLASS and any(s["ok"] for s in STUDIES):
     STUDIES = [s for s in STUDIES if s["ok"]]
-    assert STUDIES, "수업판인데 verified=TRUE가 0편. corpus/studies.csv의 verified 열을 먼저 채우십시오"
-DEMO = "false" if CLASS else "true"
+elif CLASS:
+    print("경고: verified=TRUE가 0편이라 수업판에도 전부 심고 「검수 전」으로 표시합니다")
+DEMO = "false" if CLASS else "true"; UNV = "false" if all(s["ok"] for s in STUDIES) else "true"
 # 조사표 전체 문항(model/full_items.json, parse_*_full.py가 만든다): 기본 화면엔 안 보이고 「전체 문항」·검색에서만. 주제별 의사 개념 full_XX에 차원·원인 축을 붙인다
 FULLC = {"TR": ("신뢰 (조사표)", "cognitive", ""), "NW": ("참여·관계 (조사표)", "structural", ""), "FA": ("공정성 (조사표)", "", "institution"), "IN": ("제도·서비스 경험 (조사표)", "", "institution"),
          "RG": ("지역 (조사표)", "", "context"), "DM": ("개인 특성 (조사표)", "", "individual"), "ET": ("기타 문항 (조사표)", "", "")}
@@ -53,10 +54,13 @@ CATX["_meta"]["items_sig"] = f"{len(CATX['items'])}:{sum(len(i['question']) for 
 CAT, PAPERS = json.dumps(CATX, ensure_ascii=False), json.dumps(bi.PAPERS, ensure_ascii=False)
 HTML = open(os.path.join(HERE, "canvas_v5.html.tpl"), encoding="utf-8").read()  # v5: 개념화 단계·역할 자유(문항에 역할 없음)·조절·통제·분류 틀(원인 축×종속 차원) + Galpi 화면 구조
 out = (HTML.replace("__CAT__", CAT).replace("__REV__", json.dumps({"base": bi.REVIEWS, "cond": bi.COND}, ensure_ascii=False))
-       .replace("__PAPERS__", PAPERS).replace("__STUDIES__", json.dumps(STUDIES, ensure_ascii=False)).replace("__DEMO__", DEMO))
+       .replace("__PAPERS__", PAPERS).replace("__DEMO__", DEMO).replace("__UNV__", UNV))
 open(os.path.join(HERE, "canvas.html"), "w", encoding="utf-8").write(out)
+# 선행연구는 별도 studies.js(비동기 로드). 화면이 먼저 뜨고, 받은 뒤 onStudies()가 유사도·그물망을 다시 센다. file://에서도 옆 파일로 읽힌다
+sjs = "window.__STUDIES=" + json.dumps(STUDIES, ensure_ascii=False, separators=(",", ":")) + ";if(typeof onStudies==='function')onStudies();"
+open(os.path.join(HERE, "studies.js"), "w", encoding="utf-8").write(sjs); print("studies.js", len(sjs) // 1024, "KB")
 print(("수업판 " if CLASS else "데모 ") + "canvas.html", len(out) // 1024, "KB · 선행연구", len(STUDIES), "편(구성 요소 있는 것", sum(1 for s in STUDIES if s["comps"]), ")")
 # 관리자 대시보드(제출 목록·자료 빈도·정의 구성·계보·spotlight). 데모는 같은 브라우저 localStorage 'w11_model'을 storage 이벤트로 읽는다.
-dash = open(os.path.join(HERE, "dashboard.html.tpl"), encoding="utf-8").read().replace("__CAT__", CAT).replace("__PAPERS__", PAPERS).replace("__STUDIES__", json.dumps(STUDIES, ensure_ascii=False)).replace("__DEMO__", DEMO)
+dash = open(os.path.join(HERE, "dashboard.html.tpl"), encoding="utf-8").read().replace("__CAT__", CAT).replace("__PAPERS__", PAPERS).replace("__DEMO__", DEMO).replace("__UNV__", UNV)
 open(os.path.join(HERE, "dashboard.html"), "w", encoding="utf-8").write(dash)
 print("dashboard.html", len(dash) // 1024, "KB")
