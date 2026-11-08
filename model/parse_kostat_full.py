@@ -99,9 +99,9 @@ hfls = []
 HT = os.path.join(K, "hfls2023.txt")  # 만들기: kordoc --ocr --no-tables -o hfls2023.txt hfls2023_form.pdf (PP-OCRv5, 약 10분)
 HQ = re.compile(r"(?:^|[\s|→>\\])(\d{1,2}(?:-\d{1,2})?)\s*\\?\|?\s*((?:[가-힣(‘]|\d+년).*?(?:까\?|십시오\.?))(.{0,40})$")  # 뒤 꼬리 = 같은 줄에 붙은 보기(「있음 ②없음」)
 HSUB = re.compile(r"^[-\s]*(\d{1,2})\s*((?!억|만원)[가-힣][^:①-⑳억]{1,50})$")
-HSUBC = re.compile(r"^[-\s]*(?:[①-⑳ㄱㄷㅁ]|기(?=\s))\s*((?!억|만원)[가-힣][^:①-⑳억]{1,40}?)\s*(?:\|?\s*억.*)?$")  # 써넣기 행렬(소득·지출)의 ①②… 행. ㄱ·ㄷ·ㅁ·기 = OCR이 ①을 잘못 읽은 것
+HSUBC = re.compile(r"^[-\s]*(?:[①-⑳ㄱㄷㅁ]|기(?=\s))\s*((?!억|만원|없음|있음)[가-힣][^:①-⑳억]{1,40}?)\s*(?:\|?\s*억.*)?$")  # 써넣기 행렬(소득·지출)의 ①②… 행. ㄱ·ㄷ·ㅁ·기 = OCR이 ①을 잘못 읽은 것
 if os.path.exists(HT):
-    lines = [re.sub(r"<[^>]+>|\\\|", " ", l).strip() for l in open(HT, encoding="utf-8")]
+    lines = [re.sub(r"<[^>]+>|\\\|", " ", l).replace("\\~", "~").strip() for l in open(HT, encoding="utf-8")]
     start = next(i for i, l in enumerate(lines) if re.match(r"^[IⅠ]\s*가구 구성", l))  # 앞은 표지·작성 요령·예시
     qs = []
     for l in lines[start:]:
