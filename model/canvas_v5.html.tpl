@@ -18,7 +18,7 @@ button{font-family:inherit;cursor:pointer}.ms{font-family:'Material Symbols Outl
 /* 헤더 */
 .v2-header{height:52px;display:flex;align-items:center;padding:0 16px;gap:8px;background:rgba(250,250,247,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,0,0,.06);flex-shrink:0;z-index:50}
 .v2-brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;letter-spacing:-.02em;color:var(--brand-navy-800)}.v2-brand .dot{width:20px;height:20px;border-radius:6px;background:var(--brand-navy-800)}
-.spacer{flex:1}.chip{display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px;border-radius:6px;font-size:11px;font-weight:600;background:#fff;border:1px solid rgba(0,0,0,.07);color:var(--ink-700);box-shadow:var(--shadow-1);white-space:nowrap}
+.spacer{flex:1}.chip{display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px;cursor:pointer;font:inherit;border-radius:6px;font-size:11px;font-weight:600;background:#fff;border:1px solid rgba(0,0,0,.07);color:var(--ink-700);box-shadow:var(--shadow-1);white-space:nowrap}
 .lvl{padding:3px 8px;border-radius:4px;font-size:10.5px;font-weight:600;background:var(--brand-navy-50);color:var(--brand-navy-800);border:1px solid var(--brand-navy-200)}
 .nick{height:30px;border:1px solid var(--ink-200);border-radius:6px;padding:0 12px;font:inherit;font-size:12px;width:110px;background:#fff}
 .share{height:30px;padding:0 14px;border-radius:6px;border:0;background:var(--brand-navy-800);color:#fff;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:5px}.share:hover{filter:brightness(1.1)}.share:disabled{opacity:.45;cursor:default}
@@ -102,7 +102,7 @@ svg.edges{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z
 <header class="v2-header">
   <div class="v2-brand"><div class="dot"></div><span>사회자본 연구모형</span></div><span class="lvl">2부</span>
   <div class="spacer"></div><button class="tool mobtog" id="mobtog"><span class="ms">menu</span></button>
-  <span class="chip" id="chip">자료 없음</span>
+  <button class="chip" id="chip" title="자료 바꾸기">자료 없음</button>
   <input class="nick" id="nick" placeholder="별명" maxlength="12"><button class="share" id="submit" disabled><span>제출</span></button>
 </header>
 <div class="body">
@@ -177,11 +177,12 @@ function setZoom(z,cx,cy){z=Math.max(.3,Math.min(2.5,z));const r=$('cv').getBoun
 function fitView(){if(!st.nodes.length){st.zoom=1;st.pan={x:0,y:0};applyZoom();return;}const r=$('cv').getBoundingClientRect(),xs=st.nodes.map(n=>n.x),ys=st.nodes.map(n=>n.y),minx=Math.min(...xs)-20,miny=Math.min(...ys)-20,maxx=Math.max(...xs)+190,maxy=Math.max(...ys)+90;
   const z=Math.max(.3,Math.min(1.2,(r.width-24)/(maxx-minx),(r.height-110)/(maxy-miny)));st.zoom=z;st.pan={x:(r.width-(maxx-minx)*z)/2-minx*z,y:70+((r.height-110)-(maxy-miny)*z)/2-miny*z};applyZoom();}
 function toast(t){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('on'),2200);}
-/* ── STEP 1 자료 ── */
-function gate(){const svs=Object.keys(S).filter(s=>IT.some(i=>i.survey===s&&okItem(i)&&cdim(i.concept)));
+$('chip').onclick=()=>{if(!st.survey){gate();return;}if(!st.nodes.length||confirm('자료를 바꾸면 지금 만든 연구모형이 지워집니다. 계속하시겠습니까?'))gate(true);};
+/* ── 1 자료 ── */
+function gate(keep){const svs=Object.keys(S).filter(s=>IT.some(i=>i.survey===s&&okItem(i)&&cdim(i.concept)));
   $('gate').innerHTML=`<div class="gcard"><div class="e">1 · 자료</div><h2>자료 선택</h2><p>조사를 고르면 그 조사의 문항만 왼쪽 목록에 보입니다. 한 모형에는 같은 응답자에게 물은 문항만 들어갑니다. 지정문헌 다섯 편도 서로 다른 자료에서 사회자본을 다르게 정의했습니다.</p><div class="ggrid">`+
-  svs.map(s=>{const its=IT.filter(i=>i.survey===s&&okItem(i)&&!i.full),nf=IT.filter(i=>i.survey===s&&i.full).length;return `<div class="surv" data-s="${s}"><b>${S[s].name}</b><small>${S[s].unit} · ${S[s].best_wave||''}</small><small>신뢰 ${its.filter(i=>THEME(i.concept)==='TR').length} · 참여·연결망 ${its.filter(i=>THEME(i.concept)==='NW').length} · 제도 경험 ${its.filter(i=>THEME(i.concept)==='IN').length} · 지역 ${its.filter(i=>i.concept==='region').length} · 개인 특성 ${its.filter(i=>THEME(i.concept)==='DM').length}${nf?` · 조사표 전체 ${nf}문항 검색 가능`:''}</small><small>${S[s].why||''}</small></div>`}).join('')+`</div></div>`;
-  $('gate').onclick=e=>{const b=e.target.closest('.surv');if(!b)return;st.survey=b.dataset.s;st.nodes=[];st.edges=[];st.sel=null;cgate();};$('gate').style.display='flex';}
+  svs.map(s=>{const its=IT.filter(i=>i.survey===s&&okItem(i)&&!i.full),nf=IT.filter(i=>i.survey===s&&i.full).length;return `<div class="surv" data-s="${s}"><b>${S[s].name}</b><small>${S[s].unit} · ${S[s].best_wave||''}</small><small>신뢰 ${its.filter(i=>THEME(i.concept)==='TR').length} · 참여·연결망 ${its.filter(i=>THEME(i.concept)==='NW').length} · 제도 경험 ${its.filter(i=>THEME(i.concept)==='IN').length} · 지역 ${its.filter(i=>i.concept==='region').length} · 개인 특성 ${its.filter(i=>THEME(i.concept)==='DM').length}${nf?` · 조사표 전체 ${nf}문항 검색 가능`:''}</small><small>${S[s].why||''}</small></div>`}).join('')+`</div>${keep?'<div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="ghost" id="gkeep">지금 자료 그대로</button></div>':''}</div>`;
+  $('gate').onclick=e=>{if(e.target.closest('#gkeep')){$('gate').style.display='none';return;}const b=e.target.closest('.surv');if(!b)return;if(keep&&b.dataset.s===st.survey){$('gate').style.display='none';return;}st.survey=b.dataset.s;st.nodes=[];st.edges=[];st.sel=null;cgate();};$('gate').style.display='flex';}
 /* ── STEP 2 개념화 ── */
 function cgate(){const c=st.concept||{text:'',dim:'',level:''};
   $('gate').innerHTML=`<div class="gcard cg"><div class="e">2 · 개념화</div><h2>사회자본의 정의</h2><p>연구마다 사회자본의 정의가 다릅니다. 먼저 정의를 한 문장으로 적고, 다음 단계에서 그에 맞는 문항을 고릅니다. 앞이 개념화, 뒤가 조작화입니다. 둘이 어긋나면 검증에 표시됩니다.</p>
@@ -191,7 +192,7 @@ function cgate(){const c=st.concept||{text:'',dim:'',level:''};
   <div style="display:flex;gap:8px;justify-content:flex-end"><button class="ghost" id="cback">자료 다시 고르기</button><button class="share" id="cgo" style="height:36px">다음 · 문항 고르기</button></div></div>`;
   $('gate').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.parentElement.id==='cdim'||b.parentElement.id==='clevel'){[...b.parentElement.children].forEach(x=>x.classList.toggle('on',x===b));return;}
     if(b.id==='cback'){gate();return;}if(b.id==='cgo'){const dim=($('#cdim')||$('cdim')).querySelector('.on'),lv=$('clevel').querySelector('.on');if(!dim||!lv){toast('차원과 수준을 고르십시오.');return;}
-      st.concept={text:$('ctext').value.trim(),dim:dim.dataset.v,level:lv.dataset.v};$('gate').style.display='none';st.ptab='items';renderPanel();draw();toast(`${sname(st.survey)} 문항 ${IT.filter(i=>i.survey===st.survey&&okItem(i)).length}개 로드됨`);}};$('gate').style.display='flex';}
+      st.concept={text:$('ctext').value.trim(),dim:dim.dataset.v,level:lv.dataset.v};$('gate').style.display='none';st.ptab='items';renderPanel();touch();toast(`${sname(st.survey)} 문항 ${IT.filter(i=>i.survey===st.survey&&okItem(i)).length}개`);}};$('gate').style.display='flex';}
 $('t-concept').onclick=cgate;
 /* ── 왼쪽 패널 ── */
 function renderPanel(){document.querySelectorAll('.ptab').forEach(b=>b.classList.toggle('active',b.dataset.p===st.ptab));const el=$('pcontent');

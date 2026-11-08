@@ -73,6 +73,8 @@ with sync_playwright() as p:
     pg.click(".sbtn[data-d=studies]"); tiers = pg.locator("#tiers button").all_inner_texts(); tier_rows = pg.locator("#tierlist .item").count()
     pg.click("#tiers button[data-t=다름]"); tier_rows2 = pg.locator("#tierlist .item").count()
     pg.reload(); pg.wait_for_timeout(400); restored = pg.locator("#nodes .node").count()                                    # 새로고침 복원
+    pg.on("dialog", lambda dl: dl.accept()); pg.click("#chip"); chip_gate = pg.locator("#gate #gkeep").is_visible(); pg.click("#gkeep")   # 헤더 자료 칩 → 경고 → 그대로 두기
+    chip_kept = pg.locator("#gate").is_hidden() and pg.locator("#nodes .node").count() == restored
     closep(pg); pg.click("#pcontent .vcard:has-text('최종 학력') .addk"); pg.click("#pop button[data-r=CV]"); pg.wait_for_timeout(200); added = pg.locator("#nodes .node.CV").count()   # + 버튼
     pg.click("#vbtn"); pg.fill("#vbody textarea[data-h='0']", "H1. 공공서비스를 겪은 사람은 신뢰가 높을 것이다."); pg.press("#vbody textarea[data-h='0']", "Tab")
     pg.click("#submit"); pg.wait_for_timeout(200); sub = pg.locator("#submit").inner_text().strip()
@@ -86,7 +88,7 @@ with sync_playwright() as p:
     d.screenshot(path=os.path.join(SHOT, "v5_dash17.png"), full_page=True)
     pg.evaluate("loadPeers()"); pg.click(".sbtn[data-d=def]"); pg.click(".sbtn[data-d=studies]"); peers_n = pg.locator("#dbody:has-text('다른 학생')").count()
     print("제출:", sub, "· 대시보드 행:", rows, "· 첫 행:", first.replace("\t", " | ")[:110]); print("spotlight 노드:", spot_nodes, "개념화:", spot_c, "가설 수정 반영:", hyp_edit, "· 17명 후 행:", rows17)
-    print("되돌리기:", undo_ok, "· 등급:", tiers, "닮음", tier_rows, "다름", tier_rows2, "· 복원 노드:", restored, "· + 버튼 CV:", added); print("판정 수신:", verdict, "· 되감기:", rw, "· 옆 사람:", peers_n)
+    print("자료 칩:", chip_gate, chip_kept, "· 되돌리기:", undo_ok, "· 등급:", tiers, "닮음", tier_rows, "다름", tier_rows2, "· 복원 노드:", restored, "· + 버튼 CV:", added); print("판정 수신:", verdict, "· 되감기:", rw, "· 옆 사람:", peers_n)
     # 비동기 선행연구(studies.js)·같은 자료 빈자리·가중치 고지
     n_st = pg.evaluate("STUDIES.length"); pg.click("#sbtn"); pg.wait_for_timeout(200); sim_html = pg.locator("#sbody").inner_html()
     print("선행연구 적재:", n_st, "· 같은 자료 문구:", "결과로 본 선행연구" in sim_html, "· 가중치 고지:", "임의 가중치" in sim_html)
@@ -103,4 +105,4 @@ with sync_playwright() as p:
 print("page errors:", errors or "없음")
 assert n_st > 7000 and "결과로 본 선행연구" in sim_html and "임의 가중치" in sim_html and mob_nodes == 2 and mob_in and mob_badge
 assert not errors and gap1 == 1 and gap2 == 0 and n_items == 2 and zv_edge == 1 and "따라 다를" in vb and me == 1 and rev == 1 and locked and len(titles) >= 3 and w1 > w0 + 100 and rows == 1 and spot_nodes == 4 and spot_c == 1 and rows17 == 17
-assert undo_ok and restored == 3 and added == 1 and hyp_edit == 1 and "공백" in verdict and tier_rows > 0 and len(tiers) == 4 and "제출" in rw and peers_n == 1
+assert chip_gate and chip_kept and undo_ok and restored == 3 and added == 1 and hyp_edit == 1 and "공백" in verdict and tier_rows > 0 and len(tiers) == 4 and "제출" in rw and peers_n == 1

@@ -33,8 +33,11 @@ FULLC = {"TR": ("신뢰 (조사표)", "cognitive", ""), "NW": ("참여·관계 (
 CATX = json.loads(json.dumps(bi.CAT))
 for k, (lab, dim, src) in FULLC.items():
     CATX["concepts"].append({"id": "full_" + k, "label": lab, "role": "full", "lineage": "", "dim": dim, "src": src, "paper_measure": "조사표 전체 문항. 1부 다섯 편에는 없음"})
-fp = os.path.join(HERE, "full_items.json")
-FULL = json.load(open(fp, encoding="utf-8")) if os.path.exists(fp) else {}
+import glob
+FULL = {}
+for fp in sorted(glob.glob(os.path.join(HERE, "full_*.json"))):  # full_items.json(kipa·youth) + full_<조사>.json(parse_*_full.py)
+    for k, v in json.load(open(fp, encoding="utf-8")).items():
+        FULL.setdefault(k, []).extend(v)
 _norm = lambda q: re.sub(r"[^\w]|_", "", q or "")  # 유니코드 \w: 한글 유지
 _have = {(i["survey"], _norm(i["question"])) for i in CATX["items"]}  # 요약 문항의 (조사, 문장 전체)
 _dropped = 0
