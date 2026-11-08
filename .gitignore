@@ -19,3 +19,4 @@ corpus/candidates_oa.csv
 corpus/.submitted.jsonl
 corpus/.coded.json
 corpus/studies_haiku.csv
+corpus/refs_oa.jsonl
