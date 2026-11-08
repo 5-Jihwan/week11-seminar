@@ -6,12 +6,13 @@ import csv, json, os, re, sys, importlib.util
 sys.stdout.reconfigure(encoding="utf-8")
 HERE = os.path.dirname(os.path.abspath(__file__))
 # 선행연구(corpus/studies.csv, 규칙 코딩·미검수). 화면에 필요한 칸만 심는다. 수업판은 verified=TRUE만 남긴다(가드레일 2).
+DESIGN_KO = {"cross_section": "횡단면", "panel": "패널", "quasi_experiment": "준실험", "experiment": "실험", "other": "기타 설계"}
 def _au(a):  # "홍길동(대학); 김철수(대학)" 또는 "Smith, J.; Lee, K." → 첫 저자 성 + 외
     first = re.split(r"[;,]", a)[0].strip(); first = re.sub(r"\(.*?\)", "", first).strip()
     return (first.split(" ")[-1] if re.search(r"[A-Za-z]", first) else first) + (" 외" if re.search(r"[;,]", a) else "")
 STUDIES = [{"id": r["id"], "src": r.get("src", "openalex"), "au": _au(r["authors"]) if r["authors"] else "", "y": r["year"], "t": r["title"], "j": r["journal"],
             "link": r["link"], "comps": [c for c in r["dv_components"].split("|") if c], "unit": r["unit"], "data": r.get("data", ""), "kr": r.get("country", "") == "KR", "dv": r.get("sc_dv", "") == "Y",
-            "inst": r["iv_institution"] == "Y", "reg": r["iv_region"] == "Y", "net": r["iv_network"] == "Y", "med": r["mediator"] == "Y", "lin": r["lineage"], "line": r["measure_line"], "design": r["design"], "ok": r["verified"] == "TRUE"}
+            "inst": r["iv_institution"] == "Y", "reg": r["iv_region"] == "Y", "net": r["iv_network"] == "Y", "med": r["mediator"] == "Y", "lin": r["lineage"], "line": r["measure_line"], "design": DESIGN_KO.get(r["design"], r["design"]), "ok": r["verified"] == "TRUE"}
            for r in csv.DictReader(open(os.path.join(HERE, "..", "corpus", "studies.csv"), encoding="utf-8-sig"))]  # 346편 전부. 구성 요소가 비면 그물망 바깥 껍질에만 뜬다
 _seen = set()  # 같은 논문이 두 출처(출판본·워킹페이퍼)로 들어온 것은 제목으로 한 번만
 STUDIES = [s for s in STUDIES if not (s["t"].lower().strip().rstrip(".") in _seen or _seen.add(s["t"].lower().strip().rstrip(".")))]

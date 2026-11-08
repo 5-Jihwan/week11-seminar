@@ -79,12 +79,12 @@ with sync_playwright() as p:
     d = ctx.new_page(); d.on("pageerror", lambda e: errors.append("dash:" + str(e))); d.goto(DASH)
     rows = d.locator(".tbl tr[data-i]").count(); first = d.locator(".tbl tr[data-i]").first.inner_text()
     d.click(".tbl tr[data-i]"); spot_nodes = d.locator("#diag .nd").count(); spot_c = d.locator("#mbox:has-text('개념화')").count(); hyp_edit = d.locator("#mbox:has-text('겪은 사람은')").count()
-    d.click("#mbox [data-v='좋은 빈자리다']"); d.wait_for_timeout(200); d.screenshot(path=os.path.join(SHOT, "v5_dash_spot.png")); d.click("#mx")
+    d.click("#mbox [data-v='선행연구 공백']"); d.wait_for_timeout(200); d.screenshot(path=os.path.join(SHOT, "v5_dash_spot.png")); d.click("#mx")
     pg.bring_to_front(); pg.evaluate("pollVerdict()"); pg.wait_for_timeout(200); verdict = pg.locator("#verdict").inner_text()
     d.bring_to_front(); d.on("dialog", lambda dl: dl.accept()); d.click("#demo"); rows17 = d.locator(".tbl tr[data-i]").count()
     d.evaluate("() => {const s=document.getElementById('rw'); s.value=+s.min+60000; s.dataset.touched=1; rewind(+s.value);}"); rw = d.locator("#rwlab").inner_text()
     d.screenshot(path=os.path.join(SHOT, "v5_dash17.png"), full_page=True)
-    pg.evaluate("loadPeers()"); pg.click(".sbtn[data-d=def]"); pg.click(".sbtn[data-d=studies]"); peers_n = pg.locator("#dbody:has-text('옆 사람')").count()
+    pg.evaluate("loadPeers()"); pg.click(".sbtn[data-d=def]"); pg.click(".sbtn[data-d=studies]"); peers_n = pg.locator("#dbody:has-text('다른 학생')").count()
     print("제출:", sub, "· 대시보드 행:", rows, "· 첫 행:", first.replace("\t", " | ")[:110]); print("spotlight 노드:", spot_nodes, "개념화:", spot_c, "가설 수정 반영:", hyp_edit, "· 17명 후 행:", rows17)
     print("되돌리기:", undo_ok, "· 등급:", tiers, "닮음", tier_rows, "다름", tier_rows2, "· 복원 노드:", restored, "· + 버튼 CV:", added); print("판정 수신:", verdict, "· 되감기:", rw, "· 옆 사람:", peers_n)
     # 비동기 선행연구(studies.js)·같은 자료 빈자리·가중치 고지
@@ -103,4 +103,4 @@ with sync_playwright() as p:
 print("page errors:", errors or "없음")
 assert n_st > 7000 and "결과로 본 선행연구" in sim_html and "임의 가중치" in sim_html and mob_nodes == 2 and mob_in and mob_badge
 assert not errors and gap1 == 1 and gap2 == 0 and n_items == 2 and zv_edge == 1 and "따라 다를" in vb and me == 1 and rev == 1 and locked and len(titles) >= 3 and w1 > w0 + 100 and rows == 1 and spot_nodes == 4 and spot_c == 1 and rows17 == 17
-assert undo_ok and restored == 3 and added == 1 and hyp_edit == 1 and "빈자리" in verdict and tier_rows > 0 and len(tiers) == 4 and "제출" in rw and peers_n == 1
+assert undo_ok and restored == 3 and added == 1 and hyp_edit == 1 and "공백" in verdict and tier_rows > 0 and len(tiers) == 4 and "제출" in rw and peers_n == 1
