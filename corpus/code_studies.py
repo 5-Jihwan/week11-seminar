@@ -91,6 +91,14 @@ def submit(n=None, only=None):
         f.write("\n".join(ids) + "\n")
 
 
+def country_of(r, c):  # Haiku의 country는 KR·multi를 과다 부여(해외 5,293편 중 KR 2,230) → 쓰지 않는다. 국내 색인이거나 제목·초록·자료명에 Korea/한국이 있으면 KR, 아니면 Haiku 값 중 KR·multi 아닌 것만
+    import re
+    if r["_src"] == "kci": return "KR"
+    txt = " ".join([r.get("title", ""), r.get("title_en", ""), r.get("abstract", "")[:3000], r.get("abstract_en", "")[:3000], str(c.get("data", ""))])
+    if re.search(r"Korea|한국|Korean", txt): return "KR"
+    v = str(c.get("country", "")).strip()
+    return "" if v in ("KR", "multi") else v
+
 def collect():
     import anthropic
     client = anthropic.Anthropic()
@@ -122,7 +130,7 @@ def collect():
         cs = c.get("dv_components") or []
         link = ("https://doi.org/" + r["doi"]) if r.get("doi") else (r.get("url") or (f"https://www.kci.go.kr/kciportal/ci/sereArticleSearch/ciSereArtiView.kci?sereArticleSearchBean.artiId={r['id']}" if r["_src"] == "kci" else ""))
         out[r["id"]] = {"id": r["id"], "src": r["_src"], "authors": r.get("authors", ""), "year": r.get("year", ""), "title": r.get("title", ""), "journal": r.get("venue") or r.get("journal", ""), "link": link,
-                        "country": c.get("country", ""), "data": c.get("data", ""), "unit": c.get("unit", ""), "dv_type": comp_type(cs), "dv_measure": c.get("dv_measure", ""), "dv_components": "|".join(cs), "measure_line": c.get("measure_line", ""),
+                        "country": country_of(r, c), "data": c.get("data", ""), "unit": c.get("unit", ""), "dv_type": comp_type(cs), "dv_measure": c.get("dv_measure", ""), "dv_components": "|".join(cs), "measure_line": c.get("measure_line", ""),
                         "sc_dv": Y(c.get("sc_dv")), "iv_institution": Y(c.get("iv_institution")), "iv_individual": Y(c.get("iv_individual")), "iv_region": Y(c.get("iv_region")), "iv_network": Y(c.get("iv_network")),
                         "mediator": Y(c.get("mediator")), "moderator": Y(c.get("moderator")), "design": c.get("design", ""), "result_direction": c.get("result_direction", ""), "lineage": "", "verified": "FALSE", "coder": "haiku-5.5",
                         "notes": c.get("notes", ""), "seeds": r.get("seeds", ""), "cited_by": r.get("cited_by") or r.get("cited", "")}; n += 1
