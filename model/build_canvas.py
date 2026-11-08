@@ -23,7 +23,8 @@ CLASS = "--class" in sys.argv  # 수업판: DEMO=false(시연 버튼 없음). ve
 if CLASS and any(s["ok"] for s in STUDIES):
     STUDIES = [s for s in STUDIES if s["ok"]]
 elif CLASS:
-    print("경고: verified=TRUE가 0편이라 수업판에도 전부 심고 「검수 전」으로 표시합니다")
+    assert "--unverified-ok" in sys.argv, "수업판인데 verified=TRUE가 0편. 검수 전 목록을 그대로 쓰려면 --unverified-ok를 붙이십시오(가드레일 2 예외를 명시)"
+    print("경고: verified=TRUE가 0편. --unverified-ok로 전부 심고 「검수 전」으로 표시합니다")
 DEMO = "false" if CLASS else "true"; UNV = "false" if all(s["ok"] for s in STUDIES) else "true"
 # 조사표 전체 문항(model/full_items.json, parse_*_full.py가 만든다): 기본 화면엔 안 보이고 「전체 문항」·검색에서만. 주제별 의사 개념 full_XX에 차원·원인 축을 붙인다
 FULLC = {"TR": ("신뢰 (조사표)", "cognitive", ""), "NW": ("참여·관계 (조사표)", "structural", ""), "FA": ("공정성 (조사표)", "", "institution"), "IN": ("제도·서비스 경험 (조사표)", "", "institution"),

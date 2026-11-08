@@ -60,7 +60,8 @@ export default {
     if (req.method === "POST" && path === "/ai") {
       if (!env.ANTHROPIC_API_KEY) return json({ ok: false, error: "no key" }, 503);
       const b = await req.json().catch(() => null); if (!b || !b.q) return json({ ok: false }, 400);
-      const studies = (b.matches || []).slice(0, 5).map(m => `- ${m.au} (${m.y}) ${m.t}`).join("\n") || "- (없음)";
+      const dev = clean(b.dev, 24), tok = clean(b.tok, 64), had = dev && await env.W11.get("tok:" + dev); if (!had || had !== tok) return json({ ok: false, error: "dev/tok" }, 403);  // 등록된 기기만. 키 지출을 남이 못 쓰게
+      const studies = (Array.isArray(b.matches) ? b.matches : []).slice(0, 5).map(m => `- ${clean(m?.au, 60)} (${clean(m?.y, 8)}) ${clean(m?.t, 200)}`).join("\n") || "- (없음)";
       const system = "당신은 행정학 수업의 조교다. 학생의 연구질문 한 줄에 대해 두 문장으로만 답한다: (1) 이 질문이 상관인지 인과인지, (2) 아래 목록의 선행연구 중 무엇과 가장 닮았는지. 목록에 없는 논문·저자·수치는 절대 언급하지 않는다. 한국어, 합쇼체.";
       const user = `연구질문: ${clean(b.q, 300)}\n정의: ${clean(b.definition, 300)}\n선행연구 목록:\n${studies}`;
       const r = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "Content-Type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" },
