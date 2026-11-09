@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2부 파이프라인</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root{--navy:#022448;--navy7:#1e3a5f;--navy2:#d5e3ff;--navy1:#e8edf7;--ink:#1a1f2b;--ink5:#5b6372;--ink3:#9aa2ae;--line:#e4e7ec;--paper:#fafaf7}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Pretendard,-apple-system,"Apple SD Gothic Neo",sans-serif;font-size:14.5px;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1040px;margin:0 auto;padding:48px 24px 80px}
+h1{font-size:26px;letter-spacing:-.02em;margin:0 0 6px;color:var(--navy)}.sub{color:var(--ink5);margin:0 0 36px}
+h2{font-size:17px;margin:44px 0 12px;color:var(--navy);padding-bottom:6px;border-bottom:1px solid var(--line)}
+h3{font-size:14.5px;margin:18px 0 6px;color:var(--navy7)}
+p{margin:0 0 10px}.note{color:var(--ink5);font-size:13px}
+.layers{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0 6px}
+.layer{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px 14px}.layer b{display:block;color:var(--navy);font-size:13px;margin-bottom:4px}.layer span{font-size:12.5px;color:var(--ink5)}
+svg{width:100%;height:auto;display:block;margin:10px 0 4px}
+.box{fill:#fff;stroke:var(--navy7);stroke-width:1.2}.box.dark{fill:var(--navy);stroke:var(--navy)}.box.soft{fill:var(--navy1);stroke:var(--navy2)}.box.gray{fill:#f4f5f7;stroke:#d7dbe2}
+.t{font-size:12.5px;fill:var(--ink)}.t.w{fill:#fff}.t.s{font-size:11px;fill:var(--ink5)}.t.b{font-weight:600}
+.ar{stroke:var(--navy7);stroke-width:1.3;fill:none;marker-end:url(#a)}.ar.dash{stroke-dasharray:4 3;stroke:var(--ink3);marker-end:url(#ag)}
+.lbl{font-size:10.5px;fill:var(--ink5)}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0 4px}th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--ink5);font-weight:600;font-size:12px}
+code{font-family:"JetBrains Mono",Menlo,monospace;font-size:12px;background:var(--navy1);padding:1px 5px;border-radius:4px;color:var(--navy)}
+.steps{counter-reset:s;margin:6px 0 0;padding:0;list-style:none}.steps li{position:relative;padding:4px 0 4px 30px;counter-increment:s}.steps li::before{content:counter(s);position:absolute;left:0;top:7px;width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;display:grid;place-items:center}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:760px){.layers,.two{grid-template-columns:1fr}.wrap{padding:28px 16px 60px}}
+</style></head><body><div class="wrap">
+<h1>2부 연구모형 캔버스 · 파이프라인</h1>
+<p class="sub">자료가 어디서 와서 어떻게 학생 폰과 프로젝터까지 가는지. 2026-11-09 배포 상태 기준.</p>
+
+<div class="layers">
+<div class="layer"><b>1 자료 준비</b><span>조사표 코드집 8종 → 문항 5,636 · 선행연구 수집·코딩 7,690편</span></div>
+<div class="layer"><b>2 빌드·배포</b><span>build_canvas.py 한 번 → 파일 3개 → GitHub Pages</span></div>
+<div class="layer"><b>3 수업 중</b><span>폰에서 모형 → 규칙 함수 → 제출 → 워커 KV → 대시보드 → 판정이 폰으로</span></div>
+<div class="layer"><b>4 운영</b><span>35분 진행표 · 손들기 모드 · 수업 뒤 KV 삭제</span></div>
+</div>
+
+<h2>1 자료 준비 — 두 갈래가 한 빌드로 모인다</h2>
+<svg viewBox="0 0 1000 300" role="img" aria-label="자료 준비 흐름">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#1e3a5f"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#9aa2ae"/></marker></defs>
+<text x="0" y="16" class="t b">문항 갈래</text>
+<rect x="0" y="28" width="200" height="74" rx="6" class="box gray"/><text x="12" y="48" class="t b">조사표·코드집 8종</text><text x="12" y="66" class="t s">복지패널 20차 설계서 xlsx · KGSS 누적 코드북</text><text x="12" y="82" class="t s">사회조사·가계금융 PDF · 노인·청년·건강조사·사회통합</text><text x="12" y="96" class="t s">data/codebooks/ (git 제외)</text>
+<path d="M200 65 H250" class="ar"/>
+<rect x="250" y="28" width="190" height="74" rx="6" class="box"/><text x="262" y="48" class="t b">parse_*_full.py × 7</text><text x="262" y="66" class="t s">문항·척도·단위·주제 키워드</text><text x="262" y="82" class="t s">KGSS는 kiwipiepy로 띄어쓰기 복원</text><text x="262" y="96" class="t s">하위 항목 = "줄기 — 항목"</text>
+<path d="M440 65 H490" class="ar"/>
+<rect x="490" y="28" width="170" height="74" rx="6" class="box soft"/><text x="502" y="48" class="t b">full_*.json</text><text x="502" y="66" class="t s">전체 문항 5,636</text><text x="502" y="82" class="t s">+ catalog.json 요약 108</text><text x="502" y="96" class="t s">(1부 다섯 편 대응 문항)</text>
+
+<text x="0" y="146" class="t b">선행연구 갈래</text>
+<rect x="0" y="158" width="200" height="74" rx="6" class="box gray"/><text x="12" y="178" class="t b">KCI OAI · OpenAlex</text><text x="12" y="196" class="t s">국내 30년 · 해외 50년, 사회자본 검색어</text><text x="12" y="212" class="t s">harvest_kci.py · harvest_openalex.py</text><text x="12" y="226" class="t s">초록은 git 제외</text>
+<path d="M200 195 H250" class="ar"/>
+<rect x="250" y="158" width="190" height="74" rx="6" class="box"/><text x="262" y="178" class="t b">screen_quant → code_rules</text><text x="262" y="196" class="t s">양적 연구만 거름</text><text x="262" y="212" class="t s">→ Haiku 5.5 배치 코딩 7,569편</text><text x="262" y="226" class="t s">구성 요소·단위·설계·원인 축·종속 여부</text>
+<path d="M440 195 H490" class="ar"/>
+<rect x="490" y="158" width="170" height="74" rx="6" class="box soft"/><text x="502" y="178" class="t b">corpus/studies.csv</text><text x="502" y="196" class="t s">7,690편(제목 중복 제거)</text><text x="502" y="212" class="t s">verified 0 → 「검수 전」 표시</text><text x="502" y="226" class="t s">refs_oa.jsonl = SLNA용 인용 층</text>
+
+<path d="M660 65 C700 65 700 130 740 130" class="ar"/><path d="M660 195 C700 195 700 130 740 130" class="ar"/>
+<rect x="740" y="96" width="260" height="68" rx="6" class="box dark"/><text x="754" y="120" class="t w b">build_canvas.py</text><text x="754" y="138" class="t w">문항 묶음 키·지문(items_sig) 계산</text><text x="754" y="154" class="t w">설계 코드 한국어화 · 템플릿 치환</text>
+<text x="0" y="282" class="lbl">둘 다 사람 검수 전. 주제 분류는 검색용 키워드이고, 선행연구 코딩은 AI. 화면에 그렇게 표시된다.</text>
+</svg>
+
+<h2>2 빌드·배포 — 파일 셋, 명령 하나</h2>
+<svg viewBox="0 0 1000 200" role="img" aria-label="빌드 배포 흐름">
+<rect x="0" y="20" width="230" height="110" rx="6" class="box dark"/><text x="14" y="44" class="t w b">python model/build_canvas.py</text><text x="14" y="64" class="t w">--class --unverified-ok</text><text x="14" y="84" class="t w" style="font-size:11.5px">수업판: 워커 주소 주입 · 시연 버튼 숨김</text><text x="14" y="102" class="t w" style="font-size:11.5px">인자 없음 = 데모(localStorage) · 테스트용</text><text x="14" y="120" class="t w" style="font-size:11.5px">test_canvas.py(Playwright)가 데모 빌드를 검사</text>
+<path d="M230 50 H290" class="ar"/><path d="M230 75 H290" class="ar"/><path d="M230 100 H290" class="ar"/>
+<rect x="290" y="30" width="200" height="34" rx="5" class="box"/><text x="302" y="52" class="t"><tspan class="b">canvas.html</tspan> 1.9MB · 학생</text>
+<rect x="290" y="70" width="200" height="34" rx="5" class="box"/><text x="302" y="92" class="t"><tspan class="b">dashboard.html</tspan> 0.4MB · 관리자</text>
+<rect x="290" y="110" width="200" height="34" rx="5" class="box"/><text x="302" y="132" class="t"><tspan class="b">studies.js</tspan> 4.6MB · 비동기</text>
+<path d="M490 87 H560" class="ar"/>
+<rect x="560" y="40" width="200" height="94" rx="6" class="box soft"/><text x="572" y="62" class="t b">git push → GitHub Pages</text><text x="572" y="82" class="t s">브랜치 worktree-sim-proto 루트</text><text x="572" y="98" class="t s">5-jihwan.github.io/week11-seminar/model/</text><text x="572" y="116" class="t s">gzip 전송: 캔버스 0.5MB · 목록 1MB</text>
+<path d="M760 87 H830" class="ar dash"/>
+<rect x="830" y="40" width="170" height="94" rx="6" class="box"/><text x="842" y="62" class="t b">Cloudflare Worker</text><text x="842" y="82" class="t s">w11-seminar · KV W11</text><text x="842" y="98" class="t s">wrangler deploy는 따로 한 번</text><text x="842" y="116" class="t s">시크릿 ADMIN_PIN(저장소 밖)</text>
+<text x="0" y="178" class="lbl">선행연구 목록을 따로 떼어 화면이 먼저 뜬다. 목록이 도착하면 onStudies()가 유사도·연결망을 다시 센다. file://로 열어도 옆 파일이라 읽힌다(오프라인 대비).</text>
+</svg>
+
+<h2>3 수업 중 — 폰에서 프로젝터까지, 그리고 돌아오는 길</h2>
+<svg viewBox="0 0 1000 420" role="img" aria-label="실시간 흐름">
+<rect x="0" y="10" width="300" height="400" rx="8" class="box gray"/><text x="14" y="34" class="t b">학생 폰 · canvas.html</text>
+<rect x="14" y="48" width="272" height="40" rx="5" class="box"/><text x="24" y="66" class="t b">1 자료 → 2 개념화</text><text x="24" y="81" class="t s">조사 하나 · 정의 한 줄 · 차원 · 수준</text>
+<path d="M150 88 V104" class="ar"/>
+<rect x="14" y="104" width="272" height="54" rx="5" class="box"/><text x="24" y="122" class="t b">3 조작화</text><text x="24" y="137" class="t s">문항 끌기/＋ → 변수, 역할 5종은 그때 고름</text><text x="24" y="151" class="t s">묶으면 정의 문장 · 잇기 · 조절은 경로 위</text>
+<path d="M150 158 V174" class="ar"/>
+<rect x="14" y="174" width="272" height="86" rx="5" class="box soft"/><text x="24" y="192" class="t b">순수 함수 st → 결과 (편집마다)</text><text x="24" y="208" class="t s">validate 오류·경고 · gap 개념–측정 간격</text><text x="24" y="223" class="t s">cell 분류 틀 칸 · screen 7,690편 점수(캐시)</text><text x="24" y="238" class="t s">hyps 가설 초안 · review 자료의 한계</text><text x="24" y="253" class="t s">3초 멈춤 → 유사도 패널 · 배지는 실시간</text>
+<path d="M150 260 V276" class="ar"/>
+<rect x="14" y="276" width="272" height="40" rx="5" class="box"/><text x="24" y="294" class="t b">persist · sendDraft · 제출</text><text x="24" y="309" class="t s">localStorage 복원 · 초안 3초마다 · modelValue()</text>
+<rect x="14" y="340" width="272" height="56" rx="5" class="box dark"/><text x="24" y="360" class="t w b">판정 띠</text><text x="24" y="376" class="t w" style="font-size:11.5px">8초마다 /control?dev&amp;tok → 내 판정만</text><text x="24" y="390" class="t w" style="font-size:11.5px">/peers → 같은 자료 다른 학생 정의</text>
+
+<path d="M300 296 H370" class="ar"/><text x="306" y="290" class="lbl">POST /submit · /draft</text>
+<rect x="370" y="150" width="230" height="200" rx="8" class="box"/><text x="384" y="174" class="t b">Worker + KV</text>
+<text x="384" y="196" class="t s">/submit  dev+tok 첫 토큰만 유효(도용 방지)</text><text x="384" y="214" class="t s">        기기별 최신 1건 · 별명 중복은 ②</text>
+<text x="384" y="238" class="t s">/rows    X-Admin-Pin 필수 → 전체</text><text x="384" y="256" class="t s">/control 관리자 판정 저장(7일)</text><text x="384" y="274" class="t s">/peers   별명·정의·칸만, 기기 ID 안 줌</text><text x="384" y="292" class="t s">/ai      등록 기기만 · 지금은 미사용</text>
+<text x="384" y="322" class="t s">CORS * · 저장만 함 · 화면 규칙은 전부 브라우저</text><text x="384" y="340" class="t s">수업 뒤 네임스페이스 삭제</text>
+<path d="M370 370 C340 370 330 370 300 370" class="ar"/><text x="306" y="364" class="lbl">GET /control</text>
+
+<path d="M600 230 H670" class="ar"/><text x="606" y="224" class="lbl">10초 폴링 · PIN</text>
+<rect x="670" y="10" width="330" height="400" rx="8" class="box gray"/><text x="684" y="34" class="t b">프로젝터 · dashboard.html (관리자)</text>
+<rect x="684" y="48" width="302" height="48" rx="5" class="box"/><text x="694" y="66" class="t b">집계</text><text x="694" y="82" class="t s">제출·작업 중 · 자료 · 구성 요소 · 분류 틀 칸 · 개념화</text>
+<rect x="684" y="104" width="302" height="48" rx="5" class="box"/><text x="694" y="122" class="t b">격자 · 독립변수 묶음</text><text x="694" y="138" class="t s">종속 구성 × 독립 묶음, 빈 칸 = 선행연구 공백</text>
+<rect x="684" y="160" width="302" height="64" rx="5" class="box"/><text x="694" y="178" class="t b">유사도 연결망(3D) · 되감기</text><text x="694" y="194" class="t s">선행연구 1,200편 kNN 힘 배치 · 금색 = 제출 모형</text><text x="694" y="210" class="t s">슬라이더로 t 시점의 제출·초안 분포</text>
+<rect x="684" y="232" width="302" height="64" rx="5" class="box soft"/><text x="694" y="250" class="t b">spotlight</text><text x="694" y="266" class="t s">모형 그림 · 개념화 vs 조작화 · 가설 · 유사 연구 · 문항</text><text x="694" y="282" class="t s">판정 4버튼 → POST /control</text>
+<path d="M835 296 V330" class="ar"/>
+<rect x="684" y="330" width="302" height="40" rx="5" class="box dark"/><text x="694" y="348" class="t w b">판정 저장 → 8초 안에 학생 폰 띠로</text><text x="694" y="363" class="t w" style="font-size:11.5px">개념·측정 일치 / 불일치 / 인과 방향 재검토 / 선행연구 공백</text>
+<path d="M684 350 C640 350 640 370 600 370 L600 370" class="ar dash"/><text x="606" y="396" class="lbl">(워커를 거쳐 폰으로)</text>
+</svg>
+<p class="note">와이파이가 끊기면 왼쪽 상자(폰)는 전부 그대로 돈다. 끊기는 것은 가운데(제출·판정·다른 학생)뿐이다. 워커가 아예 죽으면 Ji 노트북 한 대에서 캔버스와 대시보드를 같은 브라우저로 열어 localStorage로 같은 화면을 만든다(손들기 모드).</p>
+
+<h2>4 운영 — 35분</h2>
+<div class="two">
+<div>
+<h3>진행</h3>
+<ol class="steps">
+<li>2:15 QR. 자료 하나 고르게 한다. 「작업 중」이 17로 가는지.</li>
+<li>2:18 자료 막대. 쏠리면 한 명에게 이유.</li>
+<li>2:22 10분 작업. 5분에 "종속 하나, 원인 하나만 이어도 제출됩니다". 8분에 "오른쪽 정의 탭".</li>
+<li>2:32 격자의 빈 칸 하나. 2:35 분류 틀에서 제도 중심 밖으로 간 학생 한 명.</li>
+<li>2:38 spotlight 3명. 같은 자료 다른 정의 둘 · 어긋남 한 명 · 조절·매개 한 명. 유사 연구 1위 읽고 판정 버튼.</li>
+<li>2:47 연결망, 되감기로 10분 전과 지금.</li>
+<li>2:50 한 장으로 마무리. 남으면 "영향" 카드.</li>
+</ol>
+</div>
+<div>
+<h3>잘못될 때</h3>
+<table>
+<tr><th>상황</th><th>대응</th></tr>
+<tr><td>대시보드 연결 실패</td><td>새로고침 후 PIN. 안 되면 손들기 모드</td></tr>
+<tr><td>폰이 캔버스를 못 연다</td><td>화면은 먼저 뜨고 목록은 뒤에 온다. 몇 초 기다림, 그래도 안 되면 옆 학생과 한 폰</td></tr>
+<tr><td>끌기가 안 된다</td><td>문항 카드의 ＋ 버튼</td></tr>
+<tr><td>제출 5명 미만(2:32)</td><td>격자 설명을 2:36으로, "종속 하나만 묶어 내십시오"</td></tr>
+<tr><td>교수님 판정 사양</td><td>Ji가 누르고 "제가 대신 눌렀습니다"</td></tr>
+</table>
+<h3>수업 전·후</h3>
+<p class="note">전: 폰으로 제출 1건 → 대시보드 확인 → 비우기. QR 2개 인쇄. 두 문장 고지(별명·삭제, AI 코딩·검수 전).<br>후: 연결망·제출 표 PNG 저장, <code>npx wrangler kv namespace delete</code>로 KV 삭제.</p>
+</div>
+</div>
+
+<h2>파일 지도</h2>
+<table>
+<tr><th>층</th><th>파일</th><th>역할</th></tr>
+<tr><td>자료</td><td><code>model/parse_*_full.py</code> → <code>model/full_*.json</code></td><td>조사별 전체 문항. 원본 xlsx·PDF·md는 data/codebooks (git 제외)</td></tr>
+<tr><td>자료</td><td><code>corpus/harvest_*.py · screen_quant.py · code_rules.py · code_studies.py</code> → <code>corpus/studies.csv</code></td><td>선행연구 수집·거름·규칙 코딩·Haiku 코딩. fetch_refs.py는 SLNA 인용 층</td></tr>
+<tr><td>빌드</td><td><code>model/build_canvas.py</code></td><td>템플릿 두 개 + 자료 → canvas.html · dashboard.html · studies.js</td></tr>
+<tr><td>화면</td><td><code>model/canvas_v5.html.tpl · dashboard.html.tpl</code></td><td>학생·관리자 화면. 규칙 함수(validate·gap·cell·screen·hyps·review)는 캔버스 안</td></tr>
+<tr><td>서버</td><td><code>backend/worker/src/index.js · wrangler.toml</code></td><td>저장·조회·판정. 키·PIN은 시크릿</td></tr>
+<tr><td>검사</td><td><code>model/test_canvas.py</code></td><td>Playwright 걸음: 데스크톱 전 과정 + 폰 390px + 대시보드 spotlight·되감기</td></tr>
+<tr><td>운영</td><td><code>docs/PART2_RUN.md</code></td><td>진행표·판정 기준·잘못될 때·수업 뒤</td></tr>
+</table>
+</div></body></html>
