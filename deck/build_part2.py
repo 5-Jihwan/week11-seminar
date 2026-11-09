@@ -55,7 +55,7 @@ table{border-collapse:collapse;width:100%;font-size:17px}th,td{text-align:left;p
 <section class="slide">
  <div class="hd"><h2>지정문헌 다섯 편의 사회자본 측정</h2><p class="s">같은 개념, 자료마다 다른 조작적 정의</p></div>
  <div class="bd"><div class="in">
- <table><tr><th>논문</th><th>자료</th><th>사회자본의 측정</th><th>모형에서의 자리</th></tr>
+ <table><tr><th>논문</th><th>자료</th><th>사회자본의 측정</th><th>모형에서의 역할</th></tr>
  <tr><td>Krishna (2007)</td><td>인도 라자스탄 61개 마을, 7년 패널</td><td>집합행동 성향 6문항 지수 0–100</td><td>종속</td></tr>
  <tr><td>Freitag (2006)</td><td>스위스 24개 칸톤</td><td>결사체 참여 4문항 주성분, 칸톤 평균</td><td>종속</td></tr>
  <tr><td>Lowndes &amp; Wilson (2001)</td><td>없음(이론)</td><td>Putnam의 혼합 정의, 측정 없음</td><td>이론 틀</td></tr>
@@ -65,6 +65,23 @@ table{border-collapse:collapse;width:100%;font-size:17px}th,td{text-align:left;p
  </div></div>
  <div class="cap">원문 대조 docs/PAPERS.md. 1부 투표 분포는 당일 1부 결과 화면으로 대체.</div>
  <aside class="notes">셋째 열만 보십시오. 지수, 주성분, 가입 수, 단일 문항. 전부 사회자본이라고 불렀습니다. 넷째 열은 전부 종속입니다. 오늘 여러분도 종속변수부터 정합니다.</aside>
+</section>
+
+<section class="slide">
+ <div class="hd"><h2>2부 진행 순서</h2><p class="s">35분. 프로젝터는 이 덱과 대시보드를 오간다</p></div>
+ <div class="bd"><div class="in">
+ <table style="font-size:16px"><tr><th style="width:70px">시각</th><th style="width:48px" class="r">분</th><th style="width:300px">할 일</th><th>프로젝터</th></tr>
+ <tr><td class="num">2:15</td><td class="r num">3</td><td>접속, 별명, 자료 하나 고르기</td><td>이 덱 4~5장. 대시보드 「작업 중」 수가 17로</td></tr>
+ <tr><td class="num">2:18</td><td class="r num">4</td><td>사회자본 정의 한 문장 적기</td><td>대시보드 자료 막대. 쏠리면 한 명에게 이유</td></tr>
+ <tr><td class="num">2:22</td><td class="r num">10</td><td>문항으로 모형 만들기, 제출</td><td>대시보드 종속변수 구성 요소 막대(실시간)</td></tr>
+ <tr><td class="num">2:32</td><td class="r num">3</td><td>빈 칸 하나 보기</td><td>종속 구성 × 독립 묶음 격자</td></tr>
+ <tr><td class="num">2:35</td><td class="r num">3</td><td>다섯 편의 자리와 오늘의 자리</td><td>이 덱 분류 틀 장, 대시보드 분류 틀 막대</td></tr>
+ <tr><td class="num">2:38</td><td class="r num">9</td><td>세 사람의 모형, 교수님 판정</td><td>spotlight 3명(각 3분)</td></tr>
+ <tr><td class="num">2:47</td><td class="r num">4</td><td>선행연구 위에서 오늘 모형의 위치</td><td>연결망, 되감기</td></tr>
+ <tr><td class="num">2:50</td><td class="r num">3</td><td>마무리, 교수님께</td><td>이 덱 마지막 장</td></tr></table>
+ </div></div>
+ <div class="cap">학생은 노트북으로 canvas.html, Ji는 둘째 화면에 관리자 대시보드. 세부는 docs/PART2_RUN.md.</div>
+ <aside class="notes">순서는 이렇습니다. 처음 7분은 자료와 정의, 10분은 각자 모형, 그 다음은 다 같이 화면을 보며 세 분 모형을 짚고, 교수님 판정을 받습니다. 2시 50분에 마칩니다.</aside>
 </section>
 
 <section class="slide">
