@@ -5,7 +5,7 @@ compatibility_date = "2026-10-01"
 # KV: `wrangler kv namespace create W11` 로 만든 id를 넣는다. 수업 뒤 `wrangler kv namespace delete --namespace-id=...` 로 전부 삭제.
 [[kv_namespaces]]
 binding = "W11"
-id = "REPLACE_WITH_KV_ID"
+id = "bc023d9485b0436fbc166a897b29326a"
 
 # 시크릿(저장소에 넣지 않음):
 #   wrangler secret put ADMIN_PIN          관리자 네 자리
