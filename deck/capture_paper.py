@@ -21,13 +21,15 @@ docs = {}
 for it in json.load(open(SPEC, encoding="utf-8")):
     k = it["pdf"]; docs.setdefault(k, pymupdf.open(os.path.join(SRC, PDF[k]))); d = docs[k]
     pg = d[it["page"] - 1]; rects = []
-    for q in it["find"]:
+    for q in it.get("find", []):
         rs = pg.search_for(q)
         if not rs: print(f"  [{it['id']}] 못 찾음: {q!r} (쪽 {it['page']})")
         rects += rs
     if it.get("to"):  # 끝 문자열까지: find 첫 상자 위에서 to 상자 아래까지
         rs = pg.search_for(it["to"]); rects += rs
     pr = pg.rect
+    if it.get("region"):  # 쪽의 비율 구역 [x0,y0,x1,y1]
+        f = it["region"]; rects = [pymupdf.Rect(pr.x0 + pr.width * f[0], pr.y0 + pr.height * f[1], pr.x0 + pr.width * f[2], pr.y0 + pr.height * f[3])]; it["pad"] = [0, 0, 0, 0]
     if rects:
         x0 = min(r.x0 for r in rects); y0 = min(r.y0 for r in rects); x1 = max(r.x1 for r in rects); y1 = max(r.y1 for r in rects)
         pl, pt, prr, pb = it.get("pad", [16, 12, 16, 12])
@@ -37,4 +39,7 @@ for it in json.load(open(SPEC, encoding="utf-8")):
     else:
         clip = pr; print(f"  [{it['id']}] 쪽 전체 저장")
     pix = pg.get_pixmap(matrix=pymupdf.Matrix(2.5, 2.5), clip=clip, alpha=False)
-    p = os.path.join(OUT, it["id"] + ".png"); pix.save(p); print(it["id"], f"{pix.width}x{pix.height}", os.path.getsize(p) // 1024, "KB")
+    p = os.path.join(OUT, it["id"] + ".png"); pix.save(p)
+    if it.get("rotate"):  # 가로로 인쇄된 표
+        from PIL import Image; im = Image.open(p).rotate(it["rotate"], expand=True); im.save(p)
+    print(it["id"], f"{pix.width}x{pix.height}", os.path.getsize(p) // 1024, "KB")

@@ -23,3 +23,6 @@ corpus/refs_oa.jsonl
 backend/worker/.wrangler/
 backend/worker/node_modules/
 deck/art/*.jpg
+deck/memes/
+deck/week11_part1_local.html
+deck/play/

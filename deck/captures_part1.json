@@ -1,0 +1,377 @@
+[
+ {
+  "id": "krishna_head",
+  "pdf": "01_krishna",
+  "page": 2,
+  "region": [
+   0.08,
+   0.06,
+   0.92,
+   0.3
+  ]
+ },
+ {
+  "id": "krishna_q",
+  "pdf": "01_krishna",
+  "page": 6,
+  "find": [
+   "Structural Elements",
+   "Suppose a friend of yours in this village faced"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   14,
+   0,
+   40
+  ]
+ },
+ {
+  "id": "krishna_t2",
+  "pdf": "01_krishna",
+  "page": 10,
+  "find": [
+   "OLS Regression on Village Social Capital in 2004",
+   "New Leaders"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   16,
+   0,
+   60
+  ]
+ },
+ {
+  "id": "krishna_950",
+  "pdf": "01_krishna",
+  "page": 11,
+  "find": [
+   "Since all the villages studied here share the same",
+   "more than just institutions matter"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   10,
+   0,
+   10
+  ]
+ },
+ {
+  "id": "freitag_head",
+  "pdf": "02_freitag",
+  "page": 1,
+  "region": [
+   0.08,
+   0.08,
+   0.92,
+   0.34
+  ]
+ },
+ {
+  "id": "freitag_q",
+  "pdf": "02_freitag",
+  "page": 24,
+  "find": [
+   "The questions and coding for the four items are as follows"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   10,
+   0,
+   230
+  ]
+ },
+ {
+  "id": "freitag_t6",
+  "pdf": "02_freitag",
+  "page": 19,
+  "region": [
+   0.08,
+   0.05,
+   0.92,
+   0.95
+  ],
+  "rotate": -90
+ },
+ {
+  "id": "freitag_t7",
+  "pdf": "02_freitag",
+  "page": 20,
+  "find": [
+   "Table 7."
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   10,
+   0,
+   420
+  ]
+ },
+ {
+  "id": "freitag_146",
+  "pdf": "02_freitag",
+  "page": 24,
+  "find": [
+   "that these results are only suggestive and",
+   "explorative"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   10,
+   0,
+   10
+  ]
+ },
+ {
+  "id": "lw_head",
+  "pdf": "03_lw",
+  "page": 1,
+  "region": [
+   0.08,
+   0.05,
+   0.92,
+   0.3
+  ]
+ },
+ {
+  "id": "lw_latent",
+  "pdf": "03_lw",
+  "page": 10,
+  "find": [
+   "phenomenon in the absence of responsive",
+   "needs to be matched by an equivalent"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   14,
+   0,
+   14
+  ]
+ },
+ {
+  "id": "lw_quarters",
+  "pdf": "03_lw",
+  "page": 10,
+  "find": [
+   "three-quarters failed to link the results of con"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   60,
+   0,
+   40
+  ]
+ },
+ {
+  "id": "lw_641",
+  "pdf": "03_lw",
+  "page": 13,
+  "find": [
+   "we have not set out specifically to evaluate the reforms"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   14,
+   0,
+   40
+  ]
+ },
+ {
+  "id": "lw_newton",
+  "pdf": "03_lw",
+  "page": 5,
+  "find": [
+   "may have a positive impact on social capital"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   30,
+   0,
+   60
+  ]
+ },
+ {
+  "id": "mettler_head",
+  "pdf": "04_mettler",
+  "page": 1,
+  "region": [
+   0.08,
+   0.06,
+   0.92,
+   0.3
+  ]
+ },
+ {
+  "id": "mettler_fig1",
+  "pdf": "04_mettler",
+  "page": 3,
+  "find": [
+   "Policy Feedback for Mass Publics"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   10,
+   0,
+   340
+  ]
+ },
+ {
+  "id": "mettler_t1",
+  "pdf": "04_mettler",
+  "page": 7,
+  "find": [
+   "Determinants of Civic"
+  ],
+  "pad": [
+   70,
+   12,
+   120,
+   330
+  ]
+ },
+ {
+  "id": "mettler_enrolled",
+  "pdf": "04_mettler",
+  "page": 10,
+  "find": [
+   "You just enrolled.",
+   "My father did not want to take welfare"
+  ],
+  "pad": [
+   70,
+   30,
+   30,
+   70
+  ]
+ },
+ {
+  "id": "mettler_appA",
+  "pdf": "04_mettler",
+  "page": 13,
+  "find": [
+   "I decided against asking respondents much about past attitudes"
+  ],
+  "pad": [
+   70,
+   40,
+   30,
+   60
+  ]
+ },
+ {
+  "id": "mettler_t7",
+  "pdf": "04_mettler",
+  "page": 12,
+  "find": [
+   "Critical Effects Model of"
+  ],
+  "pad": [
+   70,
+   12,
+   120,
+   300
+  ]
+ },
+ {
+  "id": "kr_head",
+  "pdf": "05_kr",
+  "page": 1,
+  "region": [
+   0.08,
+   0.06,
+   0.92,
+   0.34
+  ]
+ },
+ {
+  "id": "kr_mech",
+  "pdf": "05_kr",
+  "page": 11,
+  "find": [
+   "three psychological mechanisms at work here"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   20,
+   0,
+   230
+  ]
+ },
+ {
+  "id": "kr_t5",
+  "pdf": "05_kr",
+  "page": 16,
+  "find": [
+   "Number of needs-tested institutional contacts (0 to 2)",
+   "Number of respondents"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   60,
+   0,
+   20
+  ]
+ },
+ {
+  "id": "kr_355",
+  "pdf": "05_kr",
+  "page": 17,
+  "find": [
+   "Our second response is that we welcome",
+   "the opposite is always possible, especially when using nonexperimental data"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   10,
+   0,
+   10
+  ]
+ },
+ {
+  "id": "kr_t3",
+  "pdf": "05_kr",
+  "page": 14,
+  "find": [
+   "Personal Contacts With Selective, Needs-Testing Welfare Institutions"
+  ],
+  "full_width": true,
+  "pad": [
+   0,
+   10,
+   0,
+   200
+  ]
+ },
+ {
+  "id": "kr_t7",
+  "pdf": "05_kr",
+  "page": 20,
+  "find": [
+   "Table 7",
+   "Housing",
+   "Allowances",
+   "Number of respondents",
+   "Received the service and assistance to which"
+  ],
+  "pad": [
+   30,
+   30,
+   30,
+   30
+  ],
+  "rotate": -90
+ }
+]
