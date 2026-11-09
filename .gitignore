@@ -22,3 +22,4 @@ corpus/studies_haiku.csv
 corpus/refs_oa.jsonl
 backend/worker/.wrangler/
 backend/worker/node_modules/
+deck/art/*.jpg
