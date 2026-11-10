@@ -32,7 +32,7 @@ p,li{font-size:18.5px;line-height:1.65;margin:0}ul,ol{margin:0;padding-left:22px
 .cover .c{position:absolute;left:88px;right:88px;top:210px}.cover .c::before{content:"";display:block;width:40px;height:4px;background:var(--green);margin-bottom:26px}
 .cover h1{margin:0;font-size:48px;line-height:1.3;font-weight:700}.cover .sub{margin:18px 0 0;font-size:20px;opacity:.9}.cover .meta{position:absolute;left:88px;bottom:60px;font-size:15.5px;opacity:.85;line-height:1.7}.cover .src{position:absolute;right:40px;bottom:30px;font-size:12px;opacity:.65}
 .step{border-top:2px solid var(--navy);padding-top:10px}.step .n{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--sub)}.step h3{margin:2px 0 6px;font-size:20px;color:var(--navy)}.step p{font-size:16px}
-table{border-collapse:collapse;width:100%;font-size:17px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:14px;color:var(--sub);font-weight:600}td.r,th.r{text-align:right;white-space:nowrap}
+table{border-collapse:collapse;width:100%;font-size:17px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:13px;color:var(--navy);font-weight:600;background:var(--navyt);border-bottom:1px solid #1e3a5f}td.r,th.r{text-align:right;white-space:nowrap}
 .role{display:grid;grid-template-columns:140px 1fr;gap:10px 16px;align-items:center;font-size:16.5px}
 .node{display:inline-block;padding:8px 12px;border-radius:8px;border:1.5px solid var(--navy);background:#fff;font-weight:600;font-size:14px;text-align:center;min-width:130px}
 .node.dv{background:var(--navyt);border-width:2.5px}.node.mv{border-style:dashed;border-color:#8aa4cf}.node.zv{border-style:dotted;border-color:#94a3b8;color:#475569}.node.cv{border-color:#cbd5e1;color:#64748b;background:#f8fafc}
@@ -55,13 +55,13 @@ table{border-collapse:collapse;width:100%;font-size:17px}th,td{text-align:left;p
 <section class="slide">
  <div class="hd"><h2>지정문헌 다섯 편의 사회자본 측정</h2><p class="s">같은 개념, 자료마다 다른 조작적 정의</p></div>
  <div class="bd"><div class="in">
- <table><tr><th>논문</th><th>자료</th><th>사회자본의 측정</th><th>모형에서의 역할</th></tr>
- <tr><td>Krishna (2007)</td><td>인도 라자스탄 61개 마을, 7년 패널</td><td>집합행동 성향 6문항 지수 0–100</td><td>종속</td></tr>
- <tr><td>Freitag (2006)</td><td>스위스 24개 칸톤</td><td>결사체 참여 4문항 주성분, 칸톤 평균</td><td>종속</td></tr>
- <tr><td>Lowndes &amp; Wilson (2001)</td><td>없음(이론)</td><td>Putnam의 혼합 정의, 측정 없음</td><td>이론 틀</td></tr>
- <tr><td>Mettler (2002)</td><td>미국 G.I. Bill 수혜자 회고 설문(1998)</td><td>단체 가입 수 + 정치활동 6종</td><td>종속</td></tr>
- <tr><td>Kumlin &amp; Rothstein (2005)</td><td>스웨덴 횡단면 설문</td><td>대인신뢰 0–10 단일 문항</td><td>종속</td></tr></table>
- <p style="margin-top:26px;font-size:17.5px;color:var(--sub)">측정 열의 네 가지(지수·주성분·가입 수·단일 문항)는 모두 자료가 가진 문항에서 나왔다. 오늘 각자가 고를 자료도 같은 제약을 준다.</p>
+ <table><tr><th>논문</th><th>자료</th><th>사회자본의 측정</th><th>신뢰의 자리</th></tr>
+ <tr><td>Krishna (2007)</td><td>인도 라자스탄 61개 마을, 7년 패널</td><td>집합행동 성향 6문항 지수 0–100</td><td>지수 안의 한 문항</td></tr>
+ <tr><td>Freitag (2006)</td><td>스위스 24개 칸톤</td><td>결사체 참여 4문항 주성분, 칸톤 평균</td><td>통제변수, 다변량에서 비유의</td></tr>
+ <tr><td>Lowndes &amp; Wilson (2001)</td><td>없음(이론)</td><td>Putnam의 혼합 정의, 측정 없음</td><td>측정 없음</td></tr>
+ <tr><td>Mettler (2002)</td><td>미국 G.I. Bill 수혜자 회고 설문(1998)</td><td>단체 가입 수 + 정치활동 6종</td><td>측정 없음</td></tr>
+ <tr><td>Kumlin &amp; Rothstein (2005)</td><td>스웨덴 횡단면 설문</td><td>대인신뢰 0–10 단일 문항</td><td>종속변수. 참여는 통제</td></tr></table>
+ <p style="margin-top:26px;font-size:17.5px;color:var(--sub)">1부 마지막 표와 같다. 결사체를 재면 국가가 만들고 신뢰를 재면 국가가 부순다는 결론은 다섯 편이 다른 것을 쟀기 때문에 나온다. 오늘 각자가 고를 자료도 같은 제약을 준다.</p>
  </div></div>
  <div class="cap">원문 대조 docs/PAPERS.md. 1부 투표 분포는 당일 1부 결과 화면으로 대체.</div>
  <aside class="notes">셋째 열만 보십시오. 지수, 주성분, 가입 수, 단일 문항. 전부 사회자본이라고 불렀습니다. 넷째 열은 전부 종속입니다. 오늘 여러분도 종속변수부터 정합니다.</aside>

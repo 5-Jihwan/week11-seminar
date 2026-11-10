@@ -1,0 +1,92 @@
+{
+ "rajasthan_village": {
+  "title": "File:A Village in Rajasthan.jpg",
+  "note": "Krishna · 라자스탄 마을",
+  "license": "CC BY-SA 3.0",
+  "artist": "Rajibnandi",
+  "page": "https://commons.wikimedia.org/wiki/File:A_Village_in_Rajasthan.jpg",
+  "file": "rajasthan_village.jpg",
+  "kb": 600
+ },
+ "landsgemeinde": {
+  "title": "File:Landsgemeinde Glarus, 2009.jpg",
+  "note": "Freitag · 스위스 란츠게마인데(직접민주주의 주민총회)",
+  "license": "CC BY-SA 3.0",
+  "artist": "Marc Schlumpf, www.icarus-design.ch",
+  "page": "https://commons.wikimedia.org/wiki/File:Landsgemeinde_Glarus,_2009.jpg",
+  "file": "landsgemeinde.jpg",
+  "kb": 926
+ },
+ "swiss_canton": {
+  "title": "File:Sitter in Appenzell 20210528.jpg",
+  "note": "Freitag · 칸톤 마을",
+  "license": "CC BY-SA 3.0",
+  "artist": "Daniel Kraft",
+  "page": "https://commons.wikimedia.org/wiki/File:Sitter_in_Appenzell_20210528.jpg",
+  "file": "swiss_canton.jpg",
+  "kb": 768
+ },
+ "birmingham_council": {
+  "title": "File:Birmingham Council House.jpg",
+  "note": "Lowndes & Wilson · 버밍엄 시의회",
+  "license": "Public domain",
+  "artist": "",
+  "page": "https://commons.wikimedia.org/wiki/File:Birmingham_Council_House.jpg",
+  "file": "birmingham_council.jpg",
+  "kb": 712
+ },
+ "uk_town_hall_meeting": {
+  "title": "File:Tallulah City Council meeting room.jpg",
+  "note": "Lowndes & Wilson · 공청회",
+  "license": "CC BY 4.0",
+  "artist": "Ktkvtsh",
+  "page": "https://commons.wikimedia.org/wiki/File:Tallulah_City_Council_meeting_room.jpg",
+  "file": "uk_town_hall_meeting.jpg",
+  "kb": 615
+ },
+ "us_veterans_1945": {
+  "title": "File:GI Bill signing.jpg",
+  "note": "Mettler · 참전자",
+  "license": "Public domain",
+  "artist": "Not provided",
+  "page": "https://commons.wikimedia.org/wiki/File:GI_Bill_signing.jpg",
+  "file": "us_veterans_1945.jpg",
+  "kb": 226
+ },
+ "sweden_office": {
+  "title": "File:Servicekontoret-goteborg-081106.jpg",
+  "note": "Kumlin & Rothstein · 스웨덴 복지 창구",
+  "license": "CC BY-SA 3.0",
+  "artist": "Fluff",
+  "page": "https://commons.wikimedia.org/wiki/File:Servicekontoret-goteborg-081106.jpg",
+  "file": "sweden_office.jpg",
+  "kb": 469
+ },
+ "gothenburg": {
+  "title": "File:Tram line 4 at the tram stop in Mölndal city centre.JPG",
+  "note": "Kumlin & Rothstein · 예테보리(서부 스웨덴)",
+  "license": "CC BY-SA 4.0",
+  "artist": "Mattias Blomgren",
+  "page": "https://commons.wikimedia.org/wiki/File:Tram_line_4_at_the_tram_stop_in_M%C3%B6lndal_city_centre.JPG",
+  "file": "gothenburg.jpg",
+  "kb": 524
+ },
+ "korea_dong_office": {
+  "title": "File:Zwickau Rathaus.jpg",
+  "note": "엔딩·2부 · 한국 주민센터",
+  "license": "CC BY-SA 2.5",
+  "artist": "André Karwath aka Aka",
+  "page": "https://commons.wikimedia.org/wiki/File:Zwickau_Rathaus.jpg",
+  "file": "korea_dong_office.jpg",
+  "kb": 427
+ },
+ "korea_seoul_street": {
+  "title": "File:Daechi Dongbo Centreville Apartment Complex 2.jpg",
+  "note": "한국 거리",
+  "license": "CC BY-SA 4.0",
+  "artist": "kallerna",
+  "page": "https://commons.wikimedia.org/wiki/File:Daechi_Dongbo_Centreville_Apartment_Complex_2.jpg",
+  "file": "korea_seoul_street.jpg",
+  "kb": 677
+ }
+}
