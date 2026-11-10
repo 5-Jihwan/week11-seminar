@@ -63,11 +63,11 @@ p,li{font-size:18px;line-height:1.6;margin:0}ul,ol{margin:0;padding-left:22px}li
 /* 한계 */
 .lim{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start}.lim ul{font-size:15px}.lim li{margin-top:6px;line-height:1.5}.lim .me{border-left:3px solid var(--green);padding-left:14px}.lim .me b{color:var(--greend);font-size:13.5px;display:block;margin-bottom:4px}
 /* 쟁점 */
-.issue{position:absolute;left:72px;right:72px;top:126px;bottom:58px}.issue .fig{position:relative;height:330px;border-radius:6px;overflow:hidden;background:#111}.issue .fig img{width:100%;height:100%;object-fit:cover;display:block}
+.issue{position:absolute;left:72px;right:72px;top:126px;bottom:58px}.issue .fig{position:relative;height:300px;border-radius:6px;overflow:hidden;background:#111}.issue .fig img{width:100%;height:100%;object-fit:cover;display:block}
 .mc{position:absolute;color:#fff;font-weight:800;font-size:22px;line-height:1.25;text-shadow:0 0 6px #000,0 0 2px #000,2px 2px 0 #000,-1px -1px 0 #000;padding:4px 8px}
-.card2{height:330px;border:1px solid var(--line);border-radius:6px;background:var(--navyt);padding:22px 26px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-content:center}.card2 .t{font-size:13px;color:var(--sub);margin-bottom:6px}.card2 .m{font-size:19px;font-weight:700;color:var(--navy);line-height:1.4}
-.pc{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:12px;font-size:14.5px;line-height:1.55}.pc b{display:block;color:var(--navy);font-size:13px;margin-bottom:3px}
-.iq{margin-top:10px;font-size:18px;color:var(--navy);font-weight:600;line-height:1.4}
+.card2{height:300px;border:1px solid var(--line);border-radius:6px;background:var(--navyt);padding:22px 26px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-content:center}.card2 .t{font-size:13px;color:var(--sub);margin-bottom:6px}.card2 .m{font-size:19px;font-weight:700;color:var(--navy);line-height:1.4}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:10px;font-size:13.5px;line-height:1.5}.pc b{display:block;color:var(--navy);font-size:13px;margin-bottom:3px}
+.iq{margin-top:8px;font-size:17px;color:var(--navy);font-weight:600;line-height:1.4}
 /* 한 줄과 다리 */
 .bridge .one{font-size:30px;line-height:1.45;font-weight:600;color:var(--navy);padding:22px 28px;border-left:4px solid var(--green);background:var(--greent)}.bridge .next{margin-top:26px;font-size:17px;line-height:1.65;color:var(--ink)}
 /* 인트로·엔딩 */
@@ -116,10 +116,13 @@ MNAME = {"pigeon": "이게 비둘기인가요?", "buttons": "두 버튼", "drake
 
 def issue(title, sub, meme, caps, pro, con, q, local, notes):
     if local and meme in MEME:
-        w = min(1136, int(330 * MASP[meme])); fs = 22 if w >= 760 else 17 if w >= 520 else 14
+        w = min(1136, int(300 * MASP[meme])); fs = 21 if w >= 700 else 16 if w >= 480 else 13
         dark = meme in ("drake", "gru", "whynotboth")  # 밝은 바탕 템플릿은 남색 글자
         over = "".join(f'<div class="mc" style="{MPOS[meme][i][0]};font-size:{fs}px;{"color:#15203a;text-shadow:0 0 4px #fff,0 0 2px #fff,1px 1px 0 #fff" if dark else ""}">{esc(c)}</div>' for i, c in enumerate(caps))
-        fig = f'<div class="fig" style="width:{w}px;margin:0 auto"><img src="{MEME[meme]}" alt="" style="object-fit:fill">{over}</div>'
+        if MASP[meme] < 0.95:  # 세로로 긴 템플릿: 그림 왼쪽, 캡션은 오른쪽에 순서대로
+            fig = f'<div style="display:flex;gap:22px;align-items:center;justify-content:center;height:300px"><div class="fig" style="width:{w}px;height:300px"><img src="{MEME[meme]}" alt="" style="object-fit:fill"></div><ol style="font-size:16.5px;line-height:1.5;max-width:560px">' + "".join(f"<li>{esc(c)}</li>" for c in caps) + "</ol></div>"
+        else:
+            fig = f'<div class="fig" style="width:{w}px;margin:0 auto"><img src="{MEME[meme]}" alt="" style="object-fit:fill">{over}</div>'
     else:
         fig = f'<div class="card2"><div style="grid-column:1/3"><div class="t">{MNAME[meme]} 형식 · 캡션</div></div>' + "".join(f'<div><div class="t">{["①","②","③","④"][i]}</div><div class="m">{esc(c)}</div></div>' for i, c in enumerate(caps)) + '</div>'
     body = f'<div class="issue">{fig}<div class="pc"><div><b>{pro[0]}</b>{pro[1]}</div><div><b>{con[0]}</b>{con[1]}</div></div><div class="iq">{q}</div></div>'
@@ -131,29 +134,19 @@ def build(local):
     # ───────── 인트로 ─────────
     raw(f'''<section class="slide cover">{f'<img src="{PHOTO["landsgemeinde"]}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55">' if "landsgemeinde" in PHOTO else ""}<div style="position:absolute;inset:0;background:rgba(7,42,96,.55)"></div><div class="c" style="position:absolute"><h1>국가는 사회자본을 만들 수 있는가</h1><p class="sub">Social Capital as Dependent Variable · 11주차 발제<br>Krishna 2007 · Freitag 2006 · Lowndes &amp; Wilson 2001 · Mettler 2002 · Kumlin &amp; Rothstein 2005</p></div><div class="meta">사회자본과 공공정책 · 2026-11-13 · 발제 오지환(석사과정 2학기) · 성균관대학교</div>{f'<div style="position:absolute;right:40px;bottom:26px;font-size:11px;color:rgba(255,255,255,.65);max-width:600px;text-align:right">{PCRED["landsgemeinde"]}</div>' if "landsgemeinde" in PCRED else ""}
 <aside class="notes">안녕하십니까. 11주차 「국가는 사회자본을 만들 수 있는가」 세미나를 맡은 석사과정 2학기 오지환입니다. 오늘 주제는 Social Capital as Dependent Variable, 사회자본을 결과로 놓는 연구들입니다.</aside></section>''')
-    slide("발표 구성", "1부 논문 다섯 편 · 교수님 설명 · 2부 연구모형 실습",
-          '''<div class="two" style="grid-template-columns:1.1fr 1fr"><div><table><tr><th>시각</th><th>블록</th><th class=r>분</th></tr>
-<tr><td class=num>0:00</td><td>인트로 · 80억 분의 1</td><td class="r num">8</td></tr>
-<tr><td class=num>0:08</td><td>Krishna → Freitag → Lowndes &amp; Wilson → Mettler → Kumlin &amp; Rothstein<br><span style="color:var(--sub);font-size:14px">논문마다 정리 9분 + 쟁점 2개 토론 5분</span></td><td class="r num">70</td></tr>
-<tr><td class=num>1:18</td><td>1부 마무리</td><td class="r num">5</td></tr>
-<tr><td class=num>1:35</td><td>교수님 설명</td><td class="r num">20</td></tr>
-<tr><td class=num>2:05</td><td>2부 · 국내 조사 8종으로 각자 연구모형(노트북)</td><td class="r num">35</td></tr></table></div>
-<div><div class="k">발제 순서의 이유</div><ul style="font-size:16.5px"><li>사회자본의 원인을 찾는 자리가 마을 안의 자생 조직(Krishna)에서 칸톤 제도(Freitag), 지방정부의 설계(L&amp;W), 정책 하나의 집행 방식(Mettler), 복지 창구의 접촉(K&amp;R)으로 한 칸씩 국가 쪽으로 옮겨 간다</li><li>앞 논문이 검증하지 못한 것을 다음 논문이 검증한다. Krishna 950쪽이 제도 효과를 못 쟀다고 쓰고, Freitag이 제도를 변수로 넣는다</li><li>분석 단위가 마을 61개에서 칸톤 24개, 참전자 716명, 시민 2,543명으로 내려와 2부의 개인 자료와 이어진다</li></ul><p style="font-size:14px;color:var(--sub);margin-top:12px">강의계획서와 다른 한 곳: Freitag과 Lowndes &amp; Wilson의 순서. 결과가 남긴 질문에 설계 틀이 답하는 순서로 바꿨다.</p></div></div>''',
-          "토론 규칙: 쟁점마다 지명 1명, 자유 1~2명, 2분 30초. 토론 계획서(11-10 배부)의 쟁점 번호와 같다.",
-          "오늘은 두 부분입니다. 1부는 논문 다섯 편 발제이고, 2부는 국내 조사 코드집으로 각자 연구모형을 만드는 실습입니다. 발제 순서는 Krishna, Freitag, Lowndes와 Wilson, Mettler, Kumlin과 Rothstein입니다. 강의계획서와 한 자리가 다릅니다. 이렇게 둔 이유는 사회자본을 만드는 원인의 자리가 한 칸씩 국가 쪽으로 옮겨 가기 때문입니다. 첫 편은 국가를 고정해 두고 마을 안을 봅니다. 그다음은 칸톤의 제도, 지방정부의 설계, 정책 하나의 집행 방식, 마지막은 복지 창구에서의 접촉입니다. 앞 논문이 못 한 일을 다음 논문이 하는 순서이기도 합니다. 논문마다 14분입니다. 정리 뒤에 쟁점 둘을 드리고, 쟁점마다 2분 반 토론합니다.")
     play_html = '<div class="play">' + ("".join(f'<img src="{v}" alt="">' for v in list(PLAY.values())[:3]) if PLAY else '<div class="ph">플레이 화면 1<br>출생 카드</div><div class="ph">플레이 화면 2<br>관계 수치가 보이는 선택 장면</div><div class="ph">플레이 화면 3<br>생애 요약 카드</div>') + '</div>'
     slide("80억 분의 1", "172개국 실제 통계로 한 사람의 삶을 사는 시뮬레이션 (1in8b.life)",
           play_html + '''<div class="two" style="margin-top:12px;align-items:start"><ul style="font-size:14.5px"><li>고를 수 있는 것은 태어날 해뿐. 나라는 그해 출생아 수의 확률로, 가정은 그 나라 소득분포의 확률로 정해진다</li><li>반영 통계: 출생아 수, 성별 기대수명, 영아 사망률, 소득 불평등 지수, 교육 접근성, 대학 진학률, 살인율, 흡연율, 조혼율. 전쟁·팬데믹 같은 사건도 실제 확률로</li><li>두 살부터 기질·활동·진학·진로·지출을 고르고 건강·행복·지식·관계·소득이 숫자로 따라온다. 끝나면 생애 기록</li></ul>
 <div class="quote" style="font-size:15px">"우리 누구도 태어날 곳을 고르지 않았다. 원하는 나라가 나올 때까지 다시 했다는 반응은 오히려 이 시뮬레이션이 보여주려던 것과 닿아 있다. 태어난 곳이 삶을 얼마나 크게 바꾸는지 알기 때문에 다시 누르는 거니까. 현실에서는 그 버튼이 없다."<small>개발자 진휘어스 인터뷰, 한겨레21 1637호(2026-10-29) 재인용</small></div></div>''',
           "한겨레21 1637호 「다시 태어나면 어디서 누구로 살고 싶은가… '80억 분의 1' 게임으로 오라」(2026-10-29). 한국인 개발자, 2026-10-07 출시, 무료.",
           "본격적으로 들어가기 전에 하나 여쭙겠습니다. '80억 분의 1'이라는 게임을 해 보셨거나 들어 보신 분 계십니까. 172개국 통계로 한 사람의 일생을 무작위로 사는 시뮬레이션입니다. 고를 수 있는 건 태어날 해뿐입니다. 저는 남양주에서 등교하는 길에 논문도 뉴스도 보기 싫을 때 이걸 합니다. 제 연구가 재미없어질 때도 합니다. 도피입니다. 화면의 삶은 제가 지난주에 산 삶입니다. 처음에는 그냥 선택지 중 하나였던 '관계' 수치가, 사회자본을 공부하고 논문을 쓰면서 다르게 보이기 시작했습니다. 이 수치는 무엇 때문에 오르내리는가. 이 게임을 만든 사람은 한국인 개발자입니다. 출시 뒤 가장 많이 받은 요청이 '태어날 나라를 고르게 해 달라'였답니다. 개발자의 답이 화면의 인용입니다.")
-    slide("게임이 재지 않는 다섯 가지 선택", "게임의 선택은 결과가 숫자로 바로 보이고, 현실의 선택은 그렇지 않다",
+    slide("이 게임에 없는 선택지", "게임의 선택은 결과가 숫자로 바로 보이고, 현실의 선택은 그렇지 않다",
           '''<div class="two" style="grid-template-columns:1fr 1.2fr"><div class="quote" style="font-size:17px">"'80억 분의 1'의 선택은 통계에 기반을 둬 설계됐다는 점에서, 그리고 선택의 결과가 수치로 명확하게 표현된다는 점에서 실제 우리 인생과 다르다. (…) 우리는 특정한 결과를 짐작하며 무언가를 선택하지만, 현실에서 짐작은 종종 빗나간다. 선택을 통해 얻은 것이 정확히 무엇인지도 바로 알기 어렵다."<small>한겨레21 1637호 기사 본문</small></div>
-<div><div class="k">다섯 편이 각각 잰 선택</div><table style="font-size:15.5px"><tr><th>선택지</th><th>잰 사람</th><th>움직인 수치</th></tr>
+<div><div class="k">다섯 편이 각각 다룬 선택</div><table style="font-size:15.5px"><tr><th>선택지</th><th>잰 사람</th><th>움직인 수치</th></tr>
 <tr><td>친구가 만든 모임에 가입했다</td><td>Krishna</td><td>마을의 협력 기대</td></tr><tr><td>주민투표를 하기 쉬운 지역으로 이사했다</td><td>Freitag</td><td>결사체 참여</td></tr><tr><td>구청 공청회에 갔지만 답장은 없었다</td><td>Lowndes &amp; Wilson</td><td>(측정 없음)</td></tr><tr><td>신청서 한 장으로 등록금을 받았다</td><td>Mettler</td><td>단체 가입 · 정치참여</td></tr><tr><td>복지 창구에서 서류 넷을 내고 한 달을 기다렸다</td><td>Kumlin &amp; Rothstein</td><td>대인신뢰 0~10</td></tr></table></div></div>''',
           "",
           "한겨레21 기자는 이 게임과 현실의 차이를 하나로 짚었습니다. 게임의 선택은 결과가 숫자로 바로 보이지만, 현실에서는 내 선택이 무엇을 바꿨는지 바로 알 수 없다는 것입니다. 오늘 다섯 편은 그 안 보이는 숫자를 재려 한 연구들입니다. 국가와의 만남이 신뢰와 참여를 몇 점 움직이는지. 오른쪽 표의 다섯 줄이 각 논문이 잰 선택지입니다. 논문이 끝날 때마다 이 줄로 돌아오겠습니다.")
-    slide("다섯 편이 원인을 찾은 곳", "사회 안에서 국가 쪽으로, 집합에서 개인으로",
+    slide("다섯 편의 연구 대상과 분석 단위", "발제 순서는 사회자본의 원인을 사회 안에서 찾은 연구부터 국가와 개인이 만나는 지점을 본 연구 순",
           '''<div class="two" style="grid-template-columns:1.3fr 1fr"><div class="map">
 <div class="pt" style="left:12%;top:82%"></div><div class="lb" style="left:12%;top:82%"><b>Krishna 2007</b>마을 내부의 자생 조직 · 규칙 · 신진 리더<br>인도 61개 마을, 7년 패널</div>
 <div class="pt" style="left:30%;top:64%"></div><div class="lb" style="left:30%;top:64%"><b>Freitag 2006</b>칸톤의 정치제도<br>스위스 24개 칸톤</div>
@@ -161,12 +154,12 @@ def build(local):
 <div class="pt" style="left:62%;top:28%"></div><div class="lb" style="left:62%;top:28%"><b>Mettler 2002</b>정책 하나의 집행 방식<br>미국 참전자 716명, 회고 설문</div>
 <div class="pt" style="left:72%;top:10%"></div><div class="lb" style="left:72%;top:10%"><b>Kumlin &amp; Rothstein 2005</b>복지 창구 접촉의 공정성<br>스웨덴 서부 2,543명</div>
 <div class="ax" style="left:0;bottom:-22px">사회 안 ←</div><div class="ax" style="right:0;bottom:-22px">→ 국가와 개인이 마주치는 자리</div><div class="ax" style="left:-4px;top:-20px">개인</div><div class="ax" style="left:-4px;bottom:0">집합</div></div>
-<div><div class="k">2~10주차에서는 사회자본이 원인이었다</div><ul style="font-size:15px"><li>6~10주차: 사회자본 → 민주주의(Paxton), 정부 성과(Knack 2002, Tavits), 성장(Knack &amp; Keefer)</li><li>4주차 형성 논문들이 원인을 물었지만 문화(Guiso), 개인 투자(Glaeser), 인구 구성(Rupasingha)이었다</li><li>오늘 다섯 편은 그 원인 자리에 국가를 넣는다. Freitag 125쪽의 구분으로는 사회자본을 외생으로 두는 접근(Putnam 1993)에서 내생으로 두는 접근(Levi 1996 · Tarrow 1996 · Skocpol 2000)으로</li></ul><div class="quote" style="font-size:14.5px;margin-top:14px">"The second approach endogenizes social capital as an outcome of social and political arrangements"<small>Freitag 2006: 125</small></div></div></div>''',
+<div><div class="k">2~10주차와의 관계</div><ul style="font-size:15px"><li>6~10주차: 사회자본 → 민주주의(Paxton), 정부 성과(Knack 2002, Tavits), 성장(Knack &amp; Keefer)</li><li>4주차 형성 논문들이 원인을 물었지만 문화(Guiso), 개인 투자(Glaeser), 인구 구성(Rupasingha)이었다</li><li>오늘 다섯 편은 그 원인 자리에 국가를 넣는다. Freitag 125쪽의 구분으로는 사회자본을 외생으로 두는 접근(Putnam 1993)에서 내생으로 두는 접근(Levi 1996 · Tarrow 1996 · Skocpol 2000)으로</li></ul><div class="quote" style="font-size:14.5px;margin-top:14px">"The second approach endogenizes social capital as an outcome of social and political arrangements"<small>Freitag 2006: 125</small></div></div></div>''',
           "점의 위치는 발제자 배치. 세로축은 종속변수의 단위(마을·칸톤 평균 → 개인), 가로축은 원인을 찾은 자리.",
           "11주차까지 사회자본은 늘 왼쪽, 원인 자리에 있었습니다. 6주차부터 10주차까지 민주주의, 정부 성과, 성장을 설명했습니다. 오늘 다섯 편은 그 자리에 국가를 넣고 사회자본을 오른쪽으로 보냅니다. 그림의 점은 왼쪽 아래에서 오른쪽 위로 갑니다. 원인을 찾은 자리가 마을 안에서 창구까지 옮겨 가고, 단위가 마을 평균에서 개인으로 내려옵니다. 첫 편은 국가가 아예 움직이지 않는 곳에서 시작합니다. 인도 라자스탄 61개 마을, 같은 제도 아래서 7년. 거기서 관계 점수를 올린 것은 무엇이었을까요.")
 
     # ───────── 1 Krishna ─────────
-    slide("라자스탄 61개 마을, 1997년과 2004년", "How Does Social Capital Grow? A Seven-Year Study of Villages in India · <i>Journal of Politics</i> 69(4)",
+    slide("Krishna (2007) 연구 개요", "How Does Social Capital Grow? A Seven-Year Study of Villages in India · <i>Journal of Politics</i> 69(4)",
           f'''<div class="card"><div class="headimg"><img src="{FIG["krishna_head"]}" alt=""></div><dl>
 <dt>질문</dt><dd>사회자본이 7년 안에 움직이는가. 움직인다면 무엇이 움직이는가</dd>
 <dt>자료</dt><dd>라자스탄 5개 구 61개 마을. 1997년 2,291명 → 2004년 1,731명 재면접(76%). 9개 마을 사례연구</dd>
@@ -175,7 +168,7 @@ def build(local):
 <dt>한계</dt><dd>같은 주 제도 아래라 제도 설계 효과는 검증 불가(950). 교육 같은 장기 효과는 7년에 안 보임(각주 19)</dd></dl></div>''',
           "수치는 Table 2(949). 원문 대조 docs/PAPERS.md §1.",
           "Krishna의 질문은 하나입니다. Putnam이 역사가 정한다고 한 사회자본이 7년 안에 움직이는가. 라자스탄 61개 마을을 1997년과 2004년에 두 번 쟀습니다. 평균은 거의 그대로인데 마을은 움직였습니다. 33개가 오르고 28개가 내렸습니다. 올린 것은 마을 안에서 나온 것들이었습니다. 주민이 만든 조직, 규칙, 새 리더. 정부가 만든 조직과 정부에 대한 신뢰는 아무 상관이 없었습니다.")
-    slide("역사가 정한다는 Putnam에 맞선 다섯 가설", "Krishna 2007 · 질문, 이론적 기대, 설계 선택, 결과, 결론",
+    slide("연구 질문과 가설", "Krishna 2007",
           '''<div class="ladder">
 <div class="l">질문</div><div>Putnam(1993)은 사회자본이 정부 성과를 정한다면서 그 자체는 키울 수 없다고 했다. 그렇다면 왜 중요한가. 단기에 움직이는가</div><div class="q">"Putnam (1993) presents us with a nagging conundrum" <i>941</i></div>
 <div class="l">이론적 기대</div><div>가설 다섯 묶음을 비관에서 낙관 순으로. 역사 의존(Putnam) · 제도 부산물(Rothstein 2001, Kumlin &amp; Rothstein 2005) · 집단 특성(Boix &amp; Posner 분열, Olson 규모) · 집단 행동(Ostrom 규칙, Oliver 리더) · 외부 개입(World Bank)</div><div class="q">"Different pathways, corresponding to different degrees of optimism" <i>943</i></div>
@@ -183,18 +176,18 @@ def build(local):
 <div class="l">결과</div><div>1997년 지수만으로 R² .23, 열여섯 변수로 .79. 유의한 것은 넷. 가장 비관적인 두 가설(역사·제도 부산물)과 가장 낙관적인 가설(외부 개입)이 함께 기각</div><div class="q">"only four variables are found significantly associated with higher gains" <i>952</i></div>
 <div class="l">결론</div><div>사회자본은 안에서 만들어진다. 외부 기관은 불평등 완화·자기조직화 조건·리더 육성으로 간접·장기로만</div><div class="q">"External agencies cannot directly raise social capital." <i>954</i></div></div>''',
           "", "다섯 단으로 읽겠습니다. 질문은 Putnam의 모순에서 나옵니다. 가설은 다섯 묶음인데 비관에서 낙관 순으로 늘어놓은 점이 이 논문의 설계입니다. 어느 묶음이 살아남느냐가 곧 답입니다. 설계에서 눈여겨볼 것은 회원 수를 버린 선택입니다. 가입률 2%짜리 사회에서 Putnam의 지표는 못 씁니다. 결과는 가운데 묶음만 살았습니다. 가장 비관적인 쪽도, 가장 낙관적인 쪽도 떨어졌습니다.")
-    slide("회원 수 대신 여섯 문항", "Krishna 2007 · 들어온 개념과 나간 문항",
+    slide("사회자본의 측정", "Krishna 2007 · 회원 수 대신 여섯 문항",
           f'''<div class="flow"><div class="box"><b>들어오는 개념</b>Putnam 1995의 정의 그대로. "networks, norms and social trust that facilitate coordination and cooperation"(942).<br>각주 2: Bourdieu·Burt·Lin의 개인 지향 분파와는 다리가 없다고 선언</div><div class="ar">→</div><div class="box"><b>쪼개는 틀</b>Uphoff의 구조·인지 2차원(945).<br>구조 = 연결망·역할·규칙·선례(행동을 가능하게)<br>인지 = 규범·가치·태도·믿음(행동을 내키게)</div><div class="ar">→</div><div class="box"><b>나가는 문항 6개</b>구조 3: 병충해 공동 대응, 공유지 관리, 분쟁 해결<br>인지 3: 호혜, 연대, 신뢰<br>전부 "누가 나설 것 같은가"를 묻는다. 본인 태도가 아니라 마을의 집합행동 기대. 단일 요인 55%, α .86</div></div>
 <div class="two" style="margin-top:14px;align-items:start"><img class="shot" style="max-height:200px" src="{FIG["krishna_q"]}" alt="측정 문항 원문 945쪽"><div class="link">앞 주차와 닿는 자리. 2주차 Ostrom 1998의 신뢰 정의 "타인의 행동에 대한 기대"(p.12)가 6번 문항(친구가 택할 쪽)의 설계와 같다. 3주차 Coleman 1988의 기능 정의가 "조직 없이도 나타나는 태도"를 측정에 넣는 근거(945). 9주차 Dasgupta 2000은 믿음·규칙·연결망을 한 숫자로 합치는 것 자체에 반대한다(p.327).</div></div>''',
           "원문 945~946쪽 캡처. 신뢰 문항은 “이 마을의 친구가 혼자 10단위 경작과 둘이 25단위 공동 경작 중 어느 쪽을 택할까”(각주 11).",
           "개념은 Putnam 그대로 들어옵니다. 그리고 Uphoff의 틀로 둘로 쪼개져 여섯 문항으로 나갑니다. 왼쪽 캡처가 그 문항입니다. 여섯 문항의 공통점을 하나만 보십시오. 전부 '누가 나설 것 같은가'를 묻습니다. 본인이 믿느냐가 아니라 이 마을 사람들이 어떻게 할 것 같으냐입니다. 2주차 Ostrom이 신뢰를 타인의 행동에 대한 기대라고 정의한 것과 같은 자리입니다. 그런데 9주차 Dasgupta는 믿음과 규칙과 연결망을 한 숫자로 합치지 말라고 했습니다. 여기서 첫 쟁점이 나옵니다.")
     issue("정부가 만든 모임은 사회자본을 못 키우는가", "Krishna · 쟁점 1", "pigeon",
           ["정부가 세운 청년회", "Putnam", "이것은 사회자본인가요?"],
-          ("찬 · 못 키운다", "라자스탄에서 정부·NGO 조직 가입은 비유의, 주민이 만든 조직만 17.57*(Table 2). Fukuyama 2001(3주) “정책으로 만들기 어렵다”(p.7). Knack 2002(7주)도 미국 주에서 정부의 능력은 “very limited and indirect”(Krishna 각주 28)"),
-          ("반 · 이 자료로는 답이 안 나온다", "공식 조직 가입률 2% 미만(945). 정부 조직 계수 7.42의 표준오차가 7.38으로 효과 없음이 아니라 식별이 안 된 것일 수 있다. Paxton 2002(6주)는 시민사회가 보통 “top-down efforts … sponsorship by state policies”로 생긴다는 Tong을 인용(p.260)"),
+          ("찬 · 정부가 만든 모임은 사회자본을 못 키운다", "라자스탄에서 정부와 NGO가 세운 조직에 가입한 마을은 7년 뒤 사회자본이 오르지 않았고, 주민이 스스로 만든 조직에 가입한 마을만 올랐다(Table 2). 외부에서 만든 모임은 돈과 사업이 끝나면 함께 끝나지만 안에서 만든 모임은 책임이 남기 때문이다. Fukuyama(3주)는 사회자본이 정책으로 만들기 어렵다고 했고, Knack(7주)은 미국 주 정부도 거의 못 키운다고 했다."),
+          ("반 · 이 자료로는 그렇게 말할 수 없다", "라자스탄에서 공식 조직에 가입한 사람은 2%도 안 되고 그 조직도 거의 전부 정부가 세운 것이다(945). 변이가 없는 변수로는 효과가 있는지 없는지 알 수 없다. 실제로 정부 조직 계수는 7.42인데 표준오차가 7.38이다. “효과 없음”이 아니라 “식별 안 됨”이다. Paxton(6주)은 자율적 시민사회가 보통 국가의 후원으로 생긴다는 Tong을 인용했다."),
           "한국의 마을공동체 지원사업과 주민자치회는 어느 쪽인가. 정부가 만든 모임이 자생 모임이 되려면 무엇이 바뀌어야 하는가", local,
           "첫 쟁점입니다. 정부가 만든 모임은 사회자본을 못 키우는가. 라자스탄 결과는 못 키운다 쪽입니다. 그런데 그 결과가 나온 자료를 보면 공식 조직에 가입한 사람이 2%도 안 됩니다. 정부 조직 계수 7.42의 표준오차가 7.38입니다. 효과가 없는 건지, 변이가 없어 못 본 건지 가를 수 없습니다. 한국의 마을공동체 지원사업을 떠올리며 어느 쪽이 그럴듯한지 말씀해 주십시오.")
-    slide("7년 사이 움직인 것: 규칙, 신진 리더, 자생 조직", "Krishna 2007 Table 2 · 2004년 마을 지수에 대한 OLS, N=60",
+    slide("주요 결과", "Krishna 2007 Table 2 · 2004년 마을 지수에 대한 OLS, N=60",
           f'''<div class="res"><img class="shot" style="max-height:420px" src="{FIG["krishna_t2"]}" alt="Table 2"><div><div class="k">실질 효과 = 계수 × 변수 범위 (952쪽 범위 기준, 발제자 계산)</div><div class="bars">
 <span class="lab">규칙(1997)</span><div class="b" style="width:100%"></div><span class="v">+12.5</span>
 <span class="lab">신진 리더 접촉</span><div class="b" style="width:70%"></div><span class="v">+8.8</span>
@@ -205,21 +198,21 @@ def build(local):
 <p class="take">계수가 가장 큰 자생 조직(17.57)보다 규칙(3.77)의 실질 효과가 세 배 크다. 범위가 .00~.22 대 .53~3.85이기 때문이다.<small>판정 기준 p&lt;.05 → 유의 4개 · 1997년 지수 SD 7.1 · R² .23(1997 지수만) → .79</small></p></div></div>''',
           "Krishna 2007: 949, 952. 실질 효과는 계수에 변수 범위를 곱한 발제자 계산(docs/PAPERS.md §1).",
           "왼쪽이 원문 표입니다. 유의한 것이 넷입니다. 오른쪽은 계수에 변수 범위를 곱한 실질 효과입니다. 계수만 보면 자생 조직이 17.57로 제일 크지만, 그 변수는 0에서 0.22 사이에서만 움직입니다. 규칙은 0.5에서 3.85까지 움직여서 실질 효과가 세 배입니다. 그래서 저자가 '규칙이 인과적으로 앞선다'고 썼습니다. 아래 두 줄, 정부 조직과 정부 신뢰는 회색입니다.")
-    slide("같은 제도 아래라 제도 효과는 검증하지 못한 연구", "Krishna 2007 · 저자가 적은 한계와 원문 대조",
-          f'''<div class="lim"><div><div class="k">저자가 적은 것</div><ul><li>같은 주 제도 아래라 제도 설계 효과는 검증 불가(950)</li><li>교육처럼 7년보다 오래 걸리는 효과는 못 본다(각주 19)</li><li>자생 조직 가입은 1997~2004 증가분이라 내생성 우려(각주 27)</li><li>결과가 특정 역사 국면에 달려 있을 수 있다(각주 23)</li><li>리더가 어떻게 생기는지는 모른다(954)</li></ul><img class="shot" style="max-height:120px;margin-top:12px" src="{FIG["krishna_950"]}" alt="950쪽"></div>
-<div class="me"><b>발제자가 짚는 것</b><ul><li>종속변수 정의(945)의 구조 차원에 "rules"가 들어 있는데 951쪽에서는 Rules가 독립변수다. 저자는 측정 수준에서는 겹치지 않는다고 답하지만(953) 개념 수준의 겹침은 인정한다</li><li>Table 1에는 60개 마을만 있다. 본문 평균 58.4·59.7은 61개 기준</li><li>952쪽은 집단 행동 변수가 "all assessed in 1997"이라 쓰지만 자생 조직은 증가분이다(각주 27과 충돌)</li><li>Table 1에서 1997년 1~4위 마을이 모두 내려오고 57~61위가 모두 올라왔다. 마을당 28~38명 표본 평균의 요동과 구분해 읽어야 한다</li></ul></div></div>''',
+    slide("한계와 쟁점", "Krishna 2007",
+          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>같은 주 제도 아래라 제도 설계 효과는 검증 불가(950)</li><li>교육처럼 7년보다 오래 걸리는 효과는 못 본다(각주 19)</li><li>자생 조직 가입은 1997~2004 증가분이라 내생성 우려(각주 27)</li><li>결과가 특정 역사 국면에 달려 있을 수 있다(각주 23)</li><li>리더가 어떻게 생기는지는 모른다(954)</li></ul><img class="shot" style="max-height:120px;margin-top:12px" src="{FIG["krishna_950"]}" alt="950쪽"></div>
+<div class="me"><b>발제자의 추가 검토</b><ul><li>종속변수 정의(945)의 구조 차원에 "rules"가 들어 있는데 951쪽에서는 Rules가 독립변수다. 저자는 측정 수준에서는 겹치지 않는다고 답하지만(953) 개념 수준의 겹침은 인정한다</li><li>Table 1에는 60개 마을만 있다. 본문 평균 58.4·59.7은 61개 기준</li><li>952쪽은 집단 행동 변수가 "all assessed in 1997"이라 쓰지만 자생 조직은 증가분이다(각주 27과 충돌)</li><li>Table 1에서 1997년 1~4위 마을이 모두 내려오고 57~61위가 모두 올라왔다. 마을당 28~38명 표본 평균의 요동과 구분해 읽어야 한다</li></ul></div></div>''',
           "원문 대조 docs/PAPERS.md §1, docs/papers/01_krishna_구조.md §4~5.",
           "저자가 스스로 적은 한계가 다섯입니다. 가장 중요한 것이 950쪽 문장입니다. 같은 제도 아래라 제도 효과는 검증할 수 없다. 오른쪽은 제가 원문을 대조하며 찾은 것입니다. 규칙이 종속변수 정의에도 들어 있고 독립변수이기도 합니다. 저자도 개념 수준에서는 겹친다고 인정합니다. 이 점은 토론으로 가져가지 않고 여기서만 짚습니다.")
     issue("사회자본이 7년 만에 바뀐다면 역사는 무엇을 정하는가", "Krishna · 쟁점 2", "brain",
           ["역사가 정한다 (Putnam 1993)", "제도가 정한다 (Rothstein)", "규칙과 리더가 정한다 (Krishna)", "그런데 1997년 지수도 여전히 유의하다 (.12*)"],
-          ("찬 · 바뀐다, 역사 의존은 약하다", "33개 상승·28개 하락, 16개 마을이 1 SD 넘게 올랐다(946). 1997년 지수만으로는 R² .23. 규칙과 리더가 7년 안에 움직였다"),
-          ("반 · 7년은 역사가 아니다", "1997년 지수는 Model 2에서도 유의(.12*). Guiso 외 2008(4주)의 역사 의존은 500년 단위(p.296)라 같은 가설이 아니다. 저자도 결과가 특정 역사 국면에 달렸을 수 있다고 쓴다(각주 23)"),
+          ("찬 · 7년이면 바뀐다", "61개 마을 중 33개가 오르고 28개가 내렸고, 16개 마을은 한 표준편차 넘게 올랐다. 역사가 전부를 정한다면 같은 역사를 가진 이웃 마을들이 7년 사이 이렇게 갈릴 수 없다. 갈린 이유가 규칙과 새 리더처럼 사람이 바꿀 수 있는 것이었다는 점이 더 중요하다."),
+          ("반 · 7년은 역사가 아니다", "1997년 지수는 열여섯 변수를 다 넣어도 여전히 유의하다(.12*). 과거가 현재를 설명하는 힘은 남아 있다. Guiso 외(4주)가 말한 역사 의존은 500년 단위라, 7년 사이 오르내린 것으로 그 가설을 기각할 수는 없다. 저자도 결과가 특정 시기에 달렸을 수 있다고 적었다(각주 23)."),
           "7년 변화로 “역사가 정한다”를 기각할 수 있는가. 기각할 수 없다면 이 논문이 보여 준 것은 무엇인가", local,
           "둘째 쟁점입니다. 사회자본이 7년 만에 바뀌었다면 역사가 정한다는 말은 틀렸는가. 위에서 아래로 갈수록 낙관적인 답입니다. 그런데 맨 아래 줄을 보십시오. 1997년 지수가 여전히 유의합니다. 4주차 Guiso가 말한 역사는 500년 단위였습니다. 7년 변화가 그 가설을 건드리는지, 어느 쪽인지 말씀해 주십시오.")
     photo("rajasthan_village", "친구가 만든 모임에 가입했다.", "정부가 만든 모임은 같은 카드에서 수치를 움직이지 못했다(Table 2).", '''Krishna는 제도를 검증하지 않은 것이 아니라 하지 못했다. 61개 마을이 전부 라자스탄 주 아래 있었다. "Since all the villages studied here share the same macro-institutional framework, it is not possible to test whether changing institutional designs will help build social capital"(950). 제도를 비교하려면 제도가 다른 단위가 필요하다. 스위스 24개 칸톤이 그 단위다.''', "80억 분의 1 카드로 돌아가면 이 논문은 한 줄을 넣습니다. 친구가 만든 모임에 가입했다. 정부가 만든 모임은 수치를 못 움직였습니다. 그런데 Krishna는 제도를 검증하지 않은 게 아니라 못 했습니다. 61개 마을이 전부 같은 주 아래 있었습니다. 제도를 비교하려면 제도가 다른 단위가 있어야 합니다. 스위스 24개 칸톤으로 갑니다.")
 
     # ───────── 2 Freitag ─────────
-    slide("스위스 24개 칸톤의 결사체 참여", "Bowling the State Back In: Political Institutions and the Creation of Social Capital · <i>EJPR</i> 45(1)",
+    slide("Freitag (2006) 연구 개요", "Bowling the State Back In: Political Institutions and the Creation of Social Capital · <i>EJPR</i> 45(1)",
           f'''<div class="card"><div class="headimg"><img src="{FIG["freitag_head"]}" alt=""></div><dl>
 <dt>질문</dt><dd>정치제도(직접민주주의·합의민주주의·지방자치)가 결사체 참여를 만드는가. Putnam의 하위체계 비교법을 스위스에 적용</dd>
 <dt>자료</dt><dd>24개 칸톤. 종속 = Swiss Household Panel 1999 4문항 주성분(N=7,799)의 칸톤 평균. 제도는 1980~1998 평균, 언어권·도시화는 1990 인구조사</dd>
@@ -228,7 +221,7 @@ def build(local):
 <dt>한계</dt><dd>"only suggestive and explorative"(146). 공통 원인 가능성을 각주 10에서 자인</dd></dl></div>''',
           "수치는 Table 5·6·7(139~142). 원문 대조 docs/PAPERS.md §2.",
           "Freitag은 Krishna가 못 한 일을 합니다. 제도가 다른 24개 칸톤을 비교합니다. 세 제도 모두 결사체 참여와 같이 움직였습니다. 그런데 독일어권이라는 변수 하나를 넣자 직접민주주의 효과가 사라집니다. 직접민주주의와 독일어권의 상관이 .86입니다. 저자 스스로 탐색적이라고 썼습니다.")
-    slide("사회자본을 결과로 돌린 설계", "Freitag 2006 · 질문, 이론적 기대, 설계 선택, 결과, 결론",
+    slide("연구 질문과 가설", "Freitag 2006",
           '''<div class="ladder">
 <div class="l">질문</div><div>사회자본의 효과 연구는 많은데 형성 연구는 없다. 정치제도가 결사체 생활을 만드는가</div><div class="q">"little research has explicitly addressed the question of how social capital can be built" <i>123</i></div>
 <div class="l">이론적 기대</div><div>Jackman &amp; Miller의 구분. 사회자본을 외생으로 두는 접근(Putnam 1993)과 내생으로 두는 접근(Levi, Tarrow, Skocpol). 후자를 택한다. 공통 기제는 제도가 시민 요구를 듣고 중재하는 능력. 이론은 "vague"하다고 인정(131)</div><div class="q">"The second approach endogenizes social capital as an outcome of social and political arrangements" <i>125</i></div>
@@ -236,18 +229,18 @@ def build(local):
 <div class="l">결과</div><div>Table 5 양변량 세 제도 모두 유의. Table 6 통제를 하나씩 넣으면 직접민주주의는 언어권에, 지방자치는 도시화에 무너짐. Table 7에서 직접민주주의와 언어권을 같은 모형에 넣지 않음</div><div class="q">"the fit of the four models … further confirms the significance of the thesis" <i>140–142</i></div>
 <div class="l">결론</div><div>제도가 중요하다. Putnam의 불신·불참·약한 민주주의 악순환에서 벗어나는 하향식 경로</div><div class="q">"democratic institutions suggest a 'top-down' path" <i>145</i></div></div>''',
           "", "질문은 분명합니다. 제도가 결사체를 만드는가. 이론 자리에서 저자는 Putnam을 외생 접근으로, 자기를 내생 접근으로 놓습니다. 이게 5장에서 본 축 뒤집기의 원문입니다. 설계의 핵심은 시간 순서입니다. 제도를 1999년 이전 값으로 재고, 역사도 끌어옵니다. 직접입법은 13세기, 결사체는 18세기. 결과 단에서 통제를 하나씩 넣는 방식이 나오는데, 이 방식이 뒤에 쟁점이 됩니다.")
-    slide("결사체 4문항과 제도의 문턱 지수", "Freitag 2006 · 들어온 개념과 나간 지표",
+    slide("사회자본과 제도의 측정", "Freitag 2006 · 결사체 4문항, 제도는 문턱 지수",
           f'''<div class="flow"><div class="box"><b>들어오는 개념</b>Coleman·Putnam의 자원 정의. "social networks, cooperative norms and interpersonal trust, all of which provide resources to individuals"(123). 그중 결사체를 고른다. 한 목적으로 만든 조직이 다른 목적에도 쓰인다(Coleman 1988: 108)</div><div class="ar">→</div><div class="box"><b>신뢰는 통제로</b>"it seems likely that the most common direction of procedure is from trusting to joining associations"(134). 방향을 가정으로 정하고 신뢰를 통제변수에 둔다. 다변량에서 .06, 비유의</div><div class="ar">→</div><div class="box"><b>나가는 지표</b>SHP 1999 4문항(각주 2): 동호회·단체 활동 참여 / 명예직·봉사 / 월 봉사 시간 / 아홉 유형 결사체의 능동 회원 수. 주성분 1개(59%), 칸톤 평균.<br>제도: 직접민주주의 = 참여 문턱 지수(서명 수·기간·재정 국민투표 기준). 투표 횟수가 아니다</div></div>
 <div class="two" style="margin-top:14px;align-items:start"><img class="shot" style="max-height:130px" src="{FIG["freitag_q"]}" alt="각주 2 문항"><div class="link">앞 주차와 닿는 자리. 4주차 Wollebaek &amp; Selle는 수동 회원도 신뢰를 키운다고 봤는데 문항 4는 능동 회원만 센다. 10주차 Knack &amp; Keefer는 단체 가입이 성장과 무관하고 신뢰만 유의하다고 했다. 9주차 Dasgupta의 "합치지 말라"를 Freitag은 결사체만 재는 방식으로 따랐다.</div></div>''',
           "각주 2(146~147) 캡처. 직접민주주의 지수는 Frey &amp; Stutzer 2000, 1~6점.",
           "개념은 Coleman과 Putnam에서 들어옵니다. 그중 결사체만 고르고, 신뢰는 원인 쪽이라고 가정해 통제변수로 내립니다. 그 신뢰가 다변량에서 .06, 비유의입니다. 나가는 지표는 네 문항입니다. 캡처가 그 문항입니다. 제도 쪽도 하나 보십시오. 직접민주주의 지수는 투표를 몇 번 했느냐가 아니라 투표를 시작하기가 얼마나 쉬운가, 문턱입니다. 여기서 둘째 쟁점으로 가기 전에 첫 쟁점입니다.")
     issue("참여 제도를 만들면 참여가 느는가, 참여하는 사람들이 그 제도를 만든 것인가", "Freitag · 쟁점 1", "buttons",
           ["주민투표제를 도입한다", "주민투표 할 사람들이 사는 동네로 이사한다", "지자체장"],
-          ("찬 · 제도가 먼저다", "직접입법은 13~14세기, 결사체는 18세기(125). 세 제도 모두 양변량 .63~.71(Table 5). Knack &amp; Keefer 1997(10주)은 자의적 행동을 제약하는 제도가 신뢰를 높인다고 했다(p.1279)"),
-          ("반 · 참여하는 지역이 제도를 만들었다", "직접민주주의–독일어권 r=.86(각주 10), 저자 자신이 “regional provenance leads both”라고 쓴다. Table 7에서 둘을 같은 모형에 넣지 않았다. 134쪽에 저자 스스로 라틴 가족주의(Hofstede·Fukuyama)를 서술. Guiso 외 2008(4주)의 문화는 제도가 사라진 뒤 500년을 간다"),
+          ("찬 · 제도가 먼저다", "스위스에서 직접입법 제도는 13~14세기에 생겼고 결사체는 18세기에 늘었다. 순서가 분명하다. 투표를 시작하기 쉬운 칸톤일수록 사람들은 요구를 모으려고 모임을 만들고, 그 모임이 다시 참여를 낳는다. Knack &amp; Keefer(10주)도 정부를 제약하는 제도가 있는 나라에서 신뢰가 높다고 했다."),
+          ("반 · 참여하는 사람들이 제도를 만들었다", "직접민주주의가 활발한 칸톤은 거의 전부 독일어권이고 둘의 상관이 .86이다. 저자 스스로 지역 배경이 제도와 사회자본 둘 다를 낳았을 수 있다고 각주에 썼다(각주 10). 언어권을 넣는 순간 직접민주주의 효과가 사라지는데(.47 → .18), 저자는 마지막 표에서 둘을 같은 모형에 넣지 않았다. 13세기와 1999년 사이 700년의 자료는 없다."),
           "한국의 주민참여예산제는 어느 쪽인가. 도입한 지자체와 참여율의 관계로 이 논쟁을 가를 수 있는가, 아니면 같은 함정에 빠지는가", local,
           "두 버튼 중 하나를 눌러야 하는 지자체장입니다. 주민투표제를 도입할 것인가, 주민투표 할 사람들이 사는 동네로 이사할 것인가. 농담이지만 Freitag의 자료가 딱 이 상황입니다. 직접민주주의가 활발한 칸톤은 전부 독일어권입니다. 제도가 먼저인지 사람이 먼저인지 24개 칸톤으로는 가를 수 없습니다. 한국의 주민참여예산제를 놓고 어느 쪽인지 말씀해 주십시오.")
-    slide("언어권을 넣으면 사라지는 직접민주주의 효과", "Freitag 2006 Table 6 · 세 제도에 통제를 하나씩 더한 아홉 모형(141)",
+    slide("주요 결과", "Freitag 2006 Table 6 · 세 제도에 통제를 하나씩 더한 아홉 모형(141)",
           f'''<div class="res"><img class="shot" style="max-height:430px" src="{FIG["freitag_t6"]}" alt="Table 6"><div><div class="k">직접민주주의 표준화 계수, 통제변수에 따라</div><div class="bars">
 <span class="lab">+좌파 정당 (M1)</span><div class="b" style="width:100%"></div><span class="v">.47***</span>
 <span class="lab">+사회 신뢰 (M4)</span><div class="b" style="width:98%"></div><span class="v">.46***</span>
@@ -259,21 +252,21 @@ def build(local):
 <p class="take">제도 셋이 설명하는 분산(.75)보다 통제 둘만의 설명(.79)이 크다. 저자는 이 비교를 쓰지 않았다.<small>직접민주주의와 언어권은 Table 7의 어느 모형에도 함께 들어가지 않는다 · N=24, 모형당 변수 4개(140)</small></p></div></div>''',
           "Freitag 2006: 141~142. Table 6의 Model k = 제도 셋 + k번째 통제(11-09 PDF 화면 확인). 제도 셋만의 모형은 Table 7 Model 1.",
           "원문 표를 가로로 돌렸습니다. 아홉 모형은 전부 제도 셋에 통제를 하나씩 더한 것입니다. 오른쪽 위, 직접민주주의 계수는 어떤 통제를 넣어도 .47 근처에서 버티다가 언어권을 넣는 순간 .18로 떨어져 비유의가 됩니다. 아래는 Table 7의 설명력입니다. 제도 셋이 .75인데 도시화와 언어권 둘만 넣으면 .79입니다. 저자는 이 비교를 하지 않았습니다.")
-    slide("통제를 하나씩만 넣은 아홉 모형", "Freitag 2006 · 저자가 적은 한계와 원문 대조",
-          f'''<div class="lim"><div><div class="k">저자가 적은 것</div><ul><li>"only suggestive and explorative"(146). 방법이 더 정교해야 한다</li><li>언어권이 직접민주주의와 사회자본의 공통 원인일 수 있다(각주 10, r=.86)</li><li>양변량 선별에서 떨어진 변수가 다변량에서 유의해질 수 있다(각주 8)</li><li>N=24라 모형당 변수 4개(140). 국가 수준 비교는 거의 불가능(146)</li><li>결사체는 연결망의 한 지표일 뿐, 가장 중요한 지표는 아닐 수 있다(126)</li></ul><img class="shot" style="max-height:80px;margin-top:10px" src="{FIG["freitag_146"]}" alt="146쪽"></div>
-<div class="me"><b>발제자가 짚는 것</b><ul><li>제도 셋은 모든 모형에 남고 통제는 하나씩만 들어간다. 제도가 "거의 모든 모형에서 버틴다"는 결과는 설계가 보장한 것이다. 유의한 통제 둘(언어권·도시화)을 함께 넣은 모형은 Table 6에 없다</li><li>개인 7,799명 자료를 칸톤 24개로 접었다. 세 기제(옹호 유인·숙의·반응 확신)는 개인 수준인데 하나도 검증되지 않았다</li><li>직접민주주의 지수는 제도의 "있음"(문턱)이지 "쓰임"(투표 경험)이 아니다. 이 구분이 다음 세 논문의 출발점이다</li></ul></div></div>''',
+    slide("한계와 쟁점", "Freitag 2006",
+          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>"only suggestive and explorative"(146). 방법이 더 정교해야 한다</li><li>언어권이 직접민주주의와 사회자본의 공통 원인일 수 있다(각주 10, r=.86)</li><li>양변량 선별에서 떨어진 변수가 다변량에서 유의해질 수 있다(각주 8)</li><li>N=24라 모형당 변수 4개(140). 국가 수준 비교는 거의 불가능(146)</li><li>결사체는 연결망의 한 지표일 뿐, 가장 중요한 지표는 아닐 수 있다(126)</li></ul><img class="shot" style="max-height:80px;margin-top:10px" src="{FIG["freitag_146"]}" alt="146쪽"></div>
+<div class="me"><b>발제자의 추가 검토</b><ul><li>제도 셋은 모든 모형에 남고 통제는 하나씩만 들어간다. 제도가 "거의 모든 모형에서 버틴다"는 결과는 설계가 보장한 것이다. 유의한 통제 둘(언어권·도시화)을 함께 넣은 모형은 Table 6에 없다</li><li>개인 7,799명 자료를 칸톤 24개로 접었다. 세 기제(옹호 유인·숙의·반응 확신)는 개인 수준인데 하나도 검증되지 않았다</li><li>직접민주주의 지수는 제도의 "있음"(문턱)이지 "쓰임"(투표 경험)이 아니다. 이 구분이 다음 세 논문의 출발점이다</li></ul></div></div>''',
           "docs/papers/02_freitag_구조.md §5~6.",
           "저자가 적은 한계 중 둘째 줄이 핵심입니다. 공통 원인 가능성을 각주에서 스스로 인정했습니다. 제가 짚는 것은 설계입니다. 제도 셋은 늘 모형에 남고 통제는 하나씩만 들어갑니다. 제도가 버틴다는 결과는 그 설계가 만든 것입니다. 그리고 마지막 줄. 직접민주주의 지수는 제도가 있다는 것이지 썼다는 것이 아닙니다. 다음 세 논문은 전부 쓰임을 봅니다.")
     issue("모임은 늘었는데 신뢰가 안 늘었다면 국가는 사회자본을 만든 것인가", "Freitag · 쟁점 2", "drake",
           ["신뢰를 종속변수로 두고 제도 효과를 본다", "신뢰는 통제변수에 넣고 .06이 나오면 넘어간다"],
-          ("찬 · 만들었다", "Putnam 2000(3주)의 정의에서 연결망은 사회자본의 한 성분이다. Wollebaek &amp; Selle 2002(4주)는 결사체 가입이 신뢰를 키운다고 했다. 결사체가 늘었다면 신뢰는 뒤따른다"),
-          ("반 · 모임을 만든 것이다", "신뢰는 통제로 들어가 다변량에서 .06, 비유의(Table 6 Model 4). 저자는 신뢰 → 가입 방향을 가정했다(134). Knack &amp; Keefer 1997(10주)은 단체 가입이 성장과 무관하고 신뢰만 유의. K&amp;R은 참여를 신뢰의 “증상”이라 부른다(362)"),
+          ("찬 · 국가는 사회자본을 만들었다", "Putnam(3주)의 정의에서 사회자본은 연결망과 규범과 신뢰 셋인데, 결사체는 그중 연결망이다. 사람이 모이면 거기서 규범과 신뢰가 자라는 것이 Putnam의 논리이고, Wollebaek &amp; Selle(4주)는 노르웨이 자료로 가입이 신뢰를 키운다는 것을 보였다. 모임을 늘렸다면 나머지는 따라온다."),
+          ("반 · 모임을 만든 것이지 사회자본을 만든 것이 아니다", "신뢰는 이 논문에서 결과가 아니라 통제변수였고, 다변량에서 .06으로 아무 관계가 없었다(Table 6). 저자는 신뢰가 가입을 낳는다고 가정했지(134) 가입이 신뢰를 낳는지는 보지 않았다. Knack &amp; Keefer(10주)는 단체 가입이 성장과 무관하고 신뢰만 유의하다고 했고, Kumlin &amp; Rothstein은 참여를 신뢰의 원인이 아니라 증상이라 부른다."),
           "결사체 참여 지수가 오른 칸톤에서 사람들은 서로를 더 믿게 되었는가. 이 논문으로 그것을 알 수 있는가", local,
           "드레이크 형식입니다. 신뢰를 종속변수로 두는 것은 싫고, 통제변수에 넣어 .06이 나오면 넘어가는 것은 좋다. Freitag이 한 일이 이것입니다. 모임은 늘었습니다. 그런데 신뢰가 늘었는지는 이 논문으로 모릅니다. 국가가 만든 것이 모임인지 사회자본인지, 어느 쪽인지 말씀해 주십시오.")
     photo("swiss_canton", "주민투표를 하기 쉬운 지역으로 이사했다. 모임은 늘고, 신뢰는 그대로였다.", "그리고 그 지역은 전부 독일어권이었다(각주 10).", '''Freitag은 제도와 결사체가 같이 움직인다는 데까지 보여 줬다. 답하지 못한 것이 둘이다. 어떤 설계가 왜 작동하는가. 문턱 지수와 득표율과 자기평가 점수는 제도의 크기이지 작동 방식이 아니다. 그리고 신뢰는 왜 안 움직였는가. 다음 논문은 자료 없이 설계만으로 첫 질문에 답하려 한다. 반응하는 제도가 없으면 사회자본은 잠재 상태로 남는다는 명제로 둘째 질문의 자리를 만든다.''', "카드에 넣는 한 줄입니다. 주민투표를 하기 쉬운 지역으로 이사했다, 모임은 늘고 신뢰는 그대로였다. 지수가 투표 횟수가 아니라 문턱이라 '쉬운'이라고 썼습니다. Freitag이 못 답한 것이 둘입니다. 어떤 설계가 왜 작동하는가, 신뢰는 왜 안 움직였는가. 다음 논문은 자료 없이 설계만 말합니다.")
 
     # ───────── 3 Lowndes & Wilson ─────────
-    slide("영국 지방정부 개혁을 앞에 둔 이론 논문", "Social Capital and Local Governance: Exploring the Institutional Design Variable · <i>Political Studies</i> 49(4)",
+    slide("Lowndes &amp; Wilson (2001) 연구 개요", "Social Capital and Local Governance: Exploring the Institutional Design Variable · <i>Political Studies</i> 49(4)",
           f'''<div class="card"><div class="headimg"><img src="{FIG["lw_head"]}" alt=""></div><dl>
 <dt>질문</dt><dd>Putnam이 상수로 둔 제도 설계가 사회자본의 창출과 동원을 어떻게 좌우하는가</dd>
 <dt>자료</dt><dd>없음. 영국 노동당의 '민주적 쇄신' 프로그램(1997~)과 저자들의 위탁연구, Audit Commission 1999를 근거로 한 이론 논문</dd>
@@ -282,7 +275,7 @@ def build(local):
 <dt>한계</dt><dd>"we have not set out specifically to evaluate the reforms"(641). 다섯 편 중 유일하게 실증이 없다</dd></dl></div>''',
           "인용 쪽수 docs/PAPERS.md §3. 수치는 638(4분의 3)과 639(12개 지표 중 민주주의 변수 0) 둘뿐.",
           "다섯 편 중 자료가 없는 유일한 논문입니다. 대신 설계도를 그립니다. 지방정부가 손댈 수 있는 네 차원입니다. 숫자는 둘뿐입니다. 모범 지자체의 4분의 3이 협의 결과를 결정에 반영하지 않았다는 것, 그리고 Putnam의 제도 성과 지표 12개에 민주주의 변수가 하나도 없다는 것.")
-    slide("Putnam이 상수로 둔 제도 설계", "Lowndes &amp; Wilson 2001 · 질문, 이론적 기대, 설계 선택, 주장, 결론",
+    slide("연구 질문과 주장", "Lowndes &amp; Wilson 2001",
           '''<div class="ladder">
 <div class="l">질문</div><div>Putnam 1993: 10의 한 문장을 공격한다. 이탈리아 지역정부의 제도 설계가 상수라서 다른 요인을 더 믿을 만하게 찾을 수 있다는 말. 성과가 그렇게 갈렸는데 왜 설계가 같았다고 가정하는가</div><div class="q">"why should we assume that their design remained constant?" <i>632</i></div>
 <div class="l">이론적 기대</div><div>신제도주의 셋. 제도는 조직도가 아니라 습관·규범·유인. 창출과 동원은 다른 일. 좋은 정부는 시민 지향 시민과 시민 지향 정부 행위자의 상호작용(Levi 1996)</div><div class="q">"Institutions are habits, not things" <i>632</i></div>
@@ -290,18 +283,18 @@ def build(local):
 <div class="l">주장</div><div>네 차원 중 셋째가 중심. 참여를 막는 최대 요인은 "의회가 아무것도 안 할 것"이라는 인식. 공급된 사회자본은 정치 과정의 수요와 만나야 한다</div><div class="q">"Social capital may, then, remain a 'latent' phenomenon in the absence of responsive political institutions" <i>638</i></div>
 <div class="l">결론</div><div>설계 원칙 둘: 가치의 명확성, 변이와 수정 가능성. 정원 가꾸기 대 건축. 결과는 내용만큼 과정에 달렸다</div><div class="q">"may depend as much upon the process as upon the content of institutional redesign" <i>645</i></div></div>''',
           "", "질문은 Putnam의 한 문장을 향합니다. 제도 설계가 상수라는 말. 이론 자리에서 제도는 조직도가 아니라 습관이라고 합니다. 설계 자리에서 미리 단서를 둡니다. 설계는 정밀과학이 아니고, 나쁜 설계가 사회자본을 키운 사례도 있다고. 이 단서가 나중에 저자 자신을 겨눕니다. 주장의 중심은 셋째 차원, 반응성입니다. 반응하는 제도가 없으면 사회자본은 잠재 상태로 남는다.")
-    slide("창출, 동원, 잠재 상태", "Lowndes &amp; Wilson 2001 · Putnam의 혼합 정의에서 나온 세 개념",
+    slide("개념 정의", "Lowndes &amp; Wilson 2001 · 창출, 동원, 잠재 상태",
           f'''<div class="flow"><div class="box"><b>들어오는 개념</b>Putnam 1995의 혼합 정의를 그대로. 규범(Coleman·Fukuyama), 객관적 구조(Bourdieu), 결과(Coleman·Ostrom) 세 성분이 한 문단에(630). 혼합을 강점으로 본다</div><div class="ar">→</div><div class="box"><b>두 갈래</b>창출 = 연결망·규범의 생성(차원 ①②)<br>동원 = 있는 사회자본이 민주적 결정에 영향을 미치는 것(차원 ③④)<br>"Participation is not, after all, the same as social capital"(637)</div><div class="ar">→</div><div class="box"><b>잠재(latent)</b>사회자본의 공급이 정치 과정의 수요와 만나지 못한 상태(638). 결론에서는 조건이 하나 늘어 "responsive and inclusive"(641).<br>자체 측정은 없다</div></div>
 <div class="two" style="margin-top:14px;align-items:start"><img class="shot" style="max-height:170px" src="{FIG["lw_latent"]}" alt="638쪽"><div class="link">앞 주차와 닿는 자리. 9주차 Dasgupta(p.327)가 비판한 "incommensurable objects"의 합산을 이 논문은 강점이라 부른다. 3주차 Coleman의 기능 정의를 따르면 기능하지 않는 것은 사회자본이 아니므로 '잠재 사회자본'은 성립하기 어렵다. 2주차 Ostrom 1998(p.17)의 "제도가 신뢰 형성을 돕거나 막는가"가 셋째 차원의 질문이다.</div></div>''',
           "638쪽 캡처. 공급·수요 비유는 같은 쪽.",
           "개념은 Putnam의 혼합 정의로 들어옵니다. 규범과 구조와 결과가 한 문단에 있고, 저자들은 그 혼합을 강점이라고 합니다. 9주차 Dasgupta가 비판한 바로 그 지점입니다. 그 개념이 창출과 동원 두 갈래로 나뉘고, 동원되지 못한 상태를 잠재라고 부릅니다. 3주차 Coleman처럼 기능으로 정의하면 잠재 사회자본이라는 말이 성립하는지가 문제가 됩니다. 첫 쟁점입니다.")
     issue("답하지 않을 공청회라면 아예 열지 않는 편이 나은가", "Lowndes &amp; Wilson · 쟁점 1", "fine",
           ["협의는 했습니다", "모범 지자체 4분의 3이 결과를 결정에 반영하지 않음 (Audit Commission 1999)"],
-          ("찬 · 열지 않는 편이 낫다", "참여를 막는 최대 요인은 “의회가 아무것도 안 할 것”이라는 인식(638). 형식적 참여는 냉소를 낳고, 저자 스스로 참여는 “tokenistic ('window dressing')”일 수 있다고 쓴다(637)"),
-          ("반 · 여는 편이 낫다", "저자들이 든 Newton 1976(633): 버밍엄 시의회가 소수민족 단체를 배제하자 오히려 동원되고 결정에 영향을 미쳤다. 공청회는 연결망과 새 결사체를 만든다(637). Fukuyama 2001(3주)은 국가가 다 조직하면 시민이 의존한다고 했으니 무반응이 자생 역량을 지킬 수도 있다"),
+          ("찬 · 열지 않는 편이 낫다", "사람들이 참여를 그만두는 가장 큰 이유는 “어차피 의회는 아무것도 안 한다”는 인식이다(638). 의견을 물어 놓고 반영하지 않으면 그 인식을 매번 확인시켜 주는 셈이다. 저자들 스스로 참여가 형식적이거나 냉소적일 수 있다고 썼다(637). 답할 생각이 없으면 묻지 않는 편이 신뢰를 덜 깎는다."),
+          ("반 · 그래도 여는 편이 낫다", "저자들이 직접 든 반례가 있다. 버밍엄 시의회가 소수민족 단체를 배제하자 그 단체들은 사라지지 않고 오히려 조직되어 결정에 영향을 미치게 됐다(633, Newton 1976). 답이 없어도 공청회에서 사람들은 서로를 알게 되고 새 모임이 생긴다(637). Fukuyama(3주) 식으로 보면 국가가 너무 잘 답해 주면 시민은 스스로 조직하는 힘을 잃는다."),
           "한국의 공청회·주민설문·국민청원 중 답이 돌아오지 않는 것들은 사회자본을 깎고 있는가, 아니면 다른 곳으로 흘려보내고 있는가", local,
           "불타는 방에서 커피를 마시는 개입니다. 자막은 '협의는 했습니다'. 모범 지자체의 4분의 3이 협의 결과를 결정에 반영하지 않았습니다. 그러면 답하지 않을 공청회는 아예 열지 않는 편이 나은가. 저자들 논리로는 그렇습니다. 그런데 저자들이 직접 든 반례가 있습니다. 버밍엄에서는 배제가 오히려 동원을 낳았습니다. 어느 쪽인지 말씀해 주십시오.")
-    slide("지자체가 손댈 수 있는 네 가지", "Lowndes &amp; Wilson 2001 · 설계 변수, 경로, 근거",
+    slide("제도 설계의 네 차원", "Lowndes &amp; Wilson 2001 · 설계 변수, 경로, 근거",
           f'''<div class="two" style="grid-template-columns:1.25fr 1fr;align-items:start"><table style="font-size:14.5px"><tr><th>차원</th><th>지자체가 손댈 수 있는 것</th><th>사회자본에 닿는 경로</th><th>근거</th></tr>
 <tr><td>① 자발부문과의 관계</td><td>보조금, 계약·파트너십 조건, 인정 요건</td><td>창출. 계약은 단체를 지자체 닮게 만들고 작은 단체·캠페인형을 밀어낸다</td><td>"Unless you're cute and big"(635)</td></tr>
 <tr><td>② 시민 참여 기회</td><td>조사 → 공청회 → 시민배심·포럼</td><td>창출. 여론조사는 거의 기여 없음, 숙의형만 사회자본을 만든다</td><td>637</td></tr>
@@ -310,21 +303,21 @@ def build(local):
 <div><img class="shot" style="max-height:150px" src="{FIG["lw_quarters"]}" alt="638쪽 Audit Commission"><p class="take" style="font-size:15.5px">다섯 편 중 숫자가 둘뿐인 논문. 그 둘이 모두 셋째·넷째 차원에 있다. 창출(①②)보다 동원(③④)이 이 논문의 기여다.<small>12개 지표 중 민주주의 변수 0은 Putnam 1993 3장에 대한 지적(639)</small></p></div></div>''',
           "Lowndes &amp; Wilson 2001: 633~641. 표는 발제자 정리, 인용은 원문 쪽수.",
           "표가 없으니 네 차원을 표로 정리했습니다. 왼쪽부터 지자체가 손댈 수 있는 것, 사회자본에 닿는 경로, 근거입니다. 숫자가 둘뿐인데 둘 다 아래 두 줄, 동원 쪽에 있습니다. 이 논문의 기여는 창출이 아니라 동원입니다. 사회자본이 있어도 꺼내 쓰지 못하는 상태를 이름 붙인 것입니다.")
-    slide("자료 없는 틀과 버밍엄 반례", "Lowndes &amp; Wilson 2001 · 저자가 적은 한계와 원문 대조",
-          f'''<div class="lim"><div><div class="k">저자가 적은 것</div><ul><li>개혁을 평가하려 한 것이 아니다(641). 결과 예측은 어렵다(643)</li><li>설계는 정밀과학이 아니며 의도치 않은 효과가 반복된다(633)</li><li>사회자본 산출은 재기 어렵다(637). 자기 틀도 같은 어려움을 안는다</li><li>단정한 문장은 Putnam 비판과 "참여 ≠ 사회자본", "참여 ≠ 민주주의"뿐. 나머지는 "may"</li><li>지역에 맞는 설계는 뿌리내리지만 급진적 변화를 일으키기 어렵다(645)</li></ul><img class="shot" style="max-height:90px;margin-top:10px" src="{FIG["lw_641"]}" alt="641쪽"></div>
-<div class="me"><b>발제자가 짚는 것</b><ul><li>네 차원은 분류이지 설명이 아니다. 어떤 관찰이 나와도 네 차원 중 하나로 흡수되어 반박할 길이 없다</li><li>Newton 1976 반례(633)는 셋째 차원과 정면으로 어긋난다. 무반응이 잠재가 아니라 동원과 결정 영향을 낳았다. 저자는 "With these caveats in mind" 한 구절로 넘기고 다시 다루지 않는다</li><li>잠재의 조건이 638쪽 "responsive"에서 641쪽 "responsive and inclusive"로 늘어난다</li><li>창출과 동원을 나눠 처방하지만 Audit Commission 논리 자체가 동원 실패가 창출을 막는다는 것이다. 둘은 독립이 아니다</li></ul></div></div>''',
+    slide("한계와 쟁점", "Lowndes &amp; Wilson 2001",
+          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>개혁을 평가하려 한 것이 아니다(641). 결과 예측은 어렵다(643)</li><li>설계는 정밀과학이 아니며 의도치 않은 효과가 반복된다(633)</li><li>사회자본 산출은 재기 어렵다(637). 자기 틀도 같은 어려움을 안는다</li><li>단정한 문장은 Putnam 비판과 "참여 ≠ 사회자본", "참여 ≠ 민주주의"뿐. 나머지는 "may"</li><li>지역에 맞는 설계는 뿌리내리지만 급진적 변화를 일으키기 어렵다(645)</li></ul><img class="shot" style="max-height:90px;margin-top:10px" src="{FIG["lw_641"]}" alt="641쪽"></div>
+<div class="me"><b>발제자의 추가 검토</b><ul><li>네 차원은 분류이지 설명이 아니다. 어떤 관찰이 나와도 네 차원 중 하나로 흡수되어 반박할 길이 없다</li><li>Newton 1976 반례(633)는 셋째 차원과 정면으로 어긋난다. 무반응이 잠재가 아니라 동원과 결정 영향을 낳았다. 저자는 "With these caveats in mind" 한 구절로 넘기고 다시 다루지 않는다</li><li>잠재의 조건이 638쪽 "responsive"에서 641쪽 "responsive and inclusive"로 늘어난다</li><li>창출과 동원을 나눠 처방하지만 Audit Commission 논리 자체가 동원 실패가 창출을 막는다는 것이다. 둘은 독립이 아니다</li></ul></div></div>''',
           "docs/papers/03_lw_구조.md §5~6.",
           "저자들은 평가가 아니라고 처음부터 말합니다. 제가 짚는 것은 둘째 줄입니다. 저자들이 직접 든 버밍엄 사례가 셋째 차원과 정면으로 어긋나는데, caveat 한 구절로 넘기고 다시 다루지 않습니다. 이게 둘째 쟁점입니다.")
     issue("제도 설계로 사회자본을 만들 수 있다는 믿음은 어디까지 가는가", "Lowndes &amp; Wilson · 쟁점 2", "gru",
           ["제도 설계의 네 차원을 짠다", "반응하는 제도가 사회자본을 꺼낸다", "데이터는 없다", "데이터는 없다"],
-          ("찬 · 설계가 길이다", "네 차원은 지자체가 바꿀 수 있는 변수다. 2주차 Ostrom 1998은 제도가 신뢰·호혜 형성을 돕는다는 질문을 열어 두었고(p.17), 7주차 Boix &amp; Posner 1998도 실증 없이 경로를 세웠다. 틀이 먼저 있어야 6년 뒤 Krishna와 Freitag 같은 검증이 나온다"),
-          ("반 · 설계가 아니라 시간이다", "자료가 없다(641). 저자도 마지막에 '정원 가꾸기'를 말한다(645). 뿌리내린 제도는 튼튼하지만 바뀌지 않는다. Fukuyama 2001(3주): 국가가 다 조직하면 시민은 의존한다(p.18). Newton 반례(633)는 설계와 반대 방향으로 사회자본이 움직인 사례"),
+          ("찬 · 설계가 길이다", "네 차원은 전부 지자체가 내일부터 바꿀 수 있는 것들이다. 보조금 조건, 회의 시각, 협의 결과를 결정에 연결하는 규칙. 자료가 없다는 것은 아직 안 쟀다는 뜻이지 틀이 틀렸다는 뜻이 아니다. 2주차 Ostrom은 제도가 신뢰 형성을 돕는가를 열린 질문으로 두었고, 이 논문은 그 질문에 답할 변수 목록을 만들었다. 6년 뒤 Krishna와 Freitag이 그 질문을 쟀다."),
+          ("반 · 설계가 아니라 시간이다", "이 논문에는 자료가 없다(641). 네 차원 중 어느 것이 틀렸는지 보여 줄 관찰이 무엇인지도 적혀 있지 않다. 저자들도 마지막에 제도는 건축이 아니라 정원 가꾸기라고 했다(645). 뿌리내린 제도는 튼튼하지만 설계도대로 바뀌지 않는다는 뜻이다. 버밍엄 반례는 설계와 반대 방향으로 사회자본이 움직인 경우다."),
           "네 차원 중 하나가 틀렸다면 어떤 관찰이 나와야 그것을 알 수 있는가. 알 수 없다면 이 틀은 무엇을 한 것인가", local,
           "그루의 계획입니다. 네 차원을 짠다, 반응하는 제도가 사회자본을 꺼낸다, 그리고 데이터는 없다. 농담 같지만 저자들도 알고 있었습니다. 그래서 마지막에 정원 가꾸기를 말합니다. 설계로 만들 수 있다는 믿음과 시간이 만든다는 믿음, 어느 쪽에 서시겠습니까.")
     photo("birmingham_council", "구청 공청회에 갔지만 답장은 없었다.", "넷 중 셋은 결정에 반영하지 않았다(638). 수치는 움직이지 않는다. 이 논문은 재지 않았다.", '''Lowndes와 Wilson은 제도가 사회자본을 어디서 키우고 어디서 잠재우는지 설계도를 그렸다. 설계도에는 사람이 없다. 자료도 없고, 한 사람이 제도를 만나 무엇이 바뀌는지도 없다. 반응하는 제도가 사람 안에서 어떻게 작동하는지, 돈이 바뀌는지 생각이 바뀌는지는 이 논문으로 알 수 없다. 다음 논문은 그 빈칸을 한 정책으로 채운다. 미국 제대군인원호법을 받은 716명에게 50년 뒤 물었다.''', "카드의 한 줄입니다. 구청 공청회에 갔지만 답장은 없었다. 수치는 움직이지 않습니다. 이 논문은 재지 않았으니까요. 설계도에는 사람이 없습니다. 다음 논문은 그 빈칸을 사람으로 채웁니다. 제대군인원호법을 받은 716명에게 50년 뒤에 물었습니다.")
 
     # ───────── 4 Mettler ─────────
-    slide("제대군인원호법 수혜자 716명의 1998년 응답", "Bringing the State Back In to Civic Engagement: Policy Feedback Effects of the G.I. Bill · <i>APSR</i> 96(2)",
+    slide("Mettler (2002) 연구 개요", "Bringing the State Back In to Civic Engagement: Policy Feedback Effects of the G.I. Bill · <i>APSR</i> 96(2)",
           f'''<div class="card"><div class="headimg"><img src="{FIG["mettler_head"]}" alt=""></div><dl>
 <dt>질문</dt><dd>미국 제대군인원호법(G.I. Bill)의 교육 급여가 1950~64년 시민참여를 높였는가. 높였다면 돈 때문인가, 받은 방식 때문인가</dd>
 <dt>자료</dt><dd>참전자회 명단 4,000명 중 1,000명 우편조사(1998년 8월), 응답 716명(73.5%). 면접 28명. 남성, 백인 98.5%</dd>
@@ -333,7 +326,7 @@ def build(local):
 <dt>한계</dt><dd>회고(부록 A), 표본이 유리한 쪽이라 과소추정(부록 B). 1965년 이후 해석 효과는 사라지고 자원 효과만 남음(각주 15)</dd></dl></div>''',
           "Table 1~7(357~362). 원문 대조 docs/PAPERS.md §4. 표의 둘째 열은 표준화계수 β, 표준오차가 아님.",
           "Mettler는 정책 하나를 봅니다. 제대군인원호법의 교육 급여입니다. 질문이 좋습니다. 급여가 참여를 높였다면 돈 때문인가, 받은 방식 때문인가. 가설 넷을 학력 통제 하나로 가릅니다. 학력을 넣어도 급여 이용 효과가 남으면 교육의 부산물이 아니라는 뜻이 됩니다. 남았습니다. 단체 .47개, 정치참여 .38.")
-    slide("학력 통제 하나로 가르는 가설 넷", "Mettler 2002 · 계수 하나의 부호가 답이 되는 설계",
+    slide("연구 질문과 가설", "Mettler 2002 · 가설 넷을 학력 통제 하나로 가른다",
           f'''<div class="two" style="grid-template-columns:1.25fr 1fr;align-items:start"><div class="ladder" style="grid-template-columns:100px 1fr 1fr">
 <div class="l">질문</div><div>참여의 정점(1950~60년대)이 국가 개입 확대 직후에 왔다. 우연인가</div><div class="q">"Was the sequencing … merely a coincidence?" <i>351</i></div>
 <div class="l">이론적 기대</div><div>정책은 제도다(Lowi). Pierson의 자원 효과(역량)와 해석 효과(성향). 가설 넷의 예측: 기존 특성·부산물이면 학력 통제 후 계수 0, 수동화면 음수, 정책환류면 양수</div><div class="q">"policies function as institutions, imposing particular norms and rules on recipients" <i>352</i></div>
@@ -342,18 +335,18 @@ def build(local):
 <div class="l">결론</div><div>급여가 수급자를 시민으로 편입시켰다. 어떤 메시지를 어떤 설계로 전하는가가 다음 질문</div><div class="q">"It is time to 'bring the state back in' to the study of civic life." <i>363</i></div></div>
 <div><img class="shot" style="max-height:330px" src="{FIG["mettler_fig1"]}" alt="Figure 1"><p class="k" style="margin-top:6px">Figure 1(353). 자원 효과는 역량으로, 해석 효과는 성향으로. 자원이 성향에도 닿는 셋째 화살표</p></div></div>''',
           "", "이 논문의 설계는 한 문장입니다. 가설 넷을 계수 하나의 부호로 가른다. 학력을 통제했을 때 급여 이용 계수가 0이면 기존 특성이나 부산물, 음수면 수동화, 양수면 정책환류. 오른쪽이 Pierson의 도식을 가져온 그림입니다. 자원 효과는 역량으로, 해석 효과는 성향으로 갑니다. 결과는 양수였습니다.")
-    slide("가입 수로 잰 참여, 면접으로 읽은 해석 효과", "Mettler 2002 · 들어온 개념과 나간 문항",
+    slide("시민참여의 측정", "Mettler 2002 · 가입 수와 활동, 그리고 면접",
           f'''<div class="flow"><div class="box"><b>들어오는 개념</b>Putnam의 '시민 세대'와 결사체 가입의 정점이 설명 대상. 사회자본이라는 말은 정의 없이 세 번(351·362·363). 신뢰 문항은 없다</div><div class="ar">→</div><div class="box"><b>종속변수 둘(356)</b>단체 가입 수: 우애단체, 이웃·주택소유자 협회, PTA, 기타 시민단체를 1950~64 기준 합산<br>정치참여: 정치 단체 가입 + 활동 5종(공직자 접촉, 선거운동, 위원회, 기부, 시위)</div><div class="ar">→</div><div class="box"><b>해석 효과의 증거</b>설문: 호혜 "I felt I owed something back to American society" 4점, 평균 2.9<br>면접 28명: 권리가 아니라 특권·선물. "You just enrolled. I didn't have to do anything"(360)<br>해석 효과를 직접 재는 변수는 없다</div></div>
 <div class="two" style="margin-top:14px;align-items:start"><img class="shot" style="max-height:170px" src="{FIG["mettler_enrolled"]}" alt="360쪽 면접"><div class="link">앞 주차와 닿는 자리. 4주차 Glaeser 외 2002의 개인 투자 관점에서 급여는 교육 가격을 0으로 낮춘 외생 충격이고, 대학은 연결망을 쌓는 장소다. 4주차 Lin 2000의 접근 불평등은 결정적 효과 가설의 반대편이다. 3주차 Fukuyama의 의존 논리(수동화 가설의 원형)는 기각됐지만, 저자 자신이 보편 프로그램이라 직접 검증은 아니라고 단서를 단다(353).</div></div>''',
           "360쪽 캡처. 대공황 때 구호를 거부한 아버지(Colosimo)와 “You just enrolled”(Miller)의 대비.",
           "종속변수는 가입 수와 활동입니다. 신뢰 문항은 없습니다. 해석 효과의 증거는 설문 한 문항과 면접 28명입니다. 캡처의 두 인용이 그것입니다. 신청하고 수표가 왔다, 그냥 등록했다, 아무것도 할 필요가 없었다. 그 옆에 대공황 때 구호를 거부한 아버지 이야기가 있습니다. 해석 효과는 이 대비에서 읽어 낸 것이지 직접 잰 것이 아닙니다. 첫 쟁점입니다.")
     issue("국가에 빚졌다는 감정이 시민을 만드는가", "Mettler · 쟁점 1", "handshake",
           ["국가가 준 등록금과 월 75달러", "1950년대의 단체 가입", "빚졌다는 느낌 2.9점"],
-          ("찬 · 만든다", "호혜 변수 .32(p=.01), 부모 활동 다음으로 큰 설명(Table 3). 면접 거의 전원이 권리가 아니라 특권·선물이라 답했다. “one hell of a gift”(358)"),
-          ("반 · 다른 것이 만든다", "정치참여에는 호혜 변수가 −.02, 비유의(Table 4). 저자는 그래도 정치참여에 해석 효과를 적용한다. 빚은 복종도 낳을 수 있다(수동화 가설). 4주차 Lin 2000: 지위가 접근을 정한다. 효과는 상위층에서 가장 컸다(Table 7 1.22)"),
+          ("찬 · 빚졌다는 감정이 시민을 만든다", "면접한 참전자 거의 전원이 급여를 권리가 아니라 특권이자 선물로 여겼고, “국가에 빚졌다”는 느낌이 강할수록 1950년대에 더 많은 단체에 가입했다(Table 3, .32). 받은 것을 갚으려는 마음이 공동체 활동으로 나타난 것이다. 이것이 Pierson이 말한 해석 효과의 가장 직접적인 증거다."),
+          ("반 · 다른 것이 시민을 만든다", "빚졌다는 느낌은 단체 가입만 설명하고 정치참여에는 아무 관계가 없었다(Table 4, −.02). 정치참여 효과가 가장 컸던 집단은 가장 유복한 참전자들이었다(Table 7, 1.22). 감사의 마음이 작용했다면 가장 가난한 집 아들에게서 가장 커야 하는데 거기서는 효과가 없었다. 빚은 참여만이 아니라 복종이나 침묵도 낳을 수 있다. Lin(4주)의 말대로 원래 가진 사람이 더 가져간 것일 수 있다."),
           "한국의 국가장학금과 병역은 받은 사람에게 어떤 감정을 남기는가. 그 감정이 참여로 가는가, 아니면 다른 데로 가는가", local,
           "두 팔 악수입니다. 왼팔은 국가가 준 등록금, 오른팔은 1950년대 단체 가입, 맞잡은 손이 빚졌다는 느낌 2.9점입니다. 이 손이 정말 둘을 잇는가. 단체 가입에는 .32로 유의한데 정치참여에는 −.02입니다. 한국의 국가장학금과 병역을 떠올리며 말씀해 주십시오.")
-    slide("학력을 넣어도 남는 급여 효과", "Mettler 2002 Table 1 · 1950~64 단체 가입 수, OLS, N=393",
+    slide("주요 결과", "Mettler 2002 Table 1 · 1950~64 단체 가입 수, OLS, N=393",
           f'''<div class="res"><img class="shot" style="max-height:420px" src="{FIG["mettler_t1"]}" alt="Table 1"><div><div class="k">비표준화 계수 b와 유의확률</div><div class="bars">
 <span class="lab">G.I. Bill 이용</span><div class="b" style="width:100%"></div><span class="v">.47 (.01)</span>
 <span class="lab">부모 시민활동</span><div class="b" style="width:60%"></div><span class="v">.28 (.00)</span>
@@ -365,21 +358,21 @@ def build(local):
 <p class="take">학력을 통제해도 급여 이용은 남고, 정치참여에서는 학력이 아무 설명을 못 한다.<small>판정 기준 p&lt;.05 → 이용 .01 · 학력(정치) .67. 각주 15: 1965~79, 1980~98에는 학력이 유의해지고 이용은 비유의</small></p></div></div>''',
           "Mettler 2002: 357~358. R²는 .14와 .08. 표의 둘째 열(β)은 생략.",
           "왼쪽이 Table 1 원문입니다. 급여 이용 .47, 학력 .09. 아래 정치참여에서는 학력이 .01, 비유의입니다. 학력을 넣어도 급여 효과가 남으니 교육의 부산물은 아닙니다. 그런데 각주 15를 보면 1965년 이후에는 반대가 됩니다. 학력이 유의해지고 급여는 사라집니다. 저자는 이것을 해석 효과의 유통기한으로 읽습니다.")
-    slide("1998년에 물은 1950년대", "Mettler 2002 · 저자가 적은 한계와 원문 대조",
-          f'''<div class="lim"><div><div class="k">저자가 적은 것</div><ul><li>1998년에 1950년대를 물었다. 세부가 아니라 "대체로 활동했나"만, 과거 태도는 거의 묻지 않았다(부록 A)</li><li>표본의 이용률 60.8%(모집단 51%), 참전자 3분의 2가 사망. 효과는 과소추정 쪽(부록 B)</li><li>남성, 백인 98.5%, 흑인 부대 미포함(각주 4). 행정에 인종 차별은 흔했다(각주 21)</li><li>결측으로 회귀 N이 716의 55%(각주 10)</li><li>최저층 비효과는 "어린 시절 가난의 힘"(361), 추후 과제</li></ul><img class="shot" style="max-height:110px;margin-top:10px" src="{FIG["mettler_appA"]}" alt="부록 A"></div>
-<div class="me"><b>발제자가 짚는 것</b><ul><li>해석 효과는 측정되지 않고 학력 통제 후 잔차로 읽힌다. 남은 계수는 측정 안 된 다른 자원(월 75~120달러 생활비, 대학에서 쌓은 동료 연결망, 급여 기간 1~48개월)일 수 있다</li><li>부록 A에서 과거 태도는 안 묻는다고 했지만 호혜 문항과 Table 5 문항은 1998년에 물은 1950년대 태도다. 해석 효과의 유일한 설문 증거가 자기 규칙 밖에 있다</li><li>"덜 가진 쪽에서 큼"은 저중 한 칸에서만 성립. 정치참여는 상위층 1.22가 최대(Table 7)</li><li>비이용자도 군복무와 다른 급여(주택대출·실업수당)로 국가를 만났다. 비교집단이 깨끗하지 않다</li></ul></div></div>''',
+    slide("한계와 쟁점", "Mettler 2002",
+          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>1998년에 1950년대를 물었다. 세부가 아니라 "대체로 활동했나"만, 과거 태도는 거의 묻지 않았다(부록 A)</li><li>표본의 이용률 60.8%(모집단 51%), 참전자 3분의 2가 사망. 효과는 과소추정 쪽(부록 B)</li><li>남성, 백인 98.5%, 흑인 부대 미포함(각주 4). 행정에 인종 차별은 흔했다(각주 21)</li><li>결측으로 회귀 N이 716의 55%(각주 10)</li><li>최저층 비효과는 "어린 시절 가난의 힘"(361), 추후 과제</li></ul><img class="shot" style="max-height:110px;margin-top:10px" src="{FIG["mettler_appA"]}" alt="부록 A"></div>
+<div class="me"><b>발제자의 추가 검토</b><ul><li>해석 효과는 측정되지 않고 학력 통제 후 잔차로 읽힌다. 남은 계수는 측정 안 된 다른 자원(월 75~120달러 생활비, 대학에서 쌓은 동료 연결망, 급여 기간 1~48개월)일 수 있다</li><li>부록 A에서 과거 태도는 안 묻는다고 했지만 호혜 문항과 Table 5 문항은 1998년에 물은 1950년대 태도다. 해석 효과의 유일한 설문 증거가 자기 규칙 밖에 있다</li><li>"덜 가진 쪽에서 큼"은 저중 한 칸에서만 성립. 정치참여는 상위층 1.22가 최대(Table 7)</li><li>비이용자도 군복무와 다른 급여(주택대출·실업수당)로 국가를 만났다. 비교집단이 깨끗하지 않다</li></ul></div></div>''',
           "docs/papers/04_mettler_구조.md §5~6.",
           "저자가 자인한 한계는 회고와 표본입니다. 부록 둘이 그 답입니다. 제가 짚는 것은 첫 줄입니다. 해석 효과를 직접 재지 않았습니다. 학력을 통제하고 남은 계수를 해석 효과라고 부른 것입니다. 남은 계수는 월 75달러 생활비일 수도, 대학에서 만난 친구들일 수도 있습니다. 이게 둘째 쟁점입니다.")
     issue("심사 없는 급여가 심사 있는 급여보다 시민을 더 만드는가", "Mettler · 쟁점 2", "boyfriend",
           ["신청서 한 장, 다음 달 입금 (해석 효과)", "참전 군인", "졸업장과 소득 (자원 효과)"],
-          ("찬 · 받는 방식이 만든다", "360쪽 “You just enrolled”. 대공황 구호를 거부한 아버지들과의 대비. 정치참여에서 학력 .01 비유의(Table 2). 각주 15의 시기별 소멸은 메시지의 유통기한과 맞다. K&amp;R의 선별 접촉 −.26과 같은 방향"),
-          ("반 · 자원이 만든다", "해석 효과는 측정되지 않고 잔차로 읽혔다. 급여 기간·생활비·대학 연결망은 변수에 없다(Glaeser 외 2002, 4주). 효과가 상위층에서 최대(Table 7 1.22)인데 저자는 “scholars already know”로 넘긴다(362). 호혜 변수가 정치참여에 비유의"),
+          ("찬 · 받는 방식이 시민을 만든다", "참전자들은 “그냥 등록했다, 아무것도 할 필요가 없었다”고 기억했고, 그 아버지 세대는 대공황 구호를 수치로 여겨 거부했다(360). 같은 돈이라도 심사 없이 누구에게나 바로 주면 존엄을 주고, 심사하면 낙인을 준다. 정치참여에서 학력이 아무 설명을 못 하고 급여 이용만 남는 결과(Table 2)가 이 해석과 맞는다. Kumlin &amp; Rothstein의 선별 창구 −.26도 같은 방향이다."),
+          ("반 · 돈과 졸업장이 시민을 만든다", "해석 효과는 직접 잰 변수가 없다. 학력을 통제하고 남은 계수를 해석 효과라고 부른 것이다. 남은 계수는 월 75달러 생활비, 급여 기간 1~48개월의 차이, 대학에서 만난 동료 연결망일 수 있고 이것들은 변수에 없다(Glaeser 외, 4주). 저자는 부록 A에서 과거 태도는 묻지 않는다고 해 놓고, 유일한 태도 변수인 호혜 문항은 1998년에 1950년대 마음을 물은 것이다."),
           "같은 등록금을 소득 심사 뒤에 줬다면 .47은 어느 쪽으로 움직였겠는가. 한국의 아동수당과 기초연금 보편화는 이 가설의 검증 자리인가", local,
           "딴 데 보는 남자친구입니다. 참전 군인이 졸업장과 소득이라는 여자친구 옆에서 신청서 한 장을 돌아봅니다. 저자는 돌아본 쪽, 받는 방식이 참여를 만들었다고 합니다. 그런데 해석 효과를 직접 잰 변수는 없습니다. 같은 등록금을 소득 심사 뒤에 줬다면 .47이 어떻게 됐을지, 어느 쪽인지 말씀해 주십시오.")
     photo("us_veterans_1945", "신청서 한 장으로 등록금과 월 75달러를 받았다. 1950년대에 모임을 더 다녔다.", "가장 가난한 집 아들에게는 효과가 없었다(Table 6·7).", '''Mettler가 하지 못한 것이 셋이다. 신뢰를 재지 않았다. 국가가 모임을 늘렸다는 것과 사람을 믿게 했다는 것은 다른 주장이다. 정책이 하나다. 보편 프로그램 하나의 양의 효과를 보였을 뿐 선별 프로그램과 나란히 놓은 적이 없다. 선별과 보편의 대비는 암시다. 구호를 거부한 아버지들의 회상과 Skocpol 인용뿐이다. 다음 논문은 같은 사람들이 선별 창구와 보편 창구를 각각 몇 번 만났는지를 세고, 종속변수를 신뢰로 바꾼다.''', "카드의 한 줄입니다. 신청서 한 장으로 등록금과 월 75달러를 받았다. 모임을 더 다녔다. 가장 가난한 집 아들에게는 효과가 없었습니다. Mettler가 못 한 것이 셋입니다. 신뢰를 안 쟀고, 정책이 하나이고, 선별과 보편의 대비는 암시입니다. 다음 논문은 그 셋을 다 합니다. 스웨덴으로 갑니다.")
 
     # ───────── 5 Kumlin & Rothstein ─────────
-    slide("서부 스웨덴 2,543명의 대인신뢰", "Making and Breaking Social Capital: The Impact of Welfare-State Institutions · <i>Comparative Political Studies</i> 38(4)",
+    slide("Kumlin &amp; Rothstein (2005) 연구 개요", "Making and Breaking Social Capital: The Impact of Welfare-State Institutions · <i>Comparative Political Studies</i> 38(4)",
           f'''<div class="card"><div class="headimg"><img src="{FIG["kr_head"]}" alt=""></div><dl>
 <dt>질문</dt><dd>큰 복지국가가 사회자본을 밀어낸다는 통념과 스칸디나비아의 높은 신뢰가 왜 어긋나는가. 답은 크기가 아니라 설계</dd>
 <dt>자료</dt><dd>서부 스웨덴(Västra Götaland) SOM 1999 우편조사. 선별 기관 7(주거수당·사회부조·장애연금·노인 돌봄 등), 보편 기관 10(보육·도서관·보건소 등). 회귀 N=2,543</dd>
@@ -388,7 +381,7 @@ def build(local):
 <dt>한계</dt><dd>횡단면. "the opposite is always possible, especially when using nonexperimental data"(355)</dd></dl></div>''',
           "Table 1~7(351~358). 원문 대조 docs/PAPERS.md §5.",
           "마지막 논문입니다. 큰 복지국가는 사회자본을 밀어낸다는 통념이 있는데 스웨덴은 신뢰가 높습니다. 저자들의 답은 크기가 아니라 설계입니다. 소득을 심사하는 창구를 한 곳 더 만날 때마다 신뢰가 0.26점 내려가고, 누구나 쓰는 창구는 0.07점 올립니다. 그리고 355쪽에 이렇게 씁니다. 반대 방향은 언제나 가능하다.")
-    slide("크기가 아니라 설계라는 답", "Kumlin &amp; Rothstein 2005 · 질문, 이론적 기대, 설계 선택, 결과, 결론",
+    slide("연구 질문과 가설", "Kumlin &amp; Rothstein 2005",
           '''<div class="ladder">
 <div class="l">질문</div><div>복지국가가 호혜와 결사체를 대신해 사회자본을 밀어낸다면(crowding-out) 스칸디나비아는 왜 신뢰가 높은가. 크기 축을 버린다</div><div class="q">"it is not how big a welfare state is but what type of welfare state one is dealing with" <i>343</i></div>
 <div class="l">이론적 기대</div><div>절차공정성(Lind &amp; Tyler). 선별 급여는 규정이 모호해 일선 관료(Lipsky)의 재량이 크고 신청자는 정보를 숨길 유인이 있다. 불신의 악순환. 심리 기제 셋: 관료를 못 믿으면 사람도, 받으려면 속여야 하면 남도 그럴 것, 나도 그러니 나 같은 사람도</div><div class="q">"a vicious spiral of distrust" <i>349</i></div>
@@ -396,18 +389,18 @@ def build(local):
 <div class="l">결과</div><div>선별 −.26, 보편 +.07(Table 5). 제도 변수가 단체 참여(.09)보다 신뢰와 강하게 관련. 공정 대우 지각 → 신뢰는 사회부조 .30** 등</div><div class="q">"the institutional welfare-state variables appear more strongly related to social trust than participation in voluntary organizations" <i>355</i></div>
 <div class="l">결론</div><div>제도는 사회자본을 만들기도 부수기도 한다. 1990년대 위기로 선별 접촉이 늘어난 것은 경고. 참여는 신뢰의 원인이라기보다 증상일 수 있다</div><div class="q">"such participation may be more a symptom of interpersonal trust than a cause" <i>362</i></div></div>''',
           "", "질문은 퍼즐입니다. 크기로는 안 풀리니 설계로 갑니다. 이론 자리에 절차공정성이 들어옵니다. 소득을 심사하는 창구에는 재량이 크고, 신청자는 숨길 유인이 있고, 그 경험이 사람 일반에 대한 불신으로 번진다는 기제 셋입니다. 결과 단에서 눈여겨볼 문장이 하나 있습니다. 제도 변수가 단체 참여보다 신뢰와 더 강하게 관련된다. Putnam과 반대입니다.")
-    slide("신뢰 한 문항, 참여는 통제변수", "Kumlin &amp; Rothstein 2005 · 들어온 개념과 나간 문항",
+    slide("사회자본의 측정", "Kumlin &amp; Rothstein 2005 · 신뢰 한 문항, 참여는 통제변수",
           f'''<div class="flow"><div class="box"><b>들어오는 개념</b>제목은 사회자본, 종속변수는 대인신뢰 0~10 한 문항(344). 좁힌 이유 둘: 기제가 개인 수준이라 집계 지표로는 검증이 안 된다(344~345). 참여를 지표로 쓰면 종속 안에 독립(결사체)이 들어간다</div><div class="ar">→</div><div class="box"><b>참여는 통제로</b>Stolle 1998의 패널을 들어 참여 → 신뢰 인과를 의심(346). 단체 가입 수 0~16은 Table 5의 통제(.09***). 결론에서 참여는 "symptom"(362). Freitag이 신뢰를 통제로 둔 것과 정확히 반대</div><div class="ar">→</div><div class="box"><b>선별 / 보편, 매개 문항</b>선별 = 욕구심사 뒤 제공. 경제 조건일 수도, 건강·자립 능력일 수도(348). 보편은 지불 능력과 무관. 예시에 "child allowances"(348)<br>매개: "받을 자격이 있는 서비스와 도움을 받았는가" 1~5(356). 이론은 절차인데 문항은 결과에 가깝다</div></div>
 <div class="two" style="margin-top:14px;align-items:start"><img class="shot" style="max-height:170px" src="{FIG["kr_mech"]}" alt="349쪽 심리 기제"><div class="link">앞 주차와 닿는 자리. 3주차 Putnam 2000(p.22)은 복지국가를 쇠퇴의 후보 원인으로 두었고, Fukuyama 2001(p.18)은 국가가 다 조직하면 의존한다고 했다. 둘 다 크기 가설이다. 2주차 Ostrom 1998(p.17)은 사회보험이 내적 동기를 줄일 수 있다는 Frey를 소개하며 제도가 신뢰 형성을 돕거나 막는가를 물었다. 이 논문이 그 질문을 창구 단위로 잰다.</div></div>''',
           "349쪽 캡처. 아동수당이 보편 예시로 들어 있는 348쪽은 한국 2019년 전환과 같은 칸.",
           "제목은 사회자본인데 종속변수는 신뢰 한 문항입니다. 좁힌 이유가 둘인데 둘째가 중요합니다. 참여를 지표로 쓰면 종속변수 안에 독립변수가 들어간다. 그래서 참여를 통제로 내립니다. Freitag이 신뢰를 통제로 둔 것과 정확히 반대입니다. 캡처가 심리 기제 셋입니다. 그리고 348쪽 보편 예시에 아동수당이 있습니다. 첫 쟁점입니다.")
     issue("복지는 신뢰의 문제인가, 효율과 형평의 문제인가", "Kumlin &amp; Rothstein · 쟁점 1", "whynotboth",
           ["효율이냐 형평이냐로 싸우는 복지 논쟁", "신뢰라는 세 번째 기준을 올려도 되는가"],
-          ("찬 · 신뢰도 기준이다", "선별 −.26 대 보편 +.07(Table 5). 심리 기제 셋(349). 9주차 Fedderke 외 1999는 국가가 사회자본의 형성뿐 아니라 유지에도 역할을 한다고 했다(p.732). 선별 창구가 늘어나는 “creeping selectivization”은 신뢰의 비용이다(361)"),
-          ("반 · 기준으로 세우기엔 작다", "개인 −.26을 지역 평균으로 환산하면 선별 접촉자를 전부 0으로 돌려도 약 .10점(접촉 분포 24%·8%, 발제자 계산). 스웨덴 66% 대 미국 48%의 격차와 거리가 멀다. 3주차 Putnam 2000의 복지국가 쇠퇴 가설은 개인 접촉이 아니라 사회 전체의 호혜 규범을 말한 것이라 이 자료로는 반증이 안 된다"),
+          ("찬 · 신뢰도 기준이다", "같은 사람이 선별 창구를 한 곳 더 만날 때마다 남을 믿는 정도가 0.26점 내려가고 보편 창구는 0.07점 올린다(Table 5). 심사를 받으면 관료를 의심하고, 받으려면 속여야 하는 구조라면 남도 그럴 것이라 여기게 된다(349). 효율과 형평만으로 복지를 설계하면 이 비용이 보이지 않는다. 9주차 Fedderke는 국가가 사회자본을 만들기도 유지하기도 한다고 했다."),
+          ("반 · 기준으로 세우기에는 작다", "개인 수준 −.26을 지역 평균으로 바꾸면 선별 창구를 한 번이라도 간 사람(32%) 전부가 안 갔다고 가정해도 평균 신뢰는 0.1점 남짓 오른다(발제자 계산). 스웨덴 66% 대 미국 48%의 격차는 이것으로 설명되지 않는다. Putnam(3주)이 복지국가를 쇠퇴 원인으로 의심한 것은 개인의 창구 경험이 아니라 사회 전체의 호혜 규범 이야기라, 이 자료로는 그 가설을 반박할 수 없다."),
           "한국에서 선별과 보편을 가를 때 신뢰를 세 번째 기준으로 세울 만한가. 세운다면 어떤 자료로 그 비용을 재겠는가", local,
           "둘 다 하면 안 돼요, 소녀입니다. 효율이냐 형평이냐로 싸우는 복지 논쟁에 신뢰라는 세 번째 접시를 올려도 되는가. 저자들은 올리자는 쪽입니다. 그런데 개인 수준 −.26을 지역 평균으로 바꾸면 0.1점 남짓입니다. 스웨덴과 미국의 격차를 설명하기엔 작습니다. 한국에서 선별과 보편을 가를 때 신뢰를 기준으로 세울 만한지 말씀해 주십시오.")
-    slide("선별 창구 한 곳이 보편 창구 네 곳과 맞먹는 무게", "Kumlin &amp; Rothstein 2005 Table 5 · 대인신뢰(0~10)에 대한 OLS, N=2,543",
+    slide("주요 결과", "Kumlin &amp; Rothstein 2005 Table 5 · 대인신뢰(0~10)에 대한 OLS, N=2,543",
           f'''<div class="res"><img class="shot" style="max-height:420px" src="{FIG["kr_t5"]}" alt="Table 5"><div><div class="k">접촉 한 곳당 신뢰 변화</div><div class="bars">
 <span class="lab">선별 창구(0~2)</span><div class="b o" style="width:100%"></div><span class="v">−.26***</span>
 <span class="lab">보편 창구(0~8)</span><div class="b" style="width:27%"></div><span class="v">+.07***</span>
@@ -420,21 +413,21 @@ def build(local):
 <p class="take">선별 창구 한 곳이 보편 창구 네 곳과 맞먹는다. 통제 중 가장 큰 것은 삶의 만족이다.<small>판정 기준 p&lt;.01 → 두 접촉 변수 모두 통과 · Adj R² .10 · 첫 접촉의 낙폭(−.7)이 둘째(−.3)보다 크다</small></p></div></div>''',
           "Kumlin &amp; Rothstein 2005: 352, 354. 비표준화 계수라 척도가 다른 변수끼리의 크기 비교는 참고용.",
           "원문 Table 5입니다. 선별 창구 한 곳당 −.26, 보편 한 곳당 +.07. 선별 하나가 보편 넷과 맞먹습니다. 통제 중 가장 큰 것은 삶의 만족 .63인데, 이 변수가 무엇을 하는지 저자들은 한 줄도 쓰지 않았습니다. 아래 Table 3을 보면 첫 접촉의 낙폭이 둘째보다 큽니다. 수가 아니라 경험 유무일 수 있습니다.")
-    slide("반대 방향은 언제나 가능하다는 355쪽", "Kumlin &amp; Rothstein 2005 · 저자가 적은 한계와 원문 대조",
-          f'''<div class="lim"><div><div class="k">저자가 적은 것</div><ul><li>횡단면. "the opposite is always possible, especially when using nonexperimental data"(355). 바로 앞 문장은 "We obviously think that our causal interpretations are correct"</li><li>보편 접촉 6곳과 8곳 이상의 차이는 비유의(각주 5). Table 4는 단조 증가가 아니다</li><li>매개 문항은 절차를 "to a certain extent"만 잡는다(356)</li><li>매개 모형은 소표본이라 통제 셋뿐(각주 7)</li><li>서부 스웨덴 한 지역, 1999년 한 시점(각주 2)</li></ul><img class="shot" style="max-height:90px;margin-top:10px" src="{FIG["kr_355"]}" alt="355쪽"></div>
-<div class="me"><b>발제자가 짚는 것</b><ul><li>선별 7개 중 4개(장애인 이동·장애연금·장애 돌봄·노인 돌봄)는 자산조사가 아니라 건강·기능 심사(348). 건강은 통제에 없다. "선별 접촉 효과"의 일부는 건강 효과일 수 있다</li><li>Table 7에서 사회부조 .30**는 뚜렷하지만 주거수당은 −.02. 7개를 합친 −.26이 어느 기관에서 오는지 논문은 보여 주지 않는다</li><li>"6개 중 4개 유의"(357)에는 단서가 붙는다. 고용 .13은 p&lt;.10, 보육은 비유의</li><li>352쪽은 보편 접촉 0인 집단을 "majority"라 썼지만 실제 6%</li><li>"참여보다 강하다"(355)는 척도가 다른 비표준화 계수 비교, 검정 없음</li></ul></div></div>''',
+    slide("한계와 쟁점", "Kumlin &amp; Rothstein 2005",
+          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>횡단면. "the opposite is always possible, especially when using nonexperimental data"(355). 바로 앞 문장은 "We obviously think that our causal interpretations are correct"</li><li>보편 접촉 6곳과 8곳 이상의 차이는 비유의(각주 5). Table 4는 단조 증가가 아니다</li><li>매개 문항은 절차를 "to a certain extent"만 잡는다(356)</li><li>매개 모형은 소표본이라 통제 셋뿐(각주 7)</li><li>서부 스웨덴 한 지역, 1999년 한 시점(각주 2)</li></ul><img class="shot" style="max-height:90px;margin-top:10px" src="{FIG["kr_355"]}" alt="355쪽"></div>
+<div class="me"><b>발제자의 추가 검토</b><ul><li>선별 7개 중 4개(장애인 이동·장애연금·장애 돌봄·노인 돌봄)는 자산조사가 아니라 건강·기능 심사(348). 건강은 통제에 없다. "선별 접촉 효과"의 일부는 건강 효과일 수 있다</li><li>Table 7에서 사회부조 .30**는 뚜렷하지만 주거수당은 −.02. 7개를 합친 −.26이 어느 기관에서 오는지 논문은 보여 주지 않는다</li><li>"6개 중 4개 유의"(357)에는 단서가 붙는다. 고용 .13은 p&lt;.10, 보육은 비유의</li><li>352쪽은 보편 접촉 0인 집단을 "majority"라 썼지만 실제 6%</li><li>"참여보다 강하다"(355)는 척도가 다른 비표준화 계수 비교, 검정 없음</li></ul></div></div>''',
           "docs/papers/05_kr_구조.md §5~6, docs/PAPERS.md §5.",
           "저자가 자인한 것 중 첫 줄이 유명한 문장입니다. 반대 방향은 언제나 가능하다. 제가 짚는 것은 첫 줄입니다. 선별 7개 기관 중 4개는 소득 심사가 아니라 건강 심사입니다. 장애연금을 받는 사람은 건강이 나쁩니다. 그런데 건강은 통제에 없습니다. 심리 기제 셋은 '속여야 받는' 자산조사에 맞춰 쓰였는데, 장애연금 신청자가 속일 유인이 있는지는 다른 문제입니다. 이게 둘째 쟁점으로 이어집니다.")
     issue("신뢰가 낮은 사람이 선별 창구에 가는 것은 아닌가", "Kumlin &amp; Rothstein · 쟁점 2", "exit",
           ["선별 창구가 신뢰를 깎았다", "원래 못 믿던 사람이 창구에 갔다", "연구자 (355쪽: 반대 방향은 언제나 가능하다)"],
-          ("찬 · 창구가 깎는다", "이용자 안에서 공정 대우 지각 → 신뢰 .30**(사회부조, Table 7). 심리 기제 셋(349). 한국 2019년 아동수당 전환(선별 → 보편)은 같은 급여를 다른 창구로 받은 자연실험이다"),
-          ("반 · 낮은 신뢰가 창구로 간다", "횡단면, 355쪽 자인. 삶의 만족 .63이 가장 큰 통제인데 그것이 매개인지 선택인지 모른다. 4주차 Stolle 1998의 자기선택 논리를 저자들은 참여에만 적용하고 창구 접촉에는 적용하지 않았다. 선별 7개 중 4개는 건강 심사라 건강이 숨은 원인일 수 있다"),
+          ("찬 · 창구가 신뢰를 깎는다", "선별 창구 이용자 안에서 “받을 자격이 있는 것을 받았다”고 느낀 소수는 그렇지 않은 다수보다 신뢰가 높았다(Table 7, 사회부조 .30). 같은 창구를 갔는데 대우가 달랐다면 그 차이가 신뢰 차이를 만든 것이지 원래 신뢰 차이가 대우를 바꾼 것은 아니다. 한국은 2018년 9월 선별로 시작한 아동수당을 2019년 1월에 보편으로 바꿨으니, 같은 급여를 다른 창구로 받은 사람들이 있다."),
+          ("반 · 신뢰가 낮은 사람이 창구에 간다", "자료가 한 시점 횡단면이고 저자들도 반대 방향이 언제나 가능하다고 썼다(355). 통제변수 중 가장 큰 것이 삶의 만족(.63)인데 그것이 창구 경험의 결과인지 창구에 가게 만든 원인인지 알 수 없다. 저자들은 참여에는 자기선택 논리(Stolle 1998)를 적용하면서 창구 접촉에는 적용하지 않았다. 선별 창구 7개 중 4개는 소득이 아니라 건강 심사라, 건강이 나쁜 사람이 창구에도 가고 신뢰도 낮은 것일 수 있다."),
           "어느 쪽이 더 그럴듯한가. 그 판단을 뒤집으려면 어떤 자료가 필요한가. 2부에서 각자 고를 자료에 그 변수가 있는가", local,
           "고속도로 출구입니다. 직진은 선별 창구가 신뢰를 깎았다, 출구는 원래 못 믿던 사람이 창구에 갔다. 핸들을 꺾는 차가 연구자입니다. 저자들은 355쪽에서 반대 방향이 언제나 가능하다고 썼습니다. 어느 쪽이 그럴듯한지, 그리고 그 판단을 뒤집으려면 어떤 자료가 있어야 하는지 말씀해 주십시오. 2부에서 각자 고를 자료에 그 변수가 있는지가 바로 다음 시간의 일입니다.")
     photo("sweden_office", "복지 창구에서 서류 넷을 내고 한 달을 기다렸다.", "신뢰 −.26. 보편 창구였다면 +.07(Table 5).", '''첫 논문이 943쪽에서 이 논문을 인용했다. 신뢰받는 공공기관이 사회자본을 키운다는 가설의 근거로. 그리고 950쪽에서 그 가설을 기각했다. 정부 신뢰는 7년 뒤 마을의 사회자본과 무관했다. 두 논문이 잰 것이 다르다. Krishna는 같은 제도 아래 61개 마을의 집합행동 성향을, Kumlin과 Rothstein은 한 지역 안에서 창구 종류별 개인의 신뢰를 쟀다. 다섯 편은 서로 반박한 것이 아니라 서로 다른 칸을 쟀다. 저자들이 355쪽에서 바란 것은 실험 자료였다. 한국은 2018년 9월에 소득 하위 90%만 받는 아동수당을 시작했고 2019년 1월부터 심사를 없앴다. 같은 급여를 두 해에 걸쳐 다른 창구로 받은 사람들이 복지패널에 있다.''', "카드의 마지막 한 줄입니다. 복지 창구에서 서류 넷을 내고 한 달을 기다렸다. 첫 장면으로 돌아가면, 80억 분의 1에는 이 선택지가 없습니다. 게임은 이걸 안 잽니다. 첫 논문이 이 논문을 인용하고 기각했다는 것도 말씀드려야겠습니다. 두 논문이 잰 것이 다릅니다. 다섯 편은 서로 반박한 게 아니라 다른 칸을 쟀습니다. 그리고 저자들이 바란 실험 자료에 가장 가까운 것이 한국에 있습니다. 2018년 9월 선별로 시작해 2019년 1월 보편이 된 아동수당입니다. 그 자료로 2부에서 각자 잽니다.")
 
     # ───────── 엔딩 ─────────
-    slide("다섯 편의 종속변수", "무엇을 쟀고 신뢰는 어디에 두었나",
+    slide("다섯 편의 종속변수 비교", "",
           '''<table><tr><th>논문</th><th>종속변수</th><th>출처</th><th>신뢰의 자리</th></tr>
 <tr><td>Krishna</td><td>집합행동 성향 6문항 지수 0~100</td><td>944~946</td><td>지수 안의 한 문항</td></tr>
 <tr><td>Freitag</td><td>결사체 4문항 주성분, 칸톤 평균</td><td>127, 각주 2</td><td>통제변수, 다변량에서 비유의</td></tr>
@@ -444,7 +437,7 @@ def build(local):
 <p class="take" style="margin-top:18px">결사체를 재면 국가가 만들고, 신뢰를 재면 국가가 부순다. 다섯 편이 반대 결론을 낸 것이 아니라 다른 것을 쟀다.<small>Freitag의 다변량에서 신뢰 → 참여가 비유의였다는 점을 덧붙이면 더 정확하다(Table 6 Model 4).</small></p>''',
           "docs/PAPERS.md §7.",
           "다섯 편을 한 표로 접으면 이렇습니다. 셋째 열, 신뢰의 자리를 보십시오. 지수 안의 한 문항, 통제변수, 없음, 없음, 종속변수. 결사체를 재면 국가가 만들고 신뢰를 재면 국가가 부순다는 결론은 다섯 편이 서로 반박한 게 아니라 다른 것을 쟀기 때문에 나옵니다.")
-    slide("오늘 갈린 쟁점", "토론에서 많았던 쪽을 표시한다",
+    slide("토론 정리", "쟁점별로 많았던 쪽에 표시",
           '''<div class="two" style="align-items:start"><table style="font-size:14.5px"><tr><th>#</th><th>쟁점</th><th>찬</th><th>반</th></tr>
 <tr><td>1</td><td>정부가 만든 모임은 사회자본을 못 키우는가</td><td>□</td><td>□</td></tr><tr><td>2</td><td>7년 변화로 역사 의존을 기각할 수 있는가</td><td>□</td><td>□</td></tr>
 <tr><td>3</td><td>참여 제도가 참여를 만드는가, 그 반대인가</td><td>□</td><td>□</td></tr><tr><td>4</td><td>모임만 늘고 신뢰가 그대로면 사회자본이 만들어진 것인가</td><td>□</td><td>□</td></tr>
@@ -455,7 +448,7 @@ def build(local):
 <tr><td>10</td><td>신뢰가 낮은 사람이 선별 창구에 가는 것은 아닌가</td><td>□</td><td>□</td></tr></table></div>''',
           "토론 계획서의 번호와 같다. 체크는 발제자가 토론 중 즉석에서.",
           "오늘 던진 쟁점 열 개입니다. 토론에서 갈린 쪽에 표시해 두었습니다. 반이 많았던 쟁점은 그 논문의 자료가 답을 못 낸 자리이고, 2부에서 각자 자료를 고를 때 그 변수가 있는지 확인할 자리입니다.")
-    slide("2주차부터 11주차까지", "사회자본이 처음 결과가 된 주",
+    slide("강의 전체에서 본 11주차", "",
           '''<div class="two" style="grid-template-columns:1.2fr 1fr;align-items:start"><table style="font-size:14.5px"><tr><th>시기</th><th>무엇을 물었나</th><th>이 강좌의 문헌</th></tr>
 <tr><td>1960~80s</td><td>왜 합리적 개인은 협력하지 않는가</td><td>Olson, Hardin, Coase, Ostrom (2주)</td></tr>
 <tr><td>1986~2000</td><td>협력을 가능하게 하는 자본은 무엇인가</td><td>Bourdieu, Coleman, Fukuyama, Putnam (3주)</td></tr>
