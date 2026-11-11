@@ -116,19 +116,29 @@ MPOS = {"pigeon": [("top:7%;left:56%;width:40%",), ("top:34%;left:3%;width:42%",
 MNAME = {"pigeon": "이게 비둘기인가요?", "buttons": "두 버튼", "drake": "드레이크", "boyfriend": "딴 데 보는 남자친구", "brain": "확장하는 뇌", "fine": "불타는 방의 개", "gru": "그루의 계획", "handshake": "두 팔 악수", "whynotboth": "둘 다 하면 안 돼요?", "exit": "고속도로 출구"}
 
 
+# 공개판은 그림 파일을 저장소에 넣지 않고 imgflip 주소에서 불러온다. 안 열리면(오프라인) 캡션 카드가 대신 보인다
+MURL = {"pigeon": "Is-This-A-Pigeon", "brain": "Expanding-Brain", "buttons": "Two-Buttons", "drake": "Drake-Hotline-Bling", "fine": "This-Is-Fine", "gru": "Grus-Plan",
+        "handshake": "Epic-Handshake", "boyfriend": "Distracted-Boyfriend", "whynotboth": "Why-Not-Both", "exit": "Left-Exit-12-Off-Ramp"}
+
+
 def issue(title, sub, meme, caps, pro, con, q, local, notes):
-    if local and meme in MEME:
+    card = f'<div class="card2"><div style="grid-column:1/3"><div class="t">{MNAME[meme]} 형식 · 캡션</div></div>' + "".join(f'<div><div class="t">{["①","②","③","④"][i]}</div><div class="m">{esc(c)}</div></div>' for i, c in enumerate(caps)) + '</div>'
+    has = meme in MASP
+    if has:
+        img = f'<img src="{MEME[meme]}" alt="" style="object-fit:fill">' if local else f'<img src="https://imgflip.com/s/meme/{MURL[meme]}.jpg" alt="" style="object-fit:fill" referrerpolicy="no-referrer" onerror="noimg(this)">'
         w = min(1136, int(300 * MASP[meme])); fs = 21 if w >= 700 else 16 if w >= 480 else 13
         dark = meme in ("drake", "gru", "whynotboth")  # 밝은 바탕 템플릿은 남색 글자
         over = "".join(f'<div class="mc" style="{MPOS[meme][i][0]};font-size:{fs}px;{"color:#15203a;text-shadow:0 0 4px #fff,0 0 2px #fff,1px 1px 0 #fff" if dark else ""}">{esc(c)}</div>' for i, c in enumerate(caps))
         if MASP[meme] < 0.95:  # 세로로 긴 템플릿: 그림 왼쪽, 캡션은 오른쪽에 순서대로
-            fig = f'<div style="display:flex;gap:22px;align-items:center;justify-content:center;height:300px"><div class="fig" style="width:{w}px;height:300px"><img src="{MEME[meme]}" alt="" style="object-fit:fill"></div><ol style="font-size:16.5px;line-height:1.5;max-width:560px">' + "".join(f"<li>{esc(c)}</li>" for c in caps) + "</ol></div>"
+            fig = f'<div style="display:flex;gap:22px;align-items:center;justify-content:center;height:300px"><div class="fig" style="width:{w}px;height:300px">{img}</div><ol style="font-size:16.5px;line-height:1.5;max-width:560px">' + "".join(f"<li>{esc(c)}</li>" for c in caps) + "</ol></div>"
         else:
-            fig = f'<div class="fig" style="width:{w}px;margin:0 auto"><img src="{MEME[meme]}" alt="" style="object-fit:fill">{over}</div>'
+            fig = f'<div class="fig" style="width:{w}px;margin:0 auto">{img}{over}</div>'
+        if not local: fig = f'<div class="mw">{fig}</div>' + card.replace('<div class="card2">', '<div class="card2" style="display:none">', 1)
     else:
-        fig = f'<div class="card2"><div style="grid-column:1/3"><div class="t">{MNAME[meme]} 형식 · 캡션</div></div>' + "".join(f'<div><div class="t">{["①","②","③","④"][i]}</div><div class="m">{esc(c)}</div></div>' for i, c in enumerate(caps)) + '</div>'
+        fig = card
     body = f'<div class="issue">{fig}<div class="pc"><div><b>{pro[0]}</b>{pro[1]}</div><div><b>{con[0]}</b>{con[1]}</div></div><div class="iq">{q}</div></div>'
-    S.append((f'<section class="slide"><div class="hd"><h2>{title}</h2><p class="s">{sub}</p></div>{body}<div class="cap">{"밈 템플릿: imgflip 공개 템플릿, 수업 내부용 · " if local and meme in MEME else ""}토론 2분 30초 · 지명 1명 + 자유 1~2명</div><aside class="notes">{notes}</aside></section>', None))
+    credit = ("밈 템플릿: imgflip 공개 템플릿, 수업 내부용 · " if local else "밈 템플릿: imgflip · ") if has else ""
+    S.append((f'<section class="slide"><div class="hd"><h2>{title}</h2><p class="s">{sub}</p></div>{body}<div class="cap">{credit}토론 2분 30초 · 지명 1명 + 자유 1~2명</div><aside class="notes">{notes}</aside></section>', None))
 
 
 def build(local):
@@ -471,7 +481,7 @@ def build(local):
         slide(t, sub, f'<div style="display:flex;justify-content:center;height:470px"><img class="shot" src="{FIG[key]}" alt="{t}"></div>', cap, "", ap=True)
 
     html = f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>국가는 사회자본을 만들 수 있는가</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"><style>{face(''.join(h for h, _ in S) + '국가는 사회자본을 만들 수 있는가 ←/→ 이동 · N 노트 · F 전체화면 노트 없음 A0123456789')}{CSS.replace('__FAMILY__', FAMILY)}</style></head><body><div id="stage">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"><script>function noimg(m){{const w=m.closest('.mw');w.style.display='none';w.nextElementSibling.style.display='grid';}}</script><style>{face(''.join(h for h, _ in S) + '국가는 사회자본을 만들 수 있는가 ←/→ 이동 · N 노트 · F 전체화면 노트 없음 A0123456789')}{CSS.replace('__FAMILY__', FAMILY)}</style></head><body><div id="stage">
 {"".join(h for h, _ in S)}
 </div><div id="notes"></div><div id="help">←/→ 이동 · N 노트 · F 전체화면</div>
 <script>
@@ -481,7 +491,7 @@ function grow(s){{const bd=s.querySelector('.bd'),n=s.querySelector('.in');if(!b
 function show(k){{i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j===i));grow(S[i]);N.innerHTML=(S[i].querySelector('.notes')||{{}}).innerHTML||'<i>노트 없음</i>';location.hash=i+1;}}
 let main=0,ap=0;S.forEach(s=>{{const p=document.createElement('div');p.className='pg';if(s.dataset.ap){{p.textContent='A'+(++ap);}}else{{main++;if(!s.classList.contains('cover'))p.textContent=main;}}s.appendChild(p);}});
 addEventListener('keydown',e=>{{if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown')show(i+1);else if(e.key==='ArrowLeft'||e.key==='PageUp')show(i-1);else if(e.key.toLowerCase()==='n')N.classList.toggle('on');else if(e.key.toLowerCase()==='f'){{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}}}});
-addEventListener('load',()=>show(i));
+addEventListener('load',()=>{{document.querySelectorAll('.mw img').forEach(m=>{{if(!m.naturalWidth)noimg(m);}});show(i);}});
 addEventListener('click',e=>{{if(e.target.closest('#notes'))return;if(e.target.classList.contains('ck')){{e.target.textContent=e.target.textContent==='□'?'■':'□';return;}}show(i+(e.clientX>innerWidth/2?1:-1));}});
 addEventListener('resize',fit);fit();show((+location.hash.slice(1)||1)-1);
 </script></body></html>'''
