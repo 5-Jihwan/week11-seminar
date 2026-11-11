@@ -1,0 +1,191 @@
+{
+  "theory": {
+    "sub": "352~357쪽",
+    "background": [
+      {
+        "t": "참여 연구는 사회·인구학적 특성에 집중했고 정부 프로그램의 역할은 거의 다루지 않았다.",
+        "p": 352,
+        "ev": "primarily on social and demographic characteristics"
+      },
+      {
+        "t": "Schattschneider(1935)와 Lowi(1964)는 정책이 제도로 기능해 정치를 재형성한다고 보았다.",
+        "p": 352,
+        "ev": "and later by Theodore Lowi (1964). Both suggested"
+      },
+      {
+        "t": "Pierson(1993)은 정책 환류 분석이 조직 이익과 엘리트에 치우쳤다고 보고 일반 시민에 대한 분석을 요청했다.",
+        "p": 352,
+        "ev": "interests or political elites and has called for more"
+      },
+      {
+        "t": "저자는 시민 자발성 모형(Verba 외 1995)과 Schneider & Ingram(1997)의 정책 설계 논의를 결합해 틀을 확장했다.",
+        "p": 352,
+        "ev": "civic engagement, I draw on Verba, Schlozman, and"
+      }
+    ],
+    "hypotheses": [
+      {
+        "name": "기존 특성 가설",
+        "claim": "이용자와 비이용자의 참여 차이는 입대 전 개인 특성에서 나온다. 배경 변수를 통제하면 급여 이용은 유의하지 않음.",
+        "source": "Bennett 1986; Putnam 2000; Story 1998",
+        "result": "불완전(incomplete). 배경 변수 통제 후에도 급여 이용이 유의(357)",
+        "p": 353,
+        "ev": "analysis controls for the appropriate variables, the G.I."
+      },
+      {
+        "name": "부산물 가설",
+        "claim": "참여를 높이는 것은 교육 자체이고 급여는 교육을 제공한 수단에 그친다. 정책 설계는 결과와 무관.",
+        "source": "Jennings & Niemi 1981; Wolfinger & Rosenstone 1980; Nie, Junn & Stehlik-Barry 1996",
+        "result": "불충분(insufficient). 학력 통제 후에도 급여 이용의 독립 효과(357)",
+        "p": 353,
+        "ev": "would be understood only as an incidental vehicle for"
+      },
+      {
+        "name": "수동성 가설",
+        "claim": "사회권 확대는 의존과 권리 주장 성향을 키운다. 이용자의 참여 수준이 비이용자보다 낮음(음의 계수).",
+        "source": "Fukuyama 1995; Glendon 1991",
+        "result": "기각(discounted). 급여 이용 계수가 양(+)(357)",
+        "p": 353,
+        "ev": "would exhibit lower levels of involvement in public life"
+      },
+      {
+        "name": "정책 환류 가설",
+        "claim": "보편적이고 관대한 급여 설계의 자원 효과와 해석 효과가 참여를 높인다(양의 계수). 경로는 호혜와 결정적 효과.",
+        "source": "Pierson 1993; Skocpol 1992",
+        "result": "지지. 단체 가입에서 예측이 맞은 유일한 가설(357), 정치참여에서도 양(+)(357~358)",
+        "p": 354,
+        "ev": "operate through two dynamics: reciprocity and critical"
+      },
+      {
+        "name": "결정적 효과(정책 환류 가설의 하위 명제)",
+        "claim": "급여의 자원 효과와 해석 효과는 사회경제적 배경이 불리한 집단에서 더 크다.",
+        "source": "Wolfinger & Rosenstone 1980; Strate 외 1989; Verba 외 1995; Skocpol 1991",
+        "result": "저자는 지지로 해석. 유의한 집단은 단체 가입에서 중하·중간, 정치참여에서 중하와 중상·상(361~362)",
+        "p": 354,
+        "ev": "The critical effects explanation suggests that the G.I."
+      }
+    ],
+    "point": "저자의 평가는 기존 특성 가설 불완전, 부산물 가설 불충분, 수동성 가설 기각으로 가설마다 다르다(357).",
+    "notes": "왼쪽은 저자가 가져온 선행 논의이고 오른쪽은 가설 표입니다. 먼저 왼쪽 넷째 줄을 보시면, 저자는 Pierson의 두 효과에 시민 자발성 모형과 정책 설계 논의를 더해 틀을 만들었습니다. 그리고 오른쪽 표에서는 결과 열의 표현을 보셔야 합니다. 저자는 기존 특성 가설을 불완전하다고, 부산물 가설을 불충분하다고 썼습니다. 두 가설이 말한 부모의 시민활동과 학력의 효과는 Table 1에서 그대로 유의했기 때문입니다. 마지막 줄의 결정적 효과는 호혜와 함께 정책 환류 가설에 속한 하위 명제이고, 그래서 경쟁 가설은 넷입니다."
+  },
+  "result2": {
+    "sub": "Table 3~7(359~362쪽) · 호혜 모형과 아동기 생활수준별 급여 효과",
+    "capture": {
+      "page": 11,
+      "region": [0.108, 0.066, 0.497, 0.405],
+      "rotate": 0
+    },
+    "rows": [
+      {
+        "label": "호혜 변수 · 단체 가입(Table 3, 이용자 N=258)",
+        "value": ".32 (.01)",
+        "p": 359,
+        "ev": "the reciprocity model offers a partial explanation for"
+      },
+      {
+        "label": "호혜 변수 · 정치참여(Table 4, 이용자만)",
+        "value": "−.02 (.87)",
+        "p": 359,
+        "ev": "In the political model, however,"
+      },
+      {
+        "label": "급여 없이는 교육비 감당 불가에 동의한 비율(Table 5) · 최하 / 중하 / 중간 / 중상·상",
+        "value": "76.7% / 69.5% / 57.1% / 43.9% (γ=.324, p<.001)",
+        "p": 360,
+        "ev": "Unaffordable Without G.I. Bill, by Standard of Living during Childhood in 1920s"
+      },
+      {
+        "label": "단체 가입(Table 6, N=393) · 중하 × 급여 이용, 중간 × 급여 이용",
+        "value": ".47 (.05), .47 (.05)",
+        "p": 361,
+        "ev": "of joining civic organizations among veterans whose"
+      },
+      {
+        "label": "단체 가입(Table 6) · 최하 × 급여 이용, 중상·상 × 급여 이용",
+        "value": ".35 (.36), .71 (.08)",
+        "p": 361,
+        "ev": "more likely to join, but the relationship registered a"
+      },
+      {
+        "label": "정치참여(Table 7, N=379) · 최하 / 중하 / 중간 / 중상·상 × 급여 이용",
+        "value": ".17 (.57) / .40 (.03) / .27 (.13) / 1.22 (.00)",
+        "p": 362,
+        "ev": "The enhancement of participation among those from"
+      }
+    ],
+    "reading": [
+      {
+        "t": "호혜 모형은 이용자만을 대상으로 하며, 단체 가입은 부분적으로 설명하고 정치참여는 설명하지 못한다.",
+        "p": 359,
+        "ev": "effects among G.I. Bill users only, given the lack of a"
+      },
+      {
+        "t": "면접 응답자 대부분은 급여를 권리로 여기지 않았고 특권이나 감사의 표시로 받아들였다.",
+        "p": 358,
+        "ev": "I considered it a privilege, a sign of gratitude. I thought,"
+      },
+      {
+        "t": "저자는 정치참여에서 중상·상 집단의 효과를 참여가 부유층에 편향된다는 기존 지식과 일치하는 결과로 본다.",
+        "p": 362,
+        "ev": "strongly biased toward the better-off. What stands out"
+      }
+    ],
+    "point": "Table 6의 계수는 중상·상 집단(.71)이 가장 크며, 중하·중간 집단 중심의 해석은 유의확률(.05와 .08)에 근거한다(발제자 해석).",
+    "notes": "왼쪽이 361쪽 Table 6 원문입니다. 가운데 네 줄이 아동기 생활수준과 급여 이용의 상호작용항입니다. 저자는 중하와 중간 집단의 유의확률 .05를 근거로 이 집단에서 효과가 두드러진다고 씁니다. 그런데 계수만 보면 중상·상 집단이 .71로 가장 큽니다. 그리고 Table 5의 사례 수를 보면 이용자 가운데 최하 집단은 43명, 중상·상 집단은 41명이어서, 제가 보기에 두 집단의 추정은 불안정할 수 있습니다. 오른쪽 위 두 줄은 호혜 모형인데, 단체 가입에서는 .32로 유의하고 정치참여에서는 유의하지 않습니다."
+  },
+  "conclusion": {
+    "sub": "362~363쪽",
+    "author": [
+      {
+        "t": "사회권과 참여는 통합(incorporation)을 통해 연결될 수 있다는 정치이론의 논의를 결론의 틀로 사용한다.",
+        "p": 362,
+        "ev": "rights and participation may be related, connected"
+      },
+      {
+        "t": "급여는 교육 기회와 존엄한 처우라는 긍정적인 정부 경험을 제공해 이용자의 참여 성향을 높였다.",
+        "p": 362,
+        "ev": "them with access to education and treated them with"
+      },
+      {
+        "t": "정책은 제도처럼 규범을 촉진하며, 이 사례에서는 참여 규범과 사회자본의 형성을 촉진했다.",
+        "p": 362,
+        "ev": "can function, like any institution, in promoting norms;"
+      }
+    ],
+    "policy": [
+      {
+        "t": "정책 결정 과정은 정책 설계가 시민참여에 미치는 효과를 고려해야 한다(서론).",
+        "p": 351,
+        "ev": "Arguably, the policymaking process should be"
+      },
+      {
+        "t": "저자는 결과의 범위를 보편 원리로 설계된 관대한 프로그램 한 사례의 긍정적 효과로 한정한다.",
+        "p": 363,
+        "ev": "effects of one generous program organized by universal"
+      }
+    ],
+    "future": [
+      {
+        "t": "조세지출, 학자금 대출처럼 전달 방식이 공공 출처를 가리는 급여에서 해석 효과가 약해지는지 검토.",
+        "p": 363,
+        "ev": "life, or does their delivery system obscure their public"
+      },
+      {
+        "t": "1950~64년 이후의 장기 효과와, 이용자가 가입한 단체의 성격(계층 횡단 여부, 전국 연합 조직 여부) 분석.",
+        "p": 363,
+        "ev": "whether the G.I. Bill had long-term effects beyond"
+      }
+    ],
+    "contribution": [
+      "참여 연구의 설명변수에 정책 설계를 추가하고, 경쟁 가설 넷을 급여 이용 계수의 부호와 유의성으로 구분하는 검증 설계를 제시했다.",
+      "자산조사형 급여 중심이던 논의를 보편적 급여로 넓혀, 정책이 사회자본 형성에 기여할 수 있다는 개인 수준의 근거를 제시했다."
+    ],
+    "point": "저자의 결론은 보편 원리로 설계된 관대한 프로그램 한 사례에 한정되며, 다른 프로그램의 효과는 후속 과제로 남겼다(363).",
+    "notes": "왼쪽은 저자의 결론 세 가지이고 오른쪽은 함의와 후속 과제입니다. 왼쪽에서는 통합이라는 개념을 보셔야 합니다. 저자는 사회권을 받은 경험이 참여로 이어지는 과정을 이 개념으로 설명합니다. 그런데 오른쪽을 보시면 결론에는 구체적인 정책 권고가 없습니다. 정책 결정이 시민참여 효과를 고려해야 한다는 문장은 서론에 있고, 결론은 프로그램 한 사례의 효과라고 범위를 한정합니다. 그래서 공공 출처가 드러나지 않는 급여의 효과는 후속 과제로 남았고, 선별 급여와 보편 급여의 비교는 다음 논문인 Kumlin과 Rothstein이 다룹니다."
+  },
+  "data_row": {
+    "t": "참전자회 명단 4,000명 중 1,000명 우편조사(1998년), 응답 716명, 면접 28명. 독립변수는 급여 이용 여부(0/1), 통제변수는 최종 학력(1~9), 부모 학력(7점), 아동기·1960년대 생활수준(각 1~5), 부모의 시민활동·정치활동(각 1~5)(355~356)",
+    "p": 355,
+    "ev": "early respondents. The survey yielded 716 completed"
+  }
+}

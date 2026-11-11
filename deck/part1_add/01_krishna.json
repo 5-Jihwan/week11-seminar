@@ -1,0 +1,63 @@
+{
+  "theory": {
+    "sub": "선행 논의 941~942쪽 · 가설 942~943쪽 · 검증 결과 949~952쪽",
+    "background": [
+      {"t": "사회자본의 효과는 반복해서 확인되었으나 형성과 변화 과정은 거의 알려지지 않았다", "p": 941, "ev": "known about how social capital is formed and how it"},
+      {"t": "형성 경로가 불분명하여 사회자본을 정부 성과의 결과나 제도의 부산물로 보는 견해가 제기되었다(Brehm & Rahn 1997, Tarrow 1996)", "p": 941, "ev": "proposed that it might even be an ephemeral concept"},
+      {"t": "사회자본이 낮은 공동체에서 누가 먼저 투자하는가는 2차 집합행동 문제에 해당한다(Bates 1988)", "p": 942, "ev": "Bates termed a second-order collective action problem"},
+      {"t": "대안 가설들은 경험적으로 검증된 적이 없고, 횡단면 분석은 원인과 결과를 분리하지 못했다(Hooghe & Stolle 2003)", "p": 942, "ev": "alternative views have not, however, been tested"}
+    ],
+    "hypotheses": [
+      {"name": "역사 의존", "claim": "사회자본은 역사적으로 주어지며 단기간에 늘리기는 사실상 불가능하다(943)", "source": "Putnam (1993)", "result": "부분 지지", "p": 949, "ev": "only partially validated. Other factors have operated to"},
+      {"name": "제도 부산물", "claim": "신뢰받는 정부 제도가 장기간에 걸쳐 사회자본을 형성한다(943)", "source": "Levi (1996), Brehm & Rahn (1997), Rothstein (2001), Kumlin & Rothstein (2005)", "result": "지지되지 않음", "p": 950, "ev": "period is not signiﬁcantly associated in this context"},
+      {"name": "집단 특성", "claim": "종교·카스트·부·정치적 분열이 클수록 형성이 어렵다. 규모, 교육, 상대적 필요도 관련된다(943)", "source": "Boix & Posner (1998), Lowndes & Wilson (2001), Olson (1965), Almond & Verba (1965), Wade (1994)", "result": "부분 지지", "p": 951, "ev": "wealth in these villages, is signiﬁcantly and negatively"},
+      {"name": "집단 행동", "claim": "조직 결성, 규칙의 공동 제정, 리더십 같은 집단의 자발적 행동이 단·중기에 사회자본을 형성한다(943)", "source": "Ostrom (1990, 1994), Sabel (1994), Oliver (1984)", "result": "지지", "p": 952, "ev": "internal actions are critically important"},
+      {"name": "외부 개입", "claim": "정부·NGO의 지역 조직 육성(단기)과 근대화·기반시설 확충(장기)이 사회자본을 형성한다(943)", "source": "World Bank (2000), Apter (1965), Lerner (1958)", "result": "지지되지 않음", "p": 951, "ev": "have any signiﬁcant impact in terms of generating"}
+    ],
+    "point": "지지 여부는 가설 집단 안에서도 갈린다. 집단 특성은 토지 불평등만, 리더 세 유형은 신진 리더만 유의했다.",
+    "notes": "왼쪽은 저자가 출발점으로 삼은 선행 논의입니다. 사회자본이 낮은 곳에서는 누가 먼저 투자하느냐가 문제입니다. 저자는 이를 2차 집합행동 문제로 봅니다. 오른쪽 표에서는 검증 결과 열을 보시면 됩니다. 제도 부산물 가설의 근거 문헌에는 오늘 다섯 번째 논문인 Kumlin과 Rothstein이, 집단 특성 가설에는 세 번째 논문인 Lowndes와 Wilson이 들어 있습니다. 그리고 역사 의존은 949쪽에서 부분적으로만 확인된다고 쓰고 954쪽에서는 지지되지 않는다고 써서 서술이 다릅니다. 그래서 표의 부분 지지 표기는 제가 변수별 결과를 보고 정리한 것입니다."
+  },
+  "result2": {
+    "sub": "Table 3(953쪽) · 개인 수준 OLS, N=1,544, R² .44 · 사례연구 9개 마을(944, 952쪽)",
+    "capture": {"page": 14, "region": [0.08, 0.068, 0.915, 0.535], "rotate": 0},
+    "rows": [
+      {"label": "자생 조직 가입", "value": "7.70* (1.84)", "p": 952, "ev": "membership in self-initiated organizations has a larger relative"},
+      {"label": "규칙(1997)", "value": "4.11* (.23)", "p": 953, "ev": "agreement with village rules tended to experience a"},
+      {"label": "신진 리더(1997)", "value": "2.45* (.40)", "p": 952, "ev": "new village leaders (but not the other two types of"},
+      {"label": "정부 조직 가입 · NGO 조직 가입", "value": "1.57 (1.88) · 1.95 (1.33), 유의하지 않음", "p": 952, "ev": "(but not the two other forms of local"},
+      {"label": "마을 거주 기간", "value": ".07* (.02), 추가된 개인 수준 변수 중 유일하게 유의", "p": 953, "ev": "other individual-level variable was signiﬁcant: length"},
+      {"label": "사례연구(9개 마을)", "value": "2004년 12월~2005년 1월 수행(944). 결과는 지면 제약으로 논문에 싣지 않음", "p": 952, "ev": "The case studies, not reported here for lack"}
+    ],
+    "reading": [
+      {"t": "마을 수준 분석에서 유의했던 변수가 개인 수준 분석에서도 유의했다. 토지 불평등 −.07*, 1997년 지수 .16*", "p": 952, "ev": "in the individual-level analysis as in the"},
+      {"t": "개인 수준에서는 자생 조직 가입의 상대적 효과가 더 크다. 개인 간 가입 편차가 마을 평균 간 편차보다 크기 때문이다(각주 22)", "p": 952, "ev": "Variations among individuals in terms of organization"},
+      {"t": "지수가 1 표준편차 넘게 오른 16개 마을 중 6개는 초기 토지 불평등이 가장 높은 편이었다", "p": 954, "ev": "In six of the 16 villages where social capital"}
+    ],
+    "point": "개인 수준 분석은 마을 수준 결과를 재확인하지만, 기제를 보여 줄 사례연구 결과는 논문에 실리지 않았다.",
+    "notes": "왼쪽 캡처는 953쪽 Table 3입니다. 분석 단위는 개인이며 N은 1,544입니다. 별표가 붙은 줄을 보시면 Table 2에서 유의했던 변수들이 여기서도 유의합니다. 새로 유의한 변수는 마을 거주 기간 하나입니다. 그런데 본문은 재면접자 1,731명 전원의 자료를 썼다고 적었는데 표의 N은 1,544이고, 187명의 차이는 본문에 설명이 없습니다. 그리고 9개 마을 사례연구는 지면 제약으로 실리지 않아서, 리더가 규칙을 만드는 과정은 이 논문에서 확인할 수 없습니다."
+  },
+  "conclusion": {
+    "sub": "954~955쪽 · 함의 일부는 942쪽",
+    "author": [
+      {"t": "사회자본은 집단 내부의 동태적 속성이며, 예측 가능한 방식으로 변화한다", "p": 954, "ev": "Social capital is a dynamic property internal to"},
+      {"t": "높은 불평등은 사회자본 형성을 저해할 수 있다. 구조와 행위가 모두 중요하다", "p": 954, "ev": "of generating social capital, thus structure and agency"},
+      {"t": "변화는 점진적이다. 61개 마을 중 38개는 7년간 변화가 1 표준편차 미만이었다", "p": 955, "ev": "In 38 out of 61 villages social capital"}
+    ],
+    "policy": [
+      {"t": "계획가는 공동체의 사회자본 축적을 도울 수 있으나, 주도는 공동체가 해야 한다", "p": 942, "ev": "Communities will, however, have to take the"},
+      {"t": "외부 기관은 불평등 완화와 자기조직화 여건 조성으로 간접적·장기적으로 기여할 수 있다", "p": 954, "ev": "self-organize, external agencies can help indirectly and"},
+      {"t": "사회자본에 대한 의도적 투자는 가능하고 가치가 있으나, 빠르게 축적할 수는 없다", "p": 955, "ev": "Purposively investing in social capital is possible"}
+    ],
+    "future": [
+      {"t": "리더가 형성되는 과정은 아직 충분히 알려지지 않았으며 추가 연구가 필요하다(각주 29)", "p": 954, "ev": "More research is required to study leadership development."},
+      {"t": "분석은 특정 맥락과 시기에 한정된다. 저자는 더 넓은 의의를 가능성으로만 언급한다", "p": 954, "ev": "period of time, but the results obtained could"}
+    ],
+    "contribution": [
+      "같은 척도로 7년 간격을 두고 반복 측정한 패널 자료로, 사회자본을 종속변수로 놓고 경쟁 가설 다섯 집단을 한 모형에서 검증했다",
+      "조직 가입을 설립 주체(정부, NGO, 주민)별로 나누어 측정하여, 가입의 효과가 설립 주체에 따라 다를 수 있음을 보였다"
+    ],
+    "point": "저자는 의도적 투자가 가능하다고 결론짓지만, 신진 리더를 어떻게 육성하는지는 후속 과제로 남긴다.",
+    "notes": "왼쪽은 저자가 954쪽과 955쪽에서 직접 정리한 결론입니다. 사회자본은 변화하지만 그 폭은 작아서, 61개 마을 중 38개는 변화가 1 표준편차에 못 미쳤습니다. 오른쪽 함의에서는 외부 기관의 역할이 간접 경로로 한정되어 있다는 점을 보시면 됩니다. 그런데 핵심 변수인 신진 리더가 어떻게 생기는지는 저자도 아직 잘 알려져 있지 않다고 적었습니다. 그래서 리더 육성을 정책 수단으로 삼을 근거는 이 논문만으로는 부족합니다. 아래 기여 두 줄은 제 평가입니다."
+  },
+  "data_row": {"t": "라자스탄 5개 구 61개 마을 패널. 1997년 2,291명 면접, 2004년 여름 1,731명 재면접(76%). 독립변수 16개는 역사 의존 1, 제도 1, 집단 특성 6, 외부 개입 3, 집단 행동 5. 별도 통제변수 없이 동시 투입하고 대안 변수는 다른 모형에서 교체 투입(각주 17)", "p": 944, "ev": "individuals interviewed in 1997, 1,731 (76%) were"}
+}

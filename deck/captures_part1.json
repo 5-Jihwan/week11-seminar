@@ -8,22 +8,9 @@
    0.058,
    0.92,
    0.352
-  ]
- },
- {
-  "id": "krishna_q",
-  "pdf": "01_krishna",
-  "page": 6,
-  "find": [
-   "Structural Elements",
-   "Suppose a friend of yours in this village faced"
   ],
-  "full_width": true,
-  "pad": [
-   0,
-   14,
-   0,
-   40
+  "hl": [
+   "Organizations promoted by outsiders have also not"
   ]
  },
  {
@@ -34,28 +21,24 @@
    "OLS Regression on Village Social Capital in 2004",
    "New Leaders"
   ],
-  "full_width": true,
-  "pad": [
-   0,
-   16,
-   0,
-   60
-  ]
+  "hlrow": [
+   "Self-Initiated Organization Memberships",
+   "Rules (1997)",
+   "New Leaders (1997)",
+   "Standard Deviation of Landholdings"
+  ],
+  "to": "F-probability"
  },
  {
   "id": "krishna_950",
   "pdf": "01_krishna",
   "page": 11,
   "find": [
-   "Since all the villages studied here share the same",
-   "more than just institutions matter"
+   "Since all the villages studied here share the same"
   ],
-  "full_width": true,
-  "pad": [
-   0,
-   10,
-   0,
-   10
+  "to": "help build social capital",
+  "hl": [
+   "it is not possible to test whether changing institutional designs will help build social capital"
   ]
  },
  {
@@ -67,21 +50,6 @@
    0.125,
    0.9,
    0.47
-  ]
- },
- {
-  "id": "freitag_q",
-  "pdf": "02_freitag",
-  "page": 24,
-  "find": [
-   "The questions and coding for the four items are as follows"
-  ],
-  "full_width": true,
-  "pad": [
-   0,
-   10,
-   0,
-   230
   ]
  },
  {
@@ -100,15 +68,15 @@
   "id": "freitag_t7",
   "pdf": "02_freitag",
   "page": 20,
-  "find": [
-   "Table 7."
+  "region": [
+   0.12,
+   0.085,
+   0.92,
+   0.555
   ],
-  "full_width": true,
-  "pad": [
-   0,
-   10,
-   0,
-   420
+  "hlrow": [
+   "Direct democracy",
+   "Language region"
   ]
  },
  {
@@ -116,15 +84,12 @@
   "pdf": "02_freitag",
   "page": 24,
   "find": [
-   "that these results are only suggestive and",
-   "explorative"
+   "It should be noted, however, that these results are only suggestive"
   ],
-  "full_width": true,
-  "pad": [
-   0,
-   10,
-   0,
-   10
+  "to": "explorative",
+  "ctx": 2,
+  "hl": [
+   "these results are only suggestive and explorative"
   ]
  },
  {
@@ -143,15 +108,13 @@
   "pdf": "03_lw",
   "page": 10,
   "find": [
-   "phenomenon in the absence of responsive",
-   "needs to be matched by an equivalent"
+   "Social capital may, then, remain a"
   ],
-  "full_width": true,
-  "pad": [
-   0,
-   14,
-   0,
-   14
+  "to": "have a chance to work",
+  "hl": [
+   "phenomenon in the absence of responsive",
+   "political institutions.",
+   "needs to be matched by an"
   ]
  },
  {
@@ -159,14 +122,12 @@
   "pdf": "03_lw",
   "page": 10,
   "find": [
-   "three-quarters failed to link the results of con"
+   "biggest deterrent to participation"
   ],
-  "full_width": true,
-  "pad": [
-   0,
-   60,
-   0,
-   40
+  "to": "with decision-making processes",
+  "hl": [
+   "three-quarters failed to link the results of",
+   "with decision-making processes"
   ]
  },
  {
@@ -176,27 +137,9 @@
   "find": [
    "we have not set out specifically to evaluate the reforms"
   ],
-  "full_width": true,
-  "pad": [
-   0,
-   14,
-   0,
-   40
-  ]
- },
- {
-  "id": "lw_newton",
-  "pdf": "03_lw",
-  "page": 5,
-  "find": [
-   "may have a positive impact on social capital"
-  ],
-  "full_width": true,
-  "pad": [
-   0,
-   30,
-   0,
-   60
+  "ctx": 2,
+  "hl": [
+   "we have not set out specifically to evaluate the reforms"
   ]
  },
  {
@@ -214,44 +157,25 @@
   "id": "mettler_fig1",
   "pdf": "04_mettler",
   "page": 3,
-  "find": [
-   "Policy Feedback for Mass Publics"
-  ],
-  "full_width": true,
-  "pad": [
-   0,
-   10,
-   0,
-   340
+  "region": [
+   0.105,
+   0.064,
+   0.91,
+   0.297
   ]
  },
  {
   "id": "mettler_t1",
   "pdf": "04_mettler",
   "page": 7,
-  "find": [
-   "Determinants of Civic"
+  "region": [
+   0.108,
+   0.066,
+   0.497,
+   0.351
   ],
-  "pad": [
-   70,
-   12,
-   120,
-   330
-  ]
- },
- {
-  "id": "mettler_enrolled",
-  "pdf": "04_mettler",
-  "page": 10,
-  "find": [
-   "You just enrolled.",
-   "My father did not want to take welfare"
-  ],
-  "pad": [
-   70,
-   30,
-   30,
-   70
+  "hlrow": [
+   "Used G.I. Bill for"
   ]
  },
  {
@@ -261,25 +185,20 @@
   "find": [
    "I decided against asking respondents much about past attitudes"
   ],
-  "pad": [
-   70,
-   40,
-   30,
-   60
+  "ctx": 3,
+  "hl": [
+   "I decided against asking respondents much about past attitudes"
   ]
  },
  {
   "id": "mettler_t7",
   "pdf": "04_mettler",
   "page": 12,
-  "find": [
-   "Critical Effects Model of"
-  ],
-  "pad": [
-   70,
-   12,
-   120,
-   300
+  "region": [
+   0.092,
+   0.066,
+   0.481,
+   0.519
   ]
  },
  {
@@ -291,37 +210,24 @@
    0.185,
    0.76,
    0.545
-  ]
- },
- {
-  "id": "kr_mech",
-  "pdf": "05_kr",
-  "page": 11,
-  "find": [
-   "three psychological mechanisms at work here"
   ],
-  "full_width": true,
-  "pad": [
-   0,
-   20,
-   0,
-   230
+  "hl": [
+   "Contacts with universal welfare-state institutions tend to increase social trust, whereas experiences with needs-testing social programs undermine it"
   ]
  },
  {
   "id": "kr_t5",
   "pdf": "05_kr",
   "page": 16,
-  "find": [
-   "Number of needs-tested institutional contacts (0 to 2)",
-   "Number of respondents"
+  "region": [
+   0.245,
+   0.188,
+   0.755,
+   0.486
   ],
-  "full_width": true,
-  "pad": [
-   0,
-   60,
-   0,
-   20
+  "hlrow": [
+   "Number of needs-tested institutional contacts",
+   "Number of universal institutional contacts"
   ]
  },
  {
@@ -329,30 +235,26 @@
   "pdf": "05_kr",
   "page": 17,
   "find": [
-   "Our second response is that we welcome",
-   "the opposite is always possible, especially when using nonexperimental data"
+   "We obviously think that our causal interpretations are correct"
   ],
-  "full_width": true,
-  "pad": [
-   0,
-   10,
-   0,
-   10
+  "to": "nonexperimental data",
+  "ctx": 1,
+  "hl": [
+   "the opposite is always possible, especially when using nonexperimental data"
   ]
  },
  {
   "id": "kr_t3",
   "pdf": "05_kr",
   "page": 14,
-  "find": [
-   "Personal Contacts With Selective, Needs-Testing Welfare Institutions"
+  "region": [
+   0.245,
+   0.443,
+   0.755,
+   0.632
   ],
-  "full_width": true,
-  "pad": [
-   0,
-   10,
-   0,
-   200
+  "hlrow": [
+   "Average trust (0 to 10)"
   ]
  },
  {
@@ -366,12 +268,6 @@
    "Number of respondents",
    "Received the service and assistance to which"
   ],
-  "pad": [
-   30,
-   30,
-   30,
-   30
-  ],
   "rotate": -90
  },
  {
@@ -383,6 +279,11 @@
    0.209,
    0.907,
    0.498
+  ],
+  "hl": [
+   "who do you think would come forward",
+   "Who in this village looks after common lands",
+   "Who do you think would resolve this dispute"
   ]
  },
  {
@@ -394,6 +295,11 @@
    0.4925,
    0.893,
    0.915
+  ],
+  "hl": [
+   "the four items",
+   "A principal component analysis",
+   "the mean factor scores calculated from all"
   ]
  },
  {
@@ -405,6 +311,10 @@
    0.3735,
    0.487,
    0.6075
+  ],
+  "hl": [
+   "I have operationalized the dependent variable, civic engagement, in two ways",
+   "sum of each individuals’ memberships in four types of civic organizations"
   ]
  },
  {
@@ -416,6 +326,69 @@
    0.177,
    0.755,
    0.477
+  ],
+  "hl": [
+   "According to your opinion, to what extent can people in general be trusted?",
+   "ranges from 0 to 10"
+  ]
+ },
+ {
+  "id": "krishna_r2",
+  "pdf": "01_krishna",
+  "page": 14,
+  "region": [
+   0.08,
+   0.068,
+   0.915,
+   0.535
+  ]
+ },
+ {
+  "id": "freitag_r2",
+  "pdf": "02_freitag",
+  "page": 20,
+  "region": [
+   0.115,
+   0.082,
+   0.92,
+   0.447
+  ]
+ },
+ {
+  "id": "lw_r2",
+  "pdf": "03_lw",
+  "page": 5,
+  "region": [
+   0.13,
+   0.5925,
+   0.9,
+   0.914
+  ]
+ },
+ {
+  "id": "mettler_r2",
+  "pdf": "04_mettler",
+  "page": 11,
+  "region": [
+   0.108,
+   0.066,
+   0.497,
+   0.405
+  ]
+ },
+ {
+  "id": "kr_r2",
+  "pdf": "05_kr",
+  "page": 19,
+  "region": [
+   0.24,
+   0.18,
+   0.76,
+   0.428
+  ],
+  "hl": [
+   "of the questions and alternatives, see the text. The balance measure was calculated by subtracting",
+   "respondents on the positive side (4 and 5). Thus a higher balance measure means that more"
   ]
  }
 ]

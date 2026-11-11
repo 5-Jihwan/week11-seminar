@@ -77,6 +77,11 @@ p,li{font-size:18px;line-height:1.6;margin:0}ul,ol{margin:0;padding-left:22px}li
 /* 논문 시작 표지 */
 .pcover .nav{position:absolute;left:88px;right:88px;top:54px;display:flex;gap:26px;font-size:14.5px;color:rgba(255,255,255,.55)}.pcover .nav .on{color:#fff;font-weight:700;border-bottom:2px solid var(--green);padding-bottom:5px}
 .pcover .c{bottom:84px}.pcover .no{font-size:15.5px;opacity:.85;margin-bottom:8px}.pcover h1{margin:0;font-size:48px;line-height:1.25;font-weight:700}.pcover .en{margin:12px 0 0;font-size:18px;line-height:1.5;opacity:.92;max-width:940px}.pcover .q{margin:28px 0 0;font-size:25px;line-height:1.45;font-weight:700;max-width:1000px}.pcover .d{margin:10px 0 0;font-size:16.5px;opacity:.9}
+/* 보충 장 */
+.add{display:grid;gap:30px;align-items:start}.add ul{padding-left:20px}.add li{font-size:15px;line-height:1.5;margin-top:6px}.add .k{font-size:13.5px;color:var(--navy);font-weight:700;margin-bottom:4px}
+table.hyp{font-size:14px;table-layout:fixed}table.hyp td{line-height:1.45;padding:7px 9px}
+.pg2{font-style:normal;color:var(--gray);font-size:.85em}
+.pt2{margin-top:14px;padding:10px 14px;background:var(--greent);font-size:15px;line-height:1.5}.pt2 b{color:var(--greend);margin-right:10px}
 /* 인트로·엔딩 */
 .stat{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;text-align:center}.stat .v{font-family:"IBM Plex Mono",monospace;font-size:84px;line-height:1;color:var(--navy);font-weight:500}.stat .l{font-size:16.5px;color:var(--sub);margin-top:14px;line-height:1.5}
 .quote{border-left:4px solid var(--navy);padding:12px 18px;font-size:19px;line-height:1.6;color:var(--ink);background:#fafbfd}.quote small{display:block;color:var(--sub);font-size:13px;margin-top:8px}
@@ -100,11 +105,13 @@ def photo(key, one, small, bridge, notes, title=""):
     S.append((f'<section class="slide photo">{img}<div class="veil"></div><div class="c">{f"<div style=font-size:14px;opacity:.8;margin-bottom:10px>{title}</div>" if title else ""}<div class="one">{one}<small>{small}</small></div><p class="next">{bridge}</p></div>{cr}<aside class="notes">{notes}</aside></section>', None))
 
 
+MKEY = {"krishna_items": "01_krishna", "freitag_meas": "02_freitag", "mettler_dv": "04_mettler", "kr_fig1": "05_kr"}  # 측정 장 캡처 → 보충 내용 키
 MCHAIN = {"krishna_items": 4, "freitag_meas": 3, "lw_latent": 3, "kr_fig1": 3}  # 캡처별: 앞에서 몇 행이 순서(개념→문항→지수, 독립→매개→종속)인가
 
 
 def meas(title, sub, fig, figcap, rows, cmp_, notes):
     """측정 장: 왼쪽에 원문 캡처, 오른쪽에 개념에서 지수까지의 단계와 앞 주차 문헌 비교."""
+    if MKEY.get(fig) in ADD: rows = rows + [("자료와 변수", esc(ADD[MKEY[fig]]["data_row"]["t"]))]
     r = "".join(f'<div class="l{" f" if i < MCHAIN.get(fig, 0) - 1 else ""}">{l}</div><div>{t}</div>' for i, (l, t) in enumerate(rows))
     slide(title, sub, f'<div class="meas"><figure><img class="shot" src="{FIG[fig]}" alt="{figcap}"><figcaption>{figcap}</figcaption></figure><div><div class="mrows">{r}</div><div class="mcmp"><b>앞 주차 문헌</b>{cmp_}</div></div></div>', "", notes)
 
@@ -118,6 +125,43 @@ def pcover(n, key, name, en, journal, q, data, notes):
     cr = f'<div class="cr">{PCRED[key]}</div>' if key in PCRED else ""
     nav = "".join(f'<span class="{"on" if i == n - 1 else ""}">{x}</span>' for i, x in enumerate(PNAMES))
     S.append((f'<section class="slide photo pcover">{img}<div class="veil"></div><div class="nav">{nav}</div><div class="c"><div class="no">지정문헌 {n} / 5</div><h1>{name}</h1><p class="en">{en}<br><i>{journal}</i></p><p class="q">{q}</p><p class="d">{data}</p></div>{cr}<aside class="notes">{notes}</aside></section>', None))
+
+
+ADD = {}  # 논문별 보충 장 내용(deck/part1_add/*.json). 각 항목의 ev는 원문 근거 구절, p는 인쇄 쪽수
+_ad = os.path.join(H, "part1_add")
+for _f in (sorted(os.listdir(_ad)) if os.path.isdir(_ad) else []):
+    if _f.endswith(".json"): ADD[_f[:-5]] = json.load(open(os.path.join(_ad, _f), encoding="utf-8"))
+ALAB = {"03_lw": {"theory": "이론적 논의와 명제", "hyp": "명제", "res": "근거의 종류", "r2": "제도 설계 변수 2 · 차원별 사례", "pol": "설계 원칙", "fut": "저자의 단서"}}
+
+
+def _pg(x): return f' <i class="pg2">{x["p"]}</i>' if x.get("p") else ""
+def _li(xs): return "".join(f'<li>{esc(x["t"])}{_pg(x)}</li>' for x in xs)
+def _pt(t): return f'<div class="pt2"><b>짚을 점</b>{esc(t)}</div>'
+
+
+def add_theory(key, paper):
+    """보충 장 1: 왼쪽 선행 논의, 오른쪽 가설(명제) 표."""
+    a = ADD[key]["theory"]; L = ALAB.get(key, {})
+    hy = "".join(f'<tr><td><b>{esc(x["name"])}</b></td><td>{esc(x["claim"])}</td><td>{esc(x["source"])}</td><td>{esc(x["result"])}{_pg(x)}</td></tr>' for x in a["hypotheses"])
+    slide(f'{paper} {L.get("theory", "이론적 논의와 가설")}', esc(a["sub"]),
+          f'<div class="add" style="grid-template-columns:.78fr 1.7fr"><div><div class="k">선행 논의</div><ul>{_li(a["background"])}</ul></div><table class="hyp"><colgroup><col style="width:17%"><col style="width:39%"><col style="width:24%"><col style="width:20%"></colgroup><tr><th>{L.get("hyp", "가설")}</th><th>내용</th><th>근거 문헌</th><th>{L.get("res", "검증 결과")}</th></tr>{hy}</table></div>{_pt(a["point"])}', "", esc(a["notes"]))
+
+
+def add_result2(key, paper):
+    """보충 장 2: 왼쪽 원문 캡처, 오른쪽 수치와 해석."""
+    a = ADD[key]["result2"]; L = ALAB.get(key, {})
+    rows = "".join(f'<tr><td>{esc(x["label"])}</td><td>{esc(x["value"])}{_pg(x)}</td></tr>' for x in a["rows"])
+    slide(f'{paper} {L.get("r2", "분석 결과 2")}', esc(a["sub"]),
+          f'<div class="add" style="grid-template-columns:1fr 1.15fr"><img class="shot" style="max-height:420px;margin:0 auto" src="{FIG[key[3:] + "_r2"]}" alt=""><div><table class="hyp"><colgroup><col style="width:34%"><col style="width:66%"></colgroup>{rows}</table><ul style="margin-top:10px">{_li(a["reading"])}</ul></div></div>{_pt(a["point"])}', "", esc(a["notes"]))
+
+
+def add_conclusion(key, paper):
+    """보충 장 3: 왼쪽 저자의 결론과 기여, 오른쪽 함의와 후속 과제."""
+    a = ADD[key]["conclusion"]; L = ALAB.get(key, {})
+    right = (f'<div class="k">{L.get("pol", "저자가 말한 정책적 함의")}</div><ul>{_li(a["policy"])}</ul>' if a["policy"] else "") + (f'<div class="k" style="margin-top:14px">{L.get("fut", "후속 과제")}</div><ul>{_li(a["future"])}</ul>' if a["future"] else "")
+    con = "".join(f"<li>{esc(c)}</li>" for c in a["contribution"])
+    slide(f'{paper} 결론과 함의', esc(a["sub"]),
+          f'<div class="add" style="grid-template-columns:1fr 1fr"><div><div class="k">저자의 결론</div><ul>{_li(a["author"])}</ul><div class="k" style="margin-top:14px">기여(발제자 평가)</div><ul>{con}</ul></div><div>{right}</div></div>{_pt(a["point"])}', "", esc(a["notes"]))
 
 
 def raw(html):
@@ -222,7 +266,7 @@ def build(local):
 <dt>한계</dt><dd>모든 마을이 같은 주의 제도 아래 있어 제도 설계의 효과는 검증 불가(950). 교육처럼 장기에 걸친 효과는 7년 자료로 확인 불가(각주 19)</dd></dl></div>''',
           "계수는 Table 2(949), 평균과 마을 수는 946.",
           "Krishna의 질문은 하나입니다. Putnam이 역사가 정한다고 한 사회자본이 7년 안에 움직이는가. 라자스탄 61개 마을을 1997년과 2004년에 두 번 쟀습니다. 평균은 거의 그대로인데 마을은 움직였습니다. 33개가 오르고 28개가 내렸습니다. 올린 것은 마을 안에서 나온 것들이었습니다. 주민이 만든 조직, 규칙, 새 리더. 정부가 만든 조직과 정부에 대한 신뢰는 유의하지 않았습니다.")
-    slide("Krishna (2007) 연구 질문과 가설", "",
+    slide("Krishna (2007) 연구 질문과 논리 전개", "",
           '''<div class="ladder">
 <div class="l">질문</div><div>Putnam(1993)은 사회자본이 정부 성과를 결정하지만 단기간에 형성되기는 어렵다고 보았다. 사회자본은 단기간에 변화할 수 있는가</div><div class="q">"Putnam (1993) presents us with a nagging conundrum" <i>941</i></div>
 <div class="l">이론적 기대</div><div>가설을 5개 집단으로 나누어 비관적 관점에서 낙관적 관점 순으로 제시. 역사 의존(Putnam) · 제도 부산물(Rothstein 2001, Kumlin &amp; Rothstein 2005) · 집단 특성(Boix &amp; Posner 분열, Olson 규모) · 집단 행동(Ostrom 규칙, Oliver 리더) · 외부 개입(World Bank)</div><div class="q">"Different pathways, corresponding to different degrees of optimism" <i>943</i></div>
@@ -230,6 +274,7 @@ def build(local):
 <div class="l">결과</div><div>1997년 지수만 넣은 모형의 R²는 .23, 16개 변수를 넣은 모형은 .79. 유의한 변수는 4개. 가장 비관적인 두 가설(역사 의존, 제도 부산물)과 가장 낙관적인 가설(외부 개입)은 지지되지 않음(역사 의존은 부분적으로만 확인, 949)</div><div class="q">"only four variables are found significantly associated with higher gains" <i>952</i></div>
 <div class="l">결론</div><div>사회자본은 공동체 내부에서 형성됨. 외부 기관은 불평등 완화, 자기조직화 여건 조성, 리더 육성을 통해 간접적·장기적으로만 기여</div><div class="q">"External agencies cannot directly raise social capital." <i>954</i></div></div>''',
           "", "다섯 단으로 읽겠습니다. 질문은 Putnam의 모순에서 나옵니다. 가설은 다섯 묶음인데 비관에서 낙관 순으로 늘어놓은 점이 이 논문의 설계입니다. 어느 묶음이 살아남느냐가 곧 답입니다. 설계에서 눈여겨볼 것은 회원 수를 버린 선택입니다. 가입률 2%짜리 사회에서 Putnam의 지표는 못 씁니다. 결과는 가운데 묶음만 살았습니다. 가장 비관적인 쪽도, 가장 낙관적인 쪽도 지지되지 않았습니다.")
+    add_theory("01_krishna", "Krishna (2007)")
     meas("Krishna (2007) 사회자본 측정", "945~946쪽", "krishna_items", "Krishna 2007: 945. 문항 1~3(구조적 차원). 문항 4~6은 945~946쪽",
          [("개념적 정의", "Putnam(1995)의 정의를 따름. “networks, norms and social trust that facilitate coordination and cooperation”(942)"),
           ("구성 차원", "Uphoff의 구분을 적용. 구조적 차원은 연결망·역할·규칙·선례, 인지적 차원은 규범·가치·태도·믿음(945)"),
@@ -254,8 +299,10 @@ def build(local):
 <p class="take">계수는 자생 조직 가입(17.57)이 가장 크지만 실질 효과는 규칙(3.77)이 약 세 배 크다. 변수 범위가 각각 .00~.22와 .53~3.85로 다르기 때문이다.<small>유의수준 p&lt;.05 → 유의 4개(1997년 지수 제외) · 1997년 지수 SD 7.1 · R² .23(1997 지수만) → .79</small></p></div></div>''',
           "Krishna 2007: 949, 951(각주 20), 952. 실질 효과는 계수에 변수 범위를 곱한 발제자 계산.",
           "왼쪽이 원문 표입니다. 유의한 것이 넷입니다. 오른쪽은 계수에 변수 범위를 곱한 실질 효과입니다. 계수만 보면 자생 조직이 17.57로 제일 크지만, 그 변수는 0에서 0.22 사이에서만 움직입니다. 규칙은 0.5에서 3.85까지 움직여서 실질 효과가 세 배입니다. 저자도 952쪽에서 규칙과 신진 리더의 실질 효과가 더 크다고 썼습니다. 아래 두 줄, 정부 조직과 정부 신뢰는 회색입니다.")
+    add_result2("01_krishna", "Krishna (2007)")
+    add_conclusion("01_krishna", "Krishna (2007)")
     slide("Krishna (2007) 한계와 추가 검토", "",
-          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>모든 마을이 같은 주의 제도 아래 있어 제도 설계의 효과는 검증 불가(950)</li><li>교육처럼 7년 이상 걸리는 효과는 확인하지 못함(각주 19)</li><li>자생 조직 가입은 1997~2004 증가분이라 내생성 우려(각주 27)</li><li>변화의 크기는 시기에 따라 달랐을 가능성(각주 23)</li><li>리더가 형성되는 과정은 설명하지 못함(954)</li></ul><img class="shot" style="max-height:120px;margin-top:12px" src="{FIG["krishna_950"]}" alt="950쪽"></div>
+          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>모든 마을이 같은 주의 제도 아래 있어 제도 설계의 효과는 검증 불가(950)</li><li>교육처럼 7년 이상 걸리는 효과는 확인하지 못함(각주 19)</li><li>자생 조직 가입은 1997~2004 증가분이라 내생성 우려(각주 27)</li><li>변화의 크기는 시기에 따라 달랐을 가능성(각주 23)</li><li>리더가 형성되는 과정은 설명하지 못함(954)</li></ul><img class="shot" style="width:100%;max-height:none;margin-top:14px" src="{FIG["krishna_950"]}" alt="950쪽"></div>
 <div class="me"><b>발제자의 추가 검토</b><ul><li>종속변수 정의(945)의 구조 차원에 "rules"가 들어 있는데 951쪽에서는 Rules가 독립변수다. 저자는 측정에서는 중복되지 않는다고 설명하지만(953) 개념상의 중복은 인정한다</li><li>Table 1에는 60개 마을만 있다. 본문 평균 58.4·59.7은 61개 기준</li><li>952쪽은 집단 행동 변수가 "all assessed in 1997"이라고 서술하지만 자생 조직 가입은 증가분이다(각주 27과 불일치)</li><li>Table 1에서 1997년 1~4위 마을은 모두 하락하고 57~61위 마을은 모두 상승했다. 마을당 평균 약 38명(재면접자만 세면 약 28명)인 표본 평균의 변동과 구분해 해석할 필요가 있다</li></ul></div></div>''',
           "",
           "저자가 스스로 적은 한계가 다섯입니다. 가장 중요한 것이 950쪽 문장입니다. 같은 제도 아래라 제도 효과는 검증할 수 없다. 오른쪽은 제가 원문을 대조하며 찾은 것입니다. 규칙이 종속변수 정의에도 들어 있고 독립변수이기도 합니다. 저자도 개념 수준에서는 겹친다고 인정합니다. 이 점은 토론으로 가져가지 않고 여기서만 짚습니다.")
@@ -279,7 +326,7 @@ def build(local):
 <dt>한계</dt><dd>"only suggestive and explorative"(146). 공통 원인 가능성을 각주 10에서 인정</dd></dl></div>''',
           "수치는 Table 5·6·7(139~142).",
           "Freitag은 Krishna가 못 한 일을 합니다. 제도가 다른 24개 칸톤을 비교합니다. 세 제도 모두 결사체 참여와 같이 움직였습니다. 그런데 독일어권이라는 변수 하나를 넣자 직접민주주의 효과가 사라집니다. 직접민주주의와 독일어권의 상관이 .86입니다. 저자 스스로 탐색적이라고 썼습니다.")
-    slide("Freitag (2006) 연구 질문과 가설", "",
+    slide("Freitag (2006) 연구 질문과 논리 전개", "",
           '''<div class="ladder">
 <div class="l">질문</div><div>사회자본의 효과에 관한 연구는 많지만 형성 요인에 관한 연구는 드물다. 정치제도는 결사체 활동을 촉진하는가</div><div class="q">"little research has explicitly addressed the question of how social capital can be built" <i>123</i></div>
 <div class="l">이론적 기대</div><div>Jackman &amp; Miller의 구분. 사회자본을 외생으로 두는 접근(Putnam 1993)과 내생으로 두는 접근(Levi, Tarrow, Skocpol). 저자는 후자를 따름. 세 제도의 공통 기제는 시민의 요구를 수렴하고 조정하는 능력. 정치적 결정요인에 관한 기존 이론이 "vague"하다고 평가(131)</div><div class="q">"The second approach endogenizes social capital as an outcome of social and political arrangements" <i>125</i></div>
@@ -287,6 +334,7 @@ def build(local):
 <div class="l">결과</div><div>Table 5의 이변량 분석에서 세 제도 변수 모두 유의. Table 6에서 통제변수를 하나씩 추가하면 직접민주주의는 언어권을, 지방자치는 도시화를 통제할 때 유의성이 사라짐. Table 7에서는 직접민주주의와 언어권을 같은 모형에 투입하지 않음</div><div class="q">"the fit of the four models … further confirms the significance of the thesis" <i>140–142</i></div>
 <div class="l">결론</div><div>정치제도가 사회자본 형성에 영향을 미침. Putnam이 말한 불신, 불참, 민주주의 약화의 악순환을 벗어나는 하향식 경로를 제시</div><div class="q">"democratic institutions suggest a 'top-down' path" <i>145</i></div></div>''',
           "", "질문은 분명합니다. 제도가 결사체를 만드는가. 이론 자리에서 저자는 Putnam을 외생 접근으로, 자기를 내생 접근으로 놓습니다. 이게 5장에서 본 축 뒤집기의 원문입니다. 설계의 핵심은 시간 순서입니다. 제도를 1999년 이전 값으로 재고, 역사도 끌어옵니다. 직접입법은 13~14세기, 결사체는 18세기. 결과 단에서 통제를 하나씩 넣는 방식이 나오는데, 이 방식이 뒤에 쟁점이 됩니다.")
+    add_theory("02_freitag", "Freitag (2006)")
     meas("Freitag (2006) 사회자본과 제도 변수 측정", "127쪽, 각주 2", "freitag_meas", "Freitag 2006: 127. 종속변수 측정 문단",
          [("개념적 정의", "Coleman과 Putnam의 정의 “social networks, cooperative norms and interpersonal trust”(123) 가운데 결사체 참여를 분석 대상으로 선택"),
           ("측정 문항", "스위스 가구패널(SHP) 1999의 4문항. 동호회·단체 활동 참여, 명예직·봉사 활동, 월 봉사 시간, 9개 유형 결사체의 능동 회원 수(각주 2)"),
@@ -313,8 +361,10 @@ def build(local):
 <p class="take">제도 변수 3개의 설명력(R² .75)보다 통제변수 2개의 설명력(R² .79)이 크다. 저자는 두 값을 설명력의 범위로만 적었고(142) 그 차이는 논하지 않았다.<small>직접민주주의와 언어권은 Table 7의 어느 모형에도 함께 투입되지 않는다 · N=24, 모형당 변수 4개(140)</small></p></div></div>''',
           "Freitag 2006: 141~142. Table 6의 Model k는 제도 변수 3개에 k번째 통제변수를 추가한 모형. 제도 변수 3개만 넣은 모형은 Table 7 Model 1.",
           "원문 표를 가로로 돌렸습니다. 아홉 모형은 전부 제도 셋에 통제를 하나씩 더한 것입니다. 오른쪽 위, 직접민주주의 계수는 어떤 통제를 넣어도 .47 근처에서 버티다가 언어권을 넣는 순간 .18로 떨어져 비유의가 됩니다. 아래는 Table 7의 설명력입니다. 제도 셋이 .75인데 도시화와 언어권 둘만 넣으면 .79입니다. 저자는 두 값을 범위로만 적고 그 차이는 논하지 않았습니다.")
+    add_result2("02_freitag", "Freitag (2006)")
+    add_conclusion("02_freitag", "Freitag (2006)")
     slide("Freitag (2006) 한계와 추가 검토", "",
-          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>"only suggestive and explorative"(146). 더 정교한 방법이 필요하다고 밝힘</li><li>언어권이 직접민주주의와 사회자본의 공통 원인일 수 있다(각주 10, r=.86)</li><li>이변량 분석에서 제외된 변수가 다변량 분석에서 유의할 가능성(각주 8)</li><li>N=24여서 모형당 변수를 4개로 제한(140, 저자는 설계상 제약으로 서술). 국가 수준 비교는 거의 불가능(146)</li><li>결사체는 연결망의 한 지표일 뿐, 가장 중요한 지표는 아닐 수 있다(126)</li><li>신뢰 변수는 다른 조사 자료이고 칸톤별 응답자가 24~351명이어서 해석에 주의가 필요하다고 밝힘(각주 6)</li></ul><img class="shot" style="max-height:80px;margin-top:10px" src="{FIG["freitag_146"]}" alt="146쪽"></div>
+          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>"only suggestive and explorative"(146). 더 정교한 방법이 필요하다고 밝힘</li><li>언어권이 직접민주주의와 사회자본의 공통 원인일 수 있다(각주 10, r=.86)</li><li>이변량 분석에서 제외된 변수가 다변량 분석에서 유의할 가능성(각주 8)</li><li>N=24여서 모형당 변수를 4개로 제한(140, 저자는 설계상 제약으로 서술). 국가 수준 비교는 거의 불가능(146)</li><li>결사체는 연결망의 한 지표일 뿐, 가장 중요한 지표는 아닐 수 있다(126)</li><li>신뢰 변수는 다른 조사 자료이고 칸톤별 응답자가 24~351명이어서 해석에 주의가 필요하다고 밝힘(각주 6)</li></ul><img class="shot" style="width:100%;max-height:none;margin-top:14px" src="{FIG["freitag_146"]}" alt="146쪽"></div>
 <div class="me"><b>발제자의 추가 검토</b><ul><li>제도 변수 3개는 모든 모형에 포함되고 통제변수는 하나씩만 추가된다. 제도 변수가 대부분의 모형에서 유의하다는 결과는 이 모형 구성의 영향을 받는다. 유의한 통제변수 2개(언어권, 도시화)를 함께 투입한 모형은 Table 6에 없다</li><li>개인 약 7,800명의 응답을 24개 칸톤 평균으로 집계했다. 세 기제(옹호 유인, 숙의, 반응성에 대한 확신)는 개인 수준의 과정인데 검증되지 않았다</li><li>직접민주주의 지수는 제도의 이용 요건을 측정하며 실제 이용 경험은 측정하지 않는다. 뒤의 세 논문은 제도를 실제로 경험하는 과정을 다룬다</li></ul></div></div>''',
           "",
           "저자가 적은 한계 중 둘째 줄이 핵심입니다. 공통 원인 가능성을 각주에서 스스로 인정했습니다. 제가 짚는 것은 설계입니다. 제도 셋은 늘 모형에 남고 통제는 하나씩만 들어갑니다. 제도가 버틴다는 결과는 그 설계가 만든 것입니다. 그리고 마지막 줄. 직접민주주의 지수는 제도가 있다는 것이지 썼다는 것이 아닙니다. 다음 세 논문은 전부 쓰임을 봅니다.")
@@ -346,6 +396,7 @@ def build(local):
 <div class="l">주장</div><div>발제자가 보기에 네 차원 중 셋째(의사결정의 반응성)가 논의의 중심. 참여를 가로막는 가장 큰 요인은 지방정부가 반응하지 않는다는 인식 또는 경험. 사회자본의 공급은 정치 과정의 수요와 연결되어야 한다</div><div class="q">"Social capital may, then, remain a 'latent' phenomenon in the absence of responsive political institutions" <i>638</i></div>
 <div class="l">결론</div><div>설계 원칙 두 가지: 가치의 명확성, 다양성과 수정 가능성. 저자들은 Offe(1996)의 ‘제도 가꾸기’와 ‘제도 공학’ 대비를 빌려, 지역 여건에 맞춘 설계는 정착하기 쉬우나 급진적 변화를 일으키기 어렵다고 지적한다(645). 결과는 설계 내용만큼 설계 과정에 좌우된다</div><div class="q">"may depend as much upon the process as upon the content of institutional redesign" <i>645</i></div></div>''',
           "", "질문은 Putnam의 한 문장을 향합니다. 제도 설계가 상수라는 말. 저자들은 Fox와 Miller를 인용해 제도를 관행으로 봅니다. 설계 자리에서 미리 단서를 둡니다. 설계는 정밀과학이 아니고, 나쁜 설계가 사회자본을 키운 사례도 있다고. 이 단서가 나중에 저자 자신을 겨눕니다. 주장의 중심은 셋째 차원, 반응성입니다. 반응하는 제도가 없으면 사회자본은 잠재 상태로 남는다.")
+    add_theory("03_lw", "Lowndes &amp; Wilson (2001)")
     meas("Lowndes &amp; Wilson (2001) 핵심 개념", "630~641쪽", "lw_latent", "Lowndes &amp; Wilson 2001: 638",
          [("개념적 정의", "Putnam(1995)의 정의를 사용. 규범(Coleman, Fukuyama), 구조(Bourdieu), 결과(Coleman, Ostrom)를 함께 포함(630)"),
           ("창출과 동원", "창출은 연결망과 규범이 만들어지는 과정(차원 ①②), 동원은 이미 있는 사회자본이 민주적 결정에 영향을 미치는 과정(차원 ③④, 차원 대응은 발제자 정리). “Participation is not, after all, the same as social capital”(637)"),
@@ -360,16 +411,18 @@ def build(local):
           "Lowndes &amp; Wilson의 주장: 참여를 가로막는 가장 큰 요인은 지방정부가 반응하지 않는다는 인식이나 경험이다(638). 공청회는 주민이 만나 새 모임을 만드는 계기가 될 수 있다(637)", local,
           "세 번째 토론입니다. 결과를 반영하기 어려운 사안에도 공청회를 열어야 하는지 여쭙겠습니다. Lowndes와 Wilson은 양쪽 근거를 모두 줍니다. 638쪽에서는 지방정부가 반응하지 않는다는 인식이 참여를 가로막는 가장 큰 요인이라고 썼습니다. 637쪽에서는 공청회가 주민이 서로 만나 새 모임을 만드는 계기가 될 수 있다고 썼습니다. 저자들의 처방은 반응하는 제도로 고치는 것입니다.")
     slide("Lowndes &amp; Wilson (2001) 제도 설계 변수", "차원별 설계 변수, 사회자본에 미치는 경로, 근거",
-          f'''<div class="two" style="grid-template-columns:1.25fr 1fr;align-items:start"><table style="font-size:14.5px"><tr><th>차원</th><th>설계 변수</th><th>사회자본에 미치는 영향</th><th>근거</th></tr>
+          f'''<div class="two" style="grid-template-columns:1.7fr 1fr;align-items:start;gap:30px"><table style="font-size:14.5px;table-layout:fixed"><colgroup><col style="width:20%"><col style="width:23%"><col style="width:35%"><col style="width:22%"></colgroup><tr><th>차원</th><th>설계 변수</th><th>사회자본에 미치는 영향</th><th>근거</th></tr>
 <tr><td>① 자발적 부문과의 관계</td><td>보조금, 계약·파트너십 조건, 인정 요건</td><td>창출. 계약 방식은 단체를 지방정부와 유사하게 만들고 소규모 단체와 캠페인형 단체를 배제</td><td>"Unless you're cute and big"(635, 공무원 발언 재인용)</td></tr>
 <tr><td>② 시민 참여 기회</td><td>조사 → 공청회 → 시민배심·포럼</td><td>창출. 여론조사 방식은 거의 기여하지 않고 숙의형 참여가 기여</td><td>637</td></tr>
 <tr><td>③ 의사결정의 반응성</td><td>협의 결과의 결정 연결, 집행부·의회 분리</td><td>동원. 반응이 없으면 참여가 줄고 사회자본은 잠재 상태에 머묾</td><td>Audit Commission 1999: 41(638)</td></tr>
 <tr><td>④ 리더십과 포용</td><td>회의 시각·형식·언어, 직선 시장</td><td>동원의 분배. 절차가 참여자의 범위를 결정</td><td>Hall 1999: 사회자본은 "중산층·중년의 것"(641)</td></tr></table>
-<div><img class="shot" style="max-height:150px" src="{FIG["lw_quarters"]}" alt="638쪽 Audit Commission"><p class="take" style="font-size:15.5px">수치 근거는 두 개이며 모두 셋째·넷째 차원에 해당한다. 이 논문의 기여는 창출(①②)보다 동원(③④)에 대한 논의에 있다.<small>12개 지표 중 민주주의 변수 0은 Putnam 1993 3장에 대한 지적(639)</small></p></div></div>''',
+<div><img class="shot" style="width:100%;max-height:none" src="{FIG["lw_quarters"]}" alt="638쪽 Audit Commission"><p class="take" style="font-size:15.5px">수치 근거는 두 개이며 모두 셋째·넷째 차원에 해당한다. 이 논문의 기여는 창출(①②)보다 동원(③④)에 대한 논의에 있다.<small>12개 지표 중 민주주의 변수 0은 Putnam 1993 3장에 대한 지적(639)</small></p></div></div>''',
           "Lowndes &amp; Wilson 2001: 633~641. 표는 발제자 정리, 인용은 원문 쪽수.",
           "표가 없으니 네 차원을 표로 정리했습니다. 왼쪽부터 설계 변수, 사회자본에 미치는 영향, 근거입니다. 숫자가 둘뿐인데 둘 다 아래 두 줄, 동원 쪽에 있습니다. 이 논문의 기여는 창출이 아니라 동원입니다. 사회자본이 있어도 꺼내 쓰지 못하는 상태를 이름 붙인 것입니다.")
+    add_result2("03_lw", "Lowndes &amp; Wilson (2001)")
+    add_conclusion("03_lw", "Lowndes &amp; Wilson (2001)")
     slide("Lowndes &amp; Wilson (2001) 한계와 추가 검토", "",
-          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>개혁의 평가가 목적이 아님(641). 결과를 예측하기 어려움(643)</li><li>설계는 정밀과학이 아니며 의도치 않은 효과가 반복된다(633)</li><li>지방정부가 사회자본 측면의 성과를 측정하기 어렵다는 점을 언급(637)</li><li>지역 여건에 맞춘 설계는 정착하기 쉬우나 급진적 변화를 일으키기 어려움(645)</li></ul><img class="shot" style="max-height:90px;margin-top:10px" src="{FIG["lw_641"]}" alt="641쪽"></div>
+          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>개혁의 평가가 목적이 아님(641). 결과를 예측하기 어려움(643)</li><li>설계는 정밀과학이 아니며 의도치 않은 효과가 반복된다(633)</li><li>지방정부가 사회자본 측면의 성과를 측정하기 어렵다는 점을 언급(637)</li><li>지역 여건에 맞춘 설계는 정착하기 쉬우나 급진적 변화를 일으키기 어려움(645)</li></ul><img class="shot" style="width:100%;max-height:none;margin-top:14px" src="{FIG["lw_641"]}" alt="641쪽"></div>
 <div class="me"><b>발제자의 추가 검토</b><ul><li>네 차원은 분류틀이며 인과적 설명을 제공하지 않는다. 어떤 관찰 결과도 네 차원 중 하나로 분류되므로 반증 가능성이 낮다. 사회자본 성과를 측정하기 어렵다는 점(637)은 이 분석틀에도 적용된다</li><li>Newton(1976)의 사례(633)는 셋째 차원의 주장과 상충한다. 지방정부의 무반응이 잠재 상태로 이어지지 않고 동원과 정책 영향으로 이어졌다. 저자들은 "With these caveats in mind"라고 언급한 뒤 이 사례를 다시 다루지 않는다</li><li>잠재의 조건이 638쪽 "responsive"에서 641쪽 "responsive and inclusive"로 확대된다</li><li>638쪽의 논리(무반응이 참여를 막는다)는 동원 실패가 창출을 저해한다는 것이다. 저자들은 네 차원이 상호작용한다고만 적고(633) 그 경로는 전개하지 않는다</li><li>숙의형 참여의 효과와 잠재 상태에 관한 핵심 주장은 "may"로 서술되어 있다</li></ul></div></div>''',
           "",
           "저자들은 평가가 목적이 아니라고 결론에서 말합니다. 제가 짚는 것은 둘째 줄입니다. 저자들이 직접 든 버밍엄 사례가 셋째 차원과 정면으로 어긋나는데, caveat 한 구절로 넘기고 다시 다루지 않습니다. 이게 둘째 쟁점입니다.")
@@ -393,7 +446,7 @@ def build(local):
 <dt>한계</dt><dd>회고 설문(부록 A). 표본의 고등교육 이용자는 입대 전 학력이 더 높고 직업훈련 이용자는 과소대표되어 효과가 과소추정될 가능성(부록 B, 각주 24). 정치참여에서 급여 이용의 효과는 1965년 이후 점차 유의하지 않게 됨(각주 15)</dd></dl></div>''',
           "Table 1~7(357~362). 표의 둘째 열은 표준화계수 β, 표준오차가 아님.",
           "Mettler는 정책 하나를 봅니다. 제대군인원호법의 교육 급여입니다. 질문이 좋습니다. 급여가 참여를 높였다면 돈 때문인가, 받은 방식 때문인가. 가설 넷을 배경 변수와 학력을 통제한 뒤 급여 이용 계수로 가릅니다. 학력을 넣어도 급여 이용 효과가 남으면 교육의 부산물이 아니라는 뜻이 됩니다. 남았습니다. 단체 .47개, 정치참여 .38.")
-    slide("Mettler (2002) 연구 질문과 가설", "가설 4개의 예측을 배경 변수와 학력 통제 후 계수로 비교",
+    slide("Mettler (2002) 연구 질문과 논리 전개", "가설 4개의 예측을 배경 변수와 학력 통제 후 계수로 비교",
           f'''<div class="two" style="grid-template-columns:1.75fr 1fr;align-items:start;gap:26px"><div class="ladder" style="grid-template-columns:92px 1.9fr 1fr">
 <div class="l">질문</div><div>시민참여가 가장 높았던 시기(1950~60년대)는 국가 개입이 확대된 직후였다. 두 현상의 시간적 선후는 우연인가</div><div class="q">"Was the sequencing … merely a coincidence?" <i>351</i></div>
 <div class="l">이론적 기대</div><div>정책은 제도로 기능한다(Schattschneider, Lowi). Pierson의 자원 효과(참여 역량)와 해석 효과(참여 성향). 가설 4개의 예측: 기존 특성 가설은 배경 변수 통제 후, 부산물 가설은 학력 통제 후 계수 0, 수동성 가설은 음(−), 정책 환류 가설은 양(+)</div><div class="q">"policies function as institutions, imposing particular norms and rules on recipients" <i>352</i></div>
@@ -402,6 +455,7 @@ def build(local):
 <div class="l">결론</div><div>급여가 수급자의 시민적 통합(incorporation)을 촉진했다. 정책 설계가 수급자에게 어떤 메시지를 전달하는지가 후속 연구 과제</div><div class="q">"It is time to 'bring the state back in' to the study of civic life." <i>363</i></div></div>
 <div><img class="shot" style="max-height:330px" src="{FIG["mettler_fig1"]}" alt="Figure 1"><p class="k" style="margin-top:6px">Figure 1(353). 자원 효과는 참여 역량에, 해석 효과는 참여 성향에 영향. 자원 효과가 참여 성향에, 급여 자원이 해석 효과에 영향을 미치는 교차 경로도 있음</p></div></div>''',
           "", "이 논문의 설계는 한 문장입니다. 가설 넷을 계수 하나의 부호로 가른다. 배경 변수와 학력을 통제했을 때 급여 이용 계수가 0이면 기존 특성이나 부산물, 음수면 수동성 가설, 양수면 정책 환류 가설입니다. 오른쪽은 Pierson의 두 효과를 Mettler가 참여 역량과 성향으로 연결해 확장한 그림입니다. 자원 효과는 역량으로, 해석 효과는 성향으로 갑니다. 결과는 양수였습니다.")
+    add_theory("04_mettler", "Mettler (2002)")
     meas("Mettler (2002) 시민참여 측정", "356쪽", "mettler_dv", "Mettler 2002: 356. 종속변수 조작화",
          [("설명 대상", "전후 세대의 높은 결사체 가입률(Putnam의 ‘civic generation’). 사회자본은 정의 없이 세 번 언급되고(351·362·363) 신뢰 문항은 없음"),
           ("종속변수 1", "시민단체 가입 수. 1950~64년 우애단체, 이웃·주택소유자 협회, PTA, 기타 시민단체 가입 수의 합(356)"),
@@ -427,8 +481,10 @@ def build(local):
 <p class="take">학력을 통제해도 급여 이용의 효과는 유의하고, 정치참여 모형에서 학력은 유의하지 않다.<small>유의수준 p&lt;.05 → 이용 .01 · 학력(정치) .67. 각주 15: 정치참여에서 1965년 이후 학력이 유의해지고 급여 이용은 점차 유의하지 않게 됨(Mettler & Welch 2001)</small></p></div></div>''',
           "Mettler 2002: 357~358. R²는 .14와 .08. 표의 둘째 열(β)은 생략.",
           "왼쪽이 Table 1 원문입니다. 급여 이용 .47, 학력 .09. 아래 정치참여에서는 학력이 .01, 비유의입니다. 학력을 넣어도 급여 효과가 남으니 교육의 부산물은 아닙니다. 그런데 각주 15를 보면 1965년 이후에는 반대가 됩니다. 정치참여에서 학력이 유의해지고 급여 이용의 효과는 점차 유의하지 않게 됩니다. 저자는 이후에는 학력 상승이라는 자원 효과가 작용했다고 봅니다.")
+    add_result2("04_mettler", "Mettler (2002)")
+    add_conclusion("04_mettler", "Mettler (2002)")
     slide("Mettler (2002) 한계와 추가 검토", "",
-          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>1998년에 1950년대의 활동을 회고로 조사. 세부 활동 대신 전반적인 참여 여부만 묻고, 과거의 태도는 거의 묻지 않음(부록 A)</li><li>표본의 급여 이용률 60.8%(모집단 51%), 조사 시점에 참전자의 3분의 2가 사망. 표본의 고등교육 이용자는 입대 전 학력이 더 높고 직업훈련 이용자가 과소대표되어 효과가 과소추정될 가능성(부록 B, 각주 24)</li><li>남성, 백인 98.5%, 흑인 부대 미포함(355, 각주 4). 급여 집행 과정에 인종 차별이 있었음(각주 21)</li><li>결측으로 회귀 N은 393(716의 55%, 발제자 계산)</li><li>최하 집단에서 효과가 없는 이유는 아동기 빈곤을 상쇄하지 못했기 때문으로 추정하고, 정확한 경로는 후속 과제로 남김(361)</li></ul><img class="shot" style="max-height:110px;margin-top:10px" src="{FIG["mettler_appA"]}" alt="부록 A"></div>
+          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>1998년에 1950년대의 활동을 회고로 조사. 세부 활동 대신 전반적인 참여 여부만 묻고, 과거의 태도는 거의 묻지 않음(부록 A)</li><li>표본의 급여 이용률 60.8%(모집단 51%), 조사 시점에 참전자의 3분의 2가 사망. 표본의 고등교육 이용자는 입대 전 학력이 더 높고 직업훈련 이용자가 과소대표되어 효과가 과소추정될 가능성(부록 B, 각주 24)</li><li>남성, 백인 98.5%, 흑인 부대 미포함(355, 각주 4). 급여 집행 과정에 인종 차별이 있었음(각주 21)</li><li>결측으로 회귀 N은 393(716의 55%, 발제자 계산)</li><li>최하 집단에서 효과가 없는 이유는 아동기 빈곤을 상쇄하지 못했기 때문으로 추정하고, 정확한 경로는 후속 과제로 남김(361)</li></ul><img class="shot" style="width:100%;max-height:none;margin-top:14px" src="{FIG["mettler_appA"]}" alt="부록 A"></div>
 <div class="me"><b>발제자의 추가 검토</b><ul><li>해석 효과는 직접 측정되지 않았고 학력 통제 후 남은 급여 이용 계수로 추론된다. 이 계수는 측정되지 않은 다른 자원(월 75~120달러 생활비, 대학에서 쌓은 동료 연결망, 급여 기간 12~48개월)의 효과일 수 있다</li><li>저자는 과거 태도를 많이 묻지 않기로 했다고 밝혔는데(부록 A), 호혜 문항과 Table 5의 문항은 1998년에 과거형으로 물은 회고 문항이다. 해석 효과의 설문 근거가 회고 응답에 의존한다</li><li>효과가 저소득층에서 크다는 해석은 생활수준 중하 집단에서만 성립. 정치참여에서는 상위 집단의 계수(1.22)가 가장 큼(Table 7)</li><li>비이용자도 모두 참전자여서 군 복무를 경험했고, 원호법에는 교육 외에 다른 급여도 있었다(351). 비교집단을 정책 미경험 집단으로 보기 어렵다</li></ul></div></div>''',
           "",
           "저자가 자인한 한계는 회고와 표본입니다. 부록 둘이 그 답입니다. 제가 짚는 것은 첫 줄입니다. 해석 효과를 직접 재지 않았습니다. 학력을 통제하고 남은 계수를 해석 효과라고 부른 것입니다. 남은 계수는 월 75달러 생활비일 수도, 대학에서 만난 친구들일 수도 있습니다. 이게 둘째 쟁점입니다.")
@@ -452,7 +508,7 @@ def build(local):
 <dt>한계</dt><dd>횡단면. "the opposite is always possible, especially when using nonexperimental data"(355)</dd></dl></div>''',
           "Table 1~7(351~358).",
           "마지막 논문입니다. 큰 복지국가는 사회자본을 밀어낸다는 통념이 있는데 스웨덴은 신뢰가 높습니다. 저자들의 답은 크기가 아니라 설계입니다. 욕구 심사를 거치는 창구를 한 곳 더 만날 때마다 신뢰가 0.26점 내려가고, 누구나 쓰는 창구는 0.07점 올립니다. 그리고 355쪽에서 자신들의 인과 해석이 틀렸을 가능성도 언제나 있다고 씁니다.")
-    slide("Kumlin &amp; Rothstein (2005) 연구 질문과 가설", "",
+    slide("Kumlin &amp; Rothstein (2005) 연구 질문과 논리 전개", "",
           '''<div class="ladder">
 <div class="l">질문</div><div>복지국가가 호혜 관계와 결사체를 대체해 사회자본을 구축(crowding-out)한다면 스칸디나비아의 신뢰 수준이 높은 이유는 무엇인가. 저자들은 복지국가의 규모 대신 유형을 기준으로 삼는다</div><div class="q">"it is not how big a welfare state is but what type of welfare state one is dealing with" <i>343</i></div>
 <div class="l">이론적 기대</div><div>절차공정성(Lind &amp; Tyler). 선별 급여는 자격 기준이 모호해 일선 관료(Lipsky)의 재량이 크고 신청자는 정보를 숨길 유인이 있어 불신의 악순환이 발생. 심리 기제 세 가지: 공무원에 대한 불신이 타인 일반에 대한 불신으로 확대, 급여를 받으려면 속여야 한다면 타인도 속일 것이라는 추론, 자신의 부정직한 행동에 근거한 타인에 대한 추론</div><div class="q">"a vicious spiral of distrust" <i>349</i></div>
@@ -460,6 +516,7 @@ def build(local):
 <div class="l">결과</div><div>선별 −.26, 보편 +.07(Table 5). 제도 변수가 단체 참여(.09)보다 신뢰와 더 강하게 관련. 공정 대우 지각과 신뢰의 관계는 사회부조 .30** 등</div><div class="q">"the institutional welfare-state variables appear more strongly related to social trust than participation in voluntary organizations" <i>355</i></div>
 <div class="l">결론</div><div>복지 제도는 유형에 따라 사회자본을 높이기도 하고 낮추기도 한다. 저자들은 1990년대 경제 위기로 선별 급여 수급이 늘어난 점을 우려한다. 결사체 참여는 신뢰의 원인보다 결과(symptom)일 가능성</div><div class="q">"such participation may be more a symptom of interpersonal trust than a cause" <i>362</i></div></div>''',
           "", "질문은 퍼즐입니다. 크기로는 안 풀리니 설계로 갑니다. 이론 자리에 절차공정성이 들어옵니다. 욕구 심사를 거치는 창구에는 재량이 크고, 신청자는 숨길 유인이 있고, 그 경험이 사람 일반에 대한 불신으로 번진다는 기제 셋입니다. 결과 단에서 눈여겨볼 문장이 하나 있습니다. 제도 변수가 단체 참여보다 신뢰와 더 강하게 관련된다. Putnam과 반대입니다.")
+    add_theory("05_kr", "Kumlin &amp; Rothstein (2005)")
     meas("Kumlin &amp; Rothstein (2005) 사회자본 측정", "344~356쪽", "kr_fig1", "Kumlin &amp; Rothstein 2005: 345, Figure 1과 신뢰 문항",
          [("독립변수", "선별 기관과 보편 기관 접촉 수. 선별은 욕구 심사를 거쳐 제공되는 서비스이고, 보편 급여의 예시에 아동수당이 포함(348)"),
           ("매개변수", "“받을 자격이 있는 서비스와 도움을 받았는가” 1~5점(356). 발제자 판단: 이론은 절차공정성인데 문항은 결과 평가에 가까움"),
@@ -487,8 +544,10 @@ def build(local):
 <p class="take">선별 기관 1곳 접촉의 계수는 보편 기관 약 4곳 접촉의 계수와 크기가 같다. 통제변수 중 계수가 가장 큰 변수는 삶의 만족이다.<small>유의수준 p&lt;.01 → 두 접촉 변수 모두 유의 · Adj R² .10 · 첫 번째 접촉의 감소 폭(−.7)이 두 번째(−.3)보다 크다</small></p></div></div>''',
           "Kumlin &amp; Rothstein 2005: 352, 354. 비표준화 계수라 척도가 다른 변수끼리의 크기 비교는 참고용.",
           "원문 Table 5입니다. 선별 창구 한 곳당 −.26, 보편 한 곳당 +.07. 선별 하나가 보편 넷과 맞먹습니다. 통제 중 가장 큰 것은 삶의 만족 .63인데, 저자들은 이 변수를 사회경제 요인이 신뢰에 영향을 미치는 경로 중 하나로만 다루고(355), 창구 경험의 결과일 가능성은 다루지 않았습니다. 아래 Table 3을 보면 첫 접촉의 낙폭이 둘째보다 큽니다. 수가 아니라 경험 유무일 수 있습니다.")
+    add_result2("05_kr", "Kumlin &amp; Rothstein (2005)")
+    add_conclusion("05_kr", "Kumlin &amp; Rothstein (2005)")
     slide("Kumlin &amp; Rothstein (2005) 한계와 추가 검토", "",
-          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>횡단면. "the opposite is always possible, especially when using nonexperimental data"(355). 같은 문장의 앞부분은 "We obviously think that our causal interpretations are correct"</li><li>보편 접촉 6곳과 8곳 이상의 차이는 유의하지 않음(각주 5)</li><li>매개 문항은 절차를 "to a certain extent"만 측정(356)</li><li>매개 모형은 표본이 작아 통제변수 3개만 투입(각주 7)</li></ul><img class="shot" style="max-height:90px;margin-top:10px" src="{FIG["kr_355"]}" alt="355쪽"></div>
+          f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>횡단면. "the opposite is always possible, especially when using nonexperimental data"(355). 같은 문장의 앞부분은 "We obviously think that our causal interpretations are correct"</li><li>보편 접촉 6곳과 8곳 이상의 차이는 유의하지 않음(각주 5)</li><li>매개 문항은 절차를 "to a certain extent"만 측정(356)</li><li>매개 모형은 표본이 작아 통제변수 3개만 투입(각주 7)</li></ul><img class="shot" style="width:100%;max-height:none;margin-top:14px" src="{FIG["kr_355"]}" alt="355쪽"></div>
 <div class="me"><b>발제자의 추가 검토</b><ul><li>선별 7개 중 4개(장애인 이동·장애연금·장애 돌봄·노인 돌봄)는 소득·자산 조사보다 건강·기능 상태 심사에 해당(348, 350). 건강 상태는 통제변수에 없다. 선별 접촉 효과의 일부는 건강 상태의 효과일 수 있다</li><li>Table 7에서 사회부조는 .30**이지만 주거수당은 −.02. 7개 기관을 합산한 계수 −.26이 어느 기관에서 비롯되는지는 제시되지 않았다</li><li>6개 기관 중 4개가 유의하다는 서술(357)에는 단서가 필요하다. 고용 .13은 p&lt;.10, 보육은 비유의</li><li>352쪽은 보편 접촉 0인 집단을 "majority"라고 서술했으나 실제 비율은 6%</li><li>제도 변수가 참여보다 강하게 관련된다는 서술(355)은 척도가 다른 비표준화 계수를 비교한 것이며 차이 검정은 없음</li><li>분석 자료는 서부 스웨덴 한 지역, 1999년 한 시점(350, 각주 1·2). Table 4의 평균 신뢰는 접촉 수에 따라 단조 증가하지 않는다</li></ul></div></div>''',
           "",
           "저자가 밝힌 한계의 첫 줄을 보십시오. 자신들의 해석과 반대일 가능성은 언제나 있다고 썼습니다. 제가 짚는 것은 첫 줄입니다. 선별 7개 기관 중 4개는 소득 심사가 아니라 건강 심사입니다. 장애연금을 받는 사람은 건강이 나쁩니다. 그런데 건강은 통제에 없습니다. 심리 기제 셋은 '속여야 받는' 자산조사에 맞춰 쓰였는데, 장애연금 신청자가 속일 유인이 있는지는 다른 문제입니다. 이게 둘째 쟁점으로 이어집니다.")
@@ -538,7 +597,7 @@ def build(local):
 <script>
 const S=[...document.querySelectorAll('.slide')];let i=0;const N=document.getElementById('notes');
 function fit(){{const sc=Math.min(innerWidth/1280,innerHeight/720);S.forEach(s=>s.style.transform=`scale(${{sc}})`);}}
-function grow(s){{const bd=s.querySelector('.bd'),n=s.querySelector('.in');if(!bd||!n||n.dataset.z||s.querySelector('.map')||document.readyState!=='complete')return;let z=1.3;for(;z>1.001;z-=.05){{n.style.zoom=z;if(n.getBoundingClientRect().height<=bd.getBoundingClientRect().height&&n.scrollWidth<=n.clientWidth+1)break;}}n.style.zoom=n.dataset.z=Math.max(1,z).toFixed(2);}}
+function grow(s){{const bd=s.querySelector('.bd'),n=s.querySelector('.in');if(!bd||!n||n.dataset.z||s.querySelector('.map')||document.readyState!=='complete')return;let z=1.3;for(;z>1.001;z-=.05){{n.style.zoom=z;if(n.getBoundingClientRect().height<=bd.getBoundingClientRect().height&&n.scrollWidth<=n.clientWidth+1)break;}}z=Math.max(1,z);n.style.zoom=z;const fits=()=>n.getBoundingClientRect().height<=bd.getBoundingClientRect().height&&n.scrollWidth<=n.clientWidth+1;for(;!fits()&&z>.76;z-=.03)n.style.zoom=z-.03;n.dataset.z=n.style.zoom;}}
 function show(k){{i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j===i));grow(S[i]);N.innerHTML=(S[i].querySelector('.notes')||{{}}).innerHTML||'<i>노트 없음</i>';location.hash=i+1;}}
 let main=0,ap=0;S.forEach(s=>{{const p=document.createElement('div');p.className='pg';if(s.dataset.ap){{p.textContent='A'+(++ap);}}else{{main++;if(!s.classList.contains('cover'))p.textContent=main;}}s.appendChild(p);}});
 addEventListener('keydown',e=>{{if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown')show(i+1);else if(e.key==='ArrowLeft'||e.key==='PageUp')show(i-1);else if(e.key.toLowerCase()==='n')N.classList.toggle('on');else if(e.key.toLowerCase()==='f'){{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}}}});

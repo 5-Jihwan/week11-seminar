@@ -1,0 +1,193 @@
+{
+ "theory": {
+  "sub": "339~350, 356쪽",
+  "background": [
+   {
+    "t": "대규모 복지 프로그램은 자발적 호혜 형성을 어렵게 한다(Boli 1991; Zetterberg & Ljungberg 1997). Wolfe(1989)는 시민사회와 호혜 규범의 구축(crowding-out)을 주장",
+    "p": 340,
+    "ev": "voluntary reciprocity harder to create (Boli, 1991; Zetterberg & Ljungberg,"
+   },
+   {
+    "t": "저자들은 비교 연구와 종단 연구 모두에서 스칸디나비아의 구축 효과가 나타나지 않는다고 본다",
+    "p": 340,
+    "ev": "neither comparative nor longitudinal studies show traces of crowding-out"
+   },
+   {
+    "t": "선행 연구는 결사체 참여가 신뢰를 높인다는 인과를 확인하지 못했다. Stolle(1998)의 패널 분석은 신뢰가 높은 사람이 가입하는 자기선택을 시사",
+    "p": 346,
+    "ev": "However, the actual participation itself does not seem to increase"
+   },
+   {
+    "t": "욕구 심사는 일선 관료의 재량을 넓혀(Lipsky 1980) 보편 서비스에 비해 절차공정성(Lind & Tyler 1988) 원칙과 양립하기 어렵다",
+    "p": 349,
+    "ev": "needs testing and bureaucratic discretionary power are often more difficult to"
+   }
+  ],
+  "hypotheses": [
+   {
+    "name": "선별 기관 접촉",
+    "claim": "욕구 심사를 거치는 선별 기관 경험은 다른 복지국가 경험보다 대인신뢰에 더 부정적이다",
+    "source": "Rothstein(1998), Lipsky(1980)",
+    "result": "지지(저자 판단). Table 5 −.26***",
+    "p": 350,
+    "ev": "have more negative effects on interpersonal trust than other experiences with"
+   },
+   {
+    "name": "보편 기관 접촉",
+    "claim": "보편 기관 경험은 대인신뢰에 덜 부정적이거나 긍정적이다",
+    "source": "Rothstein(1998)",
+    "result": "지지(저자 판단). Table 5 +.07***",
+    "p": 350,
+    "ev": "negative, or even positive, effects on interpersonal trust."
+   },
+   {
+    "name": "공정 대우 지각의 차이",
+    "claim": "선별 기관 경험이 많고 보편 기관 경험이 적을수록 부당한 대우를 받았다고 지각한다",
+    "source": "Lind & Tyler(1988), Tyler(1998)",
+    "result": "저자는 근거가 있다고 판단. Table 6 평균 보편 4.1~4.2, 선별 3.2~3.7",
+    "p": 356,
+    "ev": "and less experience with universal welfare will to a greater extent perceive"
+   },
+   {
+    "name": "공정 대우 지각의 매개",
+    "claim": "공정 대우 지각은 기관 접촉 유형과 대인신뢰를 연결하는 인과 고리이다",
+    "source": "Lind & Tyler(1988), 저자들이 상정한 심리 기제 세 가지(349)",
+    "result": "6개 기관 중 4개 유의(고용사무소는 p<.10). 보육 .12, 주거수당 −.02는 유의하지 않음",
+    "p": 356,
+    "ev": "how they have been treated will in turn affect interpersonal trust. In other"
+   }
+  ],
+  "point": "350쪽에 명시된 가설은 접촉 유형에 관한 두 개이다. 공정 대우 지각은 356쪽에서 “검증되지 않은 가정”으로 다시 제시되어 추가로 검증된다.",
+  "notes": "왼쪽이 저자들이 출발점으로 삼은 선행 논의입니다. 구축 가설은 저자들이 Boli, Zetterberg와 Ljungberg, Wolfe의 주장으로 소개한 뒤 반박하는 대상입니다. 그리고 346쪽에서는 Stolle의 패널 분석을 들어 참여가 신뢰를 높인다는 인과도 의심합니다. 오른쪽 표에서는 출처 열과 쪽수를 보시면 됩니다. 위 두 가설은 350쪽에 가설로 명시되어 있습니다. 아래 두 줄은 저자들이 356쪽에서 그때까지 검증하지 않은 가정이라고 밝히고 추가로 검증한 기대입니다."
+ },
+ "result2": {
+  "sub": "Table 6(357쪽) · 기관별 공정 대우 평가, Table 1·2·4·7",
+  "capture": {
+   "page": 19,
+   "region": [
+    0.24,
+    0.18,
+    0.76,
+    0.428
+   ],
+   "rotate": 0
+  },
+  "rows": [
+   {
+    "label": "선별 기관 접촉 0곳 / 1곳 / 2곳 이상 (Table 1, n 3,615)",
+    "value": "68% / 24% / 8%",
+    "p": 351,
+    "ev": "Number and Percentage of Selective, Needs-Testing Public Service Agencies Used by"
+   },
+   {
+    "label": "보편 기관 접촉 0곳의 비율, 평균 접촉 수 (Table 2, n 3,685)",
+    "value": "6% · 4.0곳",
+    "p": 351,
+    "ev": "of the Swedish welfare state. A very small minority (6%) have no contact"
+   },
+   {
+    "label": "보편 접촉 0 / 2 / 4 / 6 / 8곳 이상의 평균 신뢰 (Table 4)",
+    "value": "5.9 / 6.2 / 6.4 / 6.9 / 6.7 · r = .10",
+    "p": 353,
+    "ev": "Personal Contacts With Universal Welfare Institutions and Interpersonal Trust"
+   },
+   {
+    "label": "공정 대우 평가(1~5) 평균, 보편 기관: 보건의료 / 보육 / 대중교통 (Table 6)",
+    "value": "4.1 / 4.2 / 4.1 · 균형 지표 +62 / +71 / +69",
+    "p": 357,
+    "ev": "of the questions and alternatives, see the text. The balance measure was calculated by subtracting"
+   },
+   {
+    "label": "공정 대우 평가(1~5) 평균, 선별 기관: 사회부조 / 고용사무소 / 주거수당 (Table 6)",
+    "value": "3.2 / 3.3 / 3.7 · 균형 지표 +10 / +23 / +34",
+    "p": 357,
+    "ev": "respondents on the positive side (4 and 5). Thus a higher balance measure means that more"
+   },
+   {
+    "label": "공정 대우 지각 1점당 신뢰 차이: 보건의료 / 대중교통 / 사회부조 / 고용사무소 / 보육 / 주거수당 (Table 7)",
+    "value": ".31*** / .27*** / .30** / .13* / .12 / −.02",
+    "p": 358,
+    "ev": "Dependent Variable: Interpersonal Trust (0 to 10, higher value = greater trust)"
+   }
+  ],
+  "reading": [
+   {
+    "t": "저자들은 선별 기관 접촉이 없는 응답자 68%, 보편 기관 접촉이 없는 응답자 6%를 스웨덴 복지국가의 보편적 성격으로 해석한다",
+    "p": 351,
+    "ev": "agencies. These figures underline the universal nature of the Swedish welfare"
+   },
+   {
+    "t": "저자들은 선별 3개 기관의 평가 평균이 척도 중간값 3을 조금 넘는 수준이라는 점을 예측의 근거로 든다. Table 6은 기관별 일변량 분포이다",
+    "p": 356,
+    "ev": "these services is between +10 and +34, and the mean values are just over the"
+   },
+   {
+    "t": "Table 7은 해당 기관 이용자만 대상으로 추정되었다. 사회부조 모형은 175명, 주거수당 모형은 335명이다",
+    "p": 357,
+    "ev": "estimated only among those who use the institutions in question. The key"
+   }
+  ],
+  "point": "매개 경로는 두 단계로 나뉘어 확인된다. Table 6은 기관 간 평가 평균의 비교, Table 7은 기관 이용자 내부의 관계이며, 접촉 수·공정 대우 지각·대인신뢰를 한 모형에 넣은 추정은 없다(발제자 판단).",
+  "notes": "왼쪽 캡처는 357쪽 Table 6입니다. 평균 열을 먼저 보시면 보편 기관 세 곳은 4.1에서 4.2이고 선별 기관 세 곳은 3.2에서 3.7입니다. 다만 맨 오른쪽 열의 응답자 수는 사회부조 198명, 주거수당 375명으로 적습니다. 오른쪽 마지막 줄은 Table 7이고, 기관을 이용한 사람들 안에서 공정 대우 지각과 신뢰의 관계를 본 결과입니다. 그래서 두 표는 비교 대상이 서로 다릅니다. 접촉 수와 공정 대우 지각과 신뢰를 한 모형에 넣은 추정은 이 논문에 없다는 점을 짚겠습니다."
+ },
+ "conclusion": {
+  "sub": "355, 360~362쪽",
+  "author": [
+   {
+    "t": "선별 기관 경험은 대인신뢰를 낮추고 보편 기관 경험은 높이는 것으로 보이며, 저자들은 이를 제도가 사회자본을 형성할 수도 훼손할 수도 있다는 근거로 든다",
+    "p": 360,
+    "ev": "have a capacity for both making and breaking social capital."
+   },
+   {
+    "t": "인과 연쇄의 중요한 고리 하나는 공공기관 접촉에서의 공정 대우 지각으로 보인다",
+    "p": 360,
+    "ev": "important link in these causal chains appears to be"
+   },
+   {
+    "t": "상관에 대한 해석이 옳다면, 선별 급여 경험자가 적고 보편 기관 접촉자가 많다는 점이 스칸디나비아의 높은 대인신뢰에 대한 한 가지 설명이 된다",
+    "p": 360,
+    "ev": "of the correlations is correct, we may have come across one explanation"
+   }
+  ],
+  "policy": [
+   {
+    "t": "보편 제도의 수립은 정부가 사회자본에 투자하는 한 가지 방법으로 볼 수 있다",
+    "p": 361,
+    "ev": "for governments to make investments in social capital."
+   },
+   {
+    "t": "1990년대 위기로 사회부조·주거수당·장애연금 접촉자가 늘었다. 일선 관료의 공정 대우가 의심받는 만큼 제도 정당성과 대인신뢰가 약화될 위험이 있다고 본다",
+    "p": 361,
+    "ev": "brought many Swedes into contact with such things as social assistance,"
+   },
+   {
+    "t": "사회자본에 투자하려는 정부는 정치 제도, 특히 정책을 직접 집행하는 기관의 질을 높여야 한다",
+    "p": 362,
+    "ev": "invest in social capital, it is the quality of political institutions that must be"
+   }
+  ],
+  "future": [
+   {
+    "t": "더 엄격한 통계적 통제가 가능한 자료나 실험 자료로 가설을 검증하는 후속 연구를 환영한다고 밝힘",
+    "p": 355,
+    "ev": "Our second response is that we welcome future research that tests our"
+   },
+   {
+    "t": "결론의 함의는 이론이 향후 경험적 검증에서 타당한 것으로 확인될 경우를 전제로 제시된다",
+    "p": 361,
+    "ev": "In conclusion, if our theory should prove valid in future empirical tests,"
+   }
+  ],
+  "contribution": [
+   "복지국가와 사회자본의 관계를 규모 대신 제도 유형으로 구분하고, 이를 개인 수준의 선별·보편 기관 접촉 수로 조작화하였다.",
+   "절차공정성 이론을 사회자본 연구에 도입하고, 공정 대우 지각을 매개 경로로 제시하여 기관 이용자 자료로 검증을 시도하였다."
+  ],
+  "point": "결론과 함의는 조건문으로 서술된다. “상관에 대한 해석이 옳다면”(360), “이론이 향후 경험적 검증에서 타당하다면”(361).",
+  "notes": "왼쪽 저자의 결론에서는 조건절을 보시기 바랍니다. 저자들은 상관에 대한 해석이 옳다면이라는 단서를 붙이고 스칸디나비아의 높은 신뢰를 설명합니다. 오른쪽 함의의 첫 줄은 보편 제도가 사회자본에 대한 투자가 될 수 있다는 주장입니다. 둘째 줄은 1990년대 위기 이후 선별 급여 접촉이 늘어난 스웨덴에 대한 우려입니다. 그리고 355쪽에서는 실험 자료를 쓴 후속 연구를 환영한다고 썼습니다. 아래 기여 두 줄은 제 평가입니다."
+ },
+ "data_row": {
+  "t": "서부 스웨덴(Västra Götaland) SOM 1999. 선별 기관 7개(주거수당, 사회부조, 장애인 이동, 장애연금, 장애 돌봄, 적극적 노동시장 프로그램, 노인 돌봄), 보편 기관 10개(대중교통, 보육, 도서관, 체육시설, 아동 보건소, 보건소, 병원, 문화 활동, 여가 활동, 공공 치과, 351쪽). 통제변수 10개(지위 관련 8개, 연령, 공공부문 고용). 접촉 분포 N 3,615·3,685, 회귀 N=2,543",
+  "p": 350,
+  "ev": "To test our hypotheses, we use a survey conducted in 1999 in Western"
+ }
+}

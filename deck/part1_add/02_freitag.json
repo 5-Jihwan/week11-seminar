@@ -1,0 +1,193 @@
+{
+ "theory": {
+  "sub": "125쪽, 128~135쪽",
+  "background": [
+   {
+    "t": "Jackman & Miller(1998)는 사회자본을 외생 변수로 두는 접근과 내생 변수로 두는 접근을 구분했다.",
+    "p": 125,
+    "ev": "approaches to social capital in the literature (Jackman & Miller 1998)"
+   },
+   {
+    "t": "저자는 내생 접근이 Coleman의 원래 논의에 더 부합한다는 Jackman & Miller의 평가를 인용했다.",
+    "p": 125,
+    "ev": "According to Jackman and Miller (1998), endogenizing social capital is more"
+   },
+   {
+    "t": "Tarrow, Levi, Skocpol은 Putnam(1993)이 정치제도와 정부의 역할을 충분히 다루지 않았다고 비판했다.",
+    "p": 130,
+    "ev": "attention to the role of political institutions has further been criticized by"
+   },
+   {
+    "t": "저자는 참여 구조를 갖추고 조직된 이익을 정책 과정에 포함하는 제도가 사회자본 형성에 가장 효과적일 것으로 보았다.",
+    "p": 131,
+    "ev": "structure and involved organized interests in the policy-making process"
+   }
+  ],
+  "hypotheses": [
+   {
+    "name": "직접민주주의 가설",
+    "claim": "직접민주주의 제도의 이용 가능성이 높을수록 결사체 참여가 활발할 것이다(결사 유인, 숙의 기회, 반응성에 대한 확신).",
+    "source": "Boehmke 2002; Kriesi & Wisler 1996; Vatter 2002 등",
+    "result": "이변량 .71***. 다변량 9개 모형 중 8개에서 유의(.41~.48), 언어권 통제 모형에서 .18(유의하지 않음)",
+    "p": 132,
+    "ev": "more direct democratic institutions are readily available, the more intense one"
+   },
+   {
+    "name": "합의민주주의 가설",
+    "claim": "다수제 민주주의보다 합의민주주의에서 결사체 참여가 활발할 것이다(여러 집단과 소수자가 참여하는 협상과 타협).",
+    "source": "Gabriel et al. 2002; Lijphart 1999",
+    "result": "이변량 .63***. 다변량 9개 모형 모두 유의(.24~.44, 도시화 통제 모형은 10% 수준)",
+    "p": 132,
+    "ev": "associational life is likely to thrive in consensus democracies rather than in"
+   },
+   {
+    "name": "지방자치 가설(원문은 연방제·분권)",
+    "claim": "연방제 또는 분권 구조의 정치체계에서 결사체 참여가 활발할 것이다(여러 수준의 정부에 대응하는 조직화 유인).",
+    "source": "Curtis et al. 1992; Putnam 2000; Skocpol et al. 2000",
+    "result": "이변량 .66***. 다변량 9개 모형 중 8개에서 유의(.19~.25), 도시화 통제 모형에서 .13(유의하지 않음)",
+    "p": 132,
+    "ev": "federal or decentralized political systems are expected to foster associational"
+   },
+   {
+    "name": "통제 가설: 언어권",
+    "claim": "독일어권 칸톤의 결사체 참여가 프랑스어권·이탈리아어권 칸톤보다 활발할 것이다.",
+    "source": "Freitag 2004; Hofstede 2001; Kriesi & Baglioni 2003",
+    "result": "이변량 .71***. 다변량 .38**(Table 6 Model 5)",
+    "p": 134,
+    "ev": "speaking part of Switzerland should show a more intense associational life"
+   }
+  ],
+  "point": "지방자치 가설은 연방제·분권 문헌에서 도출되었고, 측정은 기초자치단체 행정책임자가 인식한 자율성 지수(Ladner 1994)이다.",
+  "notes": "왼쪽은 저자가 인용한 선행 논의이고, 오른쪽은 가설과 결과를 한 줄씩 짝지은 표입니다. 외생과 내생의 구분은 앞 장에서 말씀드렸습니다. 여기서는 오른쪽 표의 근거 문헌을 봐 주십시오. 지방자치 가설의 근거는 주로 미국 연방제를 다룬 문헌인데, 측정은 스위스 기초자치단체 행정책임자가 답한 자율성 점수입니다. 그래서 가설이 말하는 수준과 측정한 수준이 서로 다릅니다. 그리고 저자는 133쪽에서 합의민주주의가 소외와 이탈로 이어질 가능성도 함께 적었습니다."
+ },
+ "result2": {
+  "sub": "Table 5(139쪽) 이변량 분석 · Table 7(142쪽) 네 모형",
+  "capture": {
+   "page": 20,
+   "region": [
+    0.115,
+    0.082,
+    0.92,
+    0.447
+   ],
+   "rotate": 0
+  },
+  "rows": [
+   {
+    "label": "Table 5 이변량: 제도 변수 3개",
+    "value": "직접민주주의 .71*** · 합의민주주의 .63*** · 지방자치 .66***",
+    "p": 138,
+    "ev": "of government structures are strongly associated with social capital"
+   },
+   {
+    "label": "Table 5 이변량: 언어권, 도시 지역 거주 비율",
+    "value": "언어권 .71*** · 도시 지역 거주 비율 −.74***",
+    "p": 139,
+    "ev": "Bivariate regression analyses of the effect of political, economic and cultural"
+   },
+   {
+    "label": "Table 7 Model 1: 제도 변수 3개",
+    "value": "직접민주주의 .49*** · 합의민주주의 .41*** · 지방자치 .23*** · R² .75",
+    "p": 142,
+    "ev": "democracy and local autonomy cultivate associational activity in the Swiss"
+   },
+   {
+    "label": "Table 7 Model 2: 통제변수 2개",
+    "value": "도시화 −.55*** · 언어권 .54*** · R² .79",
+    "p": 142,
+    "ev": "Moreover, regional provenance and urbanization matter"
+   },
+   {
+    "label": "Table 7 Model 3: 직접민주주의 + 도시화",
+    "value": "직접민주주의 .53*** · 도시화 −.55*** · R² .77",
+    "p": 140,
+    "ev": "in Table 7 one regresses the social capital index on the three"
+   },
+   {
+    "label": "Table 7 Model 4: 합의민주주의 + 지방자치 + 언어권",
+    "value": "합의민주주의 .44*** · 지방자치 .20** · 언어권 .52*** · R² .78",
+    "p": 142,
+    "ev": "Dependent variable = social capital index (associational life variables) per canton"
+   }
+  ],
+  "reading": [
+   {
+    "t": "저자는 이변량 결과가 허위상관의 위험 때문에 잠정적이라고 밝혔다.",
+    "p": 140,
+    "ev": "since bivariate analyses commonly face the risk of spurious correlation"
+   },
+   {
+    "t": "Table 7은 공선성이 있는 변수를 서로 다른 모형에 나누어 투입한 네 모형이다.",
+    "p": 140,
+    "ev": "thereby separating the collinear determinants"
+   },
+   {
+    "t": "영향력이 큰 사례를 제외하고 추정해도 결과는 달라지지 않았다.",
+    "p": 142,
+    "ev": "from the regressions did not change the results"
+   }
+  ],
+  "point": "이변량 분석에서 언어권(.71)과 도시 지역 거주 비율(−.74)의 계수 크기는 세 제도 변수(.63~.71)와 같거나 크다.",
+  "notes": "왼쪽은 142쪽 Table 7 원문입니다. 앞 장의 Table 6과 달리 네 모형이 한 화면에 들어옵니다. 먼저 오른쪽 위 두 줄, 이변량 결과를 봐 주십시오. 언어권과 도시 지역 거주 비율의 계수가 세 제도 변수와 같거나 더 큽니다. 다음으로 왼쪽 표에서 계수가 비어 있는 곳을 보시면, 직접민주주의와 언어권이 같은 모형에 들어간 적이 없고 지방자치와 도시화도 마찬가지입니다. 저자는 공선성이 있는 변수를 분리했다고 140쪽에 적었습니다."
+ },
+ "conclusion": {
+  "sub": "145~146쪽",
+  "author": [
+   {
+    "t": "정치제도의 역할을 강조한 연구는 많았으나 대부분 경험적 근거를 제시하지 못했다.",
+    "p": 145,
+    "ev": "lack empirical evidence and do not call a spade a spade"
+   },
+   {
+    "t": "주민발의와 주민투표의 제도적 보장이 넓은 칸톤일수록 결사체 활동이 활발하다.",
+    "p": 145,
+    "ev": "provisions for the submission of initiatives and referendums a canton extends"
+   },
+   {
+    "t": "정부 연합이 포괄적일수록, 지방자치 수준이 높을수록 결사체 활동이 활발하다.",
+    "p": 145,
+    "ev": "the greater the degree of local autonomy in a canton"
+   }
+  ],
+  "policy": [
+   {
+    "t": "민주적 제도는 불신, 불참, 약한 민주주의의 악순환에서 벗어나는 하향식 경로를 시사한다.",
+    "p": 145,
+    "ev": "vicious circle of distrust, disengagement and weak democracy"
+   },
+   {
+    "t": "시민에 대한 권한 부여, 의사결정 과정의 개방, 정부와 주민의 근접성이 공동체 활성화에 기여할 수 있다.",
+    "p": 145,
+    "ev": "to the people can help revitalize communities and tap into valuable"
+   },
+   {
+    "t": "1990년대 이후 서구 민주주의 국가의 직접 참여 확대 개혁도 사회자본 형성에 영향을 미칠 것으로 예상했다.",
+    "p": 146,
+    "ev": "this recent trend should leave its imprint on the building of social capital"
+   }
+  ],
+  "future": [
+   {
+    "t": "다른 맥락과 사회자본의 다른 측면을 대상으로 더 정교한 방법의 검증이 필요하다.",
+    "p": 146,
+    "ev": "in different contexts with different aspects of social capital"
+   },
+   {
+    "t": "개별 정책이 사회자본 형성에 미치는 효과는 거의 연구되지 않은 분야로 남아 있다.",
+    "p": 146,
+    "ev": "of different policies in promoting social capital is an as yet almost wholly"
+   }
+  ],
+  "contribution": [
+   "이론적 논의 수준에서 제기되던 정치제도의 역할을 24개 칸톤 자료로 계량 검증했다.",
+   "국가 간 변이가 작은 직접민주주의를 한 국가 안의 지역 비교로 분석하는 설계를 제시했다."
+  ],
+  "point": "저자가 후속 과제로 든 개별 정책의 효과는 넷째·다섯째 논문(Mettler 2002; Kumlin & Rothstein 2005)의 연구 대상이다.",
+  "notes": "왼쪽 세 줄이 저자의 결론입니다. 저자는 145쪽에서 직접민주주의가 활발한 결사체 활동으로 “이어진다(leads to)”고 썼습니다. 그런데 자료는 1999년 횡단면이고, 146쪽에서 저자 스스로 결과가 탐색적이라고 밝혔습니다. 그래서 오른쪽의 함의는 이 단서와 함께 읽어야 합니다. 마지막으로 후속 과제의 둘째 줄을 봐 주십시오. 저자가 거의 연구되지 않았다고 적은 개별 정책의 효과를 뒤의 두 논문이 다룹니다."
+ },
+ "data_row": {
+  "t": "SHP 1999(N=7,799)의 칸톤 평균, 24개 칸톤(응답자가 적은 Jura와 Appenzell Inner-Rhodes 제외). 직접민주주의 지수(Stutzer 1999; Frey & Stutzer 2000)와 합의민주주의(여당 득표율 합)는 1980~1998년 평균, 지방자치는 1990년 지수(Ladner 1994). 통제변수는 정치 4개, 사회문화 3개, 사회경제 9개(Table 4).",
+  "p": 138,
+  "ev": "survey data from 1999, all independent variables are measured from data"
+ }
+}
