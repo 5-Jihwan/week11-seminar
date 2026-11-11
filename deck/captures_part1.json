@@ -373,5 +373,49 @@
    30
   ],
   "rotate": -90
+ },
+ {
+  "id": "krishna_items",
+  "pdf": "01_krishna",
+  "page": 6,
+  "region": [
+   0.502,
+   0.209,
+   0.907,
+   0.498
+  ]
+ },
+ {
+  "id": "freitag_meas",
+  "pdf": "02_freitag",
+  "page": 5,
+  "region": [
+   0.084,
+   0.4925,
+   0.893,
+   0.915
+  ]
+ },
+ {
+  "id": "mettler_dv",
+  "pdf": "04_mettler",
+  "page": 6,
+  "region": [
+   0.087,
+   0.3735,
+   0.487,
+   0.6075
+  ]
+ },
+ {
+  "id": "kr_fig1",
+  "pdf": "05_kr",
+  "page": 7,
+  "region": [
+   0.245,
+   0.177,
+   0.755,
+   0.477
+  ]
  }
 ]
