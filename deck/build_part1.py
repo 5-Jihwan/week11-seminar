@@ -69,11 +69,9 @@ p,li{font-size:18px;line-height:1.6;margin:0}ul,ol{margin:0;padding-left:22px}li
 .issue{position:absolute;left:72px;right:72px;top:126px;bottom:58px}.issue .fig{position:relative;height:300px;border-radius:6px;overflow:hidden;background:#111}.issue .fig img{width:100%;height:100%;object-fit:cover;display:block}
 .mc{position:absolute;color:#fff;font-weight:800;font-size:22px;line-height:1.25;text-shadow:0 0 6px #000,0 0 2px #000,2px 2px 0 #000,-1px -1px 0 #000;padding:4px 8px}
 .card2{height:300px;border:1px solid var(--line);border-radius:6px;background:var(--navyt);padding:22px 26px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-content:center}.card2 .t{font-size:13px;color:var(--sub);margin-bottom:6px}.card2 .m{font-size:19px;font-weight:700;color:var(--navy);line-height:1.4}
-.pc{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:22px;font-size:19px;line-height:1.55}.pc b{display:block;color:var(--navy);font-size:21px;margin-bottom:6px}
 .ch{display:grid;gap:10px}.ch .o{border-left:3px solid var(--navy);padding:6px 0 6px 18px;font-size:18px;line-height:1.55}.ch .o b{display:block;font-size:24px;color:var(--navy);line-height:1.35;margin-bottom:5px}.ch .vs{font-size:15px;color:var(--gray);font-weight:700;padding-left:21px}
 .pr{grid-column:1/3;margin-top:6px;padding:11px 16px;background:var(--navyt);font-size:16px;line-height:1.5}
-.issue ol li{font-size:inherit}.issue ol li+li{margin-top:3px}.issue.side{top:136px;display:grid;grid-template-columns:auto 1fr;gap:10px 36px;align-content:start;align-items:center}.issue.side .pc{grid-template-columns:1fr;gap:16px;margin-top:0;font-size:16px;line-height:1.55}.issue.side .pc b{font-size:15.5px}.issue.side .iq{grid-column:1/3}.issue.side .card2{width:460px;height:auto;min-height:300px;grid-template-columns:1fr}
-.iq{margin-top:10px;font-size:19px;color:var(--navy);font-weight:600;line-height:1.4}
+.issue.side{top:136px;display:grid;grid-template-columns:auto 1fr;gap:10px 36px;align-content:center;align-items:center}.issue.side .card2{width:460px;height:auto;min-height:300px;display:grid;grid-template-columns:1fr;gap:12px}
 /* 한 줄과 다리 */
 .bridge .one{font-size:30px;line-height:1.45;font-weight:600;color:var(--navy);padding:22px 28px;border-left:4px solid var(--green);background:var(--greent)}.bridge .next{margin-top:26px;font-size:17px;line-height:1.65;color:var(--ink)}
 /* 논문 시작 표지 */
@@ -130,62 +128,56 @@ def esc(s): return s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&g
 
 
 # 캡션 좌표: 템플릿별 (위치 %, 폭 %)
-MPOS = {"pigeon": [("top:7%;left:56%;width:40%",), ("top:34%;left:3%;width:42%",), ("bottom:5%;left:8%;width:84%;text-align:center",)],
+MPOS = {"catyell": [("top:5%;left:2%;width:46%;text-align:center",), ("top:5%;left:52%;width:46%;text-align:center",)],
+        "pigeon": [("top:7%;left:56%;width:40%",), ("top:34%;left:3%;width:42%",), ("bottom:5%;left:8%;width:84%;text-align:center",)],
         "buttons": [("top:8%;left:12%;width:30%",), ("top:4%;left:46%;width:32%",), ("bottom:6%;left:18%;width:64%;text-align:center",)],
         "drake": [("top:10%;left:52%;width:46%",), ("top:60%;left:52%;width:46%",)],
         "boyfriend": [("top:48%;left:20%;width:26%",), ("top:34%;left:50%;width:22%",), ("top:38%;left:75%;width:23%",)],
         "brain": [("top:3%;left:2%;width:46%",), ("top:28%;left:2%;width:46%",), ("top:53%;left:2%;width:46%",), ("top:78%;left:2%;width:46%",)],
-        "fine": [("top:5%;left:6%;width:88%;text-align:center",), ("bottom:6%;left:6%;width:88%;text-align:center",)],
+        "fine": [("bottom:5%;left:5%;width:90%;text-align:center",)],
         "gru": [("top:6%;left:3%;width:42%",), ("top:6%;left:53%;width:42%",), ("top:56%;left:3%;width:42%",), ("top:56%;left:53%;width:42%",)],
         "handshake": [("bottom:8%;left:2%;width:32%",), ("bottom:8%;right:2%;width:32%;text-align:right",), ("top:12%;left:30%;width:40%;text-align:center",)],
         "whynotboth": [("top:5%;left:6%;width:88%;text-align:center",), ("bottom:6%;left:6%;width:88%;text-align:center",)],
         "exit": [("top:5%;left:8%;width:34%",), ("top:5%;left:52%;width:34%",), ("bottom:8%;left:20%;width:60%;text-align:center",)]}
-MNAME = {"pigeon": "이게 비둘기인가요?", "buttons": "두 버튼", "drake": "드레이크", "boyfriend": "딴 데 보는 남자친구", "brain": "확장하는 뇌", "fine": "불타는 방의 개", "gru": "그루의 계획", "handshake": "두 팔 악수", "whynotboth": "둘 다 하면 안 돼요?", "exit": "고속도로 출구"}
+MNAME = {"catyell": "고양이에게 소리치는 여자", "pigeon": "이게 비둘기인가요?", "buttons": "두 버튼", "drake": "드레이크", "boyfriend": "딴 데 보는 남자친구", "brain": "확장하는 뇌", "fine": "불타는 방의 개", "gru": "그루의 계획", "handshake": "두 팔 악수", "whynotboth": "둘 다 하면 안 돼요?", "exit": "고속도로 출구"}
 
 
 # 공개판은 그림 파일을 저장소에 넣지 않고 imgflip 주소에서 불러온다. 안 열리면(오프라인) 캡션 카드가 대신 보인다
-MURL = {"pigeon": "Is-This-A-Pigeon", "brain": "Expanding-Brain", "buttons": "Two-Buttons", "drake": "Drake-Hotline-Bling", "fine": "This-Is-Fine", "gru": "Grus-Plan",
+MCROP = {"fine": 1.03}  # 가로로 긴 두 칸 템플릿은 오른쪽 한 칸만 쓴다
+MURL = {"catyell": "Woman-Yelling-At-Cat", "pigeon": "Is-This-A-Pigeon", "brain": "Expanding-Brain", "buttons": "Two-Buttons", "drake": "Drake-Hotline-Bling", "fine": "This-Is-Fine", "gru": "Grus-Plan",
         "handshake": "Epic-Handshake", "boyfriend": "Distracted-Boyfriend", "whynotboth": "Why-Not-Both", "exit": "Left-Exit-12-Off-Ramp"}
 
 
-def memefig(meme, caps, local, side):
-    """밈 그림(캡션 포함). 공개판은 그림을 imgflip에서 불러오고 안 열리면 캡션 카드가 대신 보인다. 그림 파일이 없으면 캡션 카드만."""
-    card = f'<div class="card2"><div style="grid-column:1/3"><div class="t">{MNAME[meme]} 형식 · 캡션</div></div>' + "".join(f'<div><div class="t">{["①","②","③","④"][i]}</div><div class="m">{esc(c)}</div></div>' for i, c in enumerate(caps)) + '</div>'
+def memefig(meme, caps, local):
+    """밈 그림(캡션은 그림 위에). 공개판은 그림을 imgflip에서 불러오고 안 열리면 캡션 카드가 대신 보인다. 그림 파일이 없으면 캡션 카드만."""
+    card = f'<div class="card2"><div class="t">{MNAME[meme]} 형식 · 캡션</div>' + "".join(f'<div class="m">{esc(c)}</div>' for c in caps) + '</div>'
     if meme not in MASP: return card, False
-    asp = MASP[meme]; tall = asp < 0.95  # 세로로 긴 템플릿은 캡션을 그림 밖 목록으로
-    H = (330 if tall else int(min(400, 500 / asp))) if side else 300
-    img = f'<img src="{MEME[meme]}" alt="" style="object-fit:fill">' if local else f'<img src="https://imgflip.com/s/meme/{MURL[meme]}.jpg" alt="" style="object-fit:fill" referrerpolicy="no-referrer" onerror="noimg(this)">'
-    w = min(1136, int(H * asp)); fs = 21 if w >= 700 else 16 if w >= 420 else 13
-    dark = meme in ("drake", "gru", "whynotboth")  # 밝은 바탕 템플릿은 남색 글자
+    asp = MCROP.get(meme, MASP[meme]); H = int(min(400, 500 / asp)); w = int(H * asp)
+    fit = "object-fit:cover;object-position:right" if meme in MCROP else "object-fit:fill"
+    img = f'<img src="{MEME[meme]}" alt="" style="{fit}">' if local else f'<img src="https://imgflip.com/s/meme/{MURL[meme]}.jpg" alt="" style="{fit}" referrerpolicy="no-referrer" onerror="noimg(this)">'
+    fs = 16 if w >= 420 else 14
+    dark = meme in ("drake", "gru", "whynotboth", "catyell", "buttons")  # 밝은 바탕 템플릿은 남색 글자
     over = "".join(f'<div class="mc" style="{MPOS[meme][i][0]};font-size:{fs}px;{"color:#15203a;text-shadow:0 0 4px #fff,0 0 2px #fff,1px 1px 0 #fff" if dark else ""}">{esc(c)}</div>' for i, c in enumerate(caps))
-    lst = "".join(f"<li>{esc(c)}</li>" for c in caps)
-    if tall and side:
-        fig = f'<div><div class="fig" style="width:{w}px;height:{H}px;margin:0 auto">{img}</div><ol style="font-size:15px;line-height:1.45;margin-top:10px;max-width:400px">{lst}</ol></div>'
-    elif tall:
-        fig = f'<div style="display:flex;gap:22px;align-items:center;justify-content:center;height:{H}px"><div class="fig" style="width:{w}px;height:{H}px">{img}</div><ol style="font-size:16.5px;line-height:1.5;max-width:560px">{lst}</ol></div>'
-    else:
-        fig = f'<div class="fig" style="width:{w}px;height:{H}px;margin:0 auto">{img}{over}</div>'
+    fig = f'<div class="fig" style="width:{w}px;height:{H}px;margin:0 auto">{img}{over}</div>'
     if not local: fig = f'<div class="mw">{fig}</div>' + card.replace('<div class="card2">', '<div class="card2" style="display:none">', 1)
     return fig, True
 
 
-def _issue(title, sub, body, has, local, how, notes):
+def _issue(title, sub, meme, caps, a, b, extra, local, how, notes):
+    fig, has = memefig(meme, caps, local)
+    body = f'<div class="issue side">{fig}<div class="ch"><div class="o"><b>{a[0]}</b>{a[1]}</div><div class="vs">vs</div><div class="o"><b>{b[0]}</b>{b[1]}</div></div>{extra}</div>'
     credit = ("밈 템플릿: imgflip 공개 템플릿, 수업 내부용 · " if local else "밈 템플릿: imgflip · ") if has else ""
     S.append((f'<section class="slide"><div class="hd"><h2>{title}</h2><p class="s">{sub}</p></div>{body}<div class="cap">{credit}{how}</div><aside class="notes">{notes}</aside></section>', None))
 
 
 def choice(title, sub, meme, caps, c1, c2, result, local, notes):
-    """논문별 첫 토론: 정책 선택 두 가지. 왼쪽 밈, 오른쪽 선택 1·2, 아래에 논문의 결과 한 줄."""
-    fig, has = memefig(meme, caps, local, True)
-    body = f'<div class="issue side">{fig}<div class="ch"><div class="o"><b>{c1[0]}</b>{c1[1]}</div><div class="vs">vs</div><div class="o"><b>{c2[0]}</b>{c2[1]}</div></div><div class="pr">{result}</div></div>'
-    _issue(title, sub, body, has, local, "토론 5분 · 손들기 뒤 지명 1명 + 자유 2~3명", notes)
+    """논문별 첫 토론: 정책 선택 두 가지와 논문의 결과 한 줄."""
+    _issue(title, sub, meme, caps, c1, c2, f'<div class="pr">{result}</div>', local, "토론 5분 · 손들기 뒤 지명 1명 + 자유 2~3명", notes)
 
 
 def issue(title, sub, meme, caps, pro, con, q, local, notes):
     """논문별 두 번째 토론: 한 문장 찬·반, 손들기."""
-    fig, has = memefig(meme, caps, local, False)
-    body = f'<div class="issue">{fig}<div class="pc"><div><b>{pro[0]}</b>{pro[1]}</div><div><b>{con[0]}</b>{con[1]}</div></div>{f"<div class=iq>{q}</div>" if q else ""}</div>'
-    _issue(title, sub, body, has, local, "손들기 1분", notes)
+    _issue(title, sub, meme, caps, pro, con, "", local, "손들기 1분", notes)
 
 
 def build(local):
@@ -267,8 +259,8 @@ def build(local):
 <div class="me"><b>발제자의 추가 검토</b><ul><li>종속변수 정의(945)의 구조 차원에 "rules"가 들어 있는데 951쪽에서는 Rules가 독립변수다. 저자는 측정에서는 중복되지 않는다고 설명하지만(953) 개념상의 중복은 인정한다</li><li>Table 1에는 60개 마을만 있다. 본문 평균 58.4·59.7은 61개 기준</li><li>952쪽은 집단 행동 변수가 "all assessed in 1997"이라고 서술하지만 자생 조직 가입은 증가분이다(각주 27과 불일치)</li><li>Table 1에서 1997년 1~4위 마을은 모두 하락하고 57~61위 마을은 모두 상승했다. 마을당 평균 약 38명(재면접자만 세면 약 28명)인 표본 평균의 변동과 구분해 해석할 필요가 있다</li></ul></div></div>''',
           "",
           "저자가 스스로 적은 한계가 다섯입니다. 가장 중요한 것이 950쪽 문장입니다. 같은 제도 아래라 제도 효과는 검증할 수 없다. 오른쪽은 제가 원문을 대조하며 찾은 것입니다. 규칙이 종속변수 정의에도 들어 있고 독립변수이기도 합니다. 저자도 개념 수준에서는 겹친다고 인정합니다. 이 점은 토론으로 가져가지 않고 여기서만 짚습니다.")
-    issue("7년간의 변화로 역사 의존 가설을 기각할 수 있는가", "Krishna · 토론 2", "brain",
-          ["역사가 정한다 (Putnam 1993)", "제도가 정한다 (Rothstein)", "규칙과 리더가 정한다 (Krishna)", "그런데 1997년 지수도 여전히 유의하다 (.12*)"],
+    issue("7년간의 변화로 역사 의존 가설을 기각할 수 있는가", "Krishna · 토론 2", "catyell",
+          ["사회자본은 역사가 정한다!", "7년 만에 바뀌던데요"],
           ("찬 · 기각할 수 있다", "같은 주, 같은 제도 아래 61개 마을 중 33개가 오르고 28개가 내렸다."),
           ("반 · 기각할 수 없다", "1997년 지수가 여전히 유의하고(.12*), 역사 의존은 수백 년 단위의 가설이다."),
           "", local,
@@ -304,7 +296,7 @@ def build(local):
          "Wollebaek &amp; Selle(4주차)는 수동적 회원도 신뢰가 높다고 보고했으나 이 논문의 넷째 문항은 능동 회원만 집계. Knack &amp; Keefer(10주차)는 단체 가입이 경제 성장과 무관하고 신뢰와 시민 규범이 유의하다고 보고",
          "왼쪽이 127쪽 측정 문단입니다. Freitag은 Coleman과 Putnam의 정의에서 결사체 참여만 골라 종속변수로 삼았습니다. 스위스 가구패널 네 문항을 주성분 분석으로 묶고, 칸톤 평균을 썼습니다. 신뢰는 가입보다 먼저 온다고 가정해서 통제변수로 넣었습니다. 그 신뢰의 계수가 다변량 분석에서 .06이고 유의하지 않습니다. 제도 변수도 하나 짚겠습니다. 직접민주주의 지수는 주민투표를 시작하는 요건을 점수화한 값이라서, 투표가 실제로 몇 번 열렸는지는 담지 않습니다. 이 측정 방식이 첫 쟁점으로 이어집니다.")
     choice("주민 참여를 늘리려면 무엇을 먼저 바꿔야 한다고 생각하십니까?", "Freitag · 토론 1", "buttons",
-          ["주민투표 요건을 낮춘다", "주민 조직부터 키운다", "지자체장"],
+          ["요건 완화", "조직 육성", "지자체장"],
           ("선택 1. 참여 제도의 요건을 낮춘다", "주민투표와 주민발의에 필요한 서명 수와 기간을 줄인다. 제도가 열리면 주민이 요구를 모으려고 모임을 만든다"),
           ("선택 2. 참여할 주민 조직부터 키운다", "모임과 단체가 먼저 있어야 제도를 쓴다. 조직이 없는 곳에서는 제도를 열어도 쓰이지 않는다"),
           "Freitag의 결과: 직접민주주의 지수가 높은 칸톤일수록 결사체 참여가 많았다. 다만 언어권을 통제하면 이 관계는 유의하지 않았다(Table 6)", local,
@@ -362,7 +354,7 @@ def build(local):
          "Coleman(1988, 3주차)은 사회자본을 기능으로 정의하므로, 기능하지 않는 잠재 사회자본은 그 정의와 맞지 않음. Dasgupta(2000, 9주차)가 비판한 이질적 요소의 합산(p.327)을 이 논문은 장점으로 평가",
          "이 논문은 자체 측정이 없어서 개념을 정리했습니다. 왼쪽이 638쪽 원문입니다. 저자들은 Putnam의 정의를 쓰는데, 그 정의에는 규범과 구조와 결과가 함께 들어 있습니다. 9주차 Dasgupta가 비판한 합산을 저자들은 장점으로 평가합니다. 그리고 사회자본이 만들어지는 과정과 동원되는 과정을 나눕니다. 사회자본이 있어도 제도가 반응하지 않으면 민주주의 성과로 이어지지 않는데, 저자들은 이 상태를 잠재라고 부릅니다. 3주차 Coleman처럼 사회자본을 기능으로 정의하면 잠재 사회자본이라는 개념이 성립하는지 따져 볼 수 있습니다. 첫 쟁점입니다.")
     choice("결과를 반영하기 어려운 사안에도 공청회를 열어야 한다고 생각하십니까?", "Lowndes &amp; Wilson · 토론 1", "fine",
-          ["협의는 했습니다", "모범 지자체 4분의 3이 결과를 의사결정에 연결하지 못함 (Audit Commission 1999)"],
+          ["공청회는 열었습니다 (4분의 3은 결과를 의사결정에 연결하지 못함)"],
           ("선택 1. 연다", "주민이 서로 만나는 것만으로 새 모임이 생길 수 있다. 의견을 들을 기회는 그 자체로 필요하다"),
           ("선택 2. 열지 않는다", "의견을 듣고 반응하지 않으면 다음 참여가 줄어든다. 반영할 수 있는 사안에만 연다"),
           "Lowndes &amp; Wilson의 주장: 참여를 가로막는 가장 큰 요인은 지방정부가 반응하지 않는다는 인식이나 경험이다(638). 공청회는 주민이 만나 새 모임을 만드는 계기가 될 수 있다(637)", local,
@@ -477,7 +469,7 @@ def build(local):
          "Freitag은 신뢰를 통제변수로 두었고 이 논문은 참여를 통제변수로 둠. Putnam(2000, 3주차)은 복지국가를 사회자본 쇠퇴의 설명 후보 가운데 하나로 들었고, Fukuyama(2001: 18)는 국가가 시민사회의 일을 떠맡으면 사람들이 국가에 의존하게 된다고 보았다. 이 논문은 규모 대신 제도 유형을 구분",
          "왼쪽이 345쪽 Figure 1이고, 아래 주에 신뢰 문항이 있습니다. 제목은 사회자본인데 종속변수는 대인신뢰 한 문항입니다. 저자들은 집계 수준의 상관만으로는 인과 기제를 알 수 없다고 보고 개인 수준에서 분석합니다. 참여가 신뢰를 높인다는 인과도 의심합니다. 그래서 참여는 통제변수로 넣었습니다. Freitag은 신뢰를 통제변수로 두었으니 두 논문의 선택이 반대입니다. 그리고 348쪽 보편 급여의 예시에 아동수당이 들어 있습니다. 첫 쟁점입니다.")
     choice("복지 급여의 대상을 정할 때 무엇을 우선해야 한다고 생각하십니까?", "Kumlin &amp; Rothstein · 토론 1", "whynotboth",
-          ["모두에게 줄 것인가, 심사해서 줄 것인가", "신뢰도 따져 보면 안 되나요?"],
+          ["모두에게? 심사해서?", "신뢰도 따져 보면 안 되나요?"],
           ("선택 1. 심사 없이 모두에게 준다", "신청과 심사 절차가 줄고 받는 사람이 의심받지 않는다. 필요 없는 사람에게도 예산이 쓰인다"),
           ("선택 2. 심사해서 필요한 사람에게 준다", "같은 예산으로 필요한 사람에게 더 많이 줄 수 있다. 심사 과정에서 받는 사람이 의심과 재량을 경험한다"),
           "Kumlin &amp; Rothstein의 결과: 선별 기관 접촉이 한 곳 많은 사람은 대인신뢰가 0.26점 낮고, 보편 기관은 한 곳마다 0.07점 높았다(Table 5)", local,
@@ -518,17 +510,6 @@ def build(local):
 <p class="take" style="margin-top:18px">결사체 참여를 종속변수로 둔 Freitag과 Mettler는 국가의 양(+)의 효과를, 대인신뢰를 종속변수로 둔 Kumlin &amp; Rothstein은 선별 제도의 음(−)의 효과를 보고했다.<small>Freitag의 다변량 분석에서 신뢰는 결사체 참여에 유의하지 않았다(Table 6 Model 4). Krishna는 Kumlin &amp; Rothstein을 인용했지만(943) 정부 신뢰의 효과는 유의하지 않았다(950).</small><small>한국의 아동수당은 2018년 9월 소득 하위 90% 대상으로 시작해 2019년 1월 소득 심사를 폐지했다. 같은 급여를 두 해에 걸쳐 다른 방식으로 받은 사람들이 한국복지패널에 있다.</small></p>''',
           "",
           "다섯 편의 종속변수를 한 표로 모았습니다. 넷째 열을 보시면 신뢰를 다룬 방식이 논문마다 다릅니다. 지수의 한 문항, 통제변수, 측정 없음, 측정 없음, 종속변수입니다. 결사체 참여를 종속변수로 둔 Freitag과 Mettler는 국가의 양의 효과를 보고했고, 대인신뢰를 종속변수로 둔 Kumlin과 Rothstein은 선별 제도의 음의 효과를 보고했습니다. 첫 논문 Krishna는 943쪽에서 Kumlin과 Rothstein을 인용했는데, 950쪽에서 정부 신뢰가 유의하지 않다고 보고했습니다. 두 연구는 종속변수와 분석 단위가 다르다는 점을 함께 보셔야 합니다. 그리고 Kumlin과 Rothstein은 355쪽에서 실험 자료를 쓴 후속 연구를 환영한다고 썼습니다. 한국의 아동수당은 2018년 9월에 소득 하위 90%를 대상으로 시작했고 2019년 1월부터 소득 심사를 없앴습니다. 같은 급여가 선별에서 보편으로 바뀐 사례이고, 2부에서 각자 국내 자료로 이어서 보겠습니다.")
-    slide("토론 정리", "홀수 번호는 선택 1·2, 짝수 번호는 찬·반. 많았던 쪽에 표시",
-          '''<div class="two" style="align-items:start"><table style="font-size:14.5px"><tr><th>#</th><th>쟁점</th><th>1·찬</th><th>2·반</th></tr>
-<tr><td>1</td><td>주민 모임 지원: 정부가 만든 조직 / 주민이 만든 모임</td><td class="ck">□</td><td class="ck">□</td></tr><tr><td>2</td><td>7년 변화로 역사 의존을 기각할 수 있는가</td><td class="ck">□</td><td class="ck">□</td></tr>
-<tr><td>3</td><td>주민 참여: 제도 요건 완화 / 주민 조직 육성</td><td class="ck">□</td><td class="ck">□</td></tr><tr><td>4</td><td>결사체 참여가 신뢰와 무관하다면 사회자본이 만들어진 것인가</td><td class="ck">□</td><td class="ck">□</td></tr>
-<tr><td>5</td><td>반영하기 어려운 사안의 공청회: 연다 / 열지 않는다</td><td class="ck">□</td><td class="ck">□</td></tr></table>
-<table style="font-size:14.5px"><tr><th>#</th><th>쟁점</th><th>1·찬</th><th>2·반</th></tr>
-<tr><td>6</td><td>실증 자료 없는 설계 틀을 정책 근거로 쓸 수 있는가</td><td class="ck">□</td><td class="ck">□</td></tr><tr><td>7</td><td>장학금의 사회 기여 조건: 없음 / 있음</td><td class="ck">□</td><td class="ck">□</td></tr>
-<tr><td>8</td><td>급여의 효과는 받는 방식에서 온 것인가</td><td class="ck">□</td><td class="ck">□</td></tr><tr><td>9</td><td>급여 대상: 모두에게 / 심사해서</td><td class="ck">□</td><td class="ck">□</td></tr>
-<tr><td>10</td><td>신뢰가 낮은 사람이 선별 창구에 가는 것은 아닌가</td><td class="ck">□</td><td class="ck">□</td></tr></table></div>''',
-          "번호는 토론 계획서와 같음.",
-          "오늘 던진 쟁점 열 개입니다. 토론에서 갈린 쪽에 표시해 두었습니다. 반이 많았던 쟁점은 그 논문의 자료가 답을 못 낸 자리이고, 2부에서 각자 자료를 고를 때 그 변수가 있는지 확인할 자리입니다.")
     slide("주차별 주제와 11주차", "",
           '''<div class="two" style="grid-template-columns:1.2fr 1fr;align-items:start"><table style="font-size:14.5px"><tr><th>시기</th><th>연구 질문</th><th>이 강좌의 문헌</th></tr>
 <tr><td>1960~1998</td><td>왜 합리적 개인은 협력하지 않는가</td><td>Olson, Hardin, Coase, Ostrom (2주)</td></tr>
@@ -536,13 +517,14 @@ def build(local):
 <tr><td>1973~1999</td><td>관계 구조에서 자원의 위치</td><td>Granovetter, Burt, Lin (5주)</td></tr>
 <tr><td>2002~2008</td><td>형성 요인: 문화, 개인 투자, 지역, 결사체</td><td>Guiso, Glaeser, Rupasingha, Wollebaek &amp; Selle (4주)</td></tr>
 <tr><td>1997~2026</td><td>사회자본의 효과</td><td>Paxton, Boix &amp; Posner, Tavits, Knack, Knack &amp; Keefer (6~10주)</td></tr>
-<tr style="background:var(--greent)"><td>2001~2007</td><td><b>국가는 사회자본을 형성하는가</b></td><td><b>오늘 다섯 편</b></td></tr>
+<tr style="background:var(--greent)"><td>2001~2007</td><td><b>국가는 사회자본을 형성하는가</b></td><td><b>Krishna, Freitag, Lowndes &amp; Wilson, Mettler, Kumlin &amp; Rothstein (11주)</b></td></tr>
 <tr><td>1995~2007</td><td>신뢰는 사회자본과 같은가</td><td>Mayer, Rousseau, Hardin, Tyler, Keele (12~13주)</td></tr>
 <tr><td>2000~2021</td><td>누구의 사회자본인가</td><td>Putnam 22장, Compton &amp; Meier, Gidengil (14주)</td></tr></table>
-<div><div class="quote" style="font-size:15.5px">"두 개념(집단 지향과 개인 지향)은 문헌에 둘 다 있지만, 둘 사이에 다리가 놓인 적이 없고, 같은 개념을 가리키는지도 분명치 않다."<small>Krishna 2007: 942, 각주 2 (발제자 번역)</small></div><p style="font-size:15px;margin-top:14px;line-height:1.6">발제자가 보기에 11주차 지정문헌 5편은 모두 집단 수준의 사회자본 논의(Putnam 계열)에 속한다. 12~13주차 문헌은 그중 신뢰를 따로 다루고, 14주차 문헌은 사회자본의 분배를 다룬다. 쟁점 4·9·10은 12~13주차 주제와 이어진다.</p></div></div>''',
+<div><div class="quote" style="font-size:15.5px">"두 개념(집단 지향과 개인 지향)은 문헌에 둘 다 있지만, 둘 사이에 다리가 놓인 적이 없고, 같은 개념을 가리키는지도 분명치 않다."<small>Krishna 2007: 942, 각주 2 (발제자 번역)</small></div><p style="font-size:15px;margin-top:14px;line-height:1.6">발제자가 보기에 11주차 지정문헌 5편은 모두 집단 수준의 사회자본 논의(Putnam 계열)에 속한다. 12~13주차 문헌은 그중 신뢰를 따로 다루고, 14주차 문헌은 사회자본의 분배를 다룬다. 신뢰를 다룬 토론 4·9·10은 12~13주차 주제와 이어진다.</p></div></div>''',
           "",
-          "11주차까지의 지도입니다. 오늘이 초록 줄입니다. 2주차 질문에서 시작해 3주차에 이름이 붙고, 6주차부터 원인으로 다뤘던 사회자본을 오늘은 4주차에 이어 다시 결과로 놓았고, 이번에는 원인이 국가입니다. 다음 주부터는 그 안에서 신뢰만 떼어 묻습니다. 오늘 쟁점 중 신뢰를 건드린 셋이 그쪽으로 넘어갑니다.")
-    photo("korea_seoul_street", "2부에서는 각자 국내 자료로 같은 모형을 만든다.", "다섯 편 중 셋이 한 나라 한 시점 자료였고 한 편은 자료가 없었다. 국내 조사 8종, 전체 문항 5,636개, 선행연구 7,690편.", "각자 국내 자료에서 창구 변수 하나와 신뢰 문항 하나를 고르면, 그 사이에 무엇을 통제할지가 오늘 열 번째 토론의 질문이다. 5-jihwan.github.io/week11-seminar/model/canvas.html · 노트북 권장", "교수님 설명 뒤 2부입니다. 다섯 편 중 셋이 한 나라 한 시점 자료였고 한 편은 자료가 없었습니다. 이제 각자 국내 자료에서 창구 변수 하나와 신뢰 문항 하나를 고릅니다. 그 사이에 무엇을 통제할지가 방금 본 열 번째 질문입니다. 교수님.", "2부로")
+          "2주차부터 14주차까지의 주제를 한 표로 모았습니다. 초록 줄이 11주차입니다. 2주차 질문에서 시작해 3주차에 이름이 붙고, 6주차부터 원인으로 다뤘던 사회자본을 오늘은 4주차에 이어 다시 결과로 놓았고, 이번에는 원인이 국가입니다. 다음 주부터는 그 안에서 신뢰만 떼어 묻습니다. 오늘 토론 가운데 신뢰를 다룬 셋이 그 주제로 이어집니다.")
+    raw(f'''<section class="slide cover">{f'<img src="{PHOTO["landsgemeinde"]}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55">' if "landsgemeinde" in PHOTO else ""}<div style="position:absolute;inset:0;background:rgba(7,42,96,.55)"></div><div class="c" style="position:absolute"><h1>감사합니다</h1><p class="sub">긴 발표를 들어 주시고 토론에 참여해 주셔서 감사합니다.</p></div><div class="meta">사회자본과 공공정책 · 11주차 발제 · 오지환(석사과정 2학기)</div>{f'<div style="position:absolute;right:40px;bottom:26px;font-size:11px;color:rgba(255,255,255,.65);max-width:600px;text-align:right">{PCRED["landsgemeinde"]}</div>' if "landsgemeinde" in PCRED else ""}
+<aside class="notes">긴 발표를 들어 주시고 토론에 참여해 주셔서 감사합니다. 1부는 여기까지입니다.</aside></section>''')
     # ───────── 부록 ─────────
     for t, sub, key, cap in [("Krishna Table 2 원문", "949쪽", "krishna_t2", "N 61/60, R² .23/.79"), ("Freitag Table 7 원문", "142쪽 · 공선 변수를 분리한 네 모형", "freitag_t7", "M1 제도 셋 R² .75 · M2 도시화·언어권 .79 · M3 직접민주주의·도시화 .77 · M4 합의·지방자치·언어권 .78"),
                              ("Mettler Table 7 원문", "362쪽 · 정치참여, 생활수준 × 이용 상호작용", "mettler_t7", "생활수준 최하 .17(.57) · 중하 .40(.03) · 중간 .27(.13) · 중상·상 1.22(.00)"), ("Kumlin &amp; Rothstein Table 3 원문", "352쪽 · 선별 접촉 수별 평균 신뢰", "kr_t3", "0/1/2+ → 6.7/6.0/5.7, r=−.14"),
