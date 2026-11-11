@@ -70,6 +70,7 @@ p,li{font-size:18px;line-height:1.6;margin:0}ul,ol{margin:0;padding-left:22px}li
 .mc{position:absolute;color:#fff;font-weight:800;font-size:22px;line-height:1.25;text-shadow:0 0 6px #000,0 0 2px #000,2px 2px 0 #000,-1px -1px 0 #000;padding:4px 8px}
 .card2{height:300px;border:1px solid var(--line);border-radius:6px;background:var(--navyt);padding:22px 26px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-content:center}.card2 .t{font-size:13px;color:var(--sub);margin-bottom:6px}.card2 .m{font-size:19px;font-weight:700;color:var(--navy);line-height:1.4}
 .pc{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:12px;font-size:15.5px;line-height:1.5}.pc b{display:block;color:var(--navy);font-size:15px;margin-bottom:3px}
+.issue ol li{font-size:inherit}.issue ol li+li{margin-top:3px}.issue.side{top:136px;display:grid;grid-template-columns:auto 1fr;gap:10px 36px;align-content:start;align-items:center}.issue.side .pc{grid-template-columns:1fr;gap:16px;margin-top:0;font-size:16px;line-height:1.55}.issue.side .pc b{font-size:15.5px}.issue.side .iq{grid-column:1/3}.issue.side .card2{width:460px;height:auto;min-height:300px;grid-template-columns:1fr}
 .iq{margin-top:10px;font-size:19px;color:var(--navy);font-weight:600;line-height:1.4}
 /* 한 줄과 다리 */
 .bridge .one{font-size:30px;line-height:1.45;font-weight:600;color:var(--navy);padding:22px 28px;border-left:4px solid var(--green);background:var(--greent)}.bridge .next{margin-top:26px;font-size:17px;line-height:1.65;color:var(--ink)}
@@ -148,19 +149,25 @@ MURL = {"pigeon": "Is-This-A-Pigeon", "brain": "Expanding-Brain", "buttons": "Tw
 def issue(title, sub, meme, caps, pro, con, q, local, notes):
     card = f'<div class="card2"><div style="grid-column:1/3"><div class="t">{MNAME[meme]} 형식 · 캡션</div></div>' + "".join(f'<div><div class="t">{["①","②","③","④"][i]}</div><div class="m">{esc(c)}</div></div>' for i, c in enumerate(caps)) + '</div>'
     has = meme in MASP
+    side = sub.endswith("쟁점 1")  # 논문별 첫 쟁점: 왼쪽에 밈, 오른쪽에 찬·반
     if has:
+        asp = MASP[meme]; tall = asp < 0.95  # 세로로 긴 템플릿은 캡션을 그림 밖 목록으로
+        H = (330 if tall else int(min(400, 500 / asp))) if side else 300
         img = f'<img src="{MEME[meme]}" alt="" style="object-fit:fill">' if local else f'<img src="https://imgflip.com/s/meme/{MURL[meme]}.jpg" alt="" style="object-fit:fill" referrerpolicy="no-referrer" onerror="noimg(this)">'
-        w = min(1136, int(300 * MASP[meme])); fs = 21 if w >= 700 else 16 if w >= 480 else 13
+        w = min(1136, int(H * asp)); fs = 21 if w >= 700 else 16 if w >= 420 else 13
         dark = meme in ("drake", "gru", "whynotboth")  # 밝은 바탕 템플릿은 남색 글자
         over = "".join(f'<div class="mc" style="{MPOS[meme][i][0]};font-size:{fs}px;{"color:#15203a;text-shadow:0 0 4px #fff,0 0 2px #fff,1px 1px 0 #fff" if dark else ""}">{esc(c)}</div>' for i, c in enumerate(caps))
-        if MASP[meme] < 0.95:  # 세로로 긴 템플릿: 그림 왼쪽, 캡션은 오른쪽에 순서대로
-            fig = f'<div style="display:flex;gap:22px;align-items:center;justify-content:center;height:300px"><div class="fig" style="width:{w}px;height:300px">{img}</div><ol style="font-size:16.5px;line-height:1.5;max-width:560px">' + "".join(f"<li>{esc(c)}</li>" for c in caps) + "</ol></div>"
+        lst = "".join(f"<li>{esc(c)}</li>" for c in caps)
+        if tall and side:
+            fig = f'<div><div class="fig" style="width:{w}px;height:{H}px;margin:0 auto">{img}</div><ol style="font-size:15px;line-height:1.45;margin-top:10px;max-width:400px">{lst}</ol></div>'
+        elif tall:
+            fig = f'<div style="display:flex;gap:22px;align-items:center;justify-content:center;height:{H}px"><div class="fig" style="width:{w}px;height:{H}px">{img}</div><ol style="font-size:16.5px;line-height:1.5;max-width:560px">{lst}</ol></div>'
         else:
-            fig = f'<div class="fig" style="width:{w}px;margin:0 auto">{img}{over}</div>'
+            fig = f'<div class="fig" style="width:{w}px;height:{H}px;margin:0 auto">{img}{over}</div>'
         if not local: fig = f'<div class="mw">{fig}</div>' + card.replace('<div class="card2">', '<div class="card2" style="display:none">', 1)
     else:
         fig = card
-    body = f'<div class="issue">{fig}<div class="pc"><div><b>{pro[0]}</b>{pro[1]}</div><div><b>{con[0]}</b>{con[1]}</div></div><div class="iq">{q}</div></div>'
+    body = f'<div class="issue{" side" if side else ""}">{fig}<div class="pc"><div><b>{pro[0]}</b>{pro[1]}</div><div><b>{con[0]}</b>{con[1]}</div></div><div class="iq">{q}</div></div>'
     credit = ("밈 템플릿: imgflip 공개 템플릿, 수업 내부용 · " if local else "밈 템플릿: imgflip · ") if has else ""
     S.append((f'<section class="slide"><div class="hd"><h2>{title}</h2><p class="s">{sub}</p></div>{body}<div class="cap">{credit}토론 2분 30초 · 지명 1명 + 자유 1~2명</div><aside class="notes">{notes}</aside></section>', None))
 
