@@ -6,6 +6,8 @@
 실행: python deck/build_part1.py"""
 import base64, io, json, os, sys
 from PIL import Image
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from fontface import face, FAMILY
 sys.stdout.reconfigure(encoding="utf-8")
 H = os.path.dirname(os.path.abspath(__file__))
 
@@ -34,7 +36,7 @@ if os.path.isdir(pd):
 
 CSS = r"""
 :root{--paper:#fff;--stage:#e9edf2;--ink:#15203a;--sub:#5a6577;--line:#e2e6ec;--navy:#072A60;--navyt:#e9eef6;--navy7:#1e3a5f;--green:#8DC63F;--greend:#4F7F1C;--greent:#f0f7e6;--orange:#D9640F;--gray:#9aa2ae}
-*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--stage);font-family:Pretendard,"Noto Sans KR",system-ui,-apple-system,sans-serif;color:var(--ink)}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--stage);font-family:__FAMILY__;color:var(--ink)}
 #stage{position:fixed;inset:0;display:grid;place-items:center}
 .slide{width:1280px;height:720px;background:var(--paper);position:absolute;display:none;overflow:hidden;transform-origin:center}.slide.on{display:block}
 .hd{position:absolute;left:72px;top:48px;right:72px}.hd::before{content:"";display:block;width:32px;height:3px;background:var(--green);margin-bottom:12px}
@@ -66,18 +68,18 @@ p,li{font-size:18px;line-height:1.6;margin:0}ul,ol{margin:0;padding-left:22px}li
 .issue{position:absolute;left:72px;right:72px;top:126px;bottom:58px}.issue .fig{position:relative;height:300px;border-radius:6px;overflow:hidden;background:#111}.issue .fig img{width:100%;height:100%;object-fit:cover;display:block}
 .mc{position:absolute;color:#fff;font-weight:800;font-size:22px;line-height:1.25;text-shadow:0 0 6px #000,0 0 2px #000,2px 2px 0 #000,-1px -1px 0 #000;padding:4px 8px}
 .card2{height:300px;border:1px solid var(--line);border-radius:6px;background:var(--navyt);padding:22px 26px;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-content:center}.card2 .t{font-size:13px;color:var(--sub);margin-bottom:6px}.card2 .m{font-size:19px;font-weight:700;color:var(--navy);line-height:1.4}
-.pc{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:10px;font-size:13.5px;line-height:1.5}.pc b{display:block;color:var(--navy);font-size:13px;margin-bottom:3px}
-.iq{margin-top:8px;font-size:17px;color:var(--navy);font-weight:600;line-height:1.4}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:12px;font-size:15.5px;line-height:1.5}.pc b{display:block;color:var(--navy);font-size:15px;margin-bottom:3px}
+.iq{margin-top:10px;font-size:19px;color:var(--navy);font-weight:600;line-height:1.4}
 /* 한 줄과 다리 */
 .bridge .one{font-size:30px;line-height:1.45;font-weight:600;color:var(--navy);padding:22px 28px;border-left:4px solid var(--green);background:var(--greent)}.bridge .next{margin-top:26px;font-size:17px;line-height:1.65;color:var(--ink)}
 /* 인트로·엔딩 */
 .stat{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;text-align:center}.stat .v{font-family:"IBM Plex Mono",monospace;font-size:84px;line-height:1;color:var(--navy);font-weight:500}.stat .l{font-size:16.5px;color:var(--sub);margin-top:14px;line-height:1.5}
 .quote{border-left:4px solid var(--navy);padding:12px 18px;font-size:19px;line-height:1.6;color:var(--ink);background:#fafbfd}.quote small{display:block;color:var(--sub);font-size:13px;margin-top:8px}
-table{border-collapse:collapse;width:100%;font-size:15.5px}th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:13px;color:var(--navy);font-weight:600;background:var(--navyt);border-bottom:1px solid var(--navy7)}td.r,th.r{text-align:right;white-space:nowrap}.photo{background:#0b1a33}.photo img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.photo .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,42,96,.35),rgba(7,42,96,.82))}.photo .c{position:absolute;left:88px;right:88px;bottom:96px;color:#fff}.photo .c::before{content:"";display:block;width:40px;height:4px;background:var(--green);margin-bottom:22px}.photo .one{font-size:36px;line-height:1.4;font-weight:700}.photo .one small{display:block;font-size:17px;font-weight:400;opacity:.85;margin-top:8px}.photo .next{margin-top:22px;font-size:16.5px;line-height:1.65;opacity:.95;max-width:1000px}.photo .cr{position:absolute;right:40px;bottom:26px;font-size:11px;color:rgba(255,255,255,.65);max-width:720px;text-align:right}.photo .pg{color:rgba(255,255,255,.6)}
+table{border-collapse:collapse;width:100%;font-size:15.5px;line-height:1.4}th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:13px;color:var(--navy);font-weight:600;background:var(--navyt);border-bottom:1px solid var(--navy7)}td.r,th.r{text-align:right;white-space:nowrap}.photo{background:#0b1a33}.photo img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.photo .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,42,96,.35),rgba(7,42,96,.82))}.photo .c{position:absolute;left:88px;right:88px;bottom:96px;color:#fff}.photo .c::before{content:"";display:block;width:40px;height:4px;background:var(--green);margin-bottom:22px}.photo .one{font-size:36px;line-height:1.4;font-weight:700}.photo .one small{display:block;font-size:17px;font-weight:400;opacity:.85;margin-top:8px}.photo .next{margin-top:22px;font-size:16.5px;line-height:1.65;opacity:.95;max-width:1000px}.photo .cr{position:absolute;right:40px;bottom:26px;font-size:11px;color:rgba(255,255,255,.65);max-width:720px;text-align:right}.photo .pg{color:rgba(255,255,255,.6)}
 .map{position:relative;height:430px;border-left:1px solid var(--line);border-bottom:1px solid var(--line)}.map .pt{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--navy);transform:translate(-50%,-50%)}.map .lb{position:absolute;font-size:14px;line-height:1.35;transform:translate(10px,-50%)}.map .lb b{color:var(--navy);display:block;font-size:14.5px}.map .ax{position:absolute;font-size:12.5px;color:var(--sub)}
 .steps{counter-reset:s}.steps li{list-style:none;position:relative;padding-left:30px;font-size:17px;margin-top:9px}.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:4px;width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;display:grid;place-items:center}
 .play{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.play img{width:100%;border:1px solid var(--line);border-radius:4px}.play .ph{height:240px;border:1px dashed var(--gray);border-radius:4px;display:grid;place-items:center;color:var(--sub);font-size:14px;text-align:center;padding:12px}
-#help{position:fixed;right:14px;top:10px;font-size:12px;color:#7b8494;z-index:6}
+#help{position:fixed;right:14px;top:10px;font-size:12px;color:#7b8494;z-index:6}:root:fullscreen #help{display:none}td.ck{cursor:pointer;text-align:center}
 """
 
 S = []  # (html, notes, appendix?)
@@ -166,7 +168,7 @@ def build(local):
 <dt>설계</dt><dd>마을 단위 OLS. 종속 = 2004년 집합행동 성향 6문항 지수(0~100). 독립은 모두 1997년 측정(자생 조직 가입만 7년 증가분)</dd>
 <dt>결과</dt><dd>평균 58.4 → 59.7. 33개 마을 상승·28개 하락. 유의한 원인은 자생 조직 17.57*, 규칙 3.77*(p&lt;.001), 신진 리더 5.59*(p&lt;.01), 토지 불평등 −.13*. 정부 신뢰·정부 조직·NGO 조직은 비유의</dd>
 <dt>한계</dt><dd>같은 주 제도 아래라 제도 설계 효과는 검증 불가(950). 교육 같은 장기 효과는 7년에 안 보임(각주 19)</dd></dl></div>''',
-          "수치는 Table 2(949). 원문 대조 docs/PAPERS.md §1.",
+          "수치는 Table 2(949).",
           "Krishna의 질문은 하나입니다. Putnam이 역사가 정한다고 한 사회자본이 7년 안에 움직이는가. 라자스탄 61개 마을을 1997년과 2004년에 두 번 쟀습니다. 평균은 거의 그대로인데 마을은 움직였습니다. 33개가 오르고 28개가 내렸습니다. 올린 것은 마을 안에서 나온 것들이었습니다. 주민이 만든 조직, 규칙, 새 리더. 정부가 만든 조직과 정부에 대한 신뢰는 아무 상관이 없었습니다.")
     slide("연구 질문과 가설", "Krishna 2007",
           '''<div class="ladder">
@@ -196,12 +198,12 @@ def build(local):
 <span class="lab">정부 조직 가입</span><div class="b g" style="width:13%"></div><span class="v">n.s.</span>
 <span class="lab">정부 신뢰</span><div class="b g" style="width:4%"></div><span class="v">n.s.</span></div>
 <p class="take">계수가 가장 큰 자생 조직(17.57)보다 규칙(3.77)의 실질 효과가 세 배 크다. 범위가 .00~.22 대 .53~3.85이기 때문이다.<small>판정 기준 p&lt;.05 → 유의 4개 · 1997년 지수 SD 7.1 · R² .23(1997 지수만) → .79</small></p></div></div>''',
-          "Krishna 2007: 949, 952. 실질 효과는 계수에 변수 범위를 곱한 발제자 계산(docs/PAPERS.md §1).",
+          "Krishna 2007: 949, 952. 실질 효과는 계수에 변수 범위를 곱한 발제자 계산.",
           "왼쪽이 원문 표입니다. 유의한 것이 넷입니다. 오른쪽은 계수에 변수 범위를 곱한 실질 효과입니다. 계수만 보면 자생 조직이 17.57로 제일 크지만, 그 변수는 0에서 0.22 사이에서만 움직입니다. 규칙은 0.5에서 3.85까지 움직여서 실질 효과가 세 배입니다. 그래서 저자가 '규칙이 인과적으로 앞선다'고 썼습니다. 아래 두 줄, 정부 조직과 정부 신뢰는 회색입니다.")
     slide("한계와 쟁점", "Krishna 2007",
           f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>같은 주 제도 아래라 제도 설계 효과는 검증 불가(950)</li><li>교육처럼 7년보다 오래 걸리는 효과는 못 본다(각주 19)</li><li>자생 조직 가입은 1997~2004 증가분이라 내생성 우려(각주 27)</li><li>결과가 특정 역사 국면에 달려 있을 수 있다(각주 23)</li><li>리더가 어떻게 생기는지는 모른다(954)</li></ul><img class="shot" style="max-height:120px;margin-top:12px" src="{FIG["krishna_950"]}" alt="950쪽"></div>
 <div class="me"><b>발제자의 추가 검토</b><ul><li>종속변수 정의(945)의 구조 차원에 "rules"가 들어 있는데 951쪽에서는 Rules가 독립변수다. 저자는 측정 수준에서는 겹치지 않는다고 답하지만(953) 개념 수준의 겹침은 인정한다</li><li>Table 1에는 60개 마을만 있다. 본문 평균 58.4·59.7은 61개 기준</li><li>952쪽은 집단 행동 변수가 "all assessed in 1997"이라 쓰지만 자생 조직은 증가분이다(각주 27과 충돌)</li><li>Table 1에서 1997년 1~4위 마을이 모두 내려오고 57~61위가 모두 올라왔다. 마을당 28~38명 표본 평균의 요동과 구분해 읽어야 한다</li></ul></div></div>''',
-          "원문 대조 docs/PAPERS.md §1, docs/papers/01_krishna_구조.md §4~5.",
+          "",
           "저자가 스스로 적은 한계가 다섯입니다. 가장 중요한 것이 950쪽 문장입니다. 같은 제도 아래라 제도 효과는 검증할 수 없다. 오른쪽은 제가 원문을 대조하며 찾은 것입니다. 규칙이 종속변수 정의에도 들어 있고 독립변수이기도 합니다. 저자도 개념 수준에서는 겹친다고 인정합니다. 이 점은 토론으로 가져가지 않고 여기서만 짚습니다.")
     issue("사회자본이 7년 만에 바뀐다면 역사는 무엇을 정하는가", "Krishna · 쟁점 2", "brain",
           ["역사가 정한다 (Putnam 1993)", "제도가 정한다 (Rothstein)", "규칙과 리더가 정한다 (Krishna)", "그런데 1997년 지수도 여전히 유의하다 (.12*)"],
@@ -219,7 +221,7 @@ def build(local):
 <dt>설계</dt><dd>양변량에서 유의한 변수만 다변량으로. N=24라 모형당 변수 4개. 신뢰는 통제변수(신뢰 → 가입 방향을 가정, 134)</dd>
 <dt>결과</dt><dd>세 제도 모두 양변량 유의(.63~.71). 다변량에서 직접민주주의는 언어권을 넣으면 .47 → .18 비유의(Table 6 Model 5). 직접민주주의–독일어권 r=.86(각주 10)</dd>
 <dt>한계</dt><dd>"only suggestive and explorative"(146). 공통 원인 가능성을 각주 10에서 자인</dd></dl></div>''',
-          "수치는 Table 5·6·7(139~142). 원문 대조 docs/PAPERS.md §2.",
+          "수치는 Table 5·6·7(139~142).",
           "Freitag은 Krishna가 못 한 일을 합니다. 제도가 다른 24개 칸톤을 비교합니다. 세 제도 모두 결사체 참여와 같이 움직였습니다. 그런데 독일어권이라는 변수 하나를 넣자 직접민주주의 효과가 사라집니다. 직접민주주의와 독일어권의 상관이 .86입니다. 저자 스스로 탐색적이라고 썼습니다.")
     slide("연구 질문과 가설", "Freitag 2006",
           '''<div class="ladder">
@@ -255,7 +257,7 @@ def build(local):
     slide("한계와 쟁점", "Freitag 2006",
           f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>"only suggestive and explorative"(146). 방법이 더 정교해야 한다</li><li>언어권이 직접민주주의와 사회자본의 공통 원인일 수 있다(각주 10, r=.86)</li><li>양변량 선별에서 떨어진 변수가 다변량에서 유의해질 수 있다(각주 8)</li><li>N=24라 모형당 변수 4개(140). 국가 수준 비교는 거의 불가능(146)</li><li>결사체는 연결망의 한 지표일 뿐, 가장 중요한 지표는 아닐 수 있다(126)</li></ul><img class="shot" style="max-height:80px;margin-top:10px" src="{FIG["freitag_146"]}" alt="146쪽"></div>
 <div class="me"><b>발제자의 추가 검토</b><ul><li>제도 셋은 모든 모형에 남고 통제는 하나씩만 들어간다. 제도가 "거의 모든 모형에서 버틴다"는 결과는 설계가 보장한 것이다. 유의한 통제 둘(언어권·도시화)을 함께 넣은 모형은 Table 6에 없다</li><li>개인 7,799명 자료를 칸톤 24개로 접었다. 세 기제(옹호 유인·숙의·반응 확신)는 개인 수준인데 하나도 검증되지 않았다</li><li>직접민주주의 지수는 제도의 "있음"(문턱)이지 "쓰임"(투표 경험)이 아니다. 이 구분이 다음 세 논문의 출발점이다</li></ul></div></div>''',
-          "docs/papers/02_freitag_구조.md §5~6.",
+          "",
           "저자가 적은 한계 중 둘째 줄이 핵심입니다. 공통 원인 가능성을 각주에서 스스로 인정했습니다. 제가 짚는 것은 설계입니다. 제도 셋은 늘 모형에 남고 통제는 하나씩만 들어갑니다. 제도가 버틴다는 결과는 그 설계가 만든 것입니다. 그리고 마지막 줄. 직접민주주의 지수는 제도가 있다는 것이지 썼다는 것이 아닙니다. 다음 세 논문은 전부 쓰임을 봅니다.")
     issue("모임은 늘었는데 신뢰가 안 늘었다면 국가는 사회자본을 만든 것인가", "Freitag · 쟁점 2", "drake",
           ["신뢰를 종속변수로 두고 제도 효과를 본다", "신뢰는 통제변수에 넣고 .06이 나오면 넘어간다"],
@@ -273,7 +275,7 @@ def build(local):
 <dt>설계</dt><dd>지방정부 제도 설계의 네 차원. ① 자발부문과의 관계 ② 시민 참여 기회 ③ 의사결정의 반응성 ④ 민주적 리더십과 사회적 포용</dd>
 <dt>주장</dt><dd>여론조사는 거의 기여 없고 숙의형만 사회자본을 만든다. 모범 지자체의 4분의 3이 협의 결과를 결정에 반영하지 않는다. 반응하는 제도가 없으면 사회자본은 잠재 상태</dd>
 <dt>한계</dt><dd>"we have not set out specifically to evaluate the reforms"(641). 다섯 편 중 유일하게 실증이 없다</dd></dl></div>''',
-          "인용 쪽수 docs/PAPERS.md §3. 수치는 638(4분의 3)과 639(12개 지표 중 민주주의 변수 0) 둘뿐.",
+          "수치는 638(4분의 3)과 639(12개 지표 중 민주주의 변수 0) 둘뿐.",
           "다섯 편 중 자료가 없는 유일한 논문입니다. 대신 설계도를 그립니다. 지방정부가 손댈 수 있는 네 차원입니다. 숫자는 둘뿐입니다. 모범 지자체의 4분의 3이 협의 결과를 결정에 반영하지 않았다는 것, 그리고 Putnam의 제도 성과 지표 12개에 민주주의 변수가 하나도 없다는 것.")
     slide("연구 질문과 주장", "Lowndes &amp; Wilson 2001",
           '''<div class="ladder">
@@ -306,7 +308,7 @@ def build(local):
     slide("한계와 쟁점", "Lowndes &amp; Wilson 2001",
           f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>개혁을 평가하려 한 것이 아니다(641). 결과 예측은 어렵다(643)</li><li>설계는 정밀과학이 아니며 의도치 않은 효과가 반복된다(633)</li><li>사회자본 산출은 재기 어렵다(637). 자기 틀도 같은 어려움을 안는다</li><li>단정한 문장은 Putnam 비판과 "참여 ≠ 사회자본", "참여 ≠ 민주주의"뿐. 나머지는 "may"</li><li>지역에 맞는 설계는 뿌리내리지만 급진적 변화를 일으키기 어렵다(645)</li></ul><img class="shot" style="max-height:90px;margin-top:10px" src="{FIG["lw_641"]}" alt="641쪽"></div>
 <div class="me"><b>발제자의 추가 검토</b><ul><li>네 차원은 분류이지 설명이 아니다. 어떤 관찰이 나와도 네 차원 중 하나로 흡수되어 반박할 길이 없다</li><li>Newton 1976 반례(633)는 셋째 차원과 정면으로 어긋난다. 무반응이 잠재가 아니라 동원과 결정 영향을 낳았다. 저자는 "With these caveats in mind" 한 구절로 넘기고 다시 다루지 않는다</li><li>잠재의 조건이 638쪽 "responsive"에서 641쪽 "responsive and inclusive"로 늘어난다</li><li>창출과 동원을 나눠 처방하지만 Audit Commission 논리 자체가 동원 실패가 창출을 막는다는 것이다. 둘은 독립이 아니다</li></ul></div></div>''',
-          "docs/papers/03_lw_구조.md §5~6.",
+          "",
           "저자들은 평가가 아니라고 처음부터 말합니다. 제가 짚는 것은 둘째 줄입니다. 저자들이 직접 든 버밍엄 사례가 셋째 차원과 정면으로 어긋나는데, caveat 한 구절로 넘기고 다시 다루지 않습니다. 이게 둘째 쟁점입니다.")
     issue("제도 설계로 사회자본을 만들 수 있다는 믿음은 어디까지 가는가", "Lowndes &amp; Wilson · 쟁점 2", "gru",
           ["제도 설계의 네 차원을 짠다", "반응하는 제도가 사회자본을 꺼낸다", "데이터는 없다", "데이터는 없다"],
@@ -324,7 +326,7 @@ def build(local):
 <dt>설계</dt><dd>가설 넷(기존 특성·부산물·수동화·정책환류)을 학력 통제 하나로 가른다. 종속 = 1950~64 단체 가입 수, 정치참여. 생활수준×이용 상호작용으로 결정적 효과 검증</dd>
 <dt>결과</dt><dd>학력을 통제해도 이용자는 단체 .47개, 정치참여 .38 더(Table 1·2, p=.01). 정치참여에서 학력은 비유의. 호혜 변수는 단체 가입에만 유의. 효과는 저중·중에서 유의, 최저층 비유의, 정치참여는 상위층 1.22가 최대</dd>
 <dt>한계</dt><dd>회고(부록 A), 표본이 유리한 쪽이라 과소추정(부록 B). 1965년 이후 해석 효과는 사라지고 자원 효과만 남음(각주 15)</dd></dl></div>''',
-          "Table 1~7(357~362). 원문 대조 docs/PAPERS.md §4. 표의 둘째 열은 표준화계수 β, 표준오차가 아님.",
+          "Table 1~7(357~362). 표의 둘째 열은 표준화계수 β, 표준오차가 아님.",
           "Mettler는 정책 하나를 봅니다. 제대군인원호법의 교육 급여입니다. 질문이 좋습니다. 급여가 참여를 높였다면 돈 때문인가, 받은 방식 때문인가. 가설 넷을 학력 통제 하나로 가릅니다. 학력을 넣어도 급여 이용 효과가 남으면 교육의 부산물이 아니라는 뜻이 됩니다. 남았습니다. 단체 .47개, 정치참여 .38.")
     slide("연구 질문과 가설", "Mettler 2002 · 가설 넷을 학력 통제 하나로 가른다",
           f'''<div class="two" style="grid-template-columns:1.25fr 1fr;align-items:start"><div class="ladder" style="grid-template-columns:100px 1fr 1fr">
@@ -361,7 +363,7 @@ def build(local):
     slide("한계와 쟁점", "Mettler 2002",
           f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>1998년에 1950년대를 물었다. 세부가 아니라 "대체로 활동했나"만, 과거 태도는 거의 묻지 않았다(부록 A)</li><li>표본의 이용률 60.8%(모집단 51%), 참전자 3분의 2가 사망. 효과는 과소추정 쪽(부록 B)</li><li>남성, 백인 98.5%, 흑인 부대 미포함(각주 4). 행정에 인종 차별은 흔했다(각주 21)</li><li>결측으로 회귀 N이 716의 55%(각주 10)</li><li>최저층 비효과는 "어린 시절 가난의 힘"(361), 추후 과제</li></ul><img class="shot" style="max-height:110px;margin-top:10px" src="{FIG["mettler_appA"]}" alt="부록 A"></div>
 <div class="me"><b>발제자의 추가 검토</b><ul><li>해석 효과는 측정되지 않고 학력 통제 후 잔차로 읽힌다. 남은 계수는 측정 안 된 다른 자원(월 75~120달러 생활비, 대학에서 쌓은 동료 연결망, 급여 기간 1~48개월)일 수 있다</li><li>부록 A에서 과거 태도는 안 묻는다고 했지만 호혜 문항과 Table 5 문항은 1998년에 물은 1950년대 태도다. 해석 효과의 유일한 설문 증거가 자기 규칙 밖에 있다</li><li>"덜 가진 쪽에서 큼"은 저중 한 칸에서만 성립. 정치참여는 상위층 1.22가 최대(Table 7)</li><li>비이용자도 군복무와 다른 급여(주택대출·실업수당)로 국가를 만났다. 비교집단이 깨끗하지 않다</li></ul></div></div>''',
-          "docs/papers/04_mettler_구조.md §5~6.",
+          "",
           "저자가 자인한 한계는 회고와 표본입니다. 부록 둘이 그 답입니다. 제가 짚는 것은 첫 줄입니다. 해석 효과를 직접 재지 않았습니다. 학력을 통제하고 남은 계수를 해석 효과라고 부른 것입니다. 남은 계수는 월 75달러 생활비일 수도, 대학에서 만난 친구들일 수도 있습니다. 이게 둘째 쟁점입니다.")
     issue("심사 없는 급여가 심사 있는 급여보다 시민을 더 만드는가", "Mettler · 쟁점 2", "boyfriend",
           ["신청서 한 장, 다음 달 입금 (해석 효과)", "참전 군인", "졸업장과 소득 (자원 효과)"],
@@ -379,7 +381,7 @@ def build(local):
 <dt>설계</dt><dd>종속 = 대인신뢰 0~10 단일 문항. 선별·보편 접촉 수를 독립으로, 통제 10개(단체 가입 포함). 매개는 이용자 안에서 "받을 자격이 있는 것을 받았나" → 신뢰</dd>
 <dt>결과</dt><dd>선별 접촉 1곳당 −.26***, 보편 접촉 1곳당 +.07***(Table 5). 접촉 0/1/2+ 평균 신뢰 6.7/6.0/5.7. 이용자 안에서 공정 대우 지각 → 신뢰는 6개 기관 중 4개 유의</dd>
 <dt>한계</dt><dd>횡단면. "the opposite is always possible, especially when using nonexperimental data"(355)</dd></dl></div>''',
-          "Table 1~7(351~358). 원문 대조 docs/PAPERS.md §5.",
+          "Table 1~7(351~358).",
           "마지막 논문입니다. 큰 복지국가는 사회자본을 밀어낸다는 통념이 있는데 스웨덴은 신뢰가 높습니다. 저자들의 답은 크기가 아니라 설계입니다. 소득을 심사하는 창구를 한 곳 더 만날 때마다 신뢰가 0.26점 내려가고, 누구나 쓰는 창구는 0.07점 올립니다. 그리고 355쪽에 이렇게 씁니다. 반대 방향은 언제나 가능하다.")
     slide("연구 질문과 가설", "Kumlin &amp; Rothstein 2005",
           '''<div class="ladder">
@@ -416,7 +418,7 @@ def build(local):
     slide("한계와 쟁점", "Kumlin &amp; Rothstein 2005",
           f'''<div class="lim"><div><div class="k">저자가 밝힌 한계</div><ul><li>횡단면. "the opposite is always possible, especially when using nonexperimental data"(355). 바로 앞 문장은 "We obviously think that our causal interpretations are correct"</li><li>보편 접촉 6곳과 8곳 이상의 차이는 비유의(각주 5). Table 4는 단조 증가가 아니다</li><li>매개 문항은 절차를 "to a certain extent"만 잡는다(356)</li><li>매개 모형은 소표본이라 통제 셋뿐(각주 7)</li><li>서부 스웨덴 한 지역, 1999년 한 시점(각주 2)</li></ul><img class="shot" style="max-height:90px;margin-top:10px" src="{FIG["kr_355"]}" alt="355쪽"></div>
 <div class="me"><b>발제자의 추가 검토</b><ul><li>선별 7개 중 4개(장애인 이동·장애연금·장애 돌봄·노인 돌봄)는 자산조사가 아니라 건강·기능 심사(348). 건강은 통제에 없다. "선별 접촉 효과"의 일부는 건강 효과일 수 있다</li><li>Table 7에서 사회부조 .30**는 뚜렷하지만 주거수당은 −.02. 7개를 합친 −.26이 어느 기관에서 오는지 논문은 보여 주지 않는다</li><li>"6개 중 4개 유의"(357)에는 단서가 붙는다. 고용 .13은 p&lt;.10, 보육은 비유의</li><li>352쪽은 보편 접촉 0인 집단을 "majority"라 썼지만 실제 6%</li><li>"참여보다 강하다"(355)는 척도가 다른 비표준화 계수 비교, 검정 없음</li></ul></div></div>''',
-          "docs/papers/05_kr_구조.md §5~6, docs/PAPERS.md §5.",
+          "",
           "저자가 자인한 것 중 첫 줄이 유명한 문장입니다. 반대 방향은 언제나 가능하다. 제가 짚는 것은 첫 줄입니다. 선별 7개 기관 중 4개는 소득 심사가 아니라 건강 심사입니다. 장애연금을 받는 사람은 건강이 나쁩니다. 그런데 건강은 통제에 없습니다. 심리 기제 셋은 '속여야 받는' 자산조사에 맞춰 쓰였는데, 장애연금 신청자가 속일 유인이 있는지는 다른 문제입니다. 이게 둘째 쟁점으로 이어집니다.")
     issue("신뢰가 낮은 사람이 선별 창구에 가는 것은 아닌가", "Kumlin &amp; Rothstein · 쟁점 2", "exit",
           ["선별 창구가 신뢰를 깎았다", "원래 못 믿던 사람이 창구에 갔다", "연구자 (355쪽: 반대 방향은 언제나 가능하다)"],
@@ -435,17 +437,17 @@ def build(local):
 <tr><td>Mettler</td><td>단체 가입 수(4유형) + 정치활동 6종</td><td>356</td><td>측정 없음</td></tr>
 <tr><td>Kumlin &amp; Rothstein</td><td>대인신뢰 0~10 단일 문항</td><td>344, Figure 1</td><td>종속변수. 참여는 통제</td></tr></table>
 <p class="take" style="margin-top:18px">결사체를 재면 국가가 만들고, 신뢰를 재면 국가가 부순다. 다섯 편이 반대 결론을 낸 것이 아니라 다른 것을 쟀다.<small>Freitag의 다변량에서 신뢰 → 참여가 비유의였다는 점을 덧붙이면 더 정확하다(Table 6 Model 4).</small></p>''',
-          "docs/PAPERS.md §7.",
+          "",
           "다섯 편을 한 표로 접으면 이렇습니다. 셋째 열, 신뢰의 자리를 보십시오. 지수 안의 한 문항, 통제변수, 없음, 없음, 종속변수. 결사체를 재면 국가가 만들고 신뢰를 재면 국가가 부순다는 결론은 다섯 편이 서로 반박한 게 아니라 다른 것을 쟀기 때문에 나옵니다.")
     slide("토론 정리", "쟁점별로 많았던 쪽에 표시",
           '''<div class="two" style="align-items:start"><table style="font-size:14.5px"><tr><th>#</th><th>쟁점</th><th>찬</th><th>반</th></tr>
-<tr><td>1</td><td>정부가 만든 모임은 사회자본을 못 키우는가</td><td>□</td><td>□</td></tr><tr><td>2</td><td>7년 변화로 역사 의존을 기각할 수 있는가</td><td>□</td><td>□</td></tr>
-<tr><td>3</td><td>참여 제도가 참여를 만드는가, 그 반대인가</td><td>□</td><td>□</td></tr><tr><td>4</td><td>모임만 늘고 신뢰가 그대로면 사회자본이 만들어진 것인가</td><td>□</td><td>□</td></tr>
-<tr><td>5</td><td>답하지 않을 공청회는 열지 않는 편이 나은가</td><td>□</td><td>□</td></tr></table>
+<tr><td>1</td><td>정부가 만든 모임은 사회자본을 못 키우는가</td><td class="ck">□</td><td class="ck">□</td></tr><tr><td>2</td><td>7년 변화로 역사 의존을 기각할 수 있는가</td><td class="ck">□</td><td class="ck">□</td></tr>
+<tr><td>3</td><td>참여 제도가 참여를 만드는가, 그 반대인가</td><td class="ck">□</td><td class="ck">□</td></tr><tr><td>4</td><td>모임만 늘고 신뢰가 그대로면 사회자본이 만들어진 것인가</td><td class="ck">□</td><td class="ck">□</td></tr>
+<tr><td>5</td><td>답하지 않을 공청회는 열지 않는 편이 나은가</td><td class="ck">□</td><td class="ck">□</td></tr></table>
 <table style="font-size:14.5px"><tr><th>#</th><th>쟁점</th><th>찬</th><th>반</th></tr>
-<tr><td>6</td><td>설계로 사회자본을 만들 수 있다는 믿음은 어디까지인가</td><td>□</td><td>□</td></tr><tr><td>7</td><td>국가에 빚졌다는 감정이 시민을 만드는가</td><td>□</td><td>□</td></tr>
-<tr><td>8</td><td>심사 없는 급여가 심사 있는 급여보다 시민을 더 만드는가</td><td>□</td><td>□</td></tr><tr><td>9</td><td>복지는 신뢰의 문제인가, 효율과 형평의 문제인가</td><td>□</td><td>□</td></tr>
-<tr><td>10</td><td>신뢰가 낮은 사람이 선별 창구에 가는 것은 아닌가</td><td>□</td><td>□</td></tr></table></div>''',
+<tr><td>6</td><td>설계로 사회자본을 만들 수 있다는 믿음은 어디까지인가</td><td class="ck">□</td><td class="ck">□</td></tr><tr><td>7</td><td>국가에 빚졌다는 감정이 시민을 만드는가</td><td class="ck">□</td><td class="ck">□</td></tr>
+<tr><td>8</td><td>심사 없는 급여가 심사 있는 급여보다 시민을 더 만드는가</td><td class="ck">□</td><td class="ck">□</td></tr><tr><td>9</td><td>복지는 신뢰의 문제인가, 효율과 형평의 문제인가</td><td class="ck">□</td><td class="ck">□</td></tr>
+<tr><td>10</td><td>신뢰가 낮은 사람이 선별 창구에 가는 것은 아닌가</td><td class="ck">□</td><td class="ck">□</td></tr></table></div>''',
           "토론 계획서의 번호와 같다. 체크는 발제자가 토론 중 즉석에서.",
           "오늘 던진 쟁점 열 개입니다. 토론에서 갈린 쪽에 표시해 두었습니다. 반이 많았던 쟁점은 그 논문의 자료가 답을 못 낸 자리이고, 2부에서 각자 자료를 고를 때 그 변수가 있는지 확인할 자리입니다.")
     slide("강의 전체에서 본 11주차", "",
@@ -459,7 +461,7 @@ def build(local):
 <tr><td>1995~2007</td><td>신뢰는 사회자본과 같은가</td><td>Mayer, Rousseau, Hardin, Tyler, Keele (12~13주)</td></tr>
 <tr><td>2000~2021</td><td>누구의 사회자본인가</td><td>Putnam 22장, Compton &amp; Meier, Gidengil (14주)</td></tr></table>
 <div><div class="quote" style="font-size:15.5px">"두 개념(집단 지향과 개인 지향)은 문헌에 둘 다 있지만, 둘 사이에 다리가 놓인 적이 없고, 같은 개념을 가리키는지도 분명치 않다."<small>Krishna 2007: 942, 각주 2 (발제자 번역)</small></div><p style="font-size:15px;margin-top:14px;line-height:1.6">오늘 다섯 편은 전부 집단 지향, Putnam 쪽이다. 12~13주차의 신뢰 문헌은 그 안에서 신뢰만 떼어 묻고, 14주차는 누구의 것인지를 묻는다. 오늘 쟁점 4·9·10이 그쪽으로 간다.</p></div></div>''',
-          "docs/SCENARIO_PART1.md §0-3의 표.",
+          "",
           "11주차까지의 지도입니다. 오늘이 초록 줄입니다. 2주차 질문에서 시작해 3주차에 이름이 붙고, 6주차부터는 원인이었던 사회자본이 오늘 처음 결과가 됐습니다. 다음 주부터는 그 안에서 신뢰만 떼어 묻습니다. 오늘 쟁점 중 신뢰를 건드린 셋이 그쪽으로 넘어갑니다.")
     photo("korea_seoul_street", "2부에서는 각자 국내 자료로 같은 모형을 만든다.", "다섯 편 중 넷이 한 나라 한 시점 자료였다. 국내 조사 8종, 전체 문항 5,636개, 선행연구 7,690편.", "각자 국내 자료에서 창구 변수 하나와 신뢰 문항 하나를 고르면, 그 사이에 무엇을 통제할지가 오늘 쟁점 9와 10이다. 5-jihwan.github.io/week11-seminar/model/canvas.html · 노트북 권장", "교수님 설명 뒤 2부입니다. 다섯 편 중 넷이 한 나라 한 시점 자료였습니다. 이제 각자 국내 자료에서 창구 변수 하나와 신뢰 문항 하나를 고릅니다. 그 사이에 무엇을 통제할지가 방금 토론한 아홉 번째, 열 번째 쟁점입니다. 교수님.", "2부로")
     # ───────── 부록 ─────────
@@ -469,16 +471,18 @@ def build(local):
         slide(t, sub, f'<div style="display:flex;justify-content:center;height:470px"><img class="shot" src="{FIG[key]}" alt="{t}"></div>', cap, "", ap=True)
 
     html = f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>국가는 사회자본을 만들 수 있는가</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"><style>{CSS}</style></head><body><div id="stage">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"><style>{face(''.join(h for h, _ in S) + '국가는 사회자본을 만들 수 있는가 ←/→ 이동 · N 노트 · F 전체화면 노트 없음 A0123456789')}{CSS.replace('__FAMILY__', FAMILY)}</style></head><body><div id="stage">
 {"".join(h for h, _ in S)}
 </div><div id="notes"></div><div id="help">←/→ 이동 · N 노트 · F 전체화면</div>
 <script>
 const S=[...document.querySelectorAll('.slide')];let i=0;const N=document.getElementById('notes');
 function fit(){{const sc=Math.min(innerWidth/1280,innerHeight/720);S.forEach(s=>s.style.transform=`scale(${{sc}})`);}}
-function show(k){{i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j===i));N.innerHTML=(S[i].querySelector('.notes')||{{}}).innerHTML||'<i>노트 없음</i>';location.hash=i+1;}}
+function grow(s){{const bd=s.querySelector('.bd'),n=s.querySelector('.in');if(!bd||!n||n.dataset.z||document.readyState!=='complete')return;let z=1.3;for(;z>1.001;z-=.05){{n.style.zoom=z;if(n.getBoundingClientRect().height<=bd.getBoundingClientRect().height&&n.scrollWidth<=n.clientWidth+1)break;}}n.style.zoom=n.dataset.z=Math.max(1,z).toFixed(2);}}
+function show(k){{i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j===i));grow(S[i]);N.innerHTML=(S[i].querySelector('.notes')||{{}}).innerHTML||'<i>노트 없음</i>';location.hash=i+1;}}
 let main=0,ap=0;S.forEach(s=>{{const p=document.createElement('div');p.className='pg';if(s.dataset.ap){{p.textContent='A'+(++ap);}}else{{main++;if(!s.classList.contains('cover'))p.textContent=main;}}s.appendChild(p);}});
 addEventListener('keydown',e=>{{if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown')show(i+1);else if(e.key==='ArrowLeft'||e.key==='PageUp')show(i-1);else if(e.key.toLowerCase()==='n')N.classList.toggle('on');else if(e.key.toLowerCase()==='f'){{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}}}});
-addEventListener('click',e=>{{if(e.target.closest('#notes'))return;show(i+(e.clientX>innerWidth/2?1:-1));}});
+addEventListener('load',()=>show(i));
+addEventListener('click',e=>{{if(e.target.closest('#notes'))return;if(e.target.classList.contains('ck')){{e.target.textContent=e.target.textContent==='□'?'■':'□';return;}}show(i+(e.clientX>innerWidth/2?1:-1));}});
 addEventListener('resize',fit);fit();show((+location.hash.slice(1)||1)-1);
 </script></body></html>'''
     return html

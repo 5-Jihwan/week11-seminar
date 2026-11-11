@@ -13,7 +13,7 @@ HTML = r"""<!doctype html>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--paper:#fff;--stage:#e9edf2;--ink:#15203a;--sub:#5a6577;--line:#e2e6ec;--navy:#072A60;--navyt:#e9eef6;--green:#8DC63F;--greend:#4F7F1C;--greent:#f0f7e6;--orange:#D9640F;--gray:#9aa2ae}
-*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--stage);font-family:Pretendard,"Noto Sans KR",system-ui,-apple-system,sans-serif;color:var(--ink)}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--stage);font-family:__FAMILY__;color:var(--ink)}
 #stage{position:fixed;inset:0;display:grid;place-items:center}
 .slide{width:1280px;height:720px;background:var(--paper);position:absolute;display:none;overflow:hidden;transform-origin:center}
 .slide.on{display:block}
@@ -39,7 +39,7 @@ table{border-collapse:collapse;width:100%;font-size:17px}th,td{text-align:left;p
 .stat{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;text-align:center}.stat .v{font-family:"IBM Plex Mono",monospace;font-size:84px;line-height:1;color:var(--navy);font-weight:500}.stat .l{font-size:17px;color:var(--sub);margin-top:14px;line-height:1.5}
 .cell{border-collapse:collapse;font-size:15px;width:100%}.cell th,.cell td{border:1px solid var(--line);padding:10px 8px;text-align:center}.cell th{background:#f6f7f9;color:var(--sub);font-weight:600}.cell td b{color:var(--navy)}
 .callout{position:absolute;background:var(--navy);color:#fff;font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:4px;line-height:1.4}
-.figwrap{position:relative}
+.figwrap{position:relative}.figwrap[style] .callout{font-size:16.5px}
 #help{position:fixed;right:14px;top:10px;font-size:12px;color:#7b8494;z-index:6}
 </style></head><body>
 <div id="stage">
@@ -63,7 +63,7 @@ table{border-collapse:collapse;width:100%;font-size:17px}th,td{text-align:left;p
  <tr><td>Kumlin &amp; Rothstein (2005)</td><td>스웨덴 횡단면 설문</td><td>대인신뢰 0–10 단일 문항</td><td>종속변수. 참여는 통제</td></tr></table>
  <p style="margin-top:26px;font-size:17.5px;color:var(--sub)">1부 마지막 표와 같다. 결사체를 재면 국가가 만들고 신뢰를 재면 국가가 부순다는 결론은 다섯 편이 다른 것을 쟀기 때문에 나온다. 오늘 각자가 고를 자료도 같은 제약을 준다.</p>
  </div></div>
- <div class="cap">원문 대조 docs/PAPERS.md. 1부 투표 분포는 당일 1부 결과 화면으로 대체.</div>
+ <div class="cap">1부 투표 분포는 당일 1부 결과 화면으로 대체.</div>
  <aside class="notes">셋째 열만 보십시오. 지수, 주성분, 가입 수, 단일 문항. 전부 사회자본이라고 불렀습니다. 넷째 열은 전부 종속입니다. 오늘 여러분도 종속변수부터 정합니다.</aside>
 </section>
 
@@ -80,7 +80,7 @@ table{border-collapse:collapse;width:100%;font-size:17px}th,td{text-align:left;p
  <tr><td class="num">2:47</td><td class="r num">4</td><td>선행연구 위에서 오늘 모형의 위치</td><td>연결망, 되감기</td></tr>
  <tr><td class="num">2:50</td><td class="r num">3</td><td>마무리, 교수님께</td><td>이 덱 마지막 장</td></tr></table>
  </div></div>
- <div class="cap">학생은 노트북으로 canvas.html, Ji는 둘째 화면에 관리자 대시보드. 세부는 docs/PART2_RUN.md.</div>
+ <div class="cap">학생은 노트북으로 canvas.html, Ji는 둘째 화면에 관리자 대시보드.</div>
  <aside class="notes">순서는 이렇습니다. 처음 7분은 자료와 정의, 10분은 각자 모형, 그 다음은 다 같이 화면을 보며 세 분 모형을 짚고, 교수님 판정을 받습니다. 2시 50분에 마칩니다.</aside>
 </section>
 
@@ -204,7 +204,7 @@ table{border-collapse:collapse;width:100%;font-size:17px}th,td{text-align:left;p
 
 <section class="slide" data-ap="1">
  <div class="hd"><h2>캔버스 화면 지도</h2><p class="s">부록. 질문 대응용</p></div>
- <div class="bd"><div class="in figwrap">
+ <div class="bd"><div class="in figwrap" style="width:1136px;flex:none;zoom:.745">
   <img class="shot" src="{{canvas_studies}}" alt="캔버스 전체">
   <span class="callout" style="left:12px;top:60px">① 문항 목록 · 검색 · 전체</span>
   <span class="callout" style="left:400px;top:60px">② 캔버스 · 확대 · 자동배치 · PNG</span>
@@ -256,5 +256,8 @@ addEventListener('resize',fit);fit();show((+location.hash.slice(1)||1)-1);
 for k, v in IMG.items():
     HTML = HTML.replace("{{" + k + "}}", v)
 assert "{{" not in HTML, "치환 안 된 그림 자리"
+sys.path.insert(0, H)
+from fontface import face, FAMILY
+HTML = HTML.replace("__FAMILY__", FAMILY).replace("<style>", "<style>" + face(HTML), 1)
 out = os.path.join(H, "week11_part2.html"); open(out, "w", encoding="utf-8").write(HTML)
 print("week11_part2.html", len(HTML) // 1024, "KB")
