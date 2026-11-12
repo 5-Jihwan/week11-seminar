@@ -28,7 +28,7 @@ if os.path.exists(_pi):
     for k, v in _json.load(open(_pi, encoding="utf-8")).items():
         fp = os.path.join(H, "photos", v["file"])
         if os.path.exists(fp): PHOTO[k] = uri(fp, 1600, 78); PCRED[k] = f"{v['title'].replace('File:', '')} · {v['artist']} · {v['license']} · Wikimedia Commons"
-PLAY, PINFO = {}, {}  # 80억 분의 1 플레이 화면(deck/play/, git 제외). 있으면 발표판 2장에 넣는다
+PLAY, PINFO = {}, {}  # 80억 분의 1 플레이 화면(deck/play/, 원본은 git 제외). 있으면 2장에 넣는다
 pd = os.path.join(H, "play")
 if os.path.isdir(pd):
     for f in sorted(os.listdir(pd)):
@@ -233,10 +233,10 @@ def build(local):
     # ───────── 인트로 ─────────
     raw(f'''<section class="slide cover">{f'<img src="{PHOTO["landsgemeinde"]}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55">' if "landsgemeinde" in PHOTO else ""}<div style="position:absolute;inset:0;background:rgba(7,42,96,.55)"></div><div class="c" style="position:absolute"><h1>국가는 사회자본을 만들 수 있는가</h1><p class="sub">Social Capital as Dependent Variable · 11주차 발제<br>Krishna 2007 · Freitag 2006 · Lowndes &amp; Wilson 2001 · Mettler 2002 · Kumlin &amp; Rothstein 2005</p></div><div class="meta">사회자본과 공공정책 · 2026-11-13 · 발제 오지환(석사과정 2학기) · 성균관대학교</div>{f'<div style="position:absolute;right:40px;bottom:26px;font-size:11px;color:rgba(255,255,255,.65);max-width:600px;text-align:right">{PCRED["landsgemeinde"]}</div>' if "landsgemeinde" in PCRED else ""}
 <aside class="notes">안녕하십니까. 11주차 「국가는 사회자본을 만들 수 있는가」 세미나를 맡은 석사과정 2학기 오지환입니다. 오늘 주제는 Social Capital as Dependent Variable, 사회자본을 결과로 놓는 연구들입니다.</aside></section>''')
-    # 플레이 화면 세 칸: 태어남 / 관계 사건의 선택(여러 장이 차례로 바뀜) / 죽음(움직이는 그림). 게임 화면이라 발표판에만 넣는다
+    # 플레이 화면 세 칸: 태어남 / 관계 사건의 선택(여러 장이 차례로 바뀜) / 죽음(움직이는 그림). 두 판 모두에 넣는다
     mids = [k for k in sorted(PLAY) if k.startswith("mid_")] or [k for k in ("02_choice.png", "02_choice_alt_decision20.png", "02_choice_alt_volunteer22.png") if k in PLAY]
     death = next((k for k in ("03_death.webp", "03_summary.png") if k in PLAY), None)
-    shots = bool(local and "01_birth.png" in PLAY and mids and death)
+    shots = bool("01_birth.png" in PLAY and mids and death)
     play_html = ""
     if shots:
         n, d = len(mids), 3  # 가운데 칸은 장면마다 3초
