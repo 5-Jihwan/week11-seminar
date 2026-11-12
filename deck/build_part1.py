@@ -28,11 +28,14 @@ if os.path.exists(_pi):
     for k, v in _json.load(open(_pi, encoding="utf-8")).items():
         fp = os.path.join(H, "photos", v["file"])
         if os.path.exists(fp): PHOTO[k] = uri(fp, 1600, 78); PCRED[k] = f"{v['title'].replace('File:', '')} · {v['artist']} · {v['license']} · Wikimedia Commons"
-PLAY = {}  # 80억 분의 1 플레이 화면(deck/play/, git 제외). 있으면 발표판 2장에 넣는다
+PLAY, PINFO = {}, {}  # 80억 분의 1 플레이 화면(deck/play/, git 제외). 있으면 발표판 2장에 넣는다
 pd = os.path.join(H, "play")
 if os.path.isdir(pd):
     for f in sorted(os.listdir(pd)):
-        if f.lower().endswith((".jpg", ".jpeg", ".png")): PLAY[f] = uri(os.path.join(pd, f), 1200, 80)
+        fp = os.path.join(pd, f)
+        if f.lower().endswith(".webp"): PLAY[f] = "data:image/webp;base64," + base64.b64encode(open(fp, "rb").read()).decode()  # 움직이는 그림은 다시 저장하면 멈추므로 그대로
+        elif f.lower().endswith((".jpg", ".jpeg", ".png")): PLAY[f] = uri(fp, 1200, 80)
+    if os.path.exists(os.path.join(pd, "play_info.json")): PINFO = json.load(open(os.path.join(pd, "play_info.json"), encoding="utf-8"))
 
 CSS = r"""
 :root{--paper:#fff;--stage:#e9edf2;--ink:#15203a;--sub:#5a6577;--line:#e2e6ec;--navy:#072A60;--navyt:#e9eef6;--navy7:#1e3a5f;--green:#8DC63F;--greend:#4F7F1C;--greent:#f0f7e6;--orange:#D9640F;--gray:#9aa2ae}
@@ -88,7 +91,7 @@ table.hyp{font-size:14px;table-layout:fixed}table.hyp td{line-height:1.45;paddin
 table{border-collapse:collapse;width:100%;font-size:15.5px;line-height:1.4}th,td{text-align:left;padding:8px 11px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:13px;color:var(--navy);font-weight:600;background:var(--navyt);border-bottom:1px solid var(--navy7)}td.r,th.r{text-align:right;white-space:nowrap}.photo{background:#0b1a33}.photo img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}.photo .veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,42,96,.35),rgba(7,42,96,.82))}.photo .c{position:absolute;left:88px;right:88px;bottom:96px;color:#fff}.photo .c::before{content:"";display:block;width:40px;height:4px;background:var(--green);margin-bottom:22px}.photo .one{font-size:36px;line-height:1.4;font-weight:700}.photo .one small{display:block;font-size:17px;font-weight:400;opacity:.85;margin-top:8px}.photo .next{margin-top:22px;font-size:16.5px;line-height:1.65;opacity:.95;max-width:1000px}.photo .cr{position:absolute;right:76px;bottom:26px;font-size:11px;color:rgba(255,255,255,.65);max-width:720px;text-align:right}.photo .pg{color:rgba(255,255,255,.6)}
 .map{position:relative;height:430px;border-left:1px solid var(--line);border-bottom:1px solid var(--line)}.map .pt{position:absolute;width:14px;height:14px;border-radius:50%;background:var(--navy);transform:translate(-50%,-50%)}.map .lb{position:absolute;font-size:14px;line-height:1.35;transform:translate(10px,-50%)}.map .lb b{color:var(--navy);display:block;font-size:14.5px}.map .ax{position:absolute;font-size:12.5px;color:var(--sub)}
 .steps{counter-reset:s}.steps li{list-style:none;position:relative;padding-left:30px;font-size:17px;margin-top:9px}.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:4px;width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;font-size:11px;display:grid;place-items:center}
-.intro2{display:grid;gap:30px;align-items:center}.intro2 li{font-size:15px;line-height:1.55}.play{display:flex;gap:10px}.play img{height:410px;width:auto;border:1px solid var(--line);border-radius:6px}
+.intro2{display:grid;gap:30px;align-items:center}.intro2 li{font-size:15px;line-height:1.55}.play{display:flex;gap:12px}.play figure{margin:0;animation:rise .7s both}.play figure:nth-child(2){animation-delay:.35s}.play figure:nth-child(3){animation-delay:.7s}.play .ph{position:relative;width:204px;height:408px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#f4f5f7}.play .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}.play figcaption{position:relative;height:20px;margin-top:6px;font-size:12.5px;color:var(--sub);text-align:center}.play figcaption span{position:absolute;left:0;right:0}@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 #help{position:fixed;right:14px;top:10px;font-size:12px;color:#7b8494;z-index:6}:root:fullscreen #help{display:none}td.ck{cursor:pointer;text-align:center}
 """
 
@@ -230,15 +233,24 @@ def build(local):
     # ───────── 인트로 ─────────
     raw(f'''<section class="slide cover">{f'<img src="{PHOTO["landsgemeinde"]}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55">' if "landsgemeinde" in PHOTO else ""}<div style="position:absolute;inset:0;background:rgba(7,42,96,.55)"></div><div class="c" style="position:absolute"><h1>국가는 사회자본을 만들 수 있는가</h1><p class="sub">Social Capital as Dependent Variable · 11주차 발제<br>Krishna 2007 · Freitag 2006 · Lowndes &amp; Wilson 2001 · Mettler 2002 · Kumlin &amp; Rothstein 2005</p></div><div class="meta">사회자본과 공공정책 · 2026-11-13 · 발제 오지환(석사과정 2학기) · 성균관대학교</div>{f'<div style="position:absolute;right:40px;bottom:26px;font-size:11px;color:rgba(255,255,255,.65);max-width:600px;text-align:right">{PCRED["landsgemeinde"]}</div>' if "landsgemeinde" in PCRED else ""}
 <aside class="notes">안녕하십니까. 11주차 「국가는 사회자본을 만들 수 있는가」 세미나를 맡은 석사과정 2학기 오지환입니다. 오늘 주제는 Social Capital as Dependent Variable, 사회자본을 결과로 놓는 연구들입니다.</aside></section>''')
-    # 플레이 화면: 출생 카드, 수치가 보이는 선택 장면, 동네 봉사 모임 결정(없으면 생애 기록). 게임 화면이라 발표판에만 넣는다
-    want = ["01_birth.png", "02_choice.png", "02_choice_alt_volunteer22.png" if "02_choice_alt_volunteer22.png" in PLAY else "03_summary.png"]
-    shots = [PLAY[k] for k in want if k in PLAY] if local else []
-    play_html = ('<div class="play">' + "".join(f'<img src="{v}" alt="">' for v in shots) + '</div>') if shots else ""
+    # 플레이 화면 세 칸: 태어남 / 관계 사건의 선택(여러 장이 차례로 바뀜) / 죽음(움직이는 그림). 게임 화면이라 발표판에만 넣는다
+    mids = [k for k in sorted(PLAY) if k.startswith("mid_")] or [k for k in ("02_choice.png", "02_choice_alt_decision20.png", "02_choice_alt_volunteer22.png") if k in PLAY]
+    death = next((k for k in ("03_death.webp", "03_summary.png") if k in PLAY), None)
+    shots = bool(local and "01_birth.png" in PLAY and mids and death)
+    play_html = ""
+    if shots:
+        n, d = len(mids), 3  # 가운데 칸은 장면마다 3초
+        info = {m["file"]: m for m in PINFO.get("mid", [])}
+        cyc = f"@keyframes cyc{{0%{{opacity:0}}{8 / n:.2f}%{{opacity:1}}{100 / n:.2f}%{{opacity:1}}{108 / n:.2f}%{{opacity:0}}100%{{opacity:0}}}}"
+        ani = lambda i: f"animation:cyc {n * d}s {i * d}s infinite both"
+        stack = "".join(f'<img src="{PLAY[k]}" alt="" style="{ani(i)}">' for i, k in enumerate(mids))
+        caps = "".join(f'<span style="{ani(i)}">{info[k]["age"]}세 · {esc(info[k]["title"])}</span>' for i, k in enumerate(mids) if k in info) or "살면서 만나는 선택"
+        play_html = f'<style>{cyc}</style><div class="play"><figure><div class="ph"><img src="{PLAY["01_birth.png"]}" alt=""></div><figcaption>태어남</figcaption></figure><figure><div class="ph">{stack}</div><figcaption>{caps}</figcaption></figure><figure><div class="ph"><img src="{PLAY[death]}" alt=""></div><figcaption>죽음</figcaption></figure></div>'
     slide("80억 분의 1", "172개국 실제 통계로 한 사람의 삶을 사는 시뮬레이션 (1in8b.life)",
-          f'''<div class="intro2" style="grid-template-columns:{"auto 1fr" if shots else "1fr"}">{play_html}<div><ul><li>고를 수 있는 것은 태어날 해뿐. 나라는 그해 출생아 수의 확률로, 가정은 그 나라 소득분포의 확률로 정해진다</li><li>반영 통계: 출생아 수, 성별 기대수명, 영아 사망률, 소득 불평등 지수, 교육 접근성, 대학 진학률, 살인율, 흡연율, 조혼율. 전쟁·팬데믹 같은 사건도 반영</li><li>두 살부터 기질, 활동, 지출, 진학, 진로를 고르고, 그 결과가 건강·행복·지식·관계 수치로 표시된다. 끝나면 생애 기록</li></ul>
+          f'''<div class="intro2" style="grid-template-columns:{"auto 1fr" if shots else "1fr"}">{play_html}<div><ul><li>고를 수 있는 것은 태어날 해뿐. 나라는 그해 출생아 수의 확률로, 가정은 그 나라 소득분포의 확률로 정해진다</li><li>반영 통계: 출생아 수, 성별 기대수명, 영아 사망률, 소득 불평등 지수, 교육 접근성, 대학 진학률, 살인율, 흡연율, 조혼율. 전쟁·팬데믹 같은 사건도 반영</li><li>살면서 중매, 동네 봉사 모임, 부모 돌봄, 낯선 사람 돕기 같은 사건마다 선택하고, 그 결과가 건강·행복·지식·관계 수치로 표시된다</li></ul>
 <div class="quote" style="font-size:14.5px;margin-top:14px">"우리 누구도 (태어날 곳을) 고르지 않았다. 원하는 나라가 나올 때까지 다시 했다는 반응은 오히려 이 시뮬레이션이 보여주려던 것과 닿아 있다. 태어난 곳이 삶을 얼마나 크게 바꾸는지 알기 때문에 다시 누르는 거니까. 현실에서는 그 버튼이 없다."<small>개발자 진휘어스 인터뷰, 한겨레21 1637호(2026-10-29) 재인용</small></div></div></div>''',
-          ("화면: 1in8b.life 플레이 화면(2026-11-11 캡처, 태어날 해 1990년 선택). " if shots else "") + "한겨레21 1637호 「다시 태어나면 어디서 누구로 살고 싶은가… '80억 분의 1' 게임으로 오라」(2026-10-29). 한국인 개발자, 2026-10-07 출시, 무료.",
-          "본격적으로 들어가기 전에 하나 여쭙겠습니다. '80억 분의 1'이라는 게임을 해 보셨거나 들어 보신 분 계십니까. 172개국 통계로 한 사람의 일생을 무작위로 사는 시뮬레이션입니다. 고를 수 있는 건 태어날 해뿐입니다. 저는 남양주에서 등교하는 길에 논문도 뉴스도 보기 싫을 때 이걸 합니다. 제 연구가 재미없어질 때도 합니다. 화면은 태어날 해로 1990년을 골라 무작위로 받은 삶입니다. 인도 마디아프라데시 농촌의 하위 20~40% 가정에서 태어난 여자아이입니다. 가운데 화면을 보시면 건강, 행복, 지식, 관계 네 수치가 있고, 선택지마다 어느 수치가 오르는지 적혀 있습니다. 저는 사회자본을 공부하면서 이 가운데 관계 수치가 무엇 때문에 오르내리는지가 궁금해졌습니다. 오른쪽 화면은 스물두 살에 나온 선택입니다. 동네 봉사 모임에 나갈지를 묻습니다. 이 사람은 대학에서 사회과학을 공부했고 70세에 세상을 떠났습니다. 이 게임을 만든 사람은 한국인 개발자입니다. 출시 뒤 태어날 나라를 고르게 해 달라는 문의가 쏟아졌다고 합니다. 개발자의 답이 화면의 인용입니다.")
+          ("화면: 1in8b.life 플레이 화면(2026-11-11~12 캡처, 태어날 해 1990년 선택). " if shots else "") + "한겨레21 1637호 「다시 태어나면 어디서 누구로 살고 싶은가… '80억 분의 1' 게임으로 오라」(2026-10-29). 한국인 개발자, 2026-10-07 출시, 무료.",
+          "본격적으로 들어가기 전에 하나 여쭙겠습니다. '80억 분의 1'이라는 게임을 해 보셨거나 들어 보신 분 계십니까. 172개국 통계로 한 사람의 일생을 무작위로 사는 시뮬레이션입니다. 고를 수 있는 건 태어날 해뿐입니다. 저는 남양주에서 등교하는 길에 논문도 뉴스도 보기 싫을 때 이걸 합니다. 제 연구가 재미없어질 때도 합니다. 화면은 태어날 해로 1990년을 골라 무작위로 받은 삶입니다. 왼쪽이 태어난 순간입니다. 인도 마디아프라데시 농촌의 하위 20~40% 가정에서 태어난 여자아이입니다. 가운데에는 이 사람이 살면서 만난 선택이 차례로 지나갑니다. 스무 살의 중매 제안, 스물두 살의 동네 봉사 모임, 어머니께 고맙다는 말, 길에 쓰러진 낯선 사람, 아들의 결혼, 아버지 돌봄입니다. 이 게임에는 건강, 행복, 지식, 관계 네 수치가 있고, 이런 선택에 따라 관계 수치가 오르내립니다. 저는 사회자본을 공부하면서 이 관계 수치가 무엇 때문에 오르내리는지가 궁금해졌습니다. 오른쪽은 이 사람이 70세에 세상을 떠났을 때 나오는 장면입니다. 이 게임을 만든 사람은 한국인 개발자입니다. 출시 뒤 태어날 나라를 고르게 해 달라는 문의가 쏟아졌다고 합니다. 개발자의 답이 화면의 인용입니다.")
     slide("지정문헌이 다루는 선택", "모임 가입, 이사, 공청회 참석, 급여 신청, 복지 창구 방문",
           '''<div class="two" style="grid-template-columns:1fr 1.2fr"><div class="quote" style="font-size:17px">"'80억 분의 1'의 선택은 통계에 기반을 둬 설계됐다는 점에서, 그리고 선택의 결과가 수치로 명확하게 표현된다는 점에서 실제 우리 인생과 다르다. (…) 우리는 특정한 결과를 짐작하며 무언가를 선택하지만, 현실에서 짐작은 종종 빗나간다. 선택을 통해 얻은 것이 정확히 무엇인지도 바로 알기 어렵다."<small>한겨레21 1637호 기사 본문</small></div>
 <div><div class="k">논문별 선택과 종속변수</div><table style="font-size:15.5px"><tr><th>선택</th><th>논문</th><th>종속변수</th></tr>
