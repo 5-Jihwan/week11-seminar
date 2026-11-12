@@ -109,9 +109,13 @@ table.hyp{font-size:14px;table-layout:fixed}table.hyp td{line-height:1.45;paddin
 .slide.on .issue.side>:first-child{animation:rise .5s both}.slide.on .issue.side .ch .o:first-child{animation:rise .5s .5s both}.slide.on .issue.side .ch .vs{animation:rise .4s .9s both}.slide.on .issue.side .ch .o:last-child{animation:rise .5s 1.1s both}
 @media print{.fr{visibility:visible;opacity:1}.hl{transform:none}}
 .refs{columns:2;column-gap:40px;font-size:12px;line-height:1.5}.refs p{font-size:12px;line-height:1.5;margin:0 0 5px;padding-left:1.4em;text-indent:-1.4em;break-inside:avoid}.refs .k{margin-top:8px;break-after:avoid;font-size:12.5px}.refs .k:first-child{margin-top:0}
-.tlt,.tl{display:flex;gap:4px}.tlt div{font-size:12.5px;color:var(--sub);white-space:nowrap;padding:0 2px 6px}
-.tl div{height:66px;display:flex;align-items:center;padding:0 16px;background:var(--navy);color:#fff;font-size:18px;font-weight:700;white-space:nowrap;overflow:hidden}.tl div.g{background:#d5d9e0;color:var(--ink);font-size:13px;font-weight:400;padding:0 4px;justify-content:center;white-space:normal;text-align:center;line-height:1.25}
-.slide.on .tl div{animation:fadein .5s both}.slide.on .tl div:nth-child(2){animation-delay:.4s}.slide.on .tl div:nth-child(3){animation-delay:.7s}.slide.on .tl div:nth-child(4){animation-delay:1s}
+.pp{display:grid;grid-template-columns:1.9fr 44px 1fr;gap:14px;align-items:start}.tlh span{float:right;font-size:14px;font-weight:400;color:var(--sub);padding-top:4px}
+.pp5{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:6px}.pp5>div{border:1px solid var(--line);padding:10px 10px 12px;word-break:keep-all;display:flex;flex-direction:column}
+.pp5 b{display:block;font-size:14.5px;color:var(--navy);line-height:1.3;min-height:38px}.pp5 span{display:block;flex:1;font-size:12.5px;color:var(--sub);line-height:1.45;min-height:38px;margin-top:4px}
+.pp5 i{display:block;font-style:normal;font-size:12.5px;text-align:center;background:var(--navyt);color:var(--navy);padding:4px 0;margin-top:5px}
+.ppn{font-size:15.5px;margin-top:14px;line-height:1.6;word-break:keep-all}.ppg{align-self:stretch;display:flex;align-items:center;justify-content:center;position:relative}.ppg::before{content:'';position:absolute;top:0;bottom:0;left:50%;border-left:1px dashed var(--gray)}.ppg span{position:relative;background:var(--paper);padding:6px 0;font-size:13px;color:var(--sub)}
+.pp3{margin-top:6px}.pp3>div{border:1px solid var(--line);padding:12px 14px;font-size:15.5px;word-break:keep-all;position:relative}.pp3>div+div{margin-top:24px}.pp3>div+div::before{content:'';position:absolute;top:-25px;left:50%;height:24px;border-left:1px solid var(--gray)}
+.slide.on .pp5>div,.slide.on .pp3>div{animation:fadein .45s both}.slide.on .pp5>div:nth-child(2){animation-delay:.2s}.slide.on .pp5>div:nth-child(3){animation-delay:.4s}.slide.on .pp5>div:nth-child(4){animation-delay:.6s}.slide.on .pp5>div:nth-child(5){animation-delay:.8s}.slide.on .pp3>div:nth-child(1){animation-delay:1.2s}.slide.on .pp3>div:nth-child(2){animation-delay:1.4s}.slide.on .pp3>div:nth-child(3){animation-delay:1.6s}
 .tlh{font-size:19px;font-weight:700;color:var(--navy);border-top:2px solid var(--navy);padding-top:10px;margin-bottom:8px}.tll li{font-size:16.5px;line-height:1.6;word-break:keep-all}
 /* 인트로·엔딩 */
 .stat{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;text-align:center}.stat .v{font-family:"IBM Plex Mono",monospace;font-size:84px;line-height:1;color:var(--navy);font-weight:500}.stat .l{font-size:16.5px;color:var(--sub);margin-top:14px;line-height:1.5}
@@ -288,11 +292,13 @@ def build(local):
     # ───────── 인트로 ─────────
     raw(f'''<section class="slide cover">{f'<img src="{PHOTO["landsgemeinde"]}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55">' if "landsgemeinde" in PHOTO else ""}<div style="position:absolute;inset:0;background:rgba(7,42,96,.55)"></div><div class="c" style="position:absolute"><h1>사회자본은 어디에서 만들어지는가</h1><p class="sub">종속변수로서의 사회자본(Social Capital as Dependent Variable) · 11주차 발제<br>Krishna 2007 · Freitag 2006 · Lowndes &amp; Wilson 2001 · Mettler 2002 · Kumlin &amp; Rothstein 2005<br>1부 지정문헌 5편 세미나와 토론 10개 · 2부 국내 공개 데이터로 연구모형 설계</p></div><div class="meta">사회자본과 공공정책 · 2026-11-13 · 발제 오지환(석사과정 2학기) · 성균관대학교</div>{f'<div style="position:absolute;right:40px;bottom:26px;font-size:11px;color:rgba(255,255,255,.65);max-width:600px;text-align:right">{PCRED["landsgemeinde"]}</div>' if "landsgemeinde" in PCRED else ""}
 <aside class="notes">안녕하십니까. 11주차 「사회자본은 어디에서 만들어지는가」 세미나를 맡은 석사과정 2학기 오지환입니다. 오늘 주제는 Social Capital as Dependent Variable, 사회자본을 결과로 놓는 연구들입니다.</aside></section>''')
-    seg = [(105, "0:00 ~ 1:45 · 105분", "1부 지정문헌 세미나", ""), (20, "1:45 ~ 2:05", "교수님 설명", "g"), (10, "~ 2:15", "휴식", "g"), (45, "2:15 ~ 3:00 · 45분", "2부 연구모형 설계", "")]
+    p5 = [("Krishna 2007", "인도 마을의 자생 조직"), ("Freitag 2006", "스위스 칸톤의 정치제도"), ("Lowndes &amp; Wilson 2001", "영국 지방정부의 제도 설계"), ("Mettler 2002", "미국 제대군인 교육 급여"), ("Kumlin &amp; Rothstein 2005", "스웨덴 복지 기관 접촉")]
     slide("진행 순서", "1부 지정문헌 세미나 · 2부 연구모형 설계",
-          '<div class="tlt">' + "".join(f'<div style="flex:{m}">{t}</div>' for m, t, _, _ in seg) + '</div><div class="tl">' + "".join(f'<div class="{c}" style="flex:{m}">{n}</div>' for m, _, n, c in seg) + '''</div>
-<div class="two" style="margin-top:30px;align-items:start;gap:44px"><div><div class="tlh">1부 · 지정문헌 세미나</div><ul class="tll"><li>지정문헌 5편을 발제 순서대로 읽는다. Krishna, Freitag, Lowndes &amp; Wilson, Mettler, Kumlin &amp; Rothstein</li><li>논문마다 쟁점 2개, 모두 10개의 짧은 토론. 손들기 뒤 한두 분의 의견을 듣는다</li><li>사회자본을 종속변수에 두고 국가와 제도가 그 원인인지를 묻는다</li></ul></div>
-<div><div class="tlh">2부 · 연구모형 설계</div><ul class="tll"><li>2주차부터 11주차까지 읽은 사회자본의 정의와 양적 연구를 바탕으로 한다</li><li>국내에서 공개하는 데이터로 각자 연구모형을 설계한다</li><li>서로의 연구모형에 대해 자유롭게 이야기한다</li></ul></div></div>''',
+          '<div class="pp"><div><div class="tlh">1부 · 지정문헌 세미나<span>105분</span></div><div class="pp5">' + "".join(f"<div><b>{a}</b><span>{b}</span><i>토론 1</i><i>토론 2</i></div>" for a, b in p5) + '''</div>
+<p class="ppn">지정문헌 5편을 세미나 형태로 읽고, 논문마다 쟁점 2개씩 모두 10개의 짧은 토론을 한다</p></div>
+<div class="ppg"><span>휴식</span></div>
+<div><div class="tlh">2부 · 연구모형 설계<span>45분</span></div><div class="pp3"><div>국내에서 공개하는 데이터로 변수 고르기</div><div>각자 연구모형 설계</div><div>연구모형에 대해 자유롭게 이야기</div></div>
+<p class="ppn">2주차부터 11주차까지 읽은 사회자본의 정의와 양적 연구를 바탕으로 한다</p></div></div>''',
           "", "")
     # 플레이 화면 세 칸: 태어남 / 관계 사건의 선택(여러 장이 차례로 바뀜) / 죽음(움직이는 그림). 두 판 모두에 넣는다
     mids = [k for k in sorted(PLAY) if k.startswith("mid_")] or [k for k in ("02_choice.png", "02_choice_alt_decision20.png", "02_choice_alt_volunteer22.png") if k in PLAY]
@@ -312,20 +318,15 @@ def build(local):
 <div class="quote" style="font-size:14.5px;margin-top:14px">"우리 누구도 (태어날 곳을) 고르지 않았다. 원하는 나라가 나올 때까지 다시 했다는 반응은 오히려 이 시뮬레이션이 보여주려던 것과 닿아 있다. 태어난 곳이 삶을 얼마나 크게 바꾸는지 알기 때문에 다시 누르는 거니까. 현실에서는 그 버튼이 없다."<small>개발자 진휘어스 인터뷰, 한겨레21 1637호(2026-10-29) 재인용</small></div></div></div>''',
           ("화면: 1in8b.life 플레이 화면(2026-11-11~12 캡처, 태어날 해 1990년 선택). " if shots else "") + "한겨레21 1637호 「다시 태어나면 어디서 누구로 살고 싶은가… '80억 분의 1' 게임으로 오라」(2026-10-29). 한국인 개발자, 2026-10-07 출시, 무료.",
           "본격적으로 들어가기 전에 하나 여쭙겠습니다. '80억 분의 1'이라는 게임을 해 보셨거나 들어 보신 분 계십니까. 172개국 통계로 한 사람의 일생을 무작위로 사는 시뮬레이션입니다. 고를 수 있는 건 태어날 해뿐입니다. 저는 남양주에서 등교하는 길에 논문도 뉴스도 보기 싫을 때 이걸 합니다. 제 연구가 재미없어질 때도 합니다. 화면은 태어날 해로 1990년을 골라 무작위로 받은 삶입니다. 왼쪽이 태어난 순간입니다. 인도 마디아프라데시 농촌의 하위 20~40% 가정에서 태어난 여자아이입니다. 가운데에는 이 사람이 살면서 만난 선택이 차례로 지나갑니다. 스무 살의 중매 제안, 스물두 살의 동네 봉사 모임, 어머니께 고맙다는 말, 길에 쓰러진 낯선 사람, 아들의 결혼, 아버지 돌봄입니다. 이 게임에는 건강, 행복, 지식, 관계 네 수치가 있고, 이런 선택에 따라 관계 수치가 오르내립니다. 저는 사회자본을 공부하면서 이 관계 수치가 무엇에 따라 달라지는지가 궁금해졌습니다. 오른쪽은 이 사람이 70세에 세상을 떠났을 때 나오는 장면입니다. 이 게임을 만든 사람은 한국인 개발자입니다. 출시 뒤 태어날 나라를 고르게 해 달라는 문의가 쏟아졌다고 합니다. 개발자의 답이 화면의 인용입니다. 태어난 곳은 고를 수 없다는 말입니다.")
-    slide("관계는 무엇으로 정해지는가", "80억 분의 1의 관계 수치와 11주차 주제",
-          '''<div class="two" style="grid-template-columns:1fr 1.25fr;align-items:start"><div>
-<div class="mrows" style="grid-template-columns:118px 1fr;word-break:keep-all"><div class="l">고르는 것</div><div>친구·놀이, 결혼, 동네 봉사 모임. 선택지에 “관계↑”가 표시되고, 관계 수치는 고른 선택에 따라 오른다</div>
-<div class="l">고르지 못하는 것</div><div>태어난 나라와 가정. 그해 출생아 수와 소득분포의 확률로 정해진다</div></div>
-<div class="bridge" style="margin-top:20px"><div class="one" style="font-size:20px;padding:14px 18px;word-break:keep-all">현실에서 관계는 개인의 선택만으로 정해지는가.<br>태어난 곳의 제도도 관계를 바꾸는가.</div></div>
-<p style="font-size:15px;color:var(--sub);margin-top:12px;line-height:1.6">11주차 주제인 종속변수로서의 사회자본은 둘째 질문을 다룬다.</p></div>
-<div><div class="k">지정문헌이 본 태어난 곳의 단위</div><table style="font-size:15px;word-break:keep-all;table-layout:fixed"><colgroup><col style="width:17%"><col style="width:23%"><col style="width:32%"><col style="width:28%"></colgroup><tr><th>단위</th><th>논문</th><th>원인으로 본 것</th><th>관계의 측정</th></tr>
-<tr><td>마을</td><td>Krishna</td><td>자생 조직, 규칙, 신진 리더</td><td>마을의 집합행동 성향</td></tr>
-<tr><td>칸톤</td><td>Freitag</td><td>직접민주주의 등 정치제도</td><td>결사체 참여</td></tr>
-<tr><td>지방정부</td><td>Lowndes &amp; Wilson</td><td>제도 설계의 네 차원</td><td>(측정 없음)</td></tr>
-<tr><td>정책 하나</td><td>Mettler</td><td>제대군인원호법 교육 급여</td><td>단체 가입 · 정치참여</td></tr>
-<tr><td>복지 기관</td><td>Kumlin &amp; Rothstein</td><td>선별 기관과 보편 기관 접촉</td><td>대인신뢰 0~10</td></tr></table></div></div>''',
-          "게임에 관한 서술은 화면 표기에 근거한 것이며 게임의 내부 규칙을 확인한 것은 아님.",
-          "방금 본 화면에서 두 가지를 다시 보겠습니다. 선택지에는 관계가 오른다는 표시가 붙어 있습니다. 이 게임에서 관계 수치는 제가 고른 선택에 따라 오릅니다. 그런데 태어난 나라와 가정은 제가 고르지 못했습니다. 그래서 질문이 하나 생깁니다. 현실에서 관계는 개인의 선택만으로 정해지는지, 제가 고르지 않은 태어난 곳의 제도도 관계를 바꾸는지입니다. 예를 들어 화면의 이 사람은 스물두 살에 동네 봉사 모임에 나갈지를 골랐습니다. 같은 사람이 주민투표를 열기 쉬운 스위스 칸톤에서 태어났다면 주변에 그런 모임이 더 많았을지를 물은 연구가 오늘 둘째 논문입니다. 오른쪽 표에 다섯 편이 태어난 곳을 어떤 단위로 보았고 관계를 무엇으로 쟀는지 적었습니다.")
+    slide("관계는 무엇으로 정해지는가", "게임 화면과 11주차 지정문헌",
+          '''<div class="two" style="align-items:start;gap:48px">
+<div><div class="tlh">80억 분의 1 화면에서 확인한 내용</div><ul class="tll"><li>선택지에 “관계↑” 표시가 붙어 있다. 친구와 놀기, 결혼, 동네 봉사 모임을 고르면 관계 수치가 오른다</li>
+<li>태어난 나라와 가정은 게임을 시작할 때 정해져 있다. 그해 출생아 수와 소득분포에 따른 확률로 뽑힌다</li></ul></div>
+<div><div class="tlh">11주차 지정문헌 5편이 다루는 내용</div><ul class="tll"><li>주민의 참여와 신뢰가 그 사람이 사는 마을, 지방, 국가의 제도와 정책에 따라 달라지는지를 다룬다</li>
+<li>주민투표를 열기 쉬운 스위스 칸톤의 주민은 단체에 더 많이 가입하는가 (Freitag 2006)</li>
+<li>스웨덴에서 자산 조사를 거치는 복지 기관을 이용한 사람은 다른 사람을 덜 믿는가 (Kumlin &amp; Rothstein 2005)</li>
+<li>주제 이름인 종속변수로서의 사회자본은 사회자본을 결과로 놓고 그 원인을 찾는 연구를 가리킨다</li></ul></div></div>''',
+          "게임에 관한 서술은 화면 표기에 근거한 것이며 게임의 내부 규칙을 확인한 것은 아님.", "")
     slide("연구 대상과 분석 단위", "발제 순서: 원인을 사회 내부에서 찾은 연구부터 국가와 개인의 접촉을 다룬 연구까지",
           '''<div class="two" style="grid-template-columns:1.3fr 1fr"><div class="map">
 <div class="pt" style="left:12%;top:82%"></div><div class="lb" style="left:12%;top:82%"><b>Krishna 2007</b>마을 내부의 자생 조직 · 규칙 · 신진 리더<br>인도 61개 마을, 7년 패널</div>
