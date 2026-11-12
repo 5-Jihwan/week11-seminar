@@ -4,7 +4,8 @@
   deck/week11_part1_local.html  발표판(git 제외). 쟁점 장에 밈 템플릿 이미지 + 캡션
 재료: deck/fig_part1/*.png(원문 캡처, capture_paper.py), deck/memes/*.jpg(발표판), docs/papers/*_구조.md(문구 출처), docs/PAPERS.md(수치).
 실행: python deck/build_part1.py"""
-import base64, io, json, os, sys
+import base64, io, json, os, re, sys
+from html import unescape
 from PIL import Image
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from fontface import face, FAMILY
@@ -669,6 +670,12 @@ def build(local):
                              ("Kumlin &amp; Rothstein Table 7 원문", "358쪽 · 기관별 이용자 안에서 공정 대우 지각 → 신뢰", "kr_t7", "보건 .31*** · 보육 .12 · 교통 .27*** · 사회부조 .30** · 고용 .13* · 주거수당 −.02")]:
         slide(t, sub, f'<div style="display:flex;justify-content:center;height:470px">{shot(key, "max-height:470px", "align-self:flex-start", t)}</div>', cap, "", ap=True)
 
+    # 대본: deck/part1_script.json이 노트(N 키)와 Word 대본(docs/build_script.py)의 원본이다. 장 순서가 덱과 다르면 멈춘다
+    sc = json.load(open(os.path.join(H, "part1_script.json"), encoding="utf-8"))
+    titles = [unescape(re.search(r"<h[12]>(.*?)</h[12]>", h).group(1)) for h, _ in S]
+    assert titles == [x["title"] for x in sc], [(a, b["title"]) for a, b in zip(titles, sc) if a != b["title"]][:3] + [len(titles), len(sc)]
+    for k, x in enumerate(sc):
+        S[k] = (re.sub(r'<aside class="notes">.*?</aside>', lambda m: '<aside class="notes">' + "<br>".join(esc(t) for t in x["paras"]) + "</aside>", S[k][0], count=1, flags=re.S), None)
     html = f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>사회자본은 어디에서 만들어지는가</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"><script>function noimg(m){{const w=m.closest('.mw');w.style.display='none';w.nextElementSibling.style.display='grid';}}</script><style>{face(''.join(h for h, _ in S) + '사회자본은 어디에서 만들어지는가 ←/→ 이동 · N 노트 · F 전체화면 노트 없음 A0123456789')}{CSS.replace('__FAMILY__', FAMILY)}</style></head><body><div id="stage">
 {"".join(h for h, _ in S)}
