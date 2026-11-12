@@ -61,7 +61,7 @@
   "notes": "왼쪽이 저자들이 출발점으로 삼은 선행 논의입니다. 구축 가설은 저자들이 Boli, Zetterberg와 Ljungberg, Wolfe의 주장으로 소개한 뒤 반박하는 대상입니다. 그리고 346쪽에서는 Stolle의 패널 분석을 들어 참여가 신뢰를 높인다는 인과도 의심합니다. 오른쪽 표에서는 근거 문헌 열과 쪽수를 보시면 됩니다. 위 두 가설은 350쪽에 가설로 명시되어 있습니다. 아래 두 줄은 저자들이 356쪽에서 그때까지 검증하지 않은 가정이라고 밝히고 추가로 검증한 기대입니다."
  },
  "result2": {
-  "sub": "Table 6(357쪽) · 기관별 공정 대우 평가, Table 1·2·4·7",
+  "sub": "Table 6(357쪽) · 기관별 공정 대우 평가, Table 7(358쪽) · 공정 대우 지각과 신뢰",
   "capture": {
    "page": 19,
    "region": [
@@ -73,24 +73,6 @@
    "rotate": 0
   },
   "rows": [
-   {
-    "label": "선별 기관 접촉 0곳 / 1곳 / 2곳 이상 (Table 1, n 3,615)",
-    "value": "68% / 24% / 8%",
-    "p": 351,
-    "ev": "Number and Percentage of Selective, Needs-Testing Public Service Agencies Used by"
-   },
-   {
-    "label": "보편 기관 접촉 0곳의 비율, 평균 접촉 수 (Table 2, n 3,685)",
-    "value": "6% · 4.0곳",
-    "p": 351,
-    "ev": "of the Swedish welfare state. A very small minority (6%) have no contact"
-   },
-   {
-    "label": "보편 접촉 0 / 2 / 4 / 6 / 8곳 이상의 평균 신뢰 (Table 4)",
-    "value": "5.9 / 6.2 / 6.4 / 6.9 / 6.7 · r = .10",
-    "p": 353,
-    "ev": "Personal Contacts With Universal Welfare Institutions and Interpersonal Trust"
-   },
    {
     "label": "공정 대우 평가(1~5) 평균, 보편 기관: 보건의료 / 보육 / 대중교통 (Table 6)",
     "value": "4.1 / 4.2 / 4.1 · 균형 지표 +62 / +71 / +69",
@@ -112,11 +94,6 @@
   ],
   "reading": [
    {
-    "t": "저자들은 선별 기관 접촉이 없는 응답자 68%, 보편 기관 접촉이 없는 응답자 6%를 스웨덴 복지국가의 보편적 성격으로 해석한다",
-    "p": 351,
-    "ev": "agencies. These figures underline the universal nature of the Swedish welfare"
-   },
-   {
     "t": "저자들은 선별 3개 기관의 평가 평균이 척도 중간값 3을 조금 넘는 수준이라는 점을 예측의 근거로 든다. Table 6은 기관별 일변량 분포이며, 저자들은 다변량 분석에서도 같은 결론이라는 근거로 Kumlin(2002, 2004)을 든다(각주 6)",
     "p": 356,
     "ev": "these services is between +10 and +34, and the mean values are just over the"
@@ -128,7 +105,44 @@
    }
   ],
   "point": "매개 경로는 두 단계로 나뉘어 확인된다. Table 6은 기관 간 평가 평균의 비교, Table 7은 기관 이용자 내부의 관계이며, 접촉 수·공정 대우 지각·대인신뢰를 한 모형에 넣은 추정은 없다(발제자 판단).",
-  "notes": "왼쪽 캡처는 357쪽 Table 6입니다. 평균 열을 먼저 보시면 보편 기관 세 곳은 4.1에서 4.2이고 선별 기관 세 곳은 3.2에서 3.7입니다. 다만 맨 오른쪽 열의 응답자 수는 사회부조 198명, 주거수당 375명으로 적습니다. 오른쪽 마지막 줄은 Table 7이고, 기관을 이용한 사람들 안에서 공정 대우 지각과 신뢰의 관계를 본 결과입니다. 그래서 두 표는 비교 대상이 서로 다릅니다. 접촉 수와 공정 대우 지각과 신뢰를 한 모형에 넣은 추정은 이 논문에 없다는 점을 짚겠습니다."
+  "notes": "왼쪽 캡처는 357쪽 Table 6입니다. 평균 열을 먼저 보시면 보편 기관 세 곳은 4.1에서 4.2이고 선별 기관 세 곳은 3.2에서 3.7입니다. 다만 맨 오른쪽 열의 응답자 수는 사회부조 198명, 주거수당 375명으로 적습니다. 오른쪽 마지막 줄은 Table 7이고, 기관을 이용한 사람들 안에서 공정 대우 지각과 신뢰의 관계를 본 결과입니다. 그래서 두 표는 비교 대상이 서로 다릅니다. 접촉 수와 공정 대우 지각과 신뢰를 한 모형에 넣은 추정은 이 논문에 없다는 점을 짚겠습니다.",
+  "first": {
+   "sub": "Table 1·2(351~352쪽) · 접촉 분포, Table 4(353쪽) · 보편 기관 접촉 수별 평균 신뢰",
+   "fig": "kr_t4",
+   "rows": [
+    {
+     "label": "선별 기관 접촉 0곳 / 1곳 / 2곳 이상 (Table 1, n 3,615)",
+     "value": "68% / 24% / 8%",
+     "p": 351,
+     "ev": "Number and Percentage of Selective, Needs-Testing Public Service Agencies Used by"
+    },
+    {
+     "label": "보편 기관 접촉 0곳의 비율, 평균 접촉 수 (Table 2, n 3,685)",
+     "value": "6% · 4.0곳",
+     "p": 351,
+     "ev": "of the Swedish welfare state. A very small minority (6%) have no contact"
+    },
+    {
+     "label": "보편 접촉 0 / 2 / 4 / 6 / 8곳 이상의 평균 신뢰 (Table 4)",
+     "value": "5.9 / 6.2 / 6.4 / 6.9 / 6.7 · r = .10",
+     "p": 353,
+     "ev": "Personal Contacts With Universal Welfare Institutions and Interpersonal Trust"
+    }
+   ],
+   "reading": [
+    {
+     "t": "저자들은 선별 기관 접촉이 없는 응답자 68%, 보편 기관 접촉이 없는 응답자 6%를 스웨덴 복지국가의 보편적 성격으로 해석한다",
+     "p": 351,
+     "ev": "agencies. These figures underline the universal nature of the Swedish welfare"
+    },
+    {
+     "t": "보편 기관 접촉 6곳의 평균 신뢰는 6.9, 8곳 이상은 6.7이다. 저자들은 이 차이가 유의하지 않다고 밝혔다(각주 5)",
+     "p": 353,
+     "ev": "The difference in trust between those who have been in"
+    }
+   ],
+   "notes": "선별 기관과 보편 기관 접촉의 분포부터 보겠습니다. 응답자의 68%는 선별 기관 접촉이 없었고, 보편 기관 접촉이 없는 응답자는 6%였습니다. 왼쪽 캡처는 353쪽 Table 4입니다. 보편 기관 접촉이 많은 집단일수록 평균 신뢰가 높습니다. 다만 6곳에서 6.9이고 8곳 이상에서 6.7입니다. 저자들은 각주 5에서 이 차이가 유의하지 않다고 밝혔습니다. 앞 장의 Table 3과 함께 보시면 선별 기관은 접촉이 많은 집단의 신뢰가 낮고 보편 기관은 높습니다."
+  }
  },
  "conclusion": {
   "sub": "355, 360~362쪽",
