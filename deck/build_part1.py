@@ -109,6 +109,10 @@ table.hyp{font-size:14px;table-layout:fixed}table.hyp td{line-height:1.45;paddin
 .slide.on .issue.side>:first-child{animation:rise .5s both}.slide.on .issue.side .ch .o:first-child{animation:rise .5s .5s both}.slide.on .issue.side .ch .vs{animation:rise .4s .9s both}.slide.on .issue.side .ch .o:last-child{animation:rise .5s 1.1s both}
 @media print{.fr{visibility:visible;opacity:1}.hl{transform:none}}
 .refs{columns:2;column-gap:40px;font-size:12px;line-height:1.5}.refs p{font-size:12px;line-height:1.5;margin:0 0 5px;padding-left:1.4em;text-indent:-1.4em;break-inside:avoid}.refs .k{margin-top:8px;break-after:avoid;font-size:12.5px}.refs .k:first-child{margin-top:0}
+.tlt,.tl{display:flex;gap:4px}.tlt div{font-size:12.5px;color:var(--sub);white-space:nowrap;padding:0 2px 6px}
+.tl div{height:66px;display:flex;align-items:center;padding:0 16px;background:var(--navy);color:#fff;font-size:18px;font-weight:700;white-space:nowrap;overflow:hidden}.tl div.g{background:#d5d9e0;color:var(--ink);font-size:13px;font-weight:400;padding:0 4px;justify-content:center;white-space:normal;text-align:center;line-height:1.25}
+.slide.on .tl div{animation:fadein .5s both}.slide.on .tl div:nth-child(2){animation-delay:.4s}.slide.on .tl div:nth-child(3){animation-delay:.7s}.slide.on .tl div:nth-child(4){animation-delay:1s}
+.tlh{font-size:19px;font-weight:700;color:var(--navy);border-top:2px solid var(--navy);padding-top:10px;margin-bottom:8px}.tll li{font-size:16.5px;line-height:1.6;word-break:keep-all}
 /* 인트로·엔딩 */
 .stat{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;text-align:center}.stat .v{font-family:"IBM Plex Mono",monospace;font-size:84px;line-height:1;color:var(--navy);font-weight:500}.stat .l{font-size:16.5px;color:var(--sub);margin-top:14px;line-height:1.5}
 .quote{border-left:4px solid var(--navy);padding:12px 18px;font-size:19px;line-height:1.6;color:var(--ink);background:#fafbfd}.quote small{display:block;color:var(--sub);font-size:13px;margin-top:8px}
@@ -282,8 +286,14 @@ def issue(title, sub, meme, caps, pro, con, q, local, notes):
 def build(local):
     S.clear()
     # ───────── 인트로 ─────────
-    raw(f'''<section class="slide cover">{f'<img src="{PHOTO["landsgemeinde"]}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55">' if "landsgemeinde" in PHOTO else ""}<div style="position:absolute;inset:0;background:rgba(7,42,96,.55)"></div><div class="c" style="position:absolute"><h1>사회자본은 어디에서 만들어지는가</h1><p class="sub">종속변수로서의 사회자본(Social Capital as Dependent Variable) · 11주차 발제<br>Krishna 2007 · Freitag 2006 · Lowndes &amp; Wilson 2001 · Mettler 2002 · Kumlin &amp; Rothstein 2005</p></div><div class="meta">사회자본과 공공정책 · 2026-11-13 · 발제 오지환(석사과정 2학기) · 성균관대학교</div>{f'<div style="position:absolute;right:40px;bottom:26px;font-size:11px;color:rgba(255,255,255,.65);max-width:600px;text-align:right">{PCRED["landsgemeinde"]}</div>' if "landsgemeinde" in PCRED else ""}
+    raw(f'''<section class="slide cover">{f'<img src="{PHOTO["landsgemeinde"]}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55">' if "landsgemeinde" in PHOTO else ""}<div style="position:absolute;inset:0;background:rgba(7,42,96,.55)"></div><div class="c" style="position:absolute"><h1>사회자본은 어디에서 만들어지는가</h1><p class="sub">종속변수로서의 사회자본(Social Capital as Dependent Variable) · 11주차 발제<br>Krishna 2007 · Freitag 2006 · Lowndes &amp; Wilson 2001 · Mettler 2002 · Kumlin &amp; Rothstein 2005<br>1부 지정문헌 5편 세미나와 토론 10개 · 2부 국내 공개 데이터로 연구모형 설계</p></div><div class="meta">사회자본과 공공정책 · 2026-11-13 · 발제 오지환(석사과정 2학기) · 성균관대학교</div>{f'<div style="position:absolute;right:40px;bottom:26px;font-size:11px;color:rgba(255,255,255,.65);max-width:600px;text-align:right">{PCRED["landsgemeinde"]}</div>' if "landsgemeinde" in PCRED else ""}
 <aside class="notes">안녕하십니까. 11주차 「사회자본은 어디에서 만들어지는가」 세미나를 맡은 석사과정 2학기 오지환입니다. 오늘 주제는 Social Capital as Dependent Variable, 사회자본을 결과로 놓는 연구들입니다.</aside></section>''')
+    seg = [(105, "0:00 ~ 1:45 · 105분", "1부 지정문헌 세미나", ""), (20, "1:45 ~ 2:05", "교수님 설명", "g"), (10, "~ 2:15", "휴식", "g"), (45, "2:15 ~ 3:00 · 45분", "2부 연구모형 설계", "")]
+    slide("진행 순서", "1부 지정문헌 세미나 · 2부 연구모형 설계",
+          '<div class="tlt">' + "".join(f'<div style="flex:{m}">{t}</div>' for m, t, _, _ in seg) + '</div><div class="tl">' + "".join(f'<div class="{c}" style="flex:{m}">{n}</div>' for m, _, n, c in seg) + '''</div>
+<div class="two" style="margin-top:30px;align-items:start;gap:44px"><div><div class="tlh">1부 · 지정문헌 세미나</div><ul class="tll"><li>지정문헌 5편을 발제 순서대로 읽는다. Krishna, Freitag, Lowndes &amp; Wilson, Mettler, Kumlin &amp; Rothstein</li><li>논문마다 쟁점 2개, 모두 10개의 짧은 토론. 손들기 뒤 한두 분의 의견을 듣는다</li><li>사회자본을 종속변수에 두고 국가와 제도가 그 원인인지를 묻는다</li></ul></div>
+<div><div class="tlh">2부 · 연구모형 설계</div><ul class="tll"><li>2주차부터 11주차까지 읽은 사회자본의 정의와 양적 연구를 바탕으로 한다</li><li>국내에서 공개하는 데이터로 각자 연구모형을 설계한다</li><li>서로의 연구모형에 대해 자유롭게 이야기한다</li></ul></div></div>''',
+          "", "")
     # 플레이 화면 세 칸: 태어남 / 관계 사건의 선택(여러 장이 차례로 바뀜) / 죽음(움직이는 그림). 두 판 모두에 넣는다
     mids = [k for k in sorted(PLAY) if k.startswith("mid_")] or [k for k in ("02_choice.png", "02_choice_alt_decision20.png", "02_choice_alt_volunteer22.png") if k in PLAY]
     death = next((k for k in ("03_death.webp", "03_summary.png") if k in PLAY), None)
