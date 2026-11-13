@@ -272,8 +272,8 @@ def memefig(meme, caps, local):
 def _issue(title, sub, meme, caps, a, b, extra, local, how, notes):
     fig, has = memefig(meme, caps, local)
     body = f'<div class="issue side">{fig}<div class="ch"><div class="o"><b>{a[0]}</b>{a[1]}</div><div class="vs">vs</div><div class="o"><b>{b[0]}</b>{b[1]}</div></div>{extra}</div>'
-    credit = ("밈 템플릿: imgflip 공개 템플릿, 수업 내부용 · " if local else "밈 템플릿: imgflip · ") if has else ""
-    S.append((f'<section class="slide"><div class="hd"><h2>{title}</h2><p class="s">{sub}</p></div>{body}<div class="cap">{credit}{how}</div><aside class="notes">{notes}</aside></section>', None))
+    credit = "밈 템플릿: imgflip 공개 템플릿" if has else ""  # 토론 시간·지명 방식은 대본에만(화면에는 저작권 표기만)
+    S.append((f'<section class="slide"><div class="hd"><h2>{title}</h2><p class="s">{sub}</p></div>{body}<div class="cap">{credit}</div><aside class="notes">{notes}</aside></section>', None))
 
 
 def choice(title, sub, meme, caps, c1, c2, result, local, notes, mins=5):
@@ -313,7 +313,7 @@ def build(local):
         stack = "".join(f'<img src="{PLAY[k]}" alt="" style="{ani(i)}">' for i, k in enumerate(mids))
         caps = "".join(f'<span style="{ani(i)}">{info[k]["age"]}세 · {esc(info[k]["title"])}</span>' for i, k in enumerate(mids) if k in info) or "살면서 만나는 선택"
         play_html = f'<style>{cyc}</style><div class="play"><figure><div class="ph"><img src="{PLAY["01_birth.png"]}" alt=""></div><figcaption>태어남</figcaption></figure><figure><div class="ph">{stack}</div><figcaption>{caps}</figcaption></figure><figure><div class="ph"><img src="{PLAY[death]}" alt=""></div><figcaption>죽음</figcaption></figure></div>'
-    slide("80억 분의 1", "172개국 실제 통계로 한 사람의 삶을 사는 시뮬레이션 (1in8b.life)",
+    slide("80억 분의 1", "오늘의 질문: 관계는 내가 고른 선택으로만 정해지는가, 태어난 곳의 제도로도 정해지는가",
           f'''<div class="intro2" style="grid-template-columns:{"auto 1fr" if shots else "1fr"}">{play_html}<div><ul><li>고를 수 있는 것은 태어날 해뿐. 나라는 그해 출생아 수의 확률로, 가정은 그 나라 소득분포의 확률로 정해진다</li><li>반영 통계: 출생아 수, 성별 기대수명, 영아 사망률, 소득 불평등 지수, 교육 접근성, 대학 진학률, 살인율, 흡연율, 조혼율. 전쟁·팬데믹 같은 사건도 반영</li><li>살면서 중매, 동네 봉사 모임, 부모 돌봄, 낯선 사람 돕기 같은 사건마다 선택하고, 그 결과가 건강·행복·지식·관계 수치로 표시된다</li></ul>
 <div class="quote" style="font-size:14.5px;margin-top:14px">"우리 누구도 (태어날 곳을) 고르지 않았다. 원하는 나라가 나올 때까지 다시 했다는 반응은 오히려 이 시뮬레이션이 보여주려던 것과 닿아 있다. 태어난 곳이 삶을 얼마나 크게 바꾸는지 알기 때문에 다시 누르는 거니까. 현실에서는 그 버튼이 없다."<small>개발자 진휘어스 인터뷰, 한겨레21 1637호(2026-10-29) 재인용</small></div></div></div>''',
           ("화면: 1in8b.life 플레이 화면(2026-11-11~12 캡처, 태어날 해 1990년 선택). " if shots else "") + "한겨레21 1637호 「다시 태어나면 어디서 누구로 살고 싶은가… '80억 분의 1' 게임으로 오라」(2026-10-29). 한국인 개발자, 2026-10-07 출시, 무료.",
