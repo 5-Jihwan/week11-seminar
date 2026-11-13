@@ -8,6 +8,7 @@ H = os.path.dirname(os.path.abspath(__file__)); D = os.path.join(H, "..", "deck"
 out = sys.argv[1] if len(sys.argv) > 1 else os.path.join(H, "대본_카드.html")
 p1 = json.load(open(os.path.join(D, "part1_script.json"), encoding="utf-8"))
 p2 = json.load(open(os.path.join(D, "part2_script.json"), encoding="utf-8"))
+WHY = json.load(open(os.path.join(D, "debate_why.json"), encoding="utf-8"))  # 토론 장: 왜 이 쟁점인가(질문 대비, 말하지 않음)
 
 
 def paras_of(text):  # 2부 대본은 문자열 하나. 쉼 지시만 따로 떼어 낸다
@@ -18,9 +19,13 @@ def paras_of(text):  # 2부 대본은 문자열 하나. 쉼 지시만 따로 떼
 
 
 main1 = [x for x in p1 if not x["title"].endswith("원문")]; app1 = [x for x in p1 if x["title"].endswith("원문")]
-decks = {"1부": [{"no": str(i + 1), "t": x["title"], "p": x["paras"]} for i, x in enumerate(main1)] + [{"no": f"A{i + 1}", "t": x["title"], "p": x["paras"]} for i, x in enumerate(app1)],
-         "2부": [{"no": str(i + 1), "t": t, "p": paras_of(s)} for i, (t, s) in enumerate(p2.items())]}
-assert len(decks["1부"]) == 70 and len(decks["2부"]) == 9
+decks = {"1부": [{"no": str(i + 1), "t": x["title"], "p": x["paras"], "why": WHY.get(x["title"], "")} for i, x in enumerate(main1)] + [{"no": f"A{i + 1}", "t": x["title"], "p": x["paras"]} for i, x in enumerate(app1)],
+         "2부": []}
+k2 = 0
+for t, s_ in p2.items():  # "("로 시작하는 제목은 덱 장이 아닌 구간(대시보드 등): 번호 없이 넣는다
+    if not t.startswith("("): k2 += 1
+    decks["2부"].append({"no": str(k2) if not t.startswith("(") else "·", "t": t.strip("()").replace(")", "") if t.startswith("(") else t, "p": paras_of(s_)})
+assert len(decks["1부"]) == 70 and sum(c["no"] != "·" for c in decks["2부"]) == 9 and sum(bool(c.get("why")) for c in decks["1부"]) == 10
 DATA = json.dumps(decks, ensure_ascii=False)
 doc = """<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>11주차 대본 카드</title><style>
 :root{--bg:#f4f6f9;--card:#fff;--ink:#15203a;--sub:#5a6577;--line:#dfe4ec;--navy:#072A60;--cue:#eef1f5;--fs:23px}
@@ -33,6 +38,7 @@ main{flex:1;overflow:auto;padding:22px 18px 10px;display:flex;justify-content:ce
 .card{width:100%;max-width:1100px;background:var(--card);border:1px solid var(--line);border-top:4px solid var(--navy);border-radius:8px;padding:26px 34px 30px;align-self:flex-start}
 .card .no{font-size:15px;color:var(--sub)}.card h1{margin:4px 0 18px;font-size:calc(var(--fs) + 3px);line-height:1.4;color:var(--navy);word-break:keep-all}
 .card p{margin:0 0 16px;font-size:var(--fs);line-height:1.85;word-break:keep-all}
+.card .why{margin:22px 0 0;padding:14px 18px;border:1px dashed var(--line);border-left:3px solid var(--navy);border-radius:6px;background:var(--cue)}.card .why b{display:block;font-size:14px;color:var(--navy);margin-bottom:6px}.card .why div{font-size:calc(var(--fs) * .78);line-height:1.75;word-break:keep-all}
 .card .cue{display:inline-block;margin:2px 0 16px;padding:5px 12px;background:var(--cue);color:var(--sub);border-radius:5px;font-size:calc(var(--fs) * .68);line-height:1.5}
 footer{display:flex;align-items:center;gap:12px;padding:10px 18px;border-top:1px solid var(--line);background:var(--card);font-size:14px;color:var(--sub)}
 footer .nx{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}footer button{border:1px solid var(--line);background:none;color:var(--ink);padding:6px 16px;border-radius:6px;font:inherit;cursor:pointer}
@@ -47,15 +53,15 @@ footer .nx{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}foot
 <footer><button id="prev">← 이전</button><span class="nx" id="nx"></span><button id="next">다음 →</button></footer>
 <div id="list"><div class="grid" id="grid"></div></div>
 <script>
-const DECKS=__DATA__;const $=id=>document.getElementById(id);const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);
+const DECKS=__DATA__;const lab=n=>/^A/.test(n)?'부록 '+n:(n==='·'?'덱 밖 · 대시보드 화면':n+'장');const $=id=>document.getElementById(id);const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);
 const st=(()=>{try{return JSON.parse(localStorage.getItem('w11cards')||'{}')}catch(e){return{}}})();let deck=st.deck||'1부',i=st.i||0,fs=st.fs||23;
 const save=()=>{try{localStorage.setItem('w11cards',JSON.stringify({deck,i,fs,theme:document.documentElement.dataset.theme||''}))}catch(e){}};
 if(st.theme)document.documentElement.dataset.theme=st.theme;
 function render(){const L=DECKS[deck];i=Math.max(0,Math.min(i,L.length-1));const c=L[i];
  document.documentElement.style.setProperty('--fs',fs+'px');
  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('on',b.dataset.d===deck));
- $('card').innerHTML=`<div class="no">${deck} · ${/^A/.test(c.no)?'부록 '+c.no:c.no+'장'}</div><h1>${esc(c.t)}</h1>`+c.p.map(p=>p.startsWith('(')?`<div><span class="cue">${esc(p)}</span></div>`:`<p>${esc(p)}</p>`).join('');
- $('pos').textContent=`${i+1} / ${L.length}`;const n=L[i+1];$('nx').textContent=n?`다음 ${/^A/.test(n.no)?'부록 '+n.no:n.no+'장'} · ${n.t}`:'마지막 장';
+ $('card').innerHTML=`<div class="no">${deck} · ${lab(c.no)}</div><h1>${esc(c.t)}</h1>`+c.p.map(p=>p.startsWith('(')?`<div><span class="cue">${esc(p)}</span></div>`:`<p>${esc(p)}</p>`).join('')+(c.why?`<div class="why"><b>질문 대비 · 왜 이 쟁점인가 (말하지 않음)</b><div>${esc(c.why)}</div></div>`:'');
+ $('pos').textContent=`${i+1} / ${L.length}`;const n=L[i+1];$('nx').textContent=n?`다음 ${lab(n.no)} · ${n.t}`:'마지막 장';
  $('grid').innerHTML=L.map((x,k)=>`<button data-k="${k}" class="${k===i?'on':''}"><b>${x.no}</b>${esc(x.t)}</button>`).join('');
  document.querySelector('main').scrollTop=0;save();}
 const go=d=>{i+=d;render();};
