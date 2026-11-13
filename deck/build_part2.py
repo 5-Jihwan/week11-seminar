@@ -28,15 +28,17 @@ def qr_uri(url):
 
 
 S, NOTES = [], []
+import json
+P2 = json.load(open(os.path.join(H, "part2_script.json"), encoding="utf-8"))  # 대본 원본. 아래 slide()·cover()의 notes 인자는 이 파일에 제목이 없을 때만 쓰인다
 
 
 def slide(title, sub, body, cap="", notes="", ap=False):
-    NOTES.append(notes)
+    notes = P2.get(title, notes); NOTES.append(notes)
     S.append(f'<section class="slide" {"data-ap=1" if ap else ""}><div class="hd"><h2>{title}</h2>{f"<p class=s>{sub}</p>" if sub else ""}</div><div class="bd"><div class="in">{body}</div></div>{f"<div class=cap>{cap}</div>" if cap else ""}<aside class="notes">{notes}</aside></section>')
 
 
 def cover(h1, sub, meta, notes):
-    NOTES.append(notes)
+    notes = P2.get(h1, notes); NOTES.append(notes)
     S.append(f'<section class="slide cover"><img src="{COVER_IMG}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55"><div style="position:absolute;inset:0;background:rgba(7,42,96,.55)"></div><div class="c" style="position:absolute"><h1>{h1}</h1><p class="sub">{sub}</p></div><div class="meta">{meta}</div><div style="position:absolute;right:40px;bottom:26px;font-size:11px;color:rgba(255,255,255,.65);max-width:600px;text-align:right">{CREDIT}</div>\n<aside class="notes">{notes}</aside></section>')
 
 
@@ -128,7 +130,7 @@ slide("와이파이나 서버가 끊길 때", "부록 · 발표자용",
       "", "(부록. 장애 대응입니다.)", ap=True)
 
 # 대본 말투 검사(1부와 같은 금지 목록)
-BAN = r"니까|[가이] 아니라|(라는|다는) 것입니다|쪽입니다|에 대한 답|다른 하나는|그렇다면|뜻입니다|자리|흐름|갈래|접점|넘어서|무너|버티|깎|움직|(두|세|네|다섯) 가지(입니다|가 있습니다|를)|(첫째|둘째|셋째)|다음 장에서|짚겠습니다|—"
+BAN = r"겁니다|니까|[가이] 아니라|(라는|다는) 것입니다|쪽입니다|에 대한 답|다른 하나는|그렇다면|뜻입니다|자리|흐름|갈래|접점|넘어서|무너|버티|깎|움직|(두|세|네|다섯) 가지(입니다|가 있습니다|를)|(첫째|둘째|셋째)|다음 장에서|짚겠습니다|—"
 hits = [(i + 1, m.group(0)) for i, n in enumerate(NOTES) for m in re.finditer(BAN, n)]
 assert not hits, hits
 
