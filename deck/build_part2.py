@@ -1,263 +1,161 @@
 # -*- coding: utf-8 -*-
-"""2부 발표덱 빌드: deck/fig_part2/uris.json(실제 화면 JPEG data URI, data/raw/tmp/deck_shots.py가 만든다)을 심어 deck/week11_part2.html.
-실행: python deck/build_part2.py"""
-import json, os, sys
+"""2부 덱(2026-11-13 재설계). 1부 덱(week11_part1.html)의 머리·CSS·넘기기 스크립트를 그대로 쓰고 장만 새로 만든다.
+2부 흐름: 접속·안내 3분 → 모형 만들기 12분 → 분포 보기와 모형 이야기 22분 → 정리 5분(+여유 3분).
+실행: python deck/build_part2.py → deck/week11_part2.html (1부 덱을 먼저 빌드해 둘 것)"""
+import base64, html, io, os, re, sys
+import qrcode
+from PIL import Image
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from fontface import face
 sys.stdout.reconfigure(encoding="utf-8")
 H = os.path.dirname(os.path.abspath(__file__))
-IMG = json.load(open(os.path.join(H, "fig_part2", "uris.json")))
+CANVAS = "https://5-jihwan.github.io/week11-seminar/model/canvas.html"
+base = open(os.path.join(H, "week11_part1.html"), encoding="utf-8").read()
+secs = re.findall(r'<section class="slide.*?</section>', base, re.S)
+COVER_IMG = re.search(r'<img src="(data:[^"]+)"', secs[0]).group(1)
+CREDIT = "Landsgemeinde Glarus, 2009.jpg · Marc Schlumpf, www.icarus-design.ch · CC BY-SA 3.0 · Wikimedia Commons"
 
-HTML = r"""<!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>2부 연구모형 캔버스</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{--paper:#fff;--stage:#e9edf2;--ink:#15203a;--sub:#5a6577;--line:#e2e6ec;--navy:#072A60;--navyt:#e9eef6;--green:#8DC63F;--greend:#4F7F1C;--greent:#f0f7e6;--orange:#D9640F;--gray:#9aa2ae}
-*{box-sizing:border-box}html,body{margin:0;height:100%;background:var(--stage);font-family:__FAMILY__;color:var(--ink)}
-#stage{position:fixed;inset:0;display:grid;place-items:center}
-.slide{width:1280px;height:720px;background:var(--paper);position:absolute;display:none;overflow:hidden;transform-origin:center}
-.slide.on{display:block}
-.hd{position:absolute;left:72px;top:52px;right:72px}.hd::before{content:"";display:block;width:32px;height:3px;background:var(--green);margin-bottom:14px}
-.hd h2{margin:0;font-size:28px;font-weight:700;color:var(--navy);letter-spacing:-.01em}.hd .s{margin:6px 0 0;font-size:16px;color:var(--sub)}
-.bd{position:absolute;left:72px;right:72px;top:146px;bottom:70px;display:flex;align-items:center;justify-content:center}.in{width:100%;max-width:1136px}
-.cap{position:absolute;left:72px;right:140px;bottom:28px;font-size:13px;color:var(--sub);line-height:1.5}
-.pg{position:absolute;right:40px;bottom:26px;font-size:13px;color:var(--gray);font-family:"IBM Plex Mono",monospace}
-.notes{display:none}
-#notes{position:fixed;left:0;right:0;bottom:0;max-height:40vh;overflow:auto;background:rgba(21,32,58,.96);color:#fff;padding:18px 28px;font-size:17px;line-height:1.7;display:none;z-index:5}#notes.on{display:block}
-p,li{font-size:18.5px;line-height:1.65;margin:0}ul,ol{margin:0;padding-left:22px}li+li{margin-top:8px}
-.num{font-family:"IBM Plex Mono",monospace}.k{font-size:14.5px;color:var(--sub);margin-bottom:6px}
-.shot{display:block;width:100%;border:1px solid var(--line);border-radius:6px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:center}
-.cover{background:#000;color:#fff}.cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}.cover .veil{position:absolute;inset:0;background:rgba(7,42,96,.72)}
-.cover .c{position:absolute;left:88px;right:88px;top:210px}.cover .c::before{content:"";display:block;width:40px;height:4px;background:var(--green);margin-bottom:26px}
-.cover h1{margin:0;font-size:48px;line-height:1.3;font-weight:700}.cover .sub{margin:18px 0 0;font-size:20px;opacity:.9}.cover .meta{position:absolute;left:88px;bottom:60px;font-size:15.5px;opacity:.85;line-height:1.7}.cover .src{position:absolute;right:40px;bottom:30px;font-size:12px;opacity:.65}
-.step{border-top:2px solid var(--navy);padding-top:10px}.step .n{font-family:"IBM Plex Mono",monospace;font-size:13px;color:var(--sub)}.step h3{margin:2px 0 6px;font-size:20px;color:var(--navy)}.step p{font-size:16px}
-table{border-collapse:collapse;width:100%;font-size:17px}th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:13px;color:var(--navy);font-weight:600;background:var(--navyt);border-bottom:1px solid #1e3a5f}td.r,th.r{text-align:right;white-space:nowrap}
-.role{display:grid;grid-template-columns:140px 1fr;gap:10px 16px;align-items:center;font-size:16.5px}
-.node{display:inline-block;padding:8px 12px;border-radius:8px;border:1.5px solid var(--navy);background:#fff;font-weight:600;font-size:14px;text-align:center;min-width:130px}
-.node.dv{background:var(--navyt);border-width:2.5px}.node.mv{border-style:dashed;border-color:#8aa4cf}.node.zv{border-style:dotted;border-color:#94a3b8;color:#475569}.node.cv{border-color:#cbd5e1;color:#64748b;background:#f8fafc}
-.stat{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;text-align:center}.stat .v{font-family:"IBM Plex Mono",monospace;font-size:84px;line-height:1;color:var(--navy);font-weight:500}.stat .l{font-size:17px;color:var(--sub);margin-top:14px;line-height:1.5}
-.cell{border-collapse:collapse;font-size:15px;width:100%}.cell th,.cell td{border:1px solid var(--line);padding:10px 8px;text-align:center}.cell th{background:#f6f7f9;color:var(--sub);font-weight:600}.cell td b{color:var(--navy)}
-.callout{position:absolute;background:var(--navy);color:#fff;font-size:12.5px;font-weight:600;padding:3px 9px;border-radius:4px;line-height:1.4}
-.figwrap{position:relative}.figwrap[style] .callout{font-size:16.5px}
-#help{position:fixed;right:14px;top:10px;font-size:12px;color:#7b8494;z-index:6}
-</style></head><body>
-<div id="stage">
 
-<section class="slide cover">
- <img src="{{dash_net}}" alt=""><div class="veil"></div>
- <div class="c"><h1>연구모형 캔버스</h1><p class="sub">국내 조사 8종의 문항으로 각자 사회자본을 정의하고, 선행연구 7,690편과 견준다</p></div>
- <div class="meta">사회자본과 공공정책 · 11주차 발제 2부 · 2026-11-13<br>발제 오지환 · 성균관대학교</div>
- <div class="src">배경: 관리자 대시보드의 선행연구 유사도 연결망(시연 자료 17명)</div>
- <aside class="notes">1부에서 다섯 번 고르셨습니다. 측정을 바꾸자 결론이 바뀌었습니다. 이제 같은 일을 여러분 손으로 합니다. 자료 하나를 골라, 사회자본이 무엇인지 적고, 문항으로 잽니다. 35분이면 끝납니다.</aside>
-</section>
+def img_uri(path, w=1100, q=82):
+    im = Image.open(path).convert("RGB"); im.thumbnail((w, w * 2)); b = io.BytesIO(); im.save(b, "JPEG", quality=q, optimize=True)
+    return "data:image/jpeg;base64," + base64.b64encode(b.getvalue()).decode()
 
-<section class="slide">
- <div class="hd"><h2>지정문헌 다섯 편의 사회자본 측정</h2><p class="s">같은 개념, 자료마다 다른 조작적 정의</p></div>
- <div class="bd"><div class="in">
- <table><tr><th>논문</th><th>자료</th><th>사회자본의 측정</th><th>신뢰의 자리</th></tr>
- <tr><td>Krishna (2007)</td><td>인도 라자스탄 61개 마을, 7년 패널</td><td>집합행동 성향 6문항 지수 0–100</td><td>지수 안의 한 문항</td></tr>
- <tr><td>Freitag (2006)</td><td>스위스 24개 칸톤</td><td>결사체 참여 4문항 주성분, 칸톤 평균</td><td>통제변수, 다변량에서 비유의</td></tr>
- <tr><td>Lowndes &amp; Wilson (2001)</td><td>없음(이론)</td><td>Putnam의 혼합 정의, 측정 없음</td><td>측정 없음</td></tr>
- <tr><td>Mettler (2002)</td><td>미국 G.I. Bill 수혜자 회고 설문(1998)</td><td>단체 가입 수 + 정치활동 6종</td><td>측정 없음</td></tr>
- <tr><td>Kumlin &amp; Rothstein (2005)</td><td>스웨덴 횡단면 설문</td><td>대인신뢰 0–10 단일 문항</td><td>종속변수. 참여는 통제</td></tr></table>
- <p style="margin-top:26px;font-size:17.5px;color:var(--sub)">1부 마지막 표와 같다. 결사체를 재면 국가가 만들고 신뢰를 재면 국가가 부순다는 결론은 다섯 편이 다른 것을 쟀기 때문에 나온다. 오늘 각자가 고를 자료도 같은 제약을 준다.</p>
- </div></div>
- <div class="cap">1부 투표 분포는 당일 1부 결과 화면으로 대체.</div>
- <aside class="notes">셋째 열만 보십시오. 지수, 주성분, 가입 수, 단일 문항. 전부 사회자본이라고 불렀습니다. 넷째 열은 전부 종속입니다. 오늘 여러분도 종속변수부터 정합니다.</aside>
-</section>
 
-<section class="slide">
- <div class="hd"><h2>2부 진행 순서</h2><p class="s">35분. 프로젝터는 이 덱과 대시보드를 오간다</p></div>
- <div class="bd"><div class="in">
- <table style="font-size:16px"><tr><th style="width:70px">시각</th><th style="width:48px" class="r">분</th><th style="width:300px">할 일</th><th>프로젝터</th></tr>
- <tr><td class="num">2:15</td><td class="r num">3</td><td>접속, 별명, 자료 하나 고르기</td><td>이 덱 4~5장. 대시보드 「작업 중」 수가 17로</td></tr>
- <tr><td class="num">2:18</td><td class="r num">4</td><td>사회자본 정의 한 문장 적기</td><td>대시보드 자료 막대. 쏠리면 한 명에게 이유</td></tr>
- <tr><td class="num">2:22</td><td class="r num">10</td><td>문항으로 모형 만들기, 제출</td><td>대시보드 종속변수 구성 요소 막대(실시간)</td></tr>
- <tr><td class="num">2:32</td><td class="r num">3</td><td>빈 칸 하나 보기</td><td>종속 구성 × 독립 묶음 격자</td></tr>
- <tr><td class="num">2:35</td><td class="r num">3</td><td>다섯 편의 자리와 오늘의 자리</td><td>이 덱 분류 틀 장, 대시보드 분류 틀 막대</td></tr>
- <tr><td class="num">2:38</td><td class="r num">9</td><td>세 사람의 모형, 교수님 판정</td><td>spotlight 3명(각 3분)</td></tr>
- <tr><td class="num">2:47</td><td class="r num">4</td><td>선행연구 위에서 오늘 모형의 위치</td><td>연결망, 되감기</td></tr>
- <tr><td class="num">2:50</td><td class="r num">3</td><td>마무리, 교수님께</td><td>이 덱 마지막 장</td></tr></table>
- </div></div>
- <div class="cap">학생은 노트북으로 canvas.html, Ji는 둘째 화면에 관리자 대시보드.</div>
- <aside class="notes">순서는 이렇습니다. 처음 7분은 자료와 정의, 10분은 각자 모형, 그 다음은 다 같이 화면을 보며 세 분 모형을 짚고, 교수님 판정을 받습니다. 2시 50분에 마칩니다.</aside>
-</section>
+def qr_uri(url):
+    q = qrcode.QRCode(border=2, box_size=10, error_correction=qrcode.constants.ERROR_CORRECT_M); q.add_data(url); q.make(fit=True)
+    b = io.BytesIO(); q.make_image(fill_color="#072A60", back_color="white").save(b, "PNG")
+    return "data:image/png;base64," + base64.b64encode(b.getvalue()).decode()
 
-<section class="slide">
- <div class="hd"><h2>캔버스 작업 순서</h2><p class="s">자료 선택, 개념화, 조작화, 제출. 화면이 이 순서로 열린다</p></div>
- <div class="bd"><div class="in two" style="grid-template-columns:1fr 1.25fr">
-  <div>
-   <div class="step"><div class="n">1</div><h3>자료</h3><p>조사 하나를 고른다. 한 모형에는 같은 응답자에게 물은 문항만 들어간다</p></div>
-   <div class="step" style="margin-top:16px;border-top-color:var(--green)"><div class="n">2</div><h3>개념화</h3><p>사회자본이 무엇인지 한 문장. 차원(인지적·구조적·둘 다)과 수준(개인·공동체)</p></div>
-   <div class="step" style="margin-top:16px"><div class="n">3</div><h3>조작화</h3><p>문항을 끌어 변수를 만들고 역할을 고른다. 변수 둘을 차례로 누르면 경로</p></div>
-   <div class="step" style="margin-top:16px"><div class="n">4</div><h3>제출</h3><p>별명으로 제출. 프로젝터에 모이고, 유사한 선행연구와 교수님 판정이 돌아온다</p></div>
-  </div>
-  <div><img class="shot" src="{{concept}}" alt="개념화 단계 화면"><p class="k" style="margin-top:8px">2단계 화면. 정의 문장을 먼저 적고 차원과 수준을 고른 뒤에야 문항 목록이 열린다</p></div>
- </div></div>
- <aside class="notes">순서가 중요합니다. 문항을 먼저 보면 문항이 개념을 정합니다. 그래서 2단계에서 정의부터 적게 해 두었습니다. 그 정의와 3단계의 문항이 어긋나면 노란 경고가 뜹니다.</aside>
-</section>
 
-<section class="slide">
- <div class="hd"><h2>접속 주소와 규칙</h2><p class="s">노트북 권장. 폰은 끌기 대신 ＋ 버튼</p></div>
- <div class="bd"><div class="in two">
-  <div><div class="k">주소</div><p style="font-size:25px;font-weight:600;color:var(--navy);word-break:break-all;line-height:1.4">5-jihwan.github.io/week11-seminar/<br>model/canvas.html</p>
-   <div class="k" style="margin-top:26px">자료 8종, 전체 문항 5,636</div>
-   <table style="font-size:15px"><tr><td>한국복지패널 20차</td><td class="r num">730</td><td>사회통합실태조사 2023</td><td class="r num">197</td></tr>
-   <tr><td>한국종합사회조사 2003–2025</td><td class="r num">3,345</td><td>청년삶실태조사 2024</td><td class="r num">447</td></tr>
-   <tr><td>사회조사 2023</td><td class="r num">232</td><td>노인실태조사 2023</td><td class="r num">434</td></tr>
-   <tr><td>가계금융복지조사 2023</td><td class="r num">85</td><td>지역사회건강조사 2023</td><td class="r num">166</td></tr></table></div>
-  <div><div class="k">규칙</div><ul style="font-size:17.5px">
-   <li>이름 대신 별명. 오늘 선택은 이 수업 안에서만 쓰고 끝나면 지운다</li>
-   <li>선행연구 7,690편은 규칙과 AI가 코딩한 것으로 사람 검수 전. 화면에도 그렇게 표시된다</li>
-   <li>유사도 점수는 임의 가중치이며 추정치가 아니다</li>
-   <li>새로고침해도 작업은 남는다. 자료를 바꾸면 모형은 지워진다(경고 뒤)</li></ul></div>
- </div></div>
- <div class="cap">기본 화면에는 선행연구에서 자주 쓰는 요약 문항 108개. 전체 문항은 「전체」 버튼과 검색.</div>
- <aside class="notes">주소를 치시고 별명을 넣으십시오. 두 가지만 말씀드립니다. 이름은 안 씁니다, 끝나면 지웁니다. 그리고 뒤에 나올 선행연구 7천 편은 AI가 코딩한 것이고 아직 사람이 검수하지 않았습니다.</aside>
-</section>
+S = []
 
-<section class="slide">
- <div class="hd"><h2>변수 역할과 경로 규칙</h2><p class="s">문항에는 역할이 미리 붙어 있지 않다. 놓을 때 고른다</p></div>
- <div class="bd"><div class="in two" style="grid-template-columns:1fr 1.35fr">
-  <div class="role">
-   <span class="node dv">DV 종속변수</span><span>설명하려는 결과. 하나만. 문항을 여럿 묶으면 지수</span>
-   <span class="node">IV 독립변수</span><span>원인으로 보는 것. 둘 이상 가능</span>
-   <span class="node mv">MV 매개변수</span><span>원인과 결과 사이. 들어오는 경로와 나가는 경로가 둘 다 필요</span>
-   <span class="node zv">ZV 조절변수</span><span>집단에 따라 효과가 다른지. 변수가 아니라 경로 위에 붙인다</span>
-   <span class="node cv">CV 통제변수</span><span>영향을 빼고 보려는 것. 경로 없이 둔다</span>
-  </div>
-  <div><img class="shot" src="{{canvas_sim}}" alt="캔버스 화면"><p class="k" style="margin-top:8px">공공서비스 접촉 경험 → 내 사회자본(일반신뢰 + 호혜), 성별을 경로 위 조절변수로. 3초 멈추면 유사한 선행연구 패널이 뜬다</p></div>
- </div></div>
- <div class="cap">종속에서 나가는 화살표는 오류(역인과). 독립끼리 이으면 경고. 가설 문장은 경로에서 자동으로 만들어지고 고쳐 쓸 수 있다.</div>
- <aside class="notes">역할은 다섯입니다. 종속은 하나만 둡니다. 조절은 변수에 잇는 게 아니라 화살표 위에 붙입니다. 그래야 "이 관계가 집단에 따라 다른가"라는 뜻이 됩니다. 종속에서 밖으로 나가는 화살표를 그으면 빨간 오류가 뜹니다.</aside>
-</section>
 
-<section class="slide">
- <div class="hd"><h2>작업 10분 안내</h2><p class="s">노트북 둘째 화면용. 프로젝터는 대시보드</p></div>
- <div class="bd"><div class="in two" style="grid-template-columns:1fr 1.2fr">
-  <div><ol style="font-size:19px;line-height:1.8">
-   <li>자료 하나, 사회자본 정의 한 문장, 차원과 수준</li>
-   <li>종속변수 하나(문항 1개 이상 묶기)와 원인 하나를 잇는다</li>
-   <li>별명 확인 뒤 제출. 고치면 다시 제출(최신 것만 센다)</li></ol>
-   <div class="k" style="margin-top:26px">막히면</div><ul style="font-size:16.5px">
-   <li>끌기가 안 되면 문항 카드의 ＋ 버튼</li>
-   <li>문항이 안 보이면 검색창 또는 「전체」</li>
-   <li>오른쪽 「정의」 탭에 개념화와 조작화의 간격이 뜬다</li></ul></div>
-  <div><img class="shot" src="{{canvas_def}}" alt="정의 탭"><p class="k" style="margin-top:8px">「정의」 탭. 위가 말로 정한 정의, 아래가 문항으로 잰 정의. 둘이 어긋나면 그 사이에 경고가 끼어든다</p></div>
- </div></div>
- <div class="cap">5분 시점 안내: 종속 하나와 원인 하나만 이어도 제출된다. 8분 시점 안내: 오른쪽 정의 탭.</div>
- <aside class="notes">10분 드립니다. 세 가지만 하시면 됩니다. 돌아다니겠습니다. 막히면 손 드십시오.</aside>
-</section>
+def slide(title, sub, body, cap="", notes="", ap=False):
+    S.append(f'<section class="slide" {"data-ap=1" if ap else ""}><div class="hd"><h2>{title}</h2>{f"<p class=s>{sub}</p>" if sub else ""}</div><div class="bd"><div class="in">{body}</div></div>{f"<div class=cap>{cap}</div>" if cap else ""}<aside class="notes">{notes}</aside></section>')
 
-<section class="slide">
- <div class="hd"><h2>원인 축과 종속 차원의 분류 틀</h2><p class="s">Hooghe &amp; Stolle (2003)의 사회 중심·제도 중심에 개인 자원·지역 맥락을 더하고, Uphoff (2000)의 인지적·구조적과 교차</p></div>
- <div class="bd"><div class="in two" style="grid-template-columns:1.3fr 1fr">
-  <table class="cell"><tr><th style="width:120px"></th><th>인지적<br><span style="font-weight:400">신뢰·규범</span></th><th>구조적<br><span style="font-weight:400">연결망·참여</span></th><th>인지적 + 구조적</th></tr>
-  <tr><th>제도 중심</th><td><b>Kumlin &amp; Rothstein</b></td><td><b>Freitag · Mettler</b></td><td><b>Lowndes &amp; Wilson</b></td></tr>
-  <tr><th>사회 중심</th><td>·</td><td>·</td><td><b>Krishna</b></td></tr>
-  <tr><th>개인 자원</th><td>·</td><td>·</td><td>·</td></tr>
-  <tr><th>지역 맥락</th><td>·</td><td>·</td><td><b>Krishna</b></td></tr></table>
-  <div><img class="shot" src="{{dash_grid}}" alt="대시보드 격자"><p class="k" style="margin-top:8px">대시보드의 종속 구성 × 독립 묶음 격자(시연 자료). 빈 칸은 오늘 아무도 안 간 조합</p></div>
- </div></div>
- <div class="cap">다섯 편은 모두 제도 중심 줄. 학생 모형의 칸은 대시보드 「분류 틀의 칸」 막대. 칸별 선행연구 편수는 캔버스 「선행연구」 탭(규칙·AI 코딩, 검수 전).</div>
- <aside class="notes">세로축은 원인이 어디서 오느냐, 가로축은 사회자본을 무엇으로 쟀느냐입니다. 다섯 편은 전부 윗줄입니다. 여러분은 어디 계십니까. 대시보드를 보겠습니다.</aside>
-</section>
 
-<section class="slide">
- <div class="hd"><h2>유사도 점수와 교수님 판정</h2><p class="s">spotlight 3명 — 같은 자료에서 다른 정의, 개념과 측정의 어긋남, 조절이나 매개</p></div>
- <div class="bd"><div class="in two" style="grid-template-columns:1fr 1.3fr">
-  <div><div class="k">유사도 = 가중치 합 ÷ 11, 가중치는 임의</div>
-   <table style="font-size:15.5px"><tr><td>종속변수 구성 요소 겹침(자카드)</td><td class="r num">× 3</td></tr><tr><td>같은 자료</td><td class="r num">2</td></tr><tr><td>같은 원인 축</td><td class="r num">1.5</td></tr><tr><td>같은 단위 · 매개 있음 · 같은 차원 · 사회자본이 종속</td><td class="r num">각 1</td></tr><tr><td>국내 연구</td><td class="r num">0.5</td></tr></table>
-   <div class="k" style="margin-top:22px">판정 네 가지</div>
-   <table style="font-size:15.5px"><tr><td>개념·측정 일치</td><td>말한 차원과 묶은 문항이 같다</td></tr><tr><td>개념·측정 불일치</td><td>「어긋남」 표시. 고쳐 다시 내면 표가 바뀐다</td></tr><tr><td>인과 방향 재검토</td><td>연구질문이 "영향", 또는 종속에서 나가는 화살표</td></tr><tr><td>선행연구 공백</td><td>선행연구 15편 미만 칸</td></tr></table></div>
-  <div><img class="shot" src="{{dash_spot}}" alt="spotlight 화면"><p class="k" style="margin-top:8px">행을 누르면 열리는 spotlight. 위 판정 버튼을 누르면 그 학생 화면에 바로 뜬다</p></div>
- </div></div>
- <div class="cap">선행연구 7,690편(국내 2,362 · 해외 5,328), 사회자본이 종속인 연구 1,903편. 출처 KCI·OpenAlex, 코딩 Haiku 5.5, 검수 전.</div>
- <aside class="notes">한 분씩 띄우겠습니다. 왜 이 문항을 묶으셨는지 여쭙고, 가장 비슷한 선행연구를 읽어 드리겠습니다. 그 다음 교수님께 판정을 부탁드립니다.</aside>
-</section>
+def cover(h1, sub, meta, notes):
+    S.append(f'<section class="slide cover"><img src="{COVER_IMG}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55"><div style="position:absolute;inset:0;background:rgba(7,42,96,.55)"></div><div class="c" style="position:absolute"><h1>{h1}</h1><p class="sub">{sub}</p></div><div class="meta">{meta}</div><div style="position:absolute;right:40px;bottom:26px;font-size:11px;color:rgba(255,255,255,.65);max-width:600px;text-align:right">{CREDIT}</div>\n<aside class="notes">{notes}</aside></section>')
 
-<section class="slide">
- <div class="hd"><h2>선행연구 유사도 연결망</h2><p class="s">점은 선행연구, 금색은 오늘 제출된 모형</p></div>
- <div class="bd"><div class="in two" style="grid-template-columns:2.3fr 1fr;gap:28px">
-  <img class="shot" src="{{dash_net}}" alt="연결망" style="width:100%">
-  <ul style="font-size:17px">
-   <li>점 하나가 선행연구 한 편. 국내 먼저 최대 1,200편, 테두리는 국내</li>
-   <li>선은 구성 요소와 원인 축이 같은 이웃 4편</li>
-   <li>금색 점은 제출 모형. 가장 비슷한 4편의 평균 자리에 놓인다</li>
-   <li>되감기 슬라이더로 10분 전 분포</li>
-   <li>색은 원인 축(제도·사회·지역·개인)</li></ul>
- </div></div>
- <div class="cap">3D 힘 배치, 외부 라이브러리 없음. 시연 자료 17명 기준 화면.</div>
- <aside class="notes">회전을 멈추겠습니다. 점이 선행연구, 금색이 여러분입니다. 슬라이더를 10분 전으로 끌면 여러분이 어디서 출발했는지 보입니다.</aside>
-</section>
 
-<section class="slide">
- <div class="hd"><h2>오늘의 결과</h2><p class="s">제출 모형과 선행연구의 분포를 같은 틀에서 본다</p></div>
- <div class="bd"><div class="in">
-  <div class="stat"><div><div class="v">5</div><div class="l">지정문헌. 자료가 다른 다섯 가지 조작적 정의, 모두 종속</div></div><div><div class="v">17</div><div class="l">오늘의 모형. 분류 틀의 칸과 빈 칸</div></div><div><div class="v">7,690</div><div class="l">국내 30년, 해외 50년의 양적 선행연구</div></div></div>
-  <p style="margin-top:56px;text-align:center;font-size:21px;color:var(--navy)">개념화를 먼저 적게 한 이유: 문항이 정의를 대신 정하지 않도록</p>
- </div></div>
- <div class="cap">수업 뒤 제출 기록은 삭제. 캔버스와 선행연구 목록은 저장소에 공개(github.com/5-Jihwan/week11-seminar).</div>
- <aside class="notes">다섯 편은 자료가 정의를 정했고, 오늘 여러분 화면에서도 그랬습니다. 교수님.</aside>
-</section>
+F = lambda n: img_uri(os.path.join(H, "fig_part2", n))
 
-<section class="slide" data-ap="1">
- <div class="hd"><h2>캔버스 화면 지도</h2><p class="s">부록. 질문 대응용</p></div>
- <div class="bd"><div class="in figwrap" style="width:1136px;flex:none;zoom:.745">
-  <img class="shot" src="{{canvas_studies}}" alt="캔버스 전체">
-  <span class="callout" style="left:12px;top:60px">① 문항 목록 · 검색 · 전체</span>
-  <span class="callout" style="left:400px;top:60px">② 캔버스 · 확대 · 자동배치 · PNG</span>
-  <span class="callout" style="left:760px;top:60px">③ 오른쪽 패널 · 변수 / 정의 / 선행연구 / 리뷰</span>
-  <span class="callout" style="left:400px;bottom:14px">④ 검증 배지 · 유사도 배지</span>
-  <span class="callout" style="right:12px;top:14px">⑤ 자료 칩 · 별명 · 제출</span>
- </div></div>
- <aside class="notes"></aside>
-</section>
+# 1 표지
+cover("국내 공개 데이터로 만드는 사회자본 연구모형",
+      "11주차 발제 2부 · 자료 고르기, 사회자본 정의, 연구모형 설계, 모형 이야기",
+      "사회자본과 공공정책 · 2026-11-13 · 발제 오지환(석사과정 2학기) · 성균관대학교",
+      "2부를 시작하겠습니다. 1부에서는 다섯 편이 사회자본을 무엇으로 재고 어떤 제도와 관련지었는지를 읽었는데, 2부는 그 작업을 여러분이 직접 해 보는 시간입니다. 2주차부터 지금까지 사회자본의 정의와 양적 연구를 꽤 많이 읽었으니까, 한국에서 공개하고 있는 조사 자료 하나를 골라 사회자본을 종속변수로 둔 연구모형을 각자 하나씩 만들어 보고, 그 모형을 놓고 자유롭게 이야기해 보겠습니다.")
 
-<section class="slide" data-ap="1">
- <div class="hd"><h2>검증 규칙</h2><p class="s">부록. 오류 6, 경고 7, 정보 4</p></div>
- <div class="bd"><div class="in" style="display:grid;grid-template-columns:repeat(3,1fr);gap:30px">
-  <div><div class="k" style="color:var(--orange)">오류, 제출 잠김</div><ul style="font-size:16px"><li>종속변수 없음</li><li>독립변수 없음</li><li>문항 없는 변수</li><li>종속에서 나가는 경로(역인과)</li><li>매개에서 독립으로</li><li>조절이 잘못된 경로 위, 조절로 들어오는 화살표</li></ul></div>
-  <div><div class="k">경고</div><ul style="font-size:16px"><li>경로 없음</li><li>개념은 인지적인데 측정은 구조적만</li><li>개념은 구조적인데 측정은 신뢰만</li><li>단위 다름(가구 수급과 가구원 신뢰)</li><li>독립끼리 연결</li><li>고립된 변수</li><li>매개에 경로 한쪽만</li></ul></div>
-  <div><div class="k" style="color:var(--greend)">정보</div><ul style="font-size:16px"><li>개념은 둘 다인데 측정은 한쪽만</li><li>공동체 속성인데 개인 응답</li><li>종속에 사회자본 밖 문항</li><li>통제변수에 경로</li></ul></div>
- </div></div>
- <div class="cap">규칙은 순수 함수(validate, gap)라 대시보드와 같은 값을 본다.</div>
- <aside class="notes"></aside>
-</section>
+# 2 1부에서 넘어오는 표
+slide("지정문헌 다섯 편의 사회자본 측정", "1부 종속변수 비교를 자료 중심으로 다시 정리",
+      '''<table style="font-size:15.5px;word-break:keep-all"><tr><th style="width:15%">논문</th><th style="width:27%">자료</th><th style="width:27%">사회자본으로 잰 것</th><th style="width:8%">단위</th><th>결과</th></tr>
+<tr><td>Krishna</td><td>인도 라자스탄 61개 마을, 1997·2004 두 번 조사</td><td>집합행동 성향 6문항 지수(0~100)</td><td>마을</td><td>자생 조직·규칙·신진 리더와 양(+)의 관계, 정부·NGO 조직은 유의하지 않음</td></tr>
+<tr><td>Freitag</td><td>스위스 가구패널 1999, 24개 칸톤</td><td>결사체 참여 4문항 주성분의 칸톤 평균</td><td>칸톤</td><td>직접민주주의·합의민주주의·지방자치와 양(+)의 관계, 언어권을 통제하면 직접민주주의는 유의하지 않음</td></tr>
+<tr><td>Lowndes &amp; Wilson</td><td>자료 없음(영국 지방정부 논의)</td><td>Putnam의 정의(연결망·규범·신뢰)</td><td>–</td><td>제도 설계 네 차원을 제시</td></tr>
+<tr><td>Mettler</td><td>미국 2차 대전 참전자 716명 회고 설문</td><td>단체 가입 수, 정치참여 지표 6개</td><td>개인</td><td>교육 급여 이용과 양(+)의 관계(학력 통제 후)</td></tr>
+<tr><td>Kumlin &amp; Rothstein</td><td>스웨덴 서부 SOM 1999 조사</td><td>대인신뢰 0~10 한 문항</td><td>개인</td><td>선별 기관 접촉 1곳당 −.26, 보편 기관 +.07</td></tr></table>
+<p class="ppn" style="margin-top:16px">다섯 편은 각자 손에 있는 자료로 사회자본을 정의했고, 무엇으로 쟀느냐에 따라 결과의 방향도 달랐다. 2부에서는 같은 작업을 국내 공개 자료로 한다.</p>''',
+      "1부 지정문헌 종속변수 비교 장과 각 논문 장의 원문 쪽수 참고.",
+      "1부 끝에서 본 표를 자료 쪽으로 조금 바꿔서 다시 띄웠습니다. 다섯 편이 사회자본을 잰 방법이 마을 단위 지수, 칸톤 평균의 결사체 참여, 단체 가입 수, 대인신뢰 한 문항으로 다 달랐고, 결과의 방향도 그에 따라 달랐습니다. 저는 저자들이 처음부터 그렇게 정의했다기보다 손에 있던 자료가 정의를 정한 면이 크다고 봅니다. 2부에서는 같은 작업을 우리가 국내 공개 자료로 해 보겠습니다.")
 
-<section class="slide" data-ap="1">
- <div class="hd"><h2>자료별 한계와 다음 설계</h2><p class="s">부록. 캔버스 「리뷰」 탭의 카드</p></div>
- <div class="bd"><div class="in">
-  <table style="font-size:15px"><tr><th style="width:170px">자료</th><th>한계</th><th>다음 설계</th></tr>
-  <tr><td>한국복지패널</td><td>아동수당이 보편화된 해라 심사 효과의 변이 없음. 신뢰는 가구원, 수급은 가구</td><td>14차(선별)와 16차를 같은 사람으로 이어 전환 전후 설계</td></tr>
-  <tr><td>사회통합실태조사</td><td>한 해 횡단면, 역인과 못 가림. 수급 문항 없음</td><td>2021~2025 다섯 해 추세, 공공서비스 만족을 매개로</td></tr>
-  <tr><td>한국종합사회조사</td><td>수급 문항 없어 공정성과 신뢰의 관계만</td><td>2012년 지역 집단토론 참여 변수로 Lowndes &amp; Wilson 설계</td></tr>
-  <tr><td>사회조사</td><td>참여는 상세하나 수급·대인신뢰 없음</td><td>시도 단위로 가계금융복지조사 수급률과 결합</td></tr>
-  <tr><td>지역사회건강조사</td><td>신뢰가 예/아니오, 0–10과 다름</td><td>시군구 226개로 Freitag의 24개 한계 극복</td></tr></table>
- </div></div>
- <div class="cap">전문은 model/build_index.py의 REVIEWS. 교수님 설명 뒤 수정 가능.</div>
- <aside class="notes"></aside>
-</section>
+# 3 진행 순서
+flow = [(3, "2:15", "접속·안내", "QR로 들어와 별명 정하기"), (12, "2:18", "모형 만들기", "자료 고르기 → 사회자본 한 줄 정의 → 문항으로 변수 → 화살표 → 제출"),
+        (22, "2:30", "분포 보기와 모형 이야기", "17명의 선택을 대시보드로 보고, 네댓 명의 모형을 화면에 띄워 이야기"), (5, "2:52", "정리", "오늘 모형과 선행연구, 다음 설계")]
+slide("2부 진행 순서", "45분 · 2:15~3:00, 끝에 여유 3분",
+      '<div class="f4">' + "".join(f'<div style="flex:{m}"><span>{t} · {m}분</span><b>{n}</b><i>{d}</i></div>' for m, t, n, d in flow) + '''</div>
+<div class="two" style="margin-top:26px;align-items:start;gap:44px"><div><div class="tlh">제출 최소 조건</div><p class="ppn">종속변수 하나와 원인 하나를 화살표로 이으면 제출된다. 통제·조절·매개는 시간이 남으면 더한다.</p></div>
+<div><div class="tlh">없는 것</div><p class="ppn">원자료와 계수 추정은 없다. 조사표의 문항으로 모형을 설계하는 데까지 한다.</p></div></div>''',
+      "", "진행은 화면 순서대로입니다. 처음 3분 동안 접속하고 별명을 정한 다음에 12분 동안 모형을 만듭니다. 그다음 22분이 이 시간의 중심인데, 먼저 열일곱 명이 무엇을 골랐는지 대시보드로 함께 보고, 네댓 분의 모형을 화면에 띄워서 이야기를 나누겠습니다. 마지막 5분은 정리입니다. 제출은 종속변수 하나와 원인 하나만 화살표로 이어도 되니까 처음부터 완성된 모형을 만들려고 하지 않으셔도 됩니다. 그리고 원자료로 계수를 추정하는 단계는 없고, 조사표 문항으로 모형을 설계하는 데까지 합니다.")
 
-</div>
-<div id="notes"></div><div id="help">←/→ 이동 · N 노트 · F 전체화면</div>
-<script>
-const S=[...document.querySelectorAll('.slide')];let i=0;const N=document.getElementById('notes');
-function fit(){const sc=Math.min(innerWidth/1280,innerHeight/720);S.forEach(s=>s.style.transform=`scale(${sc})`);}
-function show(k){i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j===i));N.innerHTML=(S[i].querySelector('.notes')||{}).innerHTML||'<i>노트 없음</i>';location.hash=i+1;}
-let main=0,ap=0;S.forEach(s=>{const p=document.createElement('div');p.className='pg';if(s.dataset.ap){p.textContent='A'+(++ap);}else{main++;if(!s.classList.contains('cover'))p.textContent=main;}s.appendChild(p);});
-addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown')show(i+1);else if(e.key==='ArrowLeft'||e.key==='PageUp')show(i-1);else if(e.key.toLowerCase()==='n')N.classList.toggle('on');else if(e.key.toLowerCase()==='f'){document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen();}});
-addEventListener('click',e=>{if(e.target.closest('#notes'))return;show(i+(e.clientX>innerWidth/2?1:-1));});
-addEventListener('resize',fit);fit();show((+location.hash.slice(1)||1)-1);
-</script>
-</body></html>
+# 4 접속과 약속
+slide("접속과 약속", "노트북 권장 · 폰도 작동",
+      f'''<div class="two" style="grid-template-columns:auto 1fr;gap:48px;align-items:center"><div class="qr"><img src="{qr_uri(CANVAS)}" alt="캔버스 주소 QR"><div class="url">5-jihwan.github.io/week11-seminar/model/canvas.html</div></div>
+<div><ul class="tll"><li>노트북에서는 문항 카드를 캔버스로 끌어 놓고, 폰에서는 카드의 ＋ 버튼을 누른다</li>
+<li>이름 대신 별명을 쓴다. 대시보드와 화면에는 별명만 나온다</li>
+<li>오늘 만든 모형은 이 수업 안에서만 보고, 수업이 끝나면 서버에서 지운다</li>
+<li>화면의 선행연구 목록은 규칙과 AI로 분류한 것이며 사람이 검수하기 전이다. 인용하기 전에 원문을 확인한다</li></ul></div></div>''',
+      "", "화면의 QR로 들어오시면 됩니다. 노트북이 편하고, 폰에서도 문항 카드의 더하기 버튼으로 똑같이 만들 수 있습니다. 이름 대신 별명을 써 주시고, 오늘 고르신 것은 이 수업 안에서만 보고 수업이 끝나면 서버에서 지운다는 점을 먼저 말씀드립니다. 화면 오른쪽에 닮은 선행연구가 뜨는데, 이 목록은 규칙과 AI로 분류해 둔 것이고 제가 하나하나 검수하지는 못했습니다. 인용하실 때는 원문을 꼭 확인해 주십시오.")
+
+# 5 자료 여덟 가지
+rows = [("한국복지패널", "보건사회연구원·서울대 · 16차(2021)", "개인·가구", "대인신뢰(3년 주기)", "선별·보편 수급 경험이 같은 사람에게 있음"),
+        ("사회통합실태조사", "한국행정연구원 · 2023", "개인", "대인·기관 신뢰, 참여", "공정성 인식. 수급 경험 문항은 없음"),
+        ("한국종합사회조사", "성균관대 서베이리서치센터 · 2012·2023", "개인", "신뢰·연결망·참여 문항이 가장 많음", "7개 권역, 도시·농촌"),
+        ("사회조사", "국가데이터처 · 2023", "13세 이상", "단체 참여·기부·봉사, 사회 신뢰", "시도. 대인신뢰 문항은 없음"),
+        ("지역사회건강조사", "질병관리청 · 2023", "개인", "이웃 신뢰(예/아니오), 단체 참여", "기초생활수급, 시군구"),
+        ("청년삶실태조사", "국무조정실·보건사회연구원 · 2022", "19~34세", "사회 신뢰 0~10", "기초수급·실업급여, 시도"),
+        ("노인실태조사", "보건복지부·보건사회연구원 · 2023", "65세 이상", "가족·이웃·정부 신뢰, 단체·봉사", "기초생활·기초연금 수급"),
+        ("가계금융복지조사", "국가데이터처 · 2023", "가구", "신뢰·참여 문항 없음", "공적이전 9항목(원인 쪽으로만)")]
+slide("고를 수 있는 국내 공개 자료", "조사표 문항 기준 · 한 모형은 한 자료 안의 문항으로",
+      '<table style="font-size:14.5px;word-break:keep-all"><tr><th style="width:16%">자료</th><th style="width:25%">기관 · 차수</th><th style="width:10%">대상</th><th style="width:23%">사회자본 문항</th><th>함께 고를 수 있는 원인</th></tr>'
+      + "".join(f"<tr><td>{a}</td><td>{b}</td><td>{c}</td><td>{d}</td><td>{e}</td></tr>" for a, b, c, d, e in rows) + "</table>",
+      "model/catalog.json(조사표·코드북 원문 대조). 원자료는 쓰지 않음. 문항 수는 자료마다 85~3,345개.",
+      "고를 수 있는 자료는 여덟 가지입니다. 복지 수급 경험과 신뢰를 한 사람 안에서 보고 싶으시면 한국복지패널이나 청년삶실태조사, 노인실태조사, 지역사회건강조사가 맞고, 기관신뢰와 공정성을 보고 싶으시면 사회통합실태조사가 맞습니다. 연결망이나 참여 문항을 넉넉하게 쓰고 싶으시면 한국종합사회조사가 가장 문항이 많습니다. 가계금융복지조사에는 신뢰나 참여 문항이 없어서 원인 쪽으로만 쓸 수 있습니다. 한 모형은 한 자료 안의 문항으로만 만들게 되어 있으니, 먼저 보고 싶은 원인이 어느 자료에 있는지부터 보시면 고르기가 쉽습니다.")
+
+# 6 만드는 순서
+steps = [("gate.png", "① 자료 고르기", "여덟 가지 중 하나. 카드에 단위와 사회자본 문항이 적혀 있다"),
+         ("concept.png", "② 사회자본 정의 한 줄", "문항을 보기 전에 적는다. 인지적·구조적, 개인의 자산·공동체의 속성을 고른다"),
+         ("canvas_def.png", "③ 문항으로 변수 만들고 잇기", "역할(종속·원인·통제·조절·매개)을 정하고 화살표로 이은 뒤 오른쪽 위 「제출」")]
+slide("연구모형 만드는 순서", "캔버스 화면",
+      '<div class="steps">' + "".join(f'<figure><img src="{F(f)}" alt=""><figcaption><b>{t}</b>{d}</figcaption></figure>' for f, t, d in steps) + "</div>",
+      "", "만드는 순서는 세 화면입니다. 왼쪽처럼 자료를 하나 고르고, 가운데 화면에서 사회자본이 무엇인지 한 줄로 적는데, 문항을 보기 전에 적는 게 중요합니다. 정의를 먼저 적어 두어야 나중에 고른 문항이 그 정의와 맞는지 볼 수 있습니다. 오른쪽이 실제 캔버스인데, 왼쪽 목록에서 문항을 끌어다 놓거나 더하기 버튼을 누르면 역할을 묻습니다. 종속변수와 원인을 정하고 화살표로 이은 다음 오른쪽 위 제출을 누르시면 됩니다.")
+
+# 7 만들며 확인할 것
+slide("모형을 만들며 확인할 것", "2:18~2:30 · 이 화면을 띄워 둔 채 작업",
+      '''<ul class="chk"><li><b>정의와 측정</b>적어 둔 사회자본의 정의와 종속변수로 묶은 문항이 같은 것을 가리키는가. 오른쪽 「개념화·조작화」 탭에 어긋남이 표시된다</li>
+<li><b>원인의 순서</b>원인으로 놓은 변수가 사회자본보다 먼저 생기는가, 같은 때에 잰 것인가</li>
+<li><b>1부와의 거리</b>다섯 편 가운데 누구의 설계와 가장 닮았는가. 「분류 틀·유사한 선행연구」 탭</li>
+<li><b>막히면</b>종속변수 하나와 원인 하나만 이어서 먼저 제출한다. 다시 내면 최신 것만 센다</li></ul>''',
+      "", "작업하시는 동안 이 화면을 띄워 두겠습니다. 만들면서 세 가지를 봐 주시면 좋겠습니다. 적어 둔 정의와 종속변수로 묶은 문항이 같은 것을 가리키는지는 오른쪽 개념화 탭에 어긋남으로 표시되고, 원인으로 놓은 변수가 정말 사회자본보다 먼저 생기는지는 직접 따져 보셔야 합니다. 1부의 다섯 편 가운데 누구의 설계와 닮았는지는 분류 틀 탭에서 볼 수 있습니다. 막히시면 종속변수 하나와 원인 하나만 이어서 먼저 내 주십시오. 다시 내시면 최신 것만 셉니다.")
+
+# 8 모형 이야기
+slide("모형 이야기", "2:33~2:52 · 한 사람 4분, 네댓 명",
+      '''<div class="two" style="align-items:start;gap:48px"><div><div class="tlh">한 사람 4분</div><ul class="tll"><li>1분 · 무엇을 사회자본으로 보았고 왜 이 문항을 골랐는지</li><li>2분 · 다른 분의 질문 하나와 답</li><li>1분 · 닮은 선행연구와 1부 다섯 편 가운데 가까운 설계</li></ul>
+<p class="ppn" style="color:var(--sub)">자원하신 분부터. 없으면 서로 다른 자료와 다른 종속변수를 고른 분을 고른다.</p></div>
+<div><div class="tlh">함께 볼 질문</div><ul class="chk sm"><li><b>정의와 측정</b>말한 사회자본과 잰 문항이 같은가</li><li><b>원인의 순서</b>한 시점 자료에서 원인과 결과를 어떻게 가를 수 있는가</li><li><b>다음 설계</b>패널, 제도가 바뀐 전후, 지역 비교 가운데 무엇으로 보완할 수 있는가</li></ul></div></div>''',
+      "", "이제 모형을 몇 개 화면에 띄워 보겠습니다. 먼저 자원해 주실 분이 계시면 그분부터 하고, 안 계시면 서로 다른 자료와 종속변수를 고르신 분들을 제가 모시겠습니다. 한 분당 4분 정도로, 무엇을 사회자본으로 보셨고 왜 그 문항을 고르셨는지 1분 정도 말씀해 주시면, 다른 분들이 질문을 하나 드리고, 마지막에 화면에 뜬 닮은 선행연구와 1부 다섯 편 가운데 가까운 설계를 같이 보겠습니다. 이야기할 때는 오른쪽 세 질문을 기준으로 삼으면 좋겠습니다. 정의와 측정이 맞는지, 한 시점 자료에서 원인과 결과를 어떻게 가를지, 그리고 그 한계를 패널이나 제도 변화 전후 비교, 지역 비교 가운데 무엇으로 보완할지입니다.")
+
+# 9 정리
+slide("2부 정리", "오늘 제출된 모형과 다음 설계",
+      '''<div class="two" style="align-items:start;gap:48px"><div><div class="tlh">대시보드에서 확인할 것</div><ul class="tll"><li>가장 많이 고른 자료와 종속변수</li><li>정의와 측정이 어긋난 모형의 수</li><li>아무도 고르지 않은 원인과 종속변수의 조합, 선행연구가 적은 조합</li></ul></div>
+<div><div class="tlh">한 시점 자료를 넘어서는 설계</div><ul class="tll"><li>같은 사람을 여러 해 따라가는 패널: 한국복지패널</li><li>제도가 바뀐 전후 비교: 한국 아동수당은 2018년 9월 소득 하위 90%로 시작해 2019년 1월 소득 심사를 없앴다</li><li>지역 사이 비교: 지역사회건강조사의 시군구</li></ul></div></div>''',
+      "", "정리하겠습니다. 왼쪽 세 가지는 지금 대시보드에서 오늘 결과로 바로 말씀드리겠습니다. 가장 많이 고른 자료와 종속변수가 무엇이었는지, 정의와 측정이 어긋난 모형이 몇 개였는지, 그리고 아무도 가지 않은 조합이 어디인지입니다. 오른쪽은 오늘 만든 모형을 실제 연구로 옮길 때의 이야기인데, 공개 자료 대부분이 한 시점 자료라서 원인의 순서를 가르기 어렵습니다. 한국복지패널처럼 같은 사람을 따라가는 패널이 있고, 아동수당처럼 같은 급여가 선별에서 보편으로 바뀐 전후를 비교할 수 있는 제도 변화가 있고, 지역사회건강조사처럼 시군구를 비교할 수 있는 자료가 있습니다. Kumlin과 Rothstein이 스스로 한계로 적은 역인과 문제를 우리 자료로는 이런 방법으로 다룰 수 있다고 봅니다.")
+
+# 10 감사
+cover("감사합니다", "1부 세미나와 2부 연구모형 설계에 함께해 주셔서 감사합니다.", "사회자본과 공공정책 · 11주차 발제 · 오지환(석사과정 2학기)",
+      "오늘 1부와 2부에 끝까지 함께해 주셔서 감사합니다. 제출해 주신 모형은 말씀드린 대로 수업이 끝나면 서버에서 지우겠습니다. 이것으로 11주차 발제를 마치겠습니다.")
+
+# 부록: 발표자용 진행표와 장애 대응
+run = [("2:15", "표지 → 측정 → 진행 순서 → 접속", "별명·삭제 고지. 대시보드 「작업 중」 수가 오르는지"),
+       ("2:18", "자료 → 만드는 순서 → 확인할 것(띄워 둠)", "돌아다니며 막힌 사람 옆에. 2:24 「하나만 이어도 제출」, 2:28 「2분 남음」"),
+       ("2:30", "대시보드(프로젝터 모드) 자료·종속 막대", "가장 많이 고른 종속변수를 고른 분 한 명에게 이유"),
+       ("2:33", "모형 이야기 → 대시보드 spotlight", "한 사람 4분. 선행연구는 제목과 자료만, 「검수 전」"),
+       ("2:52", "2부 정리 + 대시보드", "오늘 결과 세 줄을 말로"),
+       ("2:57", "감사합니다", "")]
+slide("2부 진행표", "부록 · 발표자용",
+      '<table style="font-size:14.5px;word-break:keep-all"><tr><th style="width:9%">시각</th><th style="width:38%">화면</th><th>할 일</th></tr>' + "".join(f"<tr><td>{a}</td><td>{b}</td><td>{c}</td></tr>" for a, b, c in run) + '''</table>
+<p class="ppn" style="margin-top:14px">1부가 10분 늦게 끝나면 만들기 10분, 이야기 세 명, 정리 3분으로 줄인다. 2:30에 제출이 다섯 명보다 적으면 만들기를 3분 늘린다.</p>''',
+      "", "(부록. 발표자용 진행표입니다.)", ap=True)
+slide("와이파이나 서버가 끊길 때", "부록 · 발표자용",
+      '''<ul class="tll"><li>대시보드 「연결 실패」: 새로고침 후 PIN 다시 입력. 그래도 안 되면 노트북 Downloads 폴더의 2부_오프라인판_20261112에서 canvas.html과 dashboard.html을 같은 브라우저로 연다</li>
+<li>오프라인판에서는 학생이 말하는 문항을 Ji가 대신 넣고 제출한다. 대시보드에 바로 뜬다</li>
+<li>와이파이만 끊기면 이미 연 학생 화면은 계속 작동하고 제출만 안 된다. 이야기 시간에는 학생 화면을 직접 보며 진행</li>
+<li>수업 뒤: 대시보드 「비우기」로 서버 기록 삭제 후, 저장소 전체 삭제(wrangler kv namespace delete)</li></ul>''',
+      "", "(부록. 장애 대응입니다.)", ap=True)
+
+CSS2 = """.f4{display:flex;gap:6px}.f4>div{min-width:150px;background:var(--navy);color:#fff;padding:14px 16px;display:flex;flex-direction:column;gap:6px}.f4 span{font-size:13px;opacity:.8}.f4 b{font-size:19px}.f4 i{font-style:normal;font-size:14px;line-height:1.5;opacity:.92;word-break:keep-all}
+.qr{text-align:center}.qr img{width:300px;height:300px;image-rendering:pixelated;border:1px solid var(--line)}.qr .url{font-size:13px;color:var(--sub);margin-top:8px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.steps figure{margin:0}.steps img{width:100%;border:1px solid var(--line);border-radius:4px;display:block}.steps figcaption{font-size:14.5px;margin-top:10px;line-height:1.55;word-break:keep-all}.steps figcaption b{display:block;color:var(--navy);font-size:17px;margin-bottom:2px}
+.chk{list-style:none;padding:0;margin:0}.chk li{border-top:1px solid var(--line);padding:12px 0 12px 150px;position:relative;font-size:18px;line-height:1.55;word-break:keep-all}.chk li b{position:absolute;left:0;top:12px;color:var(--navy)}.chk.sm li{padding-left:110px;font-size:16.5px}
+.tlh{font-size:19px;font-weight:700;color:var(--navy);border-top:2px solid var(--navy);padding-top:10px;margin-bottom:8px}.tll li{font-size:16.5px;line-height:1.6;word-break:keep-all}.ppn{font-size:15.5px;line-height:1.6;word-break:keep-all}
 """
-for k, v in IMG.items():
-    HTML = HTML.replace("{{" + k + "}}", v)
-assert "{{" not in HTML, "치환 안 된 그림 자리"
-sys.path.insert(0, H)
-from fontface import face, FAMILY
-HTML = HTML.replace("__FAMILY__", FAMILY).replace("<style>", "<style>" + face(HTML), 1)
-out = os.path.join(H, "week11_part2.html"); open(out, "w", encoding="utf-8").write(HTML)
-print("week11_part2.html", len(HTML) // 1024, "KB")
+# 1부 덱의 머리·CSS·스크립트를 쓰고 글꼴만 2부 글자로 다시 내장
+head_end = base.index('<div id="stage">')
+head = base[:head_end].replace("<title>" + re.search(r"<title>(.*?)</title>", base).group(1) + "</title>", "<title>2부 연구모형</title>", 1)
+head = re.sub(r'@font-face\{[^}]*\}', "", head)
+text = re.sub(r"<[^>]+>|data:[^\"']+", " ", "".join(S))
+head = head.replace("<style>", "<style>" + face(html.unescape(text) + "0123456789·→①②③") + CSS2, 1)
+tail = base[base.index('</div><div id="notes">'):]
+out = head + '<div id="stage">\n' + "\n".join(S) + "\n" + tail
+assert out.count('<section class="slide') == len(S) == 12 and "@font-face" in out
+open(os.path.join(H, "week11_part2.html"), "w", encoding="utf-8").write(out)
+print("week11_part2.html", len(out) // 1024, "KB", len(S), "장")
