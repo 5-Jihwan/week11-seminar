@@ -27,7 +27,7 @@ def P(text, size=None, bold=False, color=None, italic=False, after=6, keep=False
 
 P("발표 대본 — 사회자본과 공공정책 11주차 1부", 17, True, NAVY, after=2)
 P(f"본편 {len(main)}장 + 부록 {len(ap)}장 · 말하는 분량 약 {round(chars, -2):,}자 · 2026-11-13 · 오지환", 10.5, color=GRAY, after=10)
-P("덱에서 N 키를 누르면 나오는 노트와 같은 내용이고, 그대로 읽어도 되게 썼습니다. 괄호 안은 말하지 않는 진행 표시입니다. 가려 둔 항목은 → 키를 누를 때 하나씩 나오고, 토론 장에서는 손들기가 끝난 뒤에 키를 눌러 논문의 결과를 보입니다. 토론은 논문마다 두 번인데 첫 번째는 5분, 두 번째는 2분으로 잡았습니다.", after=14)
+P("덱에서 N 키를 누르면 나오는 노트와 같은 내용이고, 그대로 읽어도 되게 썼습니다. 괄호 안은 말하지 않는 진행 표시입니다. 가려 둔 항목은 → 키를 누를 때 하나씩 나오고, 토론 장에서는 손들기가 끝난 뒤에 키를 눌러 논문의 결과를 보입니다. 토론은 논문마다 두 번이고, 손들기와 한두 분 발언 정도로 가볍게 진행합니다.", after=14)
 for k, x in enumerate(S, 1):
     P((f"{k}. " if x in main else f"부록 A{ap.index(x) + 1}. ") + x["title"], 12, True, NAVY, after=3, keep=True)
     for p in x["paras"]:
